@@ -149,7 +149,7 @@ const AddCategory = () => {
 
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ values, handleChange, handleSubmit, setFieldValue }) => (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="border-2 p-5">
               {currentStep === 1 && (
                 <div className="mt-5">
                   <div className="flex flex-col gap-2">
@@ -162,38 +162,6 @@ const AddCategory = () => {
                       placeholder="Enter name here"
                       className="p-3 border rounded-xl h-[45px]"
                     />
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">Parent Category</label>
-                    <select
-                      name="parent"
-                      value={values.parent}
-                      onChange={handleChange}
-                      className="px-3 py-1 sm:w-[50%] h-[45px] focus:outline-none rounded-md bg-white"
-                    >
-                      <option
-                        value=""
-                        disabled
-                        hidden
-                        className="placeholder opacity-50"
-                      >
-                        Select parent category
-                      </option>
-                      {data?.map((item) => (
-                        <optgroup
-                          label={item.name}
-                          key={item._id}
-                          value={item._id}
-                        >
-                          {item.children.map((child) => (
-                            <option value={child._id} key={child._id}>
-                              {child.name}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </select>
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2">
@@ -218,17 +186,50 @@ const AddCategory = () => {
                     </div>
                   </div>
 
-                  <div className="mt-5 flex flex-col gap-2">
-                    <div className="flex flex-col gap-2">
-                      <label className="px-3 font-bold">Meta Title</label>
-                      <input
-                        type="text"
-                        name="metaTitle"
-                        value={values.metaTitle}
+                  <div className="flex gap-5 w-[100%]">
+                    <div className="mt-5 flex flex-col gap-2 sm:w-[35%]">
+                      <label className="px-3 font-bold">Parent Category</label>
+                      <select
+                        name="parent"
+                        value={values.parent}
                         onChange={handleChange}
-                        placeholder="Enter meta title here"
-                        className="p-3 border rounded-xl h-[45px]"
-                      />
+                        className="px-3 py-1 h-[45px] focus:outline-none rounded-xl bg-white"
+                      >
+                        <option
+                          value=""
+                          disabled
+                          hidden
+                          className="placeholder opacity-50"
+                        >
+                          Select parent category
+                        </option>
+                        {data?.map((item) => (
+                          <React.Fragment key={item._id}>
+                            <option value={`group-${item._id}`} className="font-bold">
+                              {item.name}
+                            </option>
+                            {item.children.map((child) => (
+                              <option value={child._id} key={child._id}>
+                               &nbsp; {child.name}
+                              </option>
+                            ))}
+                          </React.Fragment>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="mt-5 flex flex-col w-[65%] gap-2">
+                      <div className="flex flex-col gap-2">
+                        <label className="px-3 font-bold">Meta Title</label>
+                        <input
+                          type="text"
+                          name="metaTitle"
+                          value={values.metaTitle}
+                          onChange={handleChange}
+                          placeholder="Enter meta title here"
+                          className="p-3 border rounded-xl h-[45px]"
+                        />
+                      </div>
                     </div>
                   </div>
 
