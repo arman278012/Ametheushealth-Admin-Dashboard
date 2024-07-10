@@ -253,7 +253,7 @@ const AddCategory = () => {
                       </select>
                     </div>
 
-                    <div className="mt-5 flex flex-col w-[65%] gap-2">
+                    <div className="mt-5 flex flex-col sm:w-[65%] w-full gap-2">
                       <div className="flex flex-col gap-2">
                         <label className="px-3 font-bold">Meta Title</label>
                         <input
