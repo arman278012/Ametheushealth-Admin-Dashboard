@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const initialValues = {
   email: "",
@@ -12,6 +13,7 @@ const initialValues = {
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [loginLoading, setloginLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ const Login = () => {
       if (response.status === 200) {
         localStorage.setItem("authorization", response.data.x_auth_token);
         localStorage.setItem("id", response.data.x_userid);
+        toast.success("Login Successfull...");
         navigate("/product-details");
       }
     } catch (error) {
@@ -96,6 +99,7 @@ const Login = () => {
                   type="submit"
                   className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
+                  
                   Login
                 </button>
               </form>

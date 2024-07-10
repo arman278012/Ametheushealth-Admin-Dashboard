@@ -205,7 +205,7 @@ const AddCategory = () => {
                         </option>
                         {data?.map((item) => (
                           <React.Fragment key={item._id}>
-                            <option value={`group-${item._id}`} className="font-bold">
+                            <option value={`${item._id}`} className="font-bold">
                               {item.name}
                             </option>
                             {item.children.map((child) => (
