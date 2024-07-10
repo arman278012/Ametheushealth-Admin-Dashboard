@@ -30,7 +30,7 @@ const MySideBar = () => {
   return (
     <div className="sm:flex md:flex hidden sticky">
       <div
-        className={`bg-gray-800 text-white h-screen ${
+        className={`bg-gray-800 text-white h-auto ${
           isCollapsed ? "w-16" : "w-64"
         } transition-all duration-300`}
       >
