@@ -5,6 +5,8 @@ import { getCategoryData } from "../../redux/slice/GetCategoryDataSlice";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const AllCategories = () => {
   const { allCategoryData, isLoading, isError, error } = useSelector(
@@ -82,105 +84,132 @@ const AllCategories = () => {
           </tr>
         </thead>
         <tbody>
-          {allCategoryData?.map((item, index) => (
-            <tr key={index} className="border-t">
-              <td className="py-2 px-4 border-b text-center">
-                <input type="checkbox" />
-              </td>
-              <td className="py-2 px-4 border-b text-center">
-                <img
-                  src={item.image ? item.image : placeholderImage}
-                  alt={item.name}
-                  className="h-12 w-12 object-cover rounded-full"
-                />
-              </td>
-              <td className="py-2 px-4 border-b text-[14px]">
-                {item.name}
-                <div className="flex gap-2">
-                  <button className="text-[#2271b1]">Edit</button>{" "}
-                  <span className="text-[#2271b1]">|</span>
-                  <button
-                    className="text-[#2271b1]"
-                    onClick={() => navigate(`/all-categories/${item._id}`)}
-                  >
-                    View
-                  </button>{" "}
-                  <span className="text-[#2271b1]">|</span>
-                  <button
-                    className="text-[#2271b1]"
-                    onClick={() => setDeleteAlert(true)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </td>
-              <td className="py-2 px-4 border-b text-[14px]">
-                {item.description ? (
-                  expanded[index] ? (
-                    <>
-                      {parse(`<p>${item.description}</p>`)}
-                      <button
-                        onClick={() => toggleExpand(index)}
-                        className="text-blue-500 hover:underline"
-                      >
-                        Read less
-                      </button>
-                    </>
+          {isLoading ? (
+            Array.from({ length: 10 }).map((_, index) => (
+              <tr key={index} className="border-t">
+                <td className="py-2 px-4 border-b text-center">
+                  <Skeleton circle={true} height={12} width={12} />
+                </td>
+                <td className="py-2 px-4 border-b text-center">
+                  <Skeleton circle={true} height={48} width={48} />
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  <Skeleton width={`80%`} />
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  <Skeleton width={`80%`} count={2} />
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  <Skeleton width={`50%`} />
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  <Skeleton width={`50%`} />
+                </td>
+                <td className="py-2 px-4 border-b text-[13px]">
+                  <Skeleton width={`50%`} />
+                </td>
+              </tr>
+            ))
+          ) : (
+            allCategoryData?.map((item, index) => (
+              <tr key={index} className="border-t">
+                <td className="py-2 px-4 border-b text-center">
+                  <input type="checkbox" />
+                </td>
+                <td className="py-2 px-4 border-b text-center">
+                  <img
+                    src={item.image ? item.image : placeholderImage}
+                    alt={item.name}
+                    className="h-12 w-12 object-cover rounded-full"
+                  />
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  {item.name}
+                  <div className="flex gap-2">
+                    <button className="text-[#2271b1]">Edit</button>{" "}
+                    <span className="text-[#2271b1]">|</span>
+                    <button
+                      className="text-[#2271b1]"
+                      onClick={() => navigate(`/all-categories/${item._id}`)}
+                    >
+                      View
+                    </button>{" "}
+                    <span className="text-[#2271b1]">|</span>
+                    <button
+                      className="text-[#2271b1]"
+                      onClick={() => setDeleteAlert(true)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  {item.description ? (
+                    expanded[index] ? (
+                      <>
+                        {parse(`<p>${item.description}</p>`)}
+                        <button
+                          onClick={() => toggleExpand(index)}
+                          className="text-blue-500 hover:underline"
+                        >
+                          Read less
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {parse(`<p>${item.description.slice(0, 50)}...</p>`)}
+                        <button
+                          onClick={() => toggleExpand(index)}
+                          className="text-blue-500 hover:underline"
+                        >
+                          Read more
+                        </button>
+                      </>
+                    )
                   ) : (
-                    <>
-                      {parse(`<p>${item.description.slice(0, 50)}...</p>`)}
-                      {/* <button
-                        onClick={() => toggleExpand(index)}
-                        className="text-blue-500 hover:underline"
-                      >
-                        ...
-                      </button> */}
-                    </>
-                  )
-                ) : (
-                  <span>No description available</span>
-                )}
-              </td>
-              <td className="py-2 px-4 border-b text-[14px]">
-                <span className="text-green-600 font-semibold">
-                  {item.slug}
-                </span>
-              </td>
-              <td className="py-2 px-4 border-b text-[14px]">
-                <span className="mr-3"> {item._id}</span>
-              </td>
-              <td className="py-2 px-0 border-b text-[13px]">
-                <span className=""> {item.createdAt.split("T")[0]}</span>
-              </td>
-
-              <div>
-                {deleteAlert && (
-                  <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="absolute inset-0 opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg border-2  z-10">
-                      <p className="text-lg mb-4">
-                        Are you sure you want to delete this item?
-                      </p>
-                      <div className="flex justify-end">
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          onClick={() => setDeleteAlert(false)}
-                          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
-                        >
-                          Cancel
-                        </button>
+                    <span>No description available</span>
+                  )}
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  <span className="text-green-600 font-semibold">
+                    {item.slug}
+                  </span>
+                </td>
+                <td className="py-2 px-4 border-b text-[14px]">
+                  <span className="mr-3"> {item._id}</span>
+                </td>
+                <td className="py-2 px-0 border-b text-[13px]">
+                  <span className=""> {item.createdAt.split("T")[0]}</span>
+                </td>
+                <div>
+                  {deleteAlert && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                      <div className="absolute inset-0 opacity-50"></div>
+                      <div className="bg-white p-6 rounded-lg border-2  z-10">
+                        <p className="text-lg mb-4">
+                          Are you sure you want to delete this item?
+                        </p>
+                        <div className="flex justify-end">
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            onClick={() => setDeleteAlert(false)}
+                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+                          >
+                            Cancel
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            </tr>
-          ))}
+                  )}
+                </div>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

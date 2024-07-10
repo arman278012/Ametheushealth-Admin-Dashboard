@@ -13,11 +13,12 @@ const initialValues = {
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [loginLoading, setloginLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const userLogin = async (values) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/user/login`,
@@ -26,11 +27,14 @@ const Login = () => {
       if (response.status === 200) {
         localStorage.setItem("authorization", response.data.x_auth_token);
         localStorage.setItem("id", response.data.x_userid);
-        toast.success("Login Successfull...");
+        toast.success("Login Successful...");
         navigate("/product-details");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,10 +101,33 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center items-center"
+                  disabled={isLoading}
                 >
-                  
-                  Login
+                  {isLoading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      ></path>
+                    </svg>
+                  ) : (
+                    "Login"
+                  )}
                 </button>
               </form>
             )}

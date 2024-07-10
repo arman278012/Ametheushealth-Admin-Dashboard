@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import JoditEditor from "jodit-react";
 import { Field, Formik } from "formik";
+import * as Yup from "yup";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAddcategoryData } from "../../redux/slice/AddCategorySlice";
 import "./AddCategory.css";
 import { getCategoryData } from "../../redux/slice/GetCategoryDataSlice";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   name: "",
@@ -18,8 +20,19 @@ const initialValues = {
   metaTags: "",
 };
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+  metaTitle: Yup.string().required("Meta title is required"),
+  metaDescription: Yup.string().required("Meta description is required"),
+  metaTags: Yup.string().required("Meta tags are required"),
+});
+
+
+
 const AddCategory = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data } = useSelector((state) => state.AddCategory);
   const { allCategoryData, isLoading, isError, error } = useSelector(
     (state) => state.getCategoryData
@@ -29,6 +42,7 @@ const AddCategory = () => {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [categoryId, setCategoryId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAddcategoryData());
@@ -95,6 +109,7 @@ const AddCategory = () => {
           },
         }
       );
+      navigate("/all-categories");
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -102,6 +117,7 @@ const AddCategory = () => {
   };
 
   const handleNext = async (values) => {
+    setIsSubmitting(true);
     if (currentStep === 1) {
       const id = await addCategory(values);
       setCategoryId(id);
@@ -109,6 +125,7 @@ const AddCategory = () => {
     if (currentStep < 3) {
       setCurrentStep((prevStep) => prevStep + 1);
     }
+    setIsSubmitting(false);
   };
 
   const handleBack = () => {
@@ -118,18 +135,19 @@ const AddCategory = () => {
   };
 
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     if (currentStep === 2 && values.image) {
       await addImage(values.image);
     }
     if (currentStep === 3 && values.file) {
       await docFileUpload(values.file);
     }
-    // Additional steps like adding image or uploading documents
+    setIsSubmitting(false);
   };
 
   return (
     <div className="bg-[#f0f0f1]">
-      <div className="p-5 w-[60vw] mx-auto">
+      <div className="p-5 sm:w-[60vw] w-[100%] mx-auto">
         <div className="flex flex-col gap-5">
           <p className="font-bold text-center text-2xl">Add New Category</p>
         </div>
@@ -147,8 +165,19 @@ const AddCategory = () => {
           ))}
         </div>
 
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-          {({ values, handleChange, handleSubmit, setFieldValue }) => (
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleSubmit,
+            setFieldValue,
+          }) => (
             <form onSubmit={handleSubmit} className="border-2 p-5">
               {currentStep === 1 && (
                 <div className="mt-5">
@@ -162,6 +191,9 @@ const AddCategory = () => {
                       placeholder="Enter name here"
                       className="p-3 border rounded-xl h-[45px]"
                     />
+                    {errors.name && touched.name && (
+                      <div className="text-red-500">{errors.name}</div>
+                    )}
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2">
@@ -183,10 +215,13 @@ const AddCategory = () => {
                           />
                         )}
                       </Field>
+                      {errors.description && touched.description && (
+                        <div className="text-red-500">{errors.description}</div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="flex gap-5 w-[100%]">
+                  <div className="flex sm:flex-row flex-col gap-5 w-[100%]">
                     <div className="mt-5 flex flex-col gap-2 sm:w-[35%]">
                       <label className="px-3 font-bold">Parent Category</label>
                       <select
@@ -210,7 +245,7 @@ const AddCategory = () => {
                             </option>
                             {item.children.map((child) => (
                               <option value={child._id} key={child._id}>
-                               &nbsp; {child.name}
+                                &nbsp; {child.name}
                               </option>
                             ))}
                           </React.Fragment>
@@ -229,6 +264,9 @@ const AddCategory = () => {
                           placeholder="Enter meta title here"
                           className="p-3 border rounded-xl h-[45px]"
                         />
+                        {errors.metaTitle && touched.metaTitle && (
+                          <div className="text-red-500">{errors.metaTitle}</div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -243,6 +281,11 @@ const AddCategory = () => {
                         placeholder="Enter meta description here"
                         className="p-3 border rounded-xl outline-none"
                       />
+                      {errors.metaDescription && touched.metaDescription && (
+                        <div className="text-red-500">
+                          {errors.metaDescription}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -256,6 +299,9 @@ const AddCategory = () => {
                         placeholder="Enter meta tags here"
                         className="p-3 border rounded-xl outline-none"
                       />
+                      {errors.metaTags && touched.metaTags && (
+                        <div className="text-red-500">{errors.metaTags}</div>
+                      )}
                     </div>
                   </div>
 
@@ -264,8 +310,16 @@ const AddCategory = () => {
                       type="button"
                       onClick={() => handleNext(values)}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
+                      disabled={
+                        !values.name ||
+                        !values.description ||
+                        !values.metaTitle ||
+                        !values.metaDescription ||
+                        !values.metaTags ||
+                        isSubmitting
+                      }
                     >
-                      Next
+                      {isSubmitting ? "Loading..." : "Next"}
                     </button>
                   </div>
                 </div>
@@ -284,6 +338,7 @@ const AddCategory = () => {
                         await addImage(file); // Upload image as soon as it's selected
                       }}
                       className="p-3 border rounded-xl h-[45px]"
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -292,13 +347,15 @@ const AddCategory = () => {
                       type="button"
                       onClick={() => handleNext(values)}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
+                      disabled={!values.image || isSubmitting}
                     >
-                      Next
+                      {isSubmitting ? "Loading..." : "Next"}
                     </button>
                     <button
                       type="button"
                       onClick={handleBack}
                       className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-xl mt-2"
+                      disabled={isSubmitting}
                     >
                       Back
                     </button>
@@ -318,6 +375,7 @@ const AddCategory = () => {
                         setFieldValue("file", file);
                       }}
                       className="p-3 border rounded-xl h-[45px]"
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -325,13 +383,15 @@ const AddCategory = () => {
                     <button
                       type="submit"
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
+                      disabled={!values.file || isSubmitting}
                     >
-                      Save Data
+                      {isSubmitting ? "Saving..." : "Save Data"}
                     </button>
                     <button
                       type="button"
                       onClick={handleBack}
                       className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-xl mt-2"
+                      disabled={isSubmitting}
                     >
                       Back
                     </button>
