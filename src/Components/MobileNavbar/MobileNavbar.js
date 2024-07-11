@@ -7,6 +7,7 @@ const MobileNavbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <div>
       <nav className="bg-gray-800 text-white">
@@ -31,7 +32,11 @@ const MobileNavbar = () => {
           </div>
         </div>
 
-        <div className={`${isOpen ? "block" : "hidden"} sm:hidden`}>
+        <div
+          className={`fixed inset-y-0 left-0 transform ${
+            isOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300 ease-in-out sm:hidden bg-gray-800 w-64`}
+        >
           <div className="px-2 pt-2 pb-3 space-y-1">
             <a
               href="#"

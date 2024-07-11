@@ -30,7 +30,7 @@ const MySideBar = () => {
   return (
     <div className="sm:flex md:flex hidden sticky">
       <div
-        className={`bg-gray-800 text-white h-auto ${
+        className={`bg-gray-800 text-white h-screen ${
           isCollapsed ? "w-16" : "w-64"
         } transition-all duration-300`}
       >
@@ -76,24 +76,15 @@ const MySideBar = () => {
                   >
                     All Products
                   </a>
-                  <a
-                    href="add-product"
-                    className="hover:bg-gray-700 px-4 py-2"
-                  >
+                  <a href="add-product" className="hover:bg-gray-700 px-4 py-2">
                     Add Products
                   </a>
 
-                  <a
-                    href="add-product"
-                    className="hover:bg-gray-700 px-4 py-2"
-                  >
+                  <a href="add-product" className="hover:bg-gray-700 px-4 py-2">
                     Import Products
                   </a>
 
-                  <a
-                    href="add-product"
-                    className="hover:bg-gray-700 px-4 py-2"
-                  >
+                  <a href="add-product" className="hover:bg-gray-700 px-4 py-2">
                     Export Products
                   </a>
                 </div>
