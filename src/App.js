@@ -30,12 +30,13 @@ function App() {
               path="/all-categories/:id"
               element={<CategoryDataDetailsPage />}
             />
-            {editAllCattegoriesForm ? (
+            {/* {editAllCattegoriesForm ? (
               <Route element={<EditCategoryForm />} />
             ) : (
               <></>
-            )}
+            )} */}
           </Routes>
+          {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
         </div>
       </BrowserRouter>
     </div>

@@ -28,8 +28,6 @@ const validationSchema = Yup.object().shape({
   metaTags: Yup.string().required("Meta tags are required"),
 });
 
-
-
 const AddCategory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

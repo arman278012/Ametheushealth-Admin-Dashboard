@@ -13,10 +13,11 @@ const AllCategories = () => {
   const { allCategoryData, isLoading, isError, error } = useSelector(
     (state) => state.getCategoryData
   );
-  const { editAllCattegoriesForm, setEditAllCategoriesForm } =
-    useContext(AppContext);
+  const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log(allCategoryData);
 
   const [expanded, setExpanded] = useState({});
   const [deleteAlert, setDeleteAlert] = useState(false);
@@ -88,7 +89,7 @@ const AllCategories = () => {
         </thead>
         <tbody>
           {isLoading
-            ? Array.from({ length: 10 }).map((_, index) => (
+            ? Array.from({ length: 10 })?.map((_, index) => (
                 <tr key={index} className="border-t">
                   <td className="py-2 px-4 border-b text-center">
                     <Skeleton circle={true} height={12} width={12} />
@@ -113,31 +114,34 @@ const AllCategories = () => {
                   </td>
                 </tr>
               ))
-            : allCategoryData?.map((item, index) => (
+            : allCategoryData?.data?.map((item, index) => (
                 <tr key={index} className="border-t">
                   <td className="py-2 px-4 border-b text-center">
                     <input type="checkbox" />
                   </td>
                   <td className="py-2 px-4 border-b text-center">
                     <img
-                      src={item.image ? item.image : placeholderImage}
-                      alt={item.name}
+                      src={item?.image ? item?.image : placeholderImage}
+                      alt={item?.name}
                       className="h-12 w-12 object-cover rounded-full"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-[14px]">
-                    {item.name}
+                    {item?.name}
                     <div className="flex gap-2">
                       <button
                         className="text-[#2271b1]"
-                        onClick={setEditAllCategoriesForm(true)}
+                        onClick={() =>
+                          setEditAllCategoriesForm(true, item?._id)
+                        }
                       >
+                        
                         Edit
                       </button>{" "}
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
-                        onClick={() => navigate(`/all-categories/${item._id}`)}
+                        onClick={() => navigate(`/all-categories/${item?._id}`)}
                       >
                         View
                       </button>{" "}
@@ -151,10 +155,10 @@ const AllCategories = () => {
                     </div>
                   </td>
                   <td className="py-2 px-4 border-b text-[14px]">
-                    {item.description ? (
+                    {item?.description ? (
                       expanded[index] ? (
                         <>
-                          {parse(`<p>${item.description}</p>`)}
+                          {parse(`<p>${item?.description}</p>`)}
                           <button
                             onClick={() => toggleExpand(index)}
                             className="text-blue-500 hover:underline"
@@ -164,7 +168,9 @@ const AllCategories = () => {
                         </>
                       ) : (
                         <>
-                          {parse(`<p>${item.description.slice(0, 50)}...</p>`)}
+                          {parse(
+                            `<p>${item?.description?.slice(0, 50)}...</p>`
+                          )}
                           <button
                             onClick={() => toggleExpand(index)}
                             className="text-blue-500 hover:underline"
@@ -179,14 +185,14 @@ const AllCategories = () => {
                   </td>
                   <td className="py-2 px-4 border-b text-[14px]">
                     <span className="text-green-600 font-semibold">
-                      {item.slug}
+                      {item?.slug}
                     </span>
                   </td>
                   <td className="py-2 px-4 border-b text-[14px]">
-                    <span className="mr-3"> {item._id}</span>
+                    <span className="mr-3"> {item?._id}</span>
                   </td>
                   <td className="py-2 px-0 border-b text-[13px]">
-                    <span className=""> {item.createdAt.split("T")[0]}</span>
+                    <span className=""> {item?.createdAt?.split("T")[0]}</span>
                   </td>
                   <div>
                     {deleteAlert && (
