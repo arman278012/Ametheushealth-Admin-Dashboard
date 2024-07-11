@@ -6,7 +6,7 @@ export const getCategoryData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/`,
+        `https://api.assetorix.com:4100/ah/api/v1/category/?page=${5}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

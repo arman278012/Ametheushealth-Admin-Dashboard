@@ -6,9 +6,11 @@ import { getCategoryData } from "../../redux/slice/GetCategoryDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectStoredId } from "../../redux/slice/GetIdSlice";
 import axios from "axios";
+import { fetchAddcategoryData } from "../../redux/slice/AddCategorySlice";
+import JoditEditor from "jodit-react";
+import { MdOutlineErrorOutline } from "react-icons/md";
 
-const EditCategoryForm = ({ id }) => {
-  console.log(id);
+const EditCategoryForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -24,27 +26,50 @@ const EditCategoryForm = ({ id }) => {
   });
 
   const storedId = useSelector(selectStoredId); // Fetch stored ID from Redux store
-  console.log("Stored ID:", storedId);
-
-  const getDataForEdit=async()=>{
-    try{
-        const response=await axios.get(`https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`)
-    }
-    catch(error){
-        console.log(error)
-    }
-  }
+  const { data } = useSelector((state) => state.AddCategory);
 
   const dispatch = useDispatch();
-
   const { setEditAllCategoriesForm } = useContext(AppContext);
 
-  const handleNext = async () => {
+  useEffect(() => {
+    const getDataForEdit = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        const categoryData = response.data.category;
+        setFormValues({
+          name: categoryData.name || "",
+          parent: categoryData.parent || "",
+          slug: categoryData.slug || "",
+          description: categoryData.description || "",
+          metaTags: categoryData.metaTags || "",
+          metaTitle: categoryData.metaTitle || "",
+          metaDescription: categoryData.metaDescription || "",
+          image: null,
+          file: null,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getDataForEdit();
+  }, [storedId]);
+
+  useEffect(() => {
+    dispatch(fetchAddcategoryData());
+    dispatch(getCategoryData());
+  }, [dispatch]);
+
+  const handleNext = () => {
     setIsSubmitting(true);
-    if (currentStep === 1) {
-      // const id = await addCategory(formValues);
-      // setCategoryId(id);
-    }
     if (currentStep < 3) {
       setCurrentStep((prevStep) => prevStep + 1);
     }
@@ -72,13 +97,30 @@ const EditCategoryForm = ({ id }) => {
     setIsSubmitting(false);
   };
 
+  const editCategory = async () => {
+    try {
+      const response = await axios.patch(
+        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
+        formValues,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div
         className="absolute inset-0 bg-black opacity-50"
         onClick={() => setEditAllCategoriesForm(false)}
       ></div>
-      <div className="bg-white rounded-lg shadow-lg p-8 z-50 w-[80%] relative">
+      <div className="bg-white rounded-lg shadow-lg p-8 z-50 w-[80%] relative max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-900"
           onClick={() => setEditAllCategoriesForm(false)}
@@ -121,21 +163,38 @@ const EditCategoryForm = ({ id }) => {
                 </div>
 
                 <div className="mb-4 w-[33%]">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="parent"
-                  >
-                    Parent
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="parent"
-                    name="parent"
-                    type="text"
-                    placeholder="Enter parent"
-                    value={formValues.parent}
-                    onChange={handleChange}
-                  />
+                  <div className=" flex flex-col gap-2">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Parent Category
+                    </label>
+                    <select
+                      name="parent"
+                      value={formValues.parent} // Bind selected value to formValues.parent
+                      onChange={handleChange} // Handle change event
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                      <option
+                        value=""
+                        disabled
+                        hidden
+                        className="placeholder opacity-50"
+                      >
+                        Select parent category
+                      </option>
+                      {data?.map((item) => (
+                        <React.Fragment key={item._id}>
+                          <option value={item._id} className="font-bold">
+                            {item.name}
+                          </option>
+                          {item.children.map((child) => (
+                            <option value={child._id} key={child._id}>
+                              &nbsp; {child.name}
+                            </option>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div className="mb-4 w-[33%]">
@@ -157,25 +216,29 @@ const EditCategoryForm = ({ id }) => {
                 </div>
               </div>
 
-              <div className="mb-4 w-[100%]">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="description"
-                >
-                  Description
-                </label>
-                <textarea
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="description"
-                  name="description"
-                  placeholder="Enter description"
+              <div>
+                <div className="flex gap-2 relative group">
+                  <p className="font-bold mb-1">Long Description</p>
+                  <MdOutlineErrorOutline className="mt-1 text-[15px] text-black" />
+                  <span className="absolute bottom-full left-[50px] transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
+                    Long Description
+                  </span>
+                </div>
+                <JoditEditor
                   value={formValues.description}
-                  onChange={handleChange}
+                  onChange={(value) =>
+                    handleChange({
+                      target: {
+                        name: "description",
+                        value: value,
+                      },
+                    })
+                  }
                 />
               </div>
 
               <div className="flex gap-10">
-                <div className="mb-4 w-[50%]">
+                <div className="mb-4 w-[75%]">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="metaTags"
@@ -192,7 +255,7 @@ const EditCategoryForm = ({ id }) => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-4 w-[50%]">
+                <div className="mb-4 w-[25%]">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="metaTitle"
@@ -283,20 +346,11 @@ const EditCategoryForm = ({ id }) => {
               type="submit"
               className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl"
               disabled={isSubmitting}
+              onClick={editCategory}
             >
               {isSubmitting ? "Saving..." : "Update Data"}
             </button>
           </div>
-
-          {/* <div className="flex items-center justify-between mt-4">
-            <button
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={() => setEditAllCategoriesForm(false)}
-              type="button"
-            >
-              Close
-            </button>
-          </div> */}
         </form>
       </div>
     </div>
