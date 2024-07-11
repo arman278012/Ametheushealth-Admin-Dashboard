@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { AppContext } from "../../Context/ContextProvider";
 import { FaTimes } from "react-icons/fa";
 import "./EditCategoryForm.css";
@@ -13,9 +15,11 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 const EditCategoryForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const [formValues, setFormValues] = useState({
     name: "",
-    parent: null,
+    parent: "",
     slug: "",
     description: "",
     metaTags: "",
@@ -33,6 +37,7 @@ const EditCategoryForm = () => {
 
   useEffect(() => {
     const getDataForEdit = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
@@ -57,6 +62,8 @@ const EditCategoryForm = () => {
         });
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -96,8 +103,9 @@ const EditCategoryForm = () => {
 
     try {
       if (currentStep === 1) {
+        formValues.parent = formValues.parent === "" ? null : formValues.parent;
         // Update Data API
-        await axios.patch(
+        const response = await axios.patch(
           `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
           formValues,
           {
@@ -107,40 +115,33 @@ const EditCategoryForm = () => {
             },
           }
         );
+        console.log("Data ddfvdbfgb ", response.data);
         // Optionally handle response or set success message
       } else if (currentStep === 2) {
         // Upload Image API
         const formData = new FormData();
         formData.append("image", formValues.image);
 
-        await axios.post(
-          `https://api.example.com/upload/image`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-              id: localStorage.getItem("id"),
-            },
-          }
-        );
+        await axios.post(`https://api.example.com/upload/image`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        });
         // Optionally handle response or set success message
       } else if (currentStep === 3) {
         // Upload Doc File API
         const formData = new FormData();
         formData.append("file", formValues.file);
 
-        await axios.post(
-          `https://api.example.com/upload/document`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-              id: localStorage.getItem("id"),
-            },
-          }
-        );
+        await axios.post(`https://api.example.com/upload/document`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        });
         // Optionally handle response or set success message
       }
 
@@ -188,49 +189,62 @@ const EditCategoryForm = () => {
                   >
                     Name
                   </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Enter your name"
-                    value={formValues.name}
-                    onChange={handleChange}
-                  />
+                  {loading ? (
+                    <Skeleton height={40} />
+                  ) : (
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="name"
+                      name="name"
+                      type="text"
+                      placeholder="Enter your name"
+                      value={formValues.name}
+                      onChange={handleChange}
+                    />
+                  )}
                 </div>
 
                 <div className="mb-4 w-[33%]">
-                  <div className=" flex flex-col gap-2">
+                  <div className=" flex flex-col ">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                       Parent Category
                     </label>
-                    <select
-                      name="parent"
-                      value={formValues.parent}
-                      onChange={handleChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                      <option
-                        value=""
-                        disabled
-                        hidden
-                        className="placeholder opacity-50"
+                    {loading ? (
+                      <Skeleton height={40} />
+                    ) : (
+                      <select
+                        name="parent"
+                        value={formValues.parent}
+                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       >
-                        Select parent category
-                      </option>
-                      {data?.map((item) => (
-                        <React.Fragment key={item._id}>
-                          <option value={item._id} className="font-bold">
-                            {item.name}
-                          </option>
-                          {item.children.map((child) => (
-                            <option value={child._id} key={child._id}>
-                              &nbsp; {child.name}
+                        <option value={""}>
+                          <span className="font-bold">
+                            Make Parent Category
+                          </span>
+                        </option>
+                        {/* <option
+                          value=""
+                          disabled
+                          hidden
+                          className="placeholder opacity-50"
+                        >
+                          Select parent category
+                        </option> */}
+                        {data?.map((item) => (
+                          <React.Fragment key={item._id}>
+                            <option value={item._id} className="font-bold">
+                              {item.name}
                             </option>
-                          ))}
-                        </React.Fragment>
-                      ))}
-                    </select>
+                            {item.children.map((child) => (
+                              <option value={child._id} key={child._id}>
+                                &nbsp; {child.name}
+                              </option>
+                            ))}
+                          </React.Fragment>
+                        ))}
+                      </select>
+                    )}
                   </div>
                 </div>
 
@@ -241,15 +255,19 @@ const EditCategoryForm = () => {
                   >
                     Slug
                   </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="slug"
-                    name="slug"
-                    type="text"
-                    placeholder="Enter slug"
-                    value={formValues.slug}
-                    onChange={handleChange}
-                  />
+                  {loading ? (
+                    <Skeleton height={40} />
+                  ) : (
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="slug"
+                      name="slug"
+                      type="text"
+                      placeholder="Enter slug"
+                      value={formValues.slug}
+                      onChange={handleChange}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -261,17 +279,21 @@ const EditCategoryForm = () => {
                     Long Description
                   </span>
                 </div>
-                <JoditEditor
-                  value={formValues.description}
-                  onChange={(value) =>
-                    handleChange({
-                      target: {
-                        name: "description",
-                        value: value,
-                      },
-                    })
-                  }
-                />
+                {loading ? (
+                  <Skeleton height={200} />
+                ) : (
+                  <JoditEditor
+                    value={formValues.description}
+                    onChange={(value) =>
+                      handleChange({
+                        target: {
+                          name: "description",
+                          value: value,
+                        },
+                      })
+                    }
+                  />
+                )}
               </div>
 
               <div className="flex gap-10">
@@ -282,15 +304,19 @@ const EditCategoryForm = () => {
                   >
                     Meta Tags
                   </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="metaTags"
-                    name="metaTags"
-                    type="text"
-                    placeholder="Enter meta tags"
-                    value={formValues.metaTags}
-                    onChange={handleChange}
-                  />
+                  {loading ? (
+                    <Skeleton height={40} />
+                  ) : (
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="metaTags"
+                      name="metaTags"
+                      type="text"
+                      placeholder="Enter meta tags"
+                      value={formValues.metaTags}
+                      onChange={handleChange}
+                    />
+                  )}
                 </div>
                 <div className="mb-4 w-[25%]">
                   <label
@@ -299,15 +325,19 @@ const EditCategoryForm = () => {
                   >
                     Meta Title
                   </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="metaTitle"
-                    name="metaTitle"
-                    type="text"
-                    placeholder="Enter meta title"
-                    value={formValues.metaTitle}
-                    onChange={handleChange}
-                  />
+                  {loading ? (
+                    <Skeleton height={40} />
+                  ) : (
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="metaTitle"
+                      name="metaTitle"
+                      type="text"
+                      placeholder="Enter meta title"
+                      value={formValues.metaTitle}
+                      onChange={handleChange}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -318,29 +348,48 @@ const EditCategoryForm = () => {
                 >
                   Meta Description
                 </label>
-                <textarea
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="metaDescription"
-                  name="metaDescription"
-                  placeholder="Enter meta description"
-                  value={formValues.metaDescription}
-                  onChange={handleChange}
-                />
+                {loading ? (
+                  <Skeleton height={80} />
+                ) : (
+                  <textarea
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="metaDescription"
+                    name="metaDescription"
+                    placeholder="Enter meta description"
+                    value={formValues.metaDescription}
+                    onChange={handleChange}
+                  />
+                )}
               </div>
             </>
           )}
 
           {currentStep === 2 && (
             <div className="mt-5 flex flex-col gap-2">
+              {/* Existing Image Display */}
               <div className="flex flex-col gap-2">
-                <label className="px-3 font-bold">Image</label>
-                <input
-                  type="file"
-                  name="image"
-                  onChange={handleChange}
-                  className="p-3 border rounded-xl h-[45px]"
-                  disabled={isSubmitting}
+                {/* Replace 'existingImageUrl' with the actual URL of the existing image */}
+                <img
+                  src={formValues.image}
+                  alt="Existing Image"
+                  className="w-48 h-48 object-cover rounded-xl"
                 />
+              </div>
+
+              {/* Upload New Image */}
+              <div className="flex flex-col gap-2">
+                <label className="px-3 font-bold">Upload New Image</label>
+                {loading ? (
+                  <Skeleton height={45} />
+                ) : (
+                  <input
+                    type="file"
+                    name="image"
+                    onChange={handleChange}
+                    className="p-3 border rounded-xl h-[45px]"
+                    disabled={isSubmitting}
+                  />
+                )}
               </div>
             </div>
           )}
@@ -349,13 +398,17 @@ const EditCategoryForm = () => {
             <div className="mt-5 flex flex-col gap-2">
               <div className="flex flex-col gap-2">
                 <label className="px-3 font-bold">Upload Docs</label>
-                <input
-                  type="file"
-                  name="file"
-                  onChange={handleChange}
-                  className="p-3 border rounded-xl h-[45px]"
-                  disabled={isSubmitting}
-                />
+                {loading ? (
+                  <Skeleton height={45} />
+                ) : (
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={handleChange}
+                    className="p-3 border rounded-xl h-[45px]"
+                    disabled={isSubmitting}
+                  />
+                )}
               </div>
             </div>
           )}
