@@ -7,8 +7,14 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import AddCategoryPage from "./Pages/AddCategoryPage/AddCategoryPage";
 import AllCategoriesPage from "./Pages/AllCategoriesPage/AllCategoriesPage";
 import CategoryDataDetailsPage from "./Pages/CategoryDataDetailsPage/CategoryDataDetailsPage";
+import { useContext } from "react";
+import { AppContext } from "./Context/ContextProvider";
+import EditCategoryForm from "./Components/EditCategoryForm/EditCategoryForm";
 
 function App() {
+  const { editAllCattegoriesForm, setEditAllCategoriesForm } =
+    useContext(AppContext);
+
   return (
     <div className="App flex">
       <BrowserRouter>
@@ -24,6 +30,11 @@ function App() {
               path="/all-categories/:id"
               element={<CategoryDataDetailsPage />}
             />
+            {editAllCattegoriesForm ? (
+              <Route element={<EditCategoryForm />} />
+            ) : (
+              <></>
+            )}
           </Routes>
         </div>
       </BrowserRouter>
