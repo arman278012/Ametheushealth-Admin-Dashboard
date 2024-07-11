@@ -15,7 +15,7 @@ const EditCategoryForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
-    parent: "",
+    parent: null,
     slug: "",
     description: "",
     metaTags: "",
@@ -90,27 +90,64 @@ const EditCategoryForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Submit form data
-    setIsSubmitting(false);
-  };
 
-  const editCategory = async () => {
     try {
-      const response = await axios.patch(
-        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
-        formValues,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        }
-      );
+      if (currentStep === 1) {
+        // Update Data API
+        await axios.patch(
+          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
+          formValues,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        // Optionally handle response or set success message
+      } else if (currentStep === 2) {
+        // Upload Image API
+        const formData = new FormData();
+        formData.append("image", formValues.image);
+
+        await axios.post(
+          `https://api.example.com/upload/image`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        // Optionally handle response or set success message
+      } else if (currentStep === 3) {
+        // Upload Doc File API
+        const formData = new FormData();
+        formData.append("file", formValues.file);
+
+        await axios.post(
+          `https://api.example.com/upload/document`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        // Optionally handle response or set success message
+      }
+
+      setIsSubmitting(false);
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error);
+      setIsSubmitting(false);
     }
   };
 
@@ -169,8 +206,8 @@ const EditCategoryForm = () => {
                     </label>
                     <select
                       name="parent"
-                      value={formValues.parent} // Bind selected value to formValues.parent
-                      onChange={handleChange} // Handle change event
+                      value={formValues.parent}
+                      onChange={handleChange}
                       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     >
                       <option
@@ -342,14 +379,33 @@ const EditCategoryForm = () => {
             >
               {isSubmitting ? "Loading..." : "Next"}
             </button>
-            <button
-              type="submit"
-              className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl"
-              disabled={isSubmitting}
-              onClick={editCategory}
-            >
-              {isSubmitting ? "Saving..." : "Update Data"}
-            </button>
+            {currentStep === 1 && (
+              <button
+                type="submit"
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Saving..." : "Update Data"}
+              </button>
+            )}
+            {currentStep === 2 && (
+              <button
+                type="submit"
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Uploading..." : "Upload Image"}
+              </button>
+            )}
+            {currentStep === 3 && (
+              <button
+                type="submit"
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Uploading..." : "Upload Doc File"}
+              </button>
+            )}
           </div>
         </form>
       </div>
