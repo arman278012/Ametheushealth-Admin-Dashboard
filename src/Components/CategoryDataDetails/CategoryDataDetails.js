@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import DocViewer from "react-doc-viewer";
 
 const CategoryDataDetails = () => {
   const [individualData, setIndividualData] = useState(null);
@@ -127,12 +128,13 @@ const CategoryDataDetails = () => {
             {individualData?.docFileURL ? (
               <>
                 <div className="relative w-full h-[200px] mt-4">
-                  <img
+                  <DocViewer documents={individualData?.docFileURL} />
+                  {/* <img
                     src={thumbnail}
                     alt="Document Thumbnail"
                     className="w-full h-full cursor-pointer"
                     onClick={handleDocumentThumbnailClick}
-                  />
+                  /> */}
                 </div>
                 <a
                   href={individualData.docFileURL}
