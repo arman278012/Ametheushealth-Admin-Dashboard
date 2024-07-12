@@ -18,6 +18,7 @@ const EditCategoryForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [imageData, setImageData] = useState(null);
+  const [deleteAlert, setDeleteAlert] = useState(false);
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -37,41 +38,42 @@ const EditCategoryForm = () => {
   const dispatch = useDispatch();
   const { setEditAllCategoriesForm } = useContext(AppContext);
 
-  useEffect(() => {
-    const getDataForEdit = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-              id: localStorage.getItem("id"),
-            },
-          }
-        );
-        const categoryData = response.data.category;
-        setFormValues({
-          name: categoryData.name || "",
-          parent: categoryData.parent || "",
-          slug: categoryData.slug || "",
-          description: categoryData.description || "",
-          metaTags: categoryData.metaTags || "",
-          metaTitle: categoryData.metaTitle || "",
-          metaDescription: categoryData.metaDescription || "",
-          image: null,
-          file: null,
-        });
-        setImageData(response.data.category);
-        console.log(imageData);
-        // console.log(response.data.category)
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //getting data for editing
+  const getDataForEdit = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      const categoryData = response.data.category;
+      setFormValues({
+        name: categoryData.name || "",
+        parent: categoryData.parent || "",
+        slug: categoryData.slug || "",
+        description: categoryData.description || "",
+        metaTags: categoryData.metaTags || "",
+        metaTitle: categoryData.metaTitle || "",
+        metaDescription: categoryData.metaDescription || "",
+        image: null,
+        file: null,
+      });
+      setImageData(response.data.category);
+      console.log(imageData);
+      // console.log(response.data.category)
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     getDataForEdit();
   }, [storedId]);
 
@@ -121,6 +123,7 @@ const EditCategoryForm = () => {
           }
         );
         toast.success("Data Updated...");
+        getDataForEdit();
         console.log("Data ddfvdbfgb ", response.data);
         // Optionally handle response or set success message
       } else if (currentStep === 2) {
@@ -138,7 +141,9 @@ const EditCategoryForm = () => {
             },
           }
         );
+
         toast.success("image Uploaded Successfully...");
+        getDataForEdit();
         // Optionally handle response or set success message
       } else if (currentStep === 3) {
         // Upload Doc File API
@@ -157,7 +162,7 @@ const EditCategoryForm = () => {
           }
         );
         toast.success("File Changed Successfully...");
-        window.location.reload();
+        getDataForEdit();
         // Optionally handle response or set success message
       }
 
@@ -168,12 +173,56 @@ const EditCategoryForm = () => {
     }
   };
 
+  //for delete the image
+  const handleDeleteImage = async () => {
+    try {
+      await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/image`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      toast.success("Image Deleted Successfully...");
+      setImageData(null); // Remove the image from the state
+      getDataForEdit();
+      setDeleteAlert(false);
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      toast.error("Failed to delete image.");
+    }
+  };
+
+  //for delete the Doc file
+  const handleDeleteDocFile = async () => {
+    try {
+      await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/docFile`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setImageData({ ...imageData, docFile: null });
+      toast.success("Document file deleted successfully");
+      getDataForEdit();
+      setDeleteAlert(false);
+    } catch (error) {
+      console.error("Error deleting document file:", error);
+      toast.error("Failed to delete document file");
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div
+      {/* <div
         className="absolute inset-0 bg-black opacity-50"
         onClick={() => setEditAllCategoriesForm(false)}
-      ></div>
+      ></div> */}
       <div className="bg-white rounded-lg shadow-lg p-8 z-50 w-[80%] relative max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-900"
@@ -381,52 +430,132 @@ const EditCategoryForm = () => {
           )}
 
           {currentStep === 2 && (
-            <div className="mt-5 flex flex-col gap-2">
-              Existing Image Display
-              <div className="flex flex-col gap-2">
-                {/* Replace 'existingImageUrl' with the actual URL of the existing image */}
-                <img
-                  src={imageData?.image}
-                  alt="Existing Image"
-                  className="w-48 h-48 object-cover rounded-xl"
-                />
-              </div>
-              {/* Upload New Image */}
-              <div className="flex flex-col gap-2">
-                <label className="px-3 font-bold">Upload New Image</label>
-                {loading ? (
-                  <Skeleton height={45} />
-                ) : (
+            <>
+              {loading ? (
+                <Skeleton height={200} />
+              ) : (
+                <>
+                  <div className="mb-4 flex justify-between items-center">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Upload Image
+                    </label>
+                    {imageData && imageData.image && (
+                      <div className="flex items-center space-x-2">
+                        <img
+                          src={imageData.image}
+                          alt="Uploaded"
+                          className="w-20 h-20 object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setDeleteAlert(true)}
+                          className="bg-red-500 text-white hover:bg-red-700 w-[70px] h-[35px] rounded-lg"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                    {deleteAlert && (
+                      <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="absolute inset-0 opacity-50"></div>
+                        <div className="bg-white p-6 rounded-lg border-2  z-10">
+                          <p className="text-lg mb-4">
+                            Are you sure you want to delete this item?
+                          </p>
+                          <div className="flex justify-end">
+                            <button
+                              onClick={handleDeleteImage}
+                              className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              onClick={() => setDeleteAlert(false)}
+                              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <input
-                    type="file"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="image"
                     name="image"
+                    type="file"
+                    accept="image/*"
                     onChange={handleChange}
-                    className="p-3 border rounded-xl h-[45px]"
-                    disabled={isSubmitting}
                   />
-                )}
-              </div>
-            </div>
+                </>
+              )}
+            </>
           )}
 
           {currentStep === 3 && (
-            <div className="mt-5 flex flex-col gap-2">
-              <div className="flex flex-col gap-2">
-                <label className="px-3 font-bold">Upload Docs</label>
-                {loading ? (
-                  <Skeleton height={45} />
-                ) : (
+            <>
+              {loading ? (
+                <Skeleton height={200} />
+              ) : (
+                <>
+                  <div className="mb-4 flex justify-between items-center">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Upload Document File
+                    </label>
+                    {imageData && imageData.docFileURL ? (
+                      <div className="flex items-center space-x-2">
+                        <img
+                          src="docfile.png" // Add the path to your document icon
+                          alt="Uploaded Document"
+                          className="w-20 h-20 object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setDeleteAlert(true)}
+                          className="bg-red-500 text-white hover:bg-red-700 w-[110px] h-[35px]"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ) : (
+                      <span>No document file here</span>
+                    )}
+                    {deleteAlert && (
+                      <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="absolute inset-0 opacity-50"></div>
+                        <div className="bg-white p-6 rounded-lg border-2 z-10">
+                          <p className="text-lg mb-4">
+                            Are you sure you want to delete this item?
+                          </p>
+                          <div className="flex justify-end">
+                            <button
+                              onClick={handleDeleteDocFile}
+                              className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              onClick={() => setDeleteAlert(false)}
+                              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <input
-                    type="file"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="file"
                     name="file"
+                    type="file"
                     onChange={handleChange}
-                    className="p-3 border rounded-xl h-[45px]"
-                    disabled={isSubmitting}
-                    // value={imageData.docFileURL}
                   />
-                )}
-              </div>
-            </div>
+                </>
+              )}
+            </>
           )}
 
           <div className="mt-5 flex justify-between gap-2">

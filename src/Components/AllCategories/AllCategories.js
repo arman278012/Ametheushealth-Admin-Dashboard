@@ -10,6 +10,12 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { AppContext } from "../../Context/ContextProvider";
 import { storeMyId } from "../../redux/slice/GetIdSlice";
 import { storeMyImageId } from "../../redux/slice/getImageIdSlice";
+import {
+  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
 
 const AllCategories = () => {
   const { allCategoryData, isLoading, isError, error } = useSelector(
@@ -51,6 +57,8 @@ const AllCategories = () => {
     }
   };
 
+  console.log(allCategoryData);
+
   const placeholderImage = "https://via.placeholder.com/150";
 
   return (
@@ -67,10 +75,33 @@ const AllCategories = () => {
       </div>
 
       <div>
-        <div className="flex justify-start mb-5">
+        <div className="flex justify-between mb-5">
           <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
             Bulk Delete
           </button>
+          <div className="flex px-5 py-2 gap-3 justify-end">
+            <div>
+              <p className="font-bold">{allCategoryData.totalCategories} Total items</p>
+            </div>
+            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+              <MdOutlineKeyboardDoubleArrowLeft />
+            </div>
+            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+              <MdOutlineKeyboardArrowLeft />
+            </div>
+            <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+              <p>{allCategoryData.page} </p>
+            </div>
+            <div>
+              <p>of {allCategoryData.totalPages}</p>
+            </div>
+            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+              <MdKeyboardArrowRight />
+            </div>
+            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+              <MdKeyboardDoubleArrowRight />
+            </div>
+          </div>
         </div>
       </div>
       <table className="min-w-full bg-white border border-gray-300">

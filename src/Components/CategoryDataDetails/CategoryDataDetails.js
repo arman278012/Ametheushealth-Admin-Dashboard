@@ -102,7 +102,7 @@ const CategoryDataDetails = () => {
               <p className="font-bold text-md ">
                 Create At:{" "}
                 <span className="font-semibold">
-                  {individualData?.createdAt?.split("T")[0]}
+                  {individualData?.createdAt?.split("T")[0] || "N/A"}
                 </span>
               </p>
             </div>
@@ -111,7 +111,7 @@ const CategoryDataDetails = () => {
               <p className="font-bold text-md">
                 Modified At:{" "}
                 <span className="font-semibold">
-                  {individualData?.lastModified?.split("T")[0]}
+                  {individualData?.lastModified?.split("T")[0] || "N/A"}
                 </span>
               </p>
             </div>
@@ -128,13 +128,7 @@ const CategoryDataDetails = () => {
             {individualData?.docFileURL ? (
               <>
                 <div className="relative w-full h-[200px] mt-4">
-                  <DocViewer documents={individualData?.docFileURL} />
-                  {/* <img
-                    src={thumbnail}
-                    alt="Document Thumbnail"
-                    className="w-full h-full cursor-pointer"
-                    onClick={handleDocumentThumbnailClick}
-                  /> */}
+                  <DocViewer documents={[{ uri: individualData?.docFileURL }]} />
                 </div>
                 <a
                   href={individualData.docFileURL}
@@ -179,6 +173,7 @@ const CategoryDataDetails = () => {
           ))}
         </div>
       </div>
+      
     </div>
   );
 };
