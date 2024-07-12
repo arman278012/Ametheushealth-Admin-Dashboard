@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import parse from "html-react-parser";
-import { getCategoryData } from "../../redux/slice/GetCategoryDataSlice";
+import {
+  getCategoryData,
+  setPage,
+} from "../../redux/slice/GetCategoryDataSlice";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +12,6 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { AppContext } from "../../Context/ContextProvider";
 import { storeMyId } from "../../redux/slice/GetIdSlice";
-import { storeMyImageId } from "../../redux/slice/getImageIdSlice";
 import {
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
@@ -18,15 +20,23 @@ import {
 } from "react-icons/md";
 
 const AllCategories = () => {
-  const { allCategoryData, isLoading, isError, error } = useSelector(
-    (state) => state.getCategoryData
-  );
+  const { allCategoryData, isLoading, isError, error, currentPage } =
+    useSelector((state) => state.getCategoryData);
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [expanded, setExpanded] = useState({});
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
+  useEffect(() => {
+    dispatch(getCategoryData({ page: currentPage }));
+  }, [dispatch, currentPage]);
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPage(newPage));
+  };
 
   useEffect(() => {
     dispatch(getCategoryData());
@@ -57,8 +67,6 @@ const AllCategories = () => {
     }
   };
 
-  console.log(allCategoryData);
-
   const placeholderImage = "https://via.placeholder.com/150";
 
   return (
@@ -81,24 +89,42 @@ const AllCategories = () => {
           </button>
           <div className="flex px-5 py-2 gap-3 justify-end">
             <div>
-              <p className="font-bold">{allCategoryData.totalCategories} Total items</p>
+              <p className="font-bold">
+                {allCategoryData?.totalCategories || 0} Total items
+              </p>
             </div>
-            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+            <div
+              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+              onClick={() => handlePageChange(1)}
+            >
               <MdOutlineKeyboardDoubleArrowLeft />
             </div>
-            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+            <div
+              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+              onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+            >
               <MdOutlineKeyboardArrowLeft />
             </div>
             <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
-              <p>{allCategoryData.page} </p>
+              <p>{allCategoryData?.page || 0}</p>
             </div>
             <div>
-              <p>of {allCategoryData.totalPages}</p>
+              <p>of {allCategoryData?.totalPages || 0}</p>
             </div>
-            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+            <div
+              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+              onClick={() =>
+                handlePageChange(
+                  Math.min(currentPage + 1, allCategoryData?.totalPages || 1)
+                )
+              }
+            >
               <MdKeyboardArrowRight />
             </div>
-            <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+            <div
+              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+              onClick={() => handlePageChange(allCategoryData?.totalPages || 1)}
+            >
               <MdKeyboardDoubleArrowRight />
             </div>
           </div>
@@ -180,7 +206,10 @@ const AllCategories = () => {
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
-                        onClick={() => setDeleteAlert(true)}
+                        onClick={() => {
+                          setDeleteAlert(true);
+                          setSelectedId(item._id);
+                        }}
                       >
                         Delete
                       </button>
@@ -226,36 +255,37 @@ const AllCategories = () => {
                   <td className="py-2 px-0 border-b text-[13px]">
                     <span className=""> {item?.createdAt?.split("T")[0]}</span>
                   </td>
-                  <div>
-                    {deleteAlert && (
-                      <div className="fixed inset-0 flex items-center justify-center z-50">
-                        <div className="absolute inset-0 opacity-50"></div>
-                        <div className="bg-white p-6 rounded-lg border-2  z-10">
-                          <p className="text-lg mb-4">
-                            Are you sure you want to delete this item?
-                          </p>
-                          <div className="flex justify-end">
-                            <button
-                              onClick={() => handleDelete(item._id)}
-                              className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-                            >
-                              Delete
-                            </button>
-                            <button
-                              onClick={() => setDeleteAlert(false)}
-                              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
                 </tr>
               ))}
         </tbody>
       </table>
+      {deleteAlert && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
+          <div className="bg-white p-6 rounded-lg border-2 z-10">
+            <p className="text-lg mb-4">
+              Are you sure you want to delete this item?
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  handleDelete(selectedId);
+                  setDeleteAlert(false);
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setDeleteAlert(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
