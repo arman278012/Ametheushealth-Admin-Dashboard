@@ -18,6 +18,8 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 const AllCategories = () => {
   const { allCategoryData, isLoading, isError, error, currentPage } =
@@ -83,11 +85,11 @@ const AllCategories = () => {
       </div>
 
       <div>
-        <div className="flex justify-between mb-5">
+        <div className="flex sm:flex-row flex-col justify-between mb-5">
           <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
             Bulk Delete
           </button>
-          <div className="flex px-5 py-2 gap-3 justify-end">
+          <div className="flex px-5 py-2 gap-3 sm:justify-end justify-start">
             <div>
               <p className="font-bold">
                 {allCategoryData?.totalCategories || 0} Total items
@@ -130,64 +132,64 @@ const AllCategories = () => {
           </div>
         </div>
       </div>
-      <table className="min-w-full bg-white border border-gray-300">
-        <thead>
-          <tr className="w-full bg-gray-200">
-            <th className="py-2 px-4 border-b">
+      <Table className="min-w-full bg-white border border-gray-300">
+        <Thead>
+          <Tr className="w-full bg-gray-200">
+            <Th className="py-2 px-4 border-b">
               <input type="checkbox" />
-            </th>
-            <th className="py-2 px-4 border-b">Image</th>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Description</th>
-            <th className="py-2 px-4 border-b">Slug</th>
-            <th className="py-2 px-4 border-b">Id</th>
-            <th className="py-2 px-4 border-b">Date</th>
-          </tr>
-        </thead>
-        <tbody>
+            </Th>
+            <Th className="py-2 px-4 border-b">Image</Th>
+            <Th className="py-2 px-4 border-b">Name</Th>
+            <Th className="py-2 px-4 border-b">Description</Th>
+            <Th className="py-2 px-4 border-b">Slug</Th>
+            <Th className="py-2 px-4 border-b">Id</Th>
+            <Th className="py-2 px-4 border-b">Date</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {isLoading
             ? Array.from({ length: 10 })?.map((_, index) => (
-                <tr key={index} className="border-t">
-                  <td className="py-2 px-4 border-b text-center">
+                <Tr key={index} className="border-t">
+                  <Td className="py-2 px-4 border-b text-center">
                     <Skeleton circle={true} height={12} width={12} />
-                  </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-center">
                     <Skeleton circle={true} height={48} width={48} />
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     <Skeleton width={`80%`} />
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     <Skeleton width={`80%`} count={2} />
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     <Skeleton width={`50%`} />
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     <Skeleton width={`50%`} />
-                  </td>
-                  <td className="py-2 px-4 border-b text-[13px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[13px]">
                     <Skeleton width={`50%`} />
-                  </td>
-                </tr>
+                  </Td>
+                </Tr>
               ))
             : allCategoryData?.data?.map((item, index) => (
-                <tr
+                <Tr
                   key={index}
                   className="border-t"
                   onClick={() => dispatch(storeMyId(item._id))}
                 >
-                  <td className="py-2 px-4 border-b text-center">
+                  <Td className="py-2 px-4 border-b text-center">
                     <input type="checkbox" />
-                  </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-center">
                     <img
                       src={item?.image ? item?.image : placeholderImage}
                       alt={item?.name}
                       className="h-12 w-12 object-cover rounded-full"
                     />
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     {item?.name}
                     <div className="flex gap-2">
                       <button
@@ -214,8 +216,8 @@ const AllCategories = () => {
                         Delete
                       </button>
                     </div>
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     {item?.description ? (
                       expanded[index] ? (
                         <>
@@ -243,22 +245,22 @@ const AllCategories = () => {
                     ) : (
                       <span>No description available</span>
                     )}
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     <span className="text-green-600 font-semibold">
                       {item?.slug}
                     </span>
-                  </td>
-                  <td className="py-2 px-4 border-b text-[14px]">
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
                     <span className="mr-3"> {item?._id}</span>
-                  </td>
-                  <td className="py-2 px-0 border-b text-[13px]">
+                  </Td>
+                  <Td className="py-2 px-0 border-b text-[13px]">
                     <span className=""> {item?.createdAt?.split("T")[0]}</span>
-                  </td>
-                </tr>
+                  </Td>
+                </Tr>
               ))}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
       {deleteAlert && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
