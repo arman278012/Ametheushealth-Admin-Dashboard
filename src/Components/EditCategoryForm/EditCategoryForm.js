@@ -11,11 +11,13 @@ import axios from "axios";
 import { fetchAddcategoryData } from "../../redux/slice/AddCategorySlice";
 import JoditEditor from "jodit-react";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import toast from "react-hot-toast";
 
 const EditCategoryForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [imageData, setImageData] = useState(null);
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -60,6 +62,9 @@ const EditCategoryForm = () => {
           image: null,
           file: null,
         });
+        setImageData(response.data.category);
+        console.log(imageData);
+        // console.log(response.data.category)
       } catch (error) {
         console.log(error);
       } finally {
@@ -110,11 +115,12 @@ const EditCategoryForm = () => {
           formValues,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              authorization: `Bearer ${localStorage.getItem("authorization")}`,
               id: localStorage.getItem("id"),
             },
           }
         );
+        toast.success("Data Updated...");
         console.log("Data ddfvdbfgb ", response.data);
         // Optionally handle response or set success message
       } else if (currentStep === 2) {
@@ -122,26 +128,36 @@ const EditCategoryForm = () => {
         const formData = new FormData();
         formData.append("image", formValues.image);
 
-        await axios.post(`https://api.example.com/upload/image`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        });
+        await axios.patch(
+          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/image`,
+          formData,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        toast.success("image Uploaded Successfully...");
         // Optionally handle response or set success message
       } else if (currentStep === 3) {
         // Upload Doc File API
         const formData = new FormData();
         formData.append("file", formValues.file);
 
-        await axios.post(`https://api.example.com/upload/document`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        });
+        await axios.patch(
+          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/docFile`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        toast.success("File Changed Successfully...");
+        window.location.reload();
         // Optionally handle response or set success message
       }
 
@@ -366,16 +382,15 @@ const EditCategoryForm = () => {
 
           {currentStep === 2 && (
             <div className="mt-5 flex flex-col gap-2">
-              {/* Existing Image Display */}
+              Existing Image Display
               <div className="flex flex-col gap-2">
                 {/* Replace 'existingImageUrl' with the actual URL of the existing image */}
                 <img
-                  src={formValues.image}
+                  src={imageData?.image}
                   alt="Existing Image"
                   className="w-48 h-48 object-cover rounded-xl"
                 />
               </div>
-
               {/* Upload New Image */}
               <div className="flex flex-col gap-2">
                 <label className="px-3 font-bold">Upload New Image</label>
@@ -407,6 +422,7 @@ const EditCategoryForm = () => {
                     onChange={handleChange}
                     className="p-3 border rounded-xl h-[45px]"
                     disabled={isSubmitting}
+                    // value={imageData.docFileURL}
                   />
                 )}
               </div>

@@ -9,13 +9,13 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { AppContext } from "../../Context/ContextProvider";
 import { storeMyId } from "../../redux/slice/GetIdSlice";
+import { storeMyImageId } from "../../redux/slice/getImageIdSlice";
 
 const AllCategories = () => {
   const { allCategoryData, isLoading, isError, error } = useSelector(
     (state) => state.getCategoryData
   );
-  const { setEditAllCategoriesForm } =
-    useContext(AppContext);
+  const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -115,7 +115,11 @@ const AllCategories = () => {
                 </tr>
               ))
             : allCategoryData?.data?.map((item, index) => (
-                <tr key={index} className="border-t" onClick={() => dispatch(storeMyId(item._id))}>
+                <tr
+                  key={index}
+                  className="border-t"
+                  onClick={() => dispatch(storeMyId(item._id))}
+                >
                   <td className="py-2 px-4 border-b text-center">
                     <input type="checkbox" />
                   </td>
@@ -131,7 +135,7 @@ const AllCategories = () => {
                     <div className="flex gap-2">
                       <button
                         className="text-[#2271b1]"
-                        onClick={()=>setEditAllCategoriesForm(true)}
+                        onClick={() => setEditAllCategoriesForm(true)}
                       >
                         Edit
                       </button>{" "}
@@ -165,7 +169,9 @@ const AllCategories = () => {
                         </>
                       ) : (
                         <>
-                          {parse(`<p>${item?.description?.slice(0, 50)}...</p>`)}
+                          {parse(
+                            `<p>${item?.description?.slice(0, 50)}...</p>`
+                          )}
                           <button
                             onClick={() => toggleExpand(index)}
                             className="text-blue-500 hover:underline"
