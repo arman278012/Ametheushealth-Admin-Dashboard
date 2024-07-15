@@ -238,14 +238,50 @@ const AddCategory = () => {
                         </option>
                         {data?.map((item) => (
                           <React.Fragment key={item._id}>
-                            <option value={`${item._id}`} className="font-bold">
+                            <option value={item._id} className="font-bold">
                               {item.name}
                             </option>
-                            {item.children.map((child) => (
-                              <option value={child._id} key={child._id}>
-                                &nbsp; {child.name}
-                              </option>
-                            ))}
+                            {item.children &&
+                              item.children.map((child) => (
+                                <React.Fragment key={child._id}>
+                                  <option value={child._id}>
+                                    &nbsp; {child.name}
+                                  </option>
+                                  {child.children &&
+                                    child.children.map((child2) => (
+                                      <React.Fragment key={child2._id}>
+                                        <option value={child2._id}>
+                                          &nbsp; &nbsp; {child2.name}
+                                        </option>
+                                        {child2.children &&
+                                          child2.children.map((child3) => (
+                                            <React.Fragment key={child3._id}>
+                                              <option value={child3._id}>
+                                                &nbsp; &nbsp; &nbsp;{" "}
+                                                {child3.name}
+                                              </option>
+                                              {child3.children &&
+                                                child3.children.map(
+                                                  (child4) => (
+                                                    <React.Fragment
+                                                      key={child4._id}
+                                                    >
+                                                      <option
+                                                        value={child4._id}
+                                                      >
+                                                        &nbsp; &nbsp;
+                                                        &nbsp;&nbsp; &nbsp;
+                                                        &nbsp; {child4.name}
+                                                      </option>
+                                                    </React.Fragment>
+                                                  )
+                                                )}
+                                            </React.Fragment>
+                                          ))}
+                                      </React.Fragment>
+                                    ))}
+                                </React.Fragment>
+                              ))}
                           </React.Fragment>
                         ))}
                       </select>

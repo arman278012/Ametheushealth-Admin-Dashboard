@@ -28,6 +28,30 @@ const CategoryDataDetails = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  };
+
   useEffect(() => {
     getIndividualData();
   }, [id]);
@@ -99,10 +123,12 @@ const CategoryDataDetails = () => {
             </div>
 
             <div className="created-At">
-              <p className="font-bold text-md ">
-                Create At:{" "}
+              <p className="font-bold text-md">
+                Created At:{" "}
                 <span className="font-semibold">
-                  {individualData?.createdAt?.split("T")[0] || "N/A"}
+                  {individualData?.createdAt
+                    ? formatDate(individualData.createdAt.split("T")[0])
+                    : "N/A"}
                 </span>
               </p>
             </div>
@@ -111,7 +137,9 @@ const CategoryDataDetails = () => {
               <p className="font-bold text-md">
                 Modified At:{" "}
                 <span className="font-semibold">
-                  {individualData?.lastModified?.split("T")[0] || "N/A"}
+                  {individualData
+                    ? formatDate(individualData.lastModified?.split("T")[0])
+                    : "N/A"}
                 </span>
               </p>
             </div>
@@ -128,7 +156,9 @@ const CategoryDataDetails = () => {
             {individualData?.docFileURL ? (
               <>
                 <div className="relative w-full h-[200px] mt-4">
-                  <DocViewer documents={[{ uri: individualData?.docFileURL }]} />
+                  <DocViewer
+                    documents={[{ uri: individualData?.docFileURL }]}
+                  />
                 </div>
                 <a
                   href={individualData.docFileURL}
@@ -173,7 +203,6 @@ const CategoryDataDetails = () => {
           ))}
         </div>
       </div>
-      
     </div>
   );
 };
