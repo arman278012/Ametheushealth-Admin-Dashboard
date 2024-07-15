@@ -1,14 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import DocViewer from "react-doc-viewer";
+import Viewer from "react-viewer"; // Adjust import as per your setup
+// Adjust the placeholder image import path according to your project structure
+// import placeholderImage from "./placeholder.png";
+
+// Adjust CSS import based on how you are handling styles for react-viewer
+// import "react-viewer/dist/index.css"; // Adjust import as per your setup
 
 const CategoryDataDetails = () => {
   const [individualData, setIndividualData] = useState(null);
+  const [showViewer, setShowViewer] = useState(false);
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const getIndividualData = async () => {
     try {
@@ -22,7 +30,6 @@ const CategoryDataDetails = () => {
         }
       );
       setIndividualData(response.data.category);
-      console.log(response.data.category);
     } catch (error) {
       console.log(error);
     }
@@ -56,14 +63,12 @@ const CategoryDataDetails = () => {
     getIndividualData();
   }, [id]);
 
-  const placeholderImage = "https://via.placeholder.com/150";
-  const thumbnail = "https://placehold.co/600x400";
-
-  // Function to handle click on document thumbnail to open in new tab
   const handleDocumentThumbnailClick = () => {
-    if (individualData?.docFileURL) {
-      window.open(individualData.docFileURL, "_blank");
-    }
+    setShowViewer(true);
+  };
+
+  const handleCloseViewer = () => {
+    setShowViewer(false);
   };
 
   if (!individualData) {
@@ -92,9 +97,11 @@ const CategoryDataDetails = () => {
     );
   }
 
+  const placeholderImage = "https://placehold.co/600x400?text=No+Image";
+
   return (
     <div className="bg-gray-100 p-5">
-      <div className="parent flex px-10 py-5 bg-white">
+      <div className="parent flex gap-10 px-10 py-5 bg-white">
         <div className="left flex flex-col gap-5 w-[60%]">
           <div className="Name">
             <p className="font-bold text-2xl text-[#13a3bc] uppercase">
@@ -116,10 +123,12 @@ const CategoryDataDetails = () => {
 
           <div>
             <div className="parent-id">
-              <p className="font-bold text-md">
-                ParentId:{" "}
-                <span className="font-semibold">{individualData?._id}</span>
-              </p>
+              {individualData.parent && (
+                <p className="font-bold text-md">
+                  ParentID:{" "}
+                  <span className="font-semibold">{individualData?._id}</span>
+                </p>
+              )}
             </div>
 
             <div className="created-At">
@@ -133,12 +142,12 @@ const CategoryDataDetails = () => {
               </p>
             </div>
 
-            <div className="created-At">
+            <div className="modified-At">
               <p className="font-bold text-md">
                 Modified At:{" "}
                 <span className="font-semibold">
-                  {individualData
-                    ? formatDate(individualData.lastModified?.split("T")[0])
+                  {individualData?.lastModified
+                    ? formatDate(individualData.lastModified.split("T")[0])
                     : "N/A"}
                 </span>
               </p>
@@ -150,16 +159,29 @@ const CategoryDataDetails = () => {
           <div className="image">
             <img
               src={individualData?.image || placeholderImage}
-              className="h-[300px] w-[300px] "
+              className="w-[300px] "
               alt="Category"
             />
             {individualData?.docFileURL ? (
-              <>
-                <div className="relative w-full h-[200px] mt-4">
-                  <DocViewer
-                    documents={[{ uri: individualData?.docFileURL }]}
-                  />
-                </div>
+              <div className="mt-4">
+                <img
+                  src={individualData?.docFileURL}
+                  alt="Document Thumbnail"
+                  onClick={handleDocumentThumbnailClick}
+                  style={{
+                    cursor: "pointer",
+                    maxWidth: "20%",
+                    height: "auto",
+                  }}
+                />
+                <Viewer
+                  className="w-[200px]"
+                  visible={showViewer}
+                  onClose={handleCloseViewer}
+                  images={[
+                    { src: individualData?.docFileURL, alt: "Document" },
+                  ]}
+                />
                 <a
                   href={individualData.docFileURL}
                   target="_blank"
@@ -169,9 +191,9 @@ const CategoryDataDetails = () => {
                 >
                   Download Document
                 </a>
-              </>
+              </div>
             ) : (
-              <p>No document available</p>
+              <p className="mt-4">No document available</p>
             )}
           </div>
         </div>
@@ -182,12 +204,13 @@ const CategoryDataDetails = () => {
         <div className="grid grid-cols-3 gap-5">
           {individualData?.children?.map((child) => (
             <div
-              key={child.id}
-              className="flex flex-col gap-2 bg-white px-5 py-3 shadow-md rounded-xl"
+              onClick={() => navigate(`${child._id}`)}
+              key={child._id}
+              className="flex flex-col gap-2 bg-white px-5 py-3 shadow-md rounded-xl cursor-pointer"
             >
               <div className="flex justify-center">
                 <img
-                  src={child.image ? child.image : placeholderImage}
+                  src={child.image || placeholderImage}
                   alt="Child"
                   className=""
                 />

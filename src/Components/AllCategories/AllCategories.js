@@ -93,7 +93,7 @@ const AllCategories = () => {
           <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start">
             <div>
               <p className="font-bold">
-                {allCategoryData?.totalCategories || 0} Total items
+                {allCategoryData?.totalCount || 0} Total items
               </p>
             </div>
             <div

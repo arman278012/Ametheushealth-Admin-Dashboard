@@ -467,7 +467,7 @@ const EditCategoryForm = () => {
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                       Upload Image
                     </label>
-                    {imageData && imageData.image && (
+                    {imageData && imageData.image ? (
                       <div className="flex items-center space-x-2">
                         <img
                           src={imageData.image}
@@ -482,7 +482,7 @@ const EditCategoryForm = () => {
                           Delete
                         </button>
                       </div>
-                    )}
+                    ):(<p className="font-semibold">No image here</p>)}
                     {deleteAlert && (
                       <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="absolute inset-0 opacity-50"></div>
@@ -547,7 +547,7 @@ const EditCategoryForm = () => {
                         </button>
                       </div>
                     ) : (
-                      <span>No document file here</span>
+                      <span className="font-semibold">No document file here</span>
                     )}
                     {deleteAlert && (
                       <div className="fixed inset-0 flex items-center justify-center z-50">

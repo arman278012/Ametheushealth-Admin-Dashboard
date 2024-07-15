@@ -10,6 +10,7 @@ import CategoryDataDetailsPage from "./Pages/CategoryDataDetailsPage/CategoryDat
 import { useContext } from "react";
 import { AppContext } from "./Context/ContextProvider";
 import EditCategoryForm from "./Components/EditCategoryForm/EditCategoryForm";
+import CategorySubDetailsPage from "./Pages/CategorySubDetailsPage/CategorySubDetailsPage";
 
 function App() {
   const { editAllCattegoriesForm, setEditAllCategoriesForm } =
@@ -29,6 +30,10 @@ function App() {
             <Route
               path="/all-categories/:id"
               element={<CategoryDataDetailsPage />}
+            />
+            <Route
+              path="/all-categories/:id/:sid"
+              element={<CategorySubDetailsPage />}
             />
             {/* {editAllCattegoriesForm ? (
               <Route element={<EditCategoryForm />} />
