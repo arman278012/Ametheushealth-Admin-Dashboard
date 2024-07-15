@@ -110,21 +110,23 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isCategoriesMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
-                  <a
-                    href="all-categories"
+                  <NavLink
+                    to={"/all-categories"}
+                    // href="all-categories"
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     All Categories
-                  </a>
-                  <a
-                    href="add-category"
+                  </NavLink>
+                  <NavLink
+                    to={"/add-category"}
+                    // href="add-category"
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     Add Categories
-                  </a>
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  </NavLink>
+                  <NavLink href="#" className="hover:bg-gray-700 px-4 py-2">
                     Attach Categories
-                  </a>
+                  </NavLink>
                 </div>
               )}
             </div>
@@ -179,12 +181,12 @@ const MySideBar = () => {
                   <a href="all-generic" className="hover:bg-gray-700 px-4 py-2">
                     All Generic
                   </a>
-                  <a
-                    href="/add-generic"
+                  <NavLink
+                    to={"/add-generic"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     Add Generic
-                  </a>
+                  </NavLink>
                   <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Attach Generic
                   </a>

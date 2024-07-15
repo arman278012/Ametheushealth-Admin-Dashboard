@@ -29,7 +29,7 @@ const CategoryDataDetails = () => {
           },
         }
       );
-      setIndividualData(response.data.category);
+      setIndividualData(response.data);
     } catch (error) {
       console.log(error);
     }

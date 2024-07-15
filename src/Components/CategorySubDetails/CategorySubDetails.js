@@ -25,7 +25,7 @@ const CategorySubDetails = () => {
         }
       );
       console.log(subCategoryData);
-      setSubCategoryData(response.data.category);
+      setSubCategoryData(response.data);
     } catch (error) {
       console.log(error);
     }
