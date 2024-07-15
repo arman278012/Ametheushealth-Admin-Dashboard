@@ -103,12 +103,11 @@ const CategorySubDetails = () => {
             <p className="font-bold text-2xl text-[#13a3bc] uppercase">
               {subCategoryData?.name}
             </p>
-          </div>
-
-          <div className="Slug">
-            <p className="font-bold text-md text-[#13a3bc]">
-              {subCategoryData?.slug}
-            </p>
+            <div className="Slug">
+              <p className="font-bold text-md text-[#ce3131]">
+                {subCategoryData?.slug}
+              </p>
+            </div>
           </div>
 
           <div className="description">
@@ -122,8 +121,7 @@ const CategorySubDetails = () => {
               {subCategoryData.parent && (
                 <p className="font-bold text-md">
                   ParentID:{" "}
-                  <span className="font-semibold">{subCategoryData?.parent
-                  }</span>
+                  <span className="font-normal">{subCategoryData?.parent}</span>
                 </p>
               )}
             </div>
@@ -132,7 +130,7 @@ const CategorySubDetails = () => {
               {subCategoryData.parent && (
                 <p className="font-bold text-md">
                   Parent Name:{" "}
-                  <span className="font-semibold">
+                  <span className="font-normal">
                     {subCategoryData?.parentName}
                   </span>
                 </p>
@@ -143,7 +141,7 @@ const CategorySubDetails = () => {
               {subCategoryData.parent && (
                 <p className="font-bold text-md">
                   Parent Slug:{" "}
-                  <span className="font-semibold">
+                  <span className="font-normal">
                     {subCategoryData?.parentSlug}
                   </span>
                 </p>
@@ -153,7 +151,7 @@ const CategorySubDetails = () => {
             <div className="created-At">
               <p className="font-bold text-md">
                 Created At:{" "}
-                <span className="font-semibold">
+                <span className="font-normal">
                   {subCategoryData?.createdAt
                     ? formatDate(subCategoryData.createdAt.split("T")[0])
                     : "N/A"}
@@ -164,7 +162,7 @@ const CategorySubDetails = () => {
             <div className="modified-At">
               <p className="font-bold text-md">
                 Modified At:{" "}
-                <span className="font-semibold">
+                <span className="font-normal">
                   {subCategoryData?.lastModified
                     ? formatDate(subCategoryData.lastModified.split("T")[0])
                     : "N/A"}
