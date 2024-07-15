@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import {
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
-  MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardArrowLeft,
 } from "react-icons/md";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import Skeleton from "react-loading-skeleton";
@@ -13,17 +13,18 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AllGeneric = () => {
-  const [genericData, setGenericData] = useState([]);
+  const [genericData, setGenericData] = useState({});
   const [expanded, setExpanded] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
-  const allGenericData = async () => {
+  const allGenericData = async (page) => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/generic",
+        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -31,7 +32,6 @@ const AllGeneric = () => {
           },
         }
       );
-      console.log(genericData);
       setGenericData(response.data);
       setLoading(false);
     } catch (error) {
@@ -42,7 +42,7 @@ const AllGeneric = () => {
 
   const deleteGenericData = async (id) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api.assetorix.com:4100/ah/api/v1/generic/${id}`,
         {
           headers: {
@@ -53,21 +53,25 @@ const AllGeneric = () => {
       );
       toast.success("Deleted Successfully...");
       setDeleteAlert(false);
-      allGenericData();
+      allGenericData(currentPage); // Reload current page data after deletion
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    allGenericData();
-  }, []);
+    allGenericData(currentPage);
+  }, [currentPage]); // Reload data when currentPage changes
 
   const toggleExpand = (index) => {
     setExpanded((prev) => ({
       ...prev,
       [index]: !prev[index],
     }));
+  };
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -106,10 +110,16 @@ const AllGeneric = () => {
               )}
             </p>
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => goToPage(1)}
+          >
             <MdOutlineKeyboardDoubleArrowLeft />
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => goToPage(genericData?.page - 1)}
+          >
             <MdOutlineKeyboardArrowLeft />
           </div>
           <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
@@ -121,10 +131,16 @@ const AllGeneric = () => {
               {loading ? <Skeleton width={20} /> : genericData?.totalPages || 0}
             </p>
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => goToPage(genericData?.page + 1)}
+          >
             <MdKeyboardArrowRight />
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => goToPage(genericData?.totalPages)}
+          >
             <MdKeyboardDoubleArrowRight />
           </div>
         </div>
@@ -143,24 +159,24 @@ const AllGeneric = () => {
         </Thead>
         <Tbody>
           {loading
-            ? Array(genericData.totalCount)
-                .fill("")
-                .map((_, index) => (
-                  <Tr key={index}>
-                    <Td className="py-2 px-4 border-b text-center">
-                      <Skeleton circle width={20} height={20} />
-                    </Td>
-                    <Td className="py-2 px-4 border-b text-[14px]">
-                      <Skeleton width={100} />
-                    </Td>
-                    <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      <Skeleton width={100} />
-                    </Td>
-                    <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      <Skeleton width={200} />
-                    </Td>
-                  </Tr>
-                ))
+            ? Array.from({
+                length: genericData.data ? genericData.data.length : 5,
+              }).map((_, index) => (
+                <Tr key={index}>
+                  <Td className="py-2 px-4 border-b text-center">
+                    <Skeleton circle width={20} height={20} />
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
+                    <Skeleton width={100} />
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    <Skeleton width={100} />
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    <Skeleton width={200} />
+                  </Td>
+                </Tr>
+              ))
             : genericData.data?.map((item, index) => (
                 <Tr key={index}>
                   <Td className="py-2 px-4 border-b text-center">
@@ -180,7 +196,7 @@ const AllGeneric = () => {
                         Delete
                       </button>
                     </div>
-                    {deleteAlert ? (
+                    {deleteAlert && (
                       <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="absolute inset-0 opacity-50"></div>
                         <div className="bg-white p-6 rounded-lg border-2 z-10">
@@ -203,8 +219,6 @@ const AllGeneric = () => {
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      <></>
                     )}
                   </Td>
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
@@ -218,15 +232,7 @@ const AllGeneric = () => {
                         </>
                       ) : (
                         <>
-                          <p>
-                            {item.uses.slice(0, 70)}...
-                            {/* <button
-                              onClick={() => toggleExpand(index)}
-                              className="text-blue-500 hover:underline"
-                            >
-                              Show more
-                            </button> */}
-                          </p>
+                          <p>{item.uses.slice(0, 70)}...</p>
                         </>
                       )
                     ) : (

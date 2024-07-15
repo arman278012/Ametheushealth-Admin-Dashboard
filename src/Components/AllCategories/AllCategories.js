@@ -22,8 +22,9 @@ import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 const AllCategories = () => {
-  const { allCategoryData, isLoading, isError, error, currentPage } =
-    useSelector((state) => state.getCategoryData);
+  const { allCategoryData, isLoading, currentPage } = useSelector(
+    (state) => state.getCategoryData
+  );
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
