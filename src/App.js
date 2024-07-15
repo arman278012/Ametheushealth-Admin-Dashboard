@@ -11,6 +11,8 @@ import { useContext } from "react";
 import { AppContext } from "./Context/ContextProvider";
 import EditCategoryForm from "./Components/EditCategoryForm/EditCategoryForm";
 import CategorySubDetailsPage from "./Pages/CategorySubDetailsPage/CategorySubDetailsPage";
+import AddGenericPage from "./Pages/AddGenericPage/AddGenericPage";
+import AllGenericPage from "./Pages/AllGenericPage/AllGenericPage";
 
 function App() {
   const { editAllCattegoriesForm, setEditAllCategoriesForm } =
@@ -35,11 +37,8 @@ function App() {
               path="/all-categories/:id/:sid"
               element={<CategorySubDetailsPage />}
             />
-            {/* {editAllCattegoriesForm ? (
-              <Route element={<EditCategoryForm />} />
-            ) : (
-              <></>
-            )} */}
+            <Route path="/add-generic" element={<AddGenericPage />} />
+            <Route path="/all-generic" element={<AllGenericPage />} />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
         </div>

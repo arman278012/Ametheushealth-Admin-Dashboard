@@ -176,10 +176,13 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isGenericMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  <a href="all-generic" className="hover:bg-gray-700 px-4 py-2">
                     All Generic
                   </a>
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  <a
+                    href="/add-generic"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Add Generic
                   </a>
                   <a href="#" className="hover:bg-gray-700 px-4 py-2">
