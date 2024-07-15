@@ -8,12 +8,17 @@ import {
 } from "react-icons/md";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AllGeneric = () => {
   const [genericData, setGenericData] = useState([]);
   const [expanded, setExpanded] = useState({});
   const [loading, setLoading] = useState(true);
+  const [deleteAlert, setDeleteAlert] = useState(false);
+
+  const navigate = useNavigate();
 
   const allGenericData = async () => {
     try {
@@ -26,11 +31,31 @@ const AllGeneric = () => {
           },
         }
       );
+      console.log(genericData);
       setGenericData(response.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
+    }
+  };
+
+  const deleteGenericData = async (id) => {
+    try {
+      const response = await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/generic/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      toast.success("Deleted Successfully...");
+      setDeleteAlert(false);
+      allGenericData();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -54,19 +79,31 @@ const AllGeneric = () => {
           placeholder="Search..."
         />
         <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white sm:px-3 px-2 text-sm sm:text-[15px] rounded-xl">
-          Search Categories
+          Search Generic
         </button>
       </div>
 
       <div className="flex sm:flex-row flex-col justify-between mb-5">
-        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
-          Bulk Delete
-        </button>
+        <div className="flex gap-5">
+          <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
+            Bulk Delete
+          </button>
+          <button
+            onClick={() => navigate("/add-generic")}
+            className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
+          >
+            Add Generic
+          </button>
+        </div>
 
         <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start">
           <div>
             <p className="font-bold">
-              {loading ? <Skeleton width={50} /> : (genericData?.totalCount || 0) + ' Total items'}
+              {loading ? (
+                <Skeleton width={50} />
+              ) : (
+                (genericData?.totalCount || 0) + " Total items"
+              )}
             </p>
           </div>
           <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
@@ -79,7 +116,10 @@ const AllGeneric = () => {
             <p>{loading ? <Skeleton width={20} /> : genericData?.page || 0}</p>
           </div>
           <div>
-            <p>of {loading ? <Skeleton width={20} /> : genericData?.totalPages || 0}</p>
+            <p>
+              of{" "}
+              {loading ? <Skeleton width={20} /> : genericData?.totalPages || 0}
+            </p>
           </div>
           <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer">
             <MdKeyboardArrowRight />
@@ -103,8 +143,8 @@ const AllGeneric = () => {
         </Thead>
         <Tbody>
           {loading
-            ? Array(5)
-                .fill('')
+            ? Array(genericData.totalCount)
+                .fill("")
                 .map((_, index) => (
                   <Tr key={index}>
                     <Td className="py-2 px-4 border-b text-center">
@@ -129,18 +169,43 @@ const AllGeneric = () => {
                   <Td className="py-2 px-4 border-b text-[14px]">
                     {item?.name}
                     <div className="flex gap-2">
-                      <button className="text-[#2271b1]">
-                        Edit
-                      </button>{" "}
+                      <button className="text-[#2271b1]">Edit</button>{" "}
                       <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">
-                        View
-                      </button>{" "}
+                      <button className="text-[#2271b1]">View</button>{" "}
                       <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => setDeleteAlert(true)}
+                      >
                         Delete
                       </button>
                     </div>
+                    {deleteAlert ? (
+                      <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="absolute inset-0 opacity-50"></div>
+                        <div className="bg-white p-6 rounded-lg border-2 z-10">
+                          <p className="text-lg mb-4">
+                            Are you sure you want to delete this item?
+                          </p>
+                          <div className="flex justify-end">
+                            <button
+                              onClick={() => deleteGenericData(item._id)}
+                              className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              onClick={() => setDeleteAlert(false)}
+                              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </Td>
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     {item?.slug}
@@ -149,9 +214,7 @@ const AllGeneric = () => {
                     {item?.uses ? (
                       expanded[index] ? (
                         <>
-                          <p>
-                            {item.uses}
-                          </p>
+                          <p>{item.uses}</p>
                         </>
                       ) : (
                         <>

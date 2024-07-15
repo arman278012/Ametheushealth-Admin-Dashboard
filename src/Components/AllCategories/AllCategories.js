@@ -86,9 +86,18 @@ const AllCategories = () => {
 
       <div>
         <div className="flex sm:flex-row flex-col justify-between mb-5">
-          <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
-            Bulk Delete
-          </button>
+          <div className="flex gap-5">
+            <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
+              Bulk Delete
+            </button>
+
+            <button
+              onClick={() => navigate("/add-category")}
+              className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
+            >
+              Add Category
+            </button>
+          </div>
 
           <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start">
             <div>
@@ -223,24 +232,24 @@ const AllCategories = () => {
                       expanded[index] ? (
                         <>
                           {parse(`<p>${item?.description}</p>`)}
-                          <button
+                          {/* <button
                             onClick={() => toggleExpand(index)}
                             className="text-blue-500 hover:underline"
                           >
                             Read less
-                          </button>
+                          </button> */}
                         </>
                       ) : (
                         <>
                           {parse(
                             `<p>${item?.description?.slice(0, 50)}...</p>`
                           )}
-                          <button
+                          {/* <button
                             onClick={() => toggleExpand(index)}
                             className="text-blue-500 hover:underline"
                           >
                             Read more
-                          </button>
+                          </button> */}
                         </>
                       )
                     ) : (
