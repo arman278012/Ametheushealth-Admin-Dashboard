@@ -195,7 +195,7 @@ const AddCategory = () => {
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">Description</label>
+                    <label className="px-3 font-bold">Long Description</label>
                     <div>
                       <Field name="description">
                         {({ field }) => (
