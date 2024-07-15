@@ -103,8 +103,8 @@ const CategorySubDetails = () => {
             <p className="font-bold text-2xl text-[#13a3bc] uppercase">
               {subCategoryData?.name}
             </p>
-            <div className="Slug">
-              <p className="font-bold text-md text-[#ce3131]">
+            <div className="Slug ">
+              <p className="font-bold text-md text-[#ce3131] bg-gray-200 w-[100%] px-2 py-1">
                 {subCategoryData?.slug}
               </p>
             </div>
