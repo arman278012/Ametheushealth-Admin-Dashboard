@@ -2,6 +2,8 @@ import axios from "axios";
 import { Field, Formik } from "formik";
 import JoditEditor from "jodit-react";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   name: "",
@@ -15,10 +17,13 @@ const initialValues = {
 const AddGeneric = () => {
   const [saving, setSaving] = useState(false);
 
+  const navigate = useNavigate();
+
   const postGenericData = async (values) => {
     try {
       const response = await axios.post(
-        "https://api.assetorix.com:4100/ah/api/v1/generic",values,
+        "https://api.assetorix.com:4100/ah/api/v1/generic",
+        values,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -26,6 +31,8 @@ const AddGeneric = () => {
           },
         }
       );
+      navigate("/all-generic");
+      toast.success("Data posted Successfully...");
     } catch (error) {
       console.log(error);
     }
@@ -202,7 +209,7 @@ const AddGeneric = () => {
                 </div>
 
                 <button className="mt-5 bg-[#13a3bc] hover:bg-[#13b6d5] w-[100%] font-bold text-white py-2 rounded-xl">
-                  {saving ? "Saving..." : "Save Data "}
+                  {saving ? ("Saving...") : ("Save Data")}
                 </button>
               </form>
             )}

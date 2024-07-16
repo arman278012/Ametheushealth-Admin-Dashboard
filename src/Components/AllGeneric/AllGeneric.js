@@ -17,6 +17,7 @@ const AllGeneric = () => {
   const [expanded, setExpanded] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
@@ -177,8 +178,8 @@ const AllGeneric = () => {
                   </Td>
                 </Tr>
               ))
-            : genericData.data?.map((item, index) => (
-                <Tr key={index}>
+            : genericData.data?.map((item) => (
+                <Tr key={item._id}>
                   <Td className="py-2 px-4 border-b text-center">
                     <input type="checkbox" />
                   </Td>
@@ -191,42 +192,22 @@ const AllGeneric = () => {
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
-                        onClick={() => setDeleteAlert(true)}
+                        onClick={() => {
+                          setDeleteAlert(true);
+                          setDeleteId(item._id);
+                        }}
                       >
                         Delete
                       </button>
                     </div>
-                    {deleteAlert && (
-                      <div className="fixed inset-0 flex items-center justify-center z-50">
-                        <div className="absolute inset-0 opacity-50"></div>
-                        <div className="bg-white p-6 rounded-lg border-2 z-10">
-                          <p className="text-lg mb-4">
-                            Are you sure you want to delete this item?
-                          </p>
-                          <div className="flex justify-end">
-                            <button
-                              onClick={() => deleteGenericData(item._id)}
-                              className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-                            >
-                              Delete
-                            </button>
-                            <button
-                              onClick={() => setDeleteAlert(false)}
-                              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </Td>
+
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     {item?.slug}
                   </Td>
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     {item?.uses ? (
-                      expanded[index] ? (
+                      expanded[item._id] ? (
                         <>
                           <p>{item.uses}</p>
                         </>
@@ -243,6 +224,34 @@ const AllGeneric = () => {
               ))}
         </Tbody>
       </Table>
+
+      {deleteAlert && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0"></div>
+          <div className="bg-white p-6 rounded-lg border-2 z-10">
+            <p className="text-lg mb-4">
+              Are you sure you want to delete this item?
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  deleteGenericData(deleteId);
+                  setDeleteAlert(false);
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setDeleteAlert(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
