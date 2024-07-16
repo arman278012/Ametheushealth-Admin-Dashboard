@@ -221,7 +221,7 @@ const MySideBar = () => {
 
             {/* Login */}
             <div>
-              <NavLink to="/login">
+              <NavLink to="/">
                 <button className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700">
                   <span className="flex items-center">
                     <FaUsers className="mr-2" />
