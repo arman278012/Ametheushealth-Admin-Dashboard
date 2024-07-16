@@ -13,10 +13,15 @@ import EditCategoryForm from "./Components/EditCategoryForm/EditCategoryForm";
 import CategorySubDetailsPage from "./Pages/CategorySubDetailsPage/CategorySubDetailsPage";
 import AddGenericPage from "./Pages/AddGenericPage/AddGenericPage";
 import AllGenericPage from "./Pages/AllGenericPage/AllGenericPage";
+import EditGenericForm from "./Components/EditGenericForm/EditGenericForm";
 
 function App() {
-  const { editAllCattegoriesForm, setEditAllCategoriesForm } =
-    useContext(AppContext);
+  const {
+    editAllCattegoriesForm,
+    setEditAllCategoriesForm,
+    editGenericForm,
+    setEditGenericForm,
+  } = useContext(AppContext);
 
   return (
     <div className="App flex">
@@ -41,6 +46,7 @@ function App() {
             <Route path="/all-generic" element={<AllGenericPage />} />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
+          {editGenericForm ? <EditGenericForm /> : <></>}
         </div>
       </BrowserRouter>
     </div>

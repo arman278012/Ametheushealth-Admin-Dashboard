@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
@@ -11,6 +11,10 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../Context/ContextProvider";
+import parse from "html-react-parser";
+import { useDispatch } from "react-redux";
+import { storeGenericId } from "../../redux/slice/GetGenericIdSlice";
 
 const AllGeneric = () => {
   const [genericData, setGenericData] = useState({});
@@ -21,6 +25,9 @@ const AllGeneric = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { editGenericForm, setEditGenericForm } = useContext(AppContext);
 
   const allGenericData = async (page) => {
     try {
@@ -179,14 +186,22 @@ const AllGeneric = () => {
                 </Tr>
               ))
             : genericData.data?.map((item) => (
-                <Tr key={item._id}>
+                <Tr
+                  key={item._id}
+                  onClick={() => dispatch(storeGenericId(item._id))}
+                >
                   <Td className="py-2 px-4 border-b text-center">
                     <input type="checkbox" />
                   </Td>
                   <Td className="py-2 px-4 border-b text-[14px]">
                     {item?.name}
                     <div className="flex gap-2">
-                      <button className="text-[#2271b1]">Edit</button>{" "}
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => setEditGenericForm(true)}
+                      >
+                        Edit
+                      </button>{" "}
                       <span className="text-[#2271b1]">|</span>
                       <button className="text-[#2271b1]">View</button>{" "}
                       <span className="text-[#2271b1]">|</span>
@@ -208,13 +223,9 @@ const AllGeneric = () => {
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     {item?.uses ? (
                       expanded[item._id] ? (
-                        <>
-                          <p>{item.uses}</p>
-                        </>
+                        <>{parse(`<p>${item?.uses}</p>`)}</>
                       ) : (
-                        <>
-                          <p>{item.uses.slice(0, 70)}...</p>
-                        </>
+                        <>{parse(`<p>${item.uses.slice(0, 50)}...</p>`)}</>
                       )
                     ) : (
                       <>No uses available</>

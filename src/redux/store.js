@@ -3,6 +3,7 @@ import AddCategoryReducer from "./slice/AddCategorySlice";
 import getCategoryDataReducer from "./slice/GetCategoryDataSlice";
 import idReducer from "./slice/GetIdSlice";
 import imageIdReducer from "./slice/getImageIdSlice";
+import genericIdReducer from "./slice/GetGenericIdSlice";
 import { thunk } from "redux-thunk"; // Correct import statement for redux-thunk
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     getCategoryData: getCategoryDataReducer,
     idSlice: idReducer,
     imageIdSlice: imageIdReducer,
+    genericIdSlice: genericIdReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk), // Add thunk middleware
 });
