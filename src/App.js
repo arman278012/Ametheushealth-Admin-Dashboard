@@ -14,6 +14,7 @@ import CategorySubDetailsPage from "./Pages/CategorySubDetailsPage/CategorySubDe
 import AddGenericPage from "./Pages/AddGenericPage/AddGenericPage";
 import AllGenericPage from "./Pages/AllGenericPage/AllGenericPage";
 import EditGenericForm from "./Components/EditGenericForm/EditGenericForm";
+import GenericDetailsPage from "./Pages/GenericDetailsPage/GenericDetailsPage";
 
 function App() {
   const {
@@ -44,6 +45,7 @@ function App() {
             />
             <Route path="/add-generic" element={<AddGenericPage />} />
             <Route path="/all-generic" element={<AllGenericPage />} />
+            <Route path="generic-details" element={<GenericDetailsPage />} />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}

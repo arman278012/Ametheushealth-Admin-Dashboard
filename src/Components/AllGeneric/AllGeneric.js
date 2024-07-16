@@ -203,7 +203,12 @@ const AllGeneric = () => {
                         Edit
                       </button>{" "}
                       <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">View</button>{" "}
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => navigate(`/generic-details`)}
+                      >
+                        View
+                      </button>{" "}
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
