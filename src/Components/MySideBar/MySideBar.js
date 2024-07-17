@@ -178,6 +178,12 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isGenericMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/instant-generic"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Instant Generic
+                  </NavLink>
                   <a href="all-generic" className="hover:bg-gray-700 px-4 py-2">
                     All Generic
                   </a>
