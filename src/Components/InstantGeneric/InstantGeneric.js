@@ -67,62 +67,13 @@ const InstantGeneric = () => {
 
   return (
     <>
-      <div className="w-[75vw] mx-auto flex flex-col justify-center items-center py-1 gap-5 border-2 mt-1">
-        <p className="font-bold text-xl">Add generics</p>
-        <div className="w-[100%] flex">
-          <div className="w-[50vw]">
-            <form onSubmit={handleSubmit}>
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter data here..."
-                  className="p-3 border rounded-xl h-[45px] w-[300px]"
-                />
-                <button
-                  type="submit"
-                  className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
-                >
-                  Add data
-                </button>
-              </div>
-            </form>
-
-            <div className="flex gap-5 mt-5">
-              {genericData.name && (
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <p
-                    className="cursor-pointer bg-blue-500 px-3 py-1 font-bold text-white"
-                    onClick={() => handleCopy(genericData.name)}
-                  >
-                    {genericData.name}
-                  </p>
-                </div>
-              )}
-              {genericData._id && (
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <p
-                    className="cursor-pointer bg-blue-500 px-3 py-1 font-bold text-white"
-                    onClick={() => handleCopy(genericData._id)}
-                  >
-                    {genericData._id}
-                  </p>
-                </div>
-              )}
-              {(genericData.name || genericData._id) && (
-                <button
-                  onClick={handleDelete}
-                  className="cursor-pointer bg-red-500 px-2 font-bold text-white"
-                >
-                  <FaTrash className="" />
-                </button>
-              )}
-            </div>
+      <div className="w-[75vw] mx-auto flex justify-center items-center py-1 gap-5">
+        <div className="w-[50%] flex flex-col gap-2 border-2 p-5">
+          <div className="flex justify-start">
+            <p className="font-bold text-xl -mt-4 text-start">Generics</p>
           </div>
 
-          <div className="w-[50%]">
+          <div className="flex flex-col justify-center items-center">
             <form onSubmit={handleSubmit}>
               <div className="flex gap-4">
                 <input
@@ -141,6 +92,58 @@ const InstantGeneric = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+        <div className="w-[50%] border-2 flex flex-col justify-center items-center p-5">
+          <form onSubmit={handleSubmit}>
+            <div className="flex gap-4">
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter data here..."
+                className="p-3 border rounded-xl h-[45px] w-[300px]"
+              />
+              <button
+                type="submit"
+                className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
+              >
+                Add data
+              </button>
+            </div>
+          </form>
+
+          <div className="flex gap-5 mt-5">
+            {genericData.name && (
+              <div className="flex items-center gap-2 cursor-pointer">
+                <p
+                  className="cursor-pointer bg-blue-500 px-3 py-1 font-bold text-white"
+                  onClick={() => handleCopy(genericData.name)}
+                >
+                  {genericData.name}
+                </p>
+              </div>
+            )}
+            {genericData._id && (
+              <div className="flex items-center gap-2 cursor-pointer">
+                <p
+                  className="cursor-pointer bg-blue-500 px-3 py-1 font-bold text-white"
+                  onClick={() => handleCopy(genericData._id)}
+                >
+                  {genericData._id}
+                </p>
+              </div>
+            )}
+            {(genericData.name || genericData._id) && (
+              <button
+                onClick={handleDelete}
+                className="cursor-pointer bg-red-500 px-2 font-bold text-white"
+              >
+                <FaTrash className="" />
+              </button>
+            )}
           </div>
         </div>
       </div>
