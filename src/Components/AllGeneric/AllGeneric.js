@@ -23,16 +23,19 @@ const AllGeneric = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { editGenericForm, setEditGenericForm } = useContext(AppContext);
+  const { setEditGenericForm } = useContext(AppContext);
 
-  const allGenericData = async (page) => {
+  const allGenericData = async (query, page) => {
+    setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}`,
+        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&limit=${5}&name=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -40,13 +43,32 @@ const AllGeneric = () => {
           },
         }
       );
-      setGenericData(response.data);
-      setLoading(false);
+      if (query) {
+        setSearchResults(response.data.data);
+      } else {
+        setGenericData(response.data);
+      }
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery) {
+        allGenericData(searchQuery, 1);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      allGenericData("", currentPage);
+    }
+  }, [currentPage, searchQuery]);
 
   const deleteGenericData = async (id) => {
     try {
@@ -61,15 +83,11 @@ const AllGeneric = () => {
       );
       toast.success("Deleted Successfully...");
       setDeleteAlert(false);
-      allGenericData(currentPage); // Reload current page data after deletion
+      allGenericData(searchQuery, currentPage); // Reload current data after deletion
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    allGenericData(currentPage);
-  }, [currentPage]); // Reload data when currentPage changes
 
   const toggleExpand = (index) => {
     setExpanded((prev) => ({
@@ -84,15 +102,22 @@ const AllGeneric = () => {
 
   return (
     <div className="overflow-x-auto p-5 bg-gray-300">
-      <div className="mb-5 flex gap-2 justify-end">
-        <input
-          type="text"
-          className="py-2 rounded-xl px-3"
-          placeholder="Search..."
-        />
-        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white sm:px-3 px-2 text-sm sm:text-[15px] rounded-xl">
-          Search Generic
-        </button>
+      <div>
+        <div className="mb-5 flex gap-2 justify-end">
+          <input
+            type="text"
+            className="py-2 rounded-xl px-3 w-[250px]"
+            placeholder="Search generic..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {/* <button
+            className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white sm:px-3 px-2 text-sm sm:text-[15px] rounded-xl"
+            onClick={() => allGenericData(searchQuery, 1)}
+          >
+            Search Generic
+          </button> */}
+        </div>
       </div>
 
       <div className="flex sm:flex-row flex-col justify-between mb-5">
@@ -161,8 +186,9 @@ const AllGeneric = () => {
               <input type="checkbox" />
             </Th>
             <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
-            <Th className="py-2 px-4 border-b w-[20%] text-start">Slug</Th>
-            <Th className="py-2 px-4 border-b w-[50%] text-start">Uses</Th>
+            <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
+            <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
+            <Th className="py-2 px-4 border-b w-[40%] text-start">Uses</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -182,6 +208,63 @@ const AllGeneric = () => {
                   </Td>
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     <Skeleton width={200} />
+                  </Td>
+                </Tr>
+              ))
+            : searchQuery
+            ? searchResults.map((item) => (
+                <Tr
+                  key={item._id}
+                  onClick={() => dispatch(storeGenericId(item._id))}
+                >
+                  <Td className="py-2 px-4 border-b text-center">
+                    <input type="checkbox" />
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-[14px]">
+                    {item?.name}
+                    <div className="flex gap-2">
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => setEditGenericForm(true)}
+                      >
+                        Edit
+                      </button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => navigate(`/generic-details`)}
+                      >
+                        View
+                      </button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => {
+                          setDeleteAlert(true);
+                          setDeleteId(item._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </Td>
+
+                  <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    {item?.slug}
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    {item?._id}
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    {item?.uses ? (
+                      expanded[item._id] ? (
+                        <>{parse(`<p>${item?.uses}</p>`)}</>
+                      ) : (
+                        <>{parse(`<p>${item.uses.slice(0, 50)}...</p>`)}</>
+                      )
+                    ) : (
+                      <>No uses available</>
+                    )}
                   </Td>
                 </Tr>
               ))
@@ -224,6 +307,9 @@ const AllGeneric = () => {
 
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     {item?.slug}
+                  </Td>
+                  <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    {item?._id}
                   </Td>
                   <Td className="py-2 px-4 border-b text-start text-[14px]">
                     {item?.uses ? (

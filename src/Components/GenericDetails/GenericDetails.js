@@ -21,8 +21,8 @@ const GenericDetails = () => {
           },
         }
       );
-      setGenericData(response.data.data);
       console.log("Data", genericData);
+      setGenericData(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +48,7 @@ const GenericDetails = () => {
                   {genericData.name}
                 </span>{" "}
               </p>
-              <div className="bg-gray-300 h-[1px] w-[270px] mt-1"></div>
+              <div className="bg-gray-300 h-[1px] w-[170px] mt-1"></div>
 
               <div className="text-justify">
                 {parse(`<p>${genericData?.uses}</p>`)}
@@ -62,7 +62,7 @@ const GenericDetails = () => {
                   {genericData.name}
                 </span>{" "}
               </p>
-              <div className="bg-gray-300 h-[1px] w-[270px] mt-1"></div>
+              <div className="bg-gray-300 h-[1px] w-[220px] mt-1"></div>
               <div className="text-justify">
                 {parse(`<p>${genericData?.sideEffects}</p>`)}
               </div>
@@ -75,10 +75,38 @@ const GenericDetails = () => {
                   {genericData.name}
                 </span>{" "}
               </p>
-              <div className="bg-gray-300 h-[1px] w-[270px] mt-1"></div>
+              <div className="bg-gray-300 h-[1px] w-[235px] mt-1"></div>
 
               <div className="text-justify">
                 {parse(`<p>${genericData?.expertAdvice}</p>`)}
+              </div>
+            </div>
+
+            <div className="faq w-[100%] bg-gray-100 shadow-md p-5">
+              <p className="uppercase">
+                Frequently Asked Questions for{" "}
+                <span className="text-red-500 font-semibold">
+                  {genericData.name}
+                </span>{" "}
+              </p>
+              <div className="bg-gray-300 h-[1px] w-[380px] mt-1"></div>
+
+              <div className="text-justify">
+                {parse(`<p>${genericData?.faq}</p>`)}
+              </div>
+            </div>
+
+            <div className="faq w-[100%] bg-gray-100 shadow-md p-5">
+              <p className="uppercase">
+                Workings of{" "}
+                <span className="text-red-500 font-semibold">
+                  {genericData.name}
+                </span>{" "}
+              </p>
+              <div className="bg-gray-300 h-[1px] w-[210px] mt-1"></div>
+
+              <div className="text-justify">
+                {parse(`<p>${genericData?.works}</p>`)}
               </div>
             </div>
           </div>
