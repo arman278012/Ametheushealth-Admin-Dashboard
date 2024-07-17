@@ -25,7 +25,7 @@ const AllGeneric = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isTopBaropen, setIsTopBarOpen] = useState(true);
-  const [pageLimit, setPageLimit] = useState("10");
+  const [pageLimit, setPageLimit] = useState("10"); // Default to 10 items per page
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBaropen);
@@ -39,7 +39,6 @@ const AllGeneric = () => {
   //get all data
   const allGenericData = async (query, page) => {
     setLoading(true);
-    console.log("page", pageLimit);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&limit=${pageLimit}&name=${query}`,
@@ -59,15 +58,11 @@ const AllGeneric = () => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (searchQuery) {
-        allGenericData(searchQuery, currentPage);
-      } else {
-        allGenericData("", currentPage);
-      }
+      allGenericData(searchQuery, currentPage);
     }, 100);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, currentPage, pageLimit]); // Added pageLimit dependency
 
   //delete generic data
   const deleteGenericData = async (id) => {
@@ -115,25 +110,24 @@ const AllGeneric = () => {
           }`}
         >
           <div className="flex gap-3">
-            {/* <p>Pagination</p> */}
-
             <div className="flex gap-2">
               <p>Number of items per page:</p>
               <input
                 type="text"
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
                 onChange={(e) => setPageLimit(e.target.value)}
+                value={pageLimit} // Ensure the input value is controlled
               />
             </div>
 
-            <div className="flex justify-center items-center">
+            {/* <div className="flex justify-center items-center">
               <button
-                onClick={(e) => setPageLimit(e.target.value)}
+                onClick={() => allGenericData(searchQuery, currentPage)} // Apply the new page limit
                 className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
               >
                 Apply
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="sm:w-[100%] w-[320px] h-[1px] bg-gray-400"></div>
