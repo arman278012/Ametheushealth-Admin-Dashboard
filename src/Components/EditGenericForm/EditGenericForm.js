@@ -144,7 +144,7 @@ const EditGenericForm = () => {
                   type="text"
                   placeholder="Enter your name"
                   value={formData.slug}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                 />
               )}
             </div>
