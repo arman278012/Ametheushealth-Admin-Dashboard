@@ -4,7 +4,7 @@ import InstantGeneric from "../../Components/InstantGeneric/InstantGeneric";
 
 const InstantGenericPage = () => {
   return (
-    <div className="flex">
+    <div className="flex gap-8">
       <div>
         <MySideBar />
       </div>
