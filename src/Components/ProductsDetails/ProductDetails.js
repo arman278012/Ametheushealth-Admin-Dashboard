@@ -1,32 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardArrowLeft,
+  MdKeyboardDoubleArrowRight,
+  MdKeyboardArrowRight,
+} from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import { Table } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import { fetchGetProductsData } from "../../redux/slice/GetProductsSlice";
+import {
+  fetchGetProductsData,
+  setPage,
+  setPageLimit,
+  setSearchQuery,
+} from "../../redux/slice/GetProductsSlice";
 
 const ProductDetails = () => {
-  const [isTopBaropen, setIsTopBarOpen] = useState(true);
+  const [isTopBarOpen, setIsTopBarOpen] = useState(true);
   const dispatch = useDispatch();
-  const { allProductsData, isLoading, isError, error } = useSelector(
-    (state) => state.getproductsSlice
-  );
-
-  console.log(allProductsData);
+  const {
+    allProductsData,
+    isLoading,
+    isError,
+    error,
+    currentPage,
+    pageLimit,
+    searchQuery,
+  } = useSelector((state) => state.getproductsSlice);
 
   useEffect(() => {
-    dispatch(fetchGetProductsData());
-  }, [dispatch]);
+    dispatch(fetchGetProductsData({ page: currentPage, pageLimit, searchQuery }));
+  }, [dispatch, currentPage, pageLimit, searchQuery]);
 
   const toggleTopBar = () => {
-    setIsTopBarOpen(!isTopBaropen);
+    setIsTopBarOpen(!isTopBarOpen);
+  };
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPage(newPage));
+  };
+
+  const handlePageLimitChange = (event) => {
+    dispatch(setPageLimit(event.target.value));
+  };
+
+  const handleSearchChange = (event) => {
+    dispatch(setSearchQuery(event.target.value));
   };
 
   return (
-    <div className=" ">
+    <div className="">
       {/* top section is here */}
       <div className="flex flex-col gap-3 p-5">
         <div>
@@ -37,22 +60,25 @@ const ProductDetails = () => {
 
         <div
           className={`overflow-hidden transition-all duration-300 ${
-            isTopBaropen ? "max-h-screen" : "max-h-0"
+            isTopBarOpen ? "max-h-screen" : "max-h-0"
           }`}
         >
           <div className="flex gap-3">
-            {/* <p>Pagination</p> */}
-
             <div className="flex gap-2">
               <p>Number of items per page:</p>
               <input
-                type="text"
+                type="number"
+                value={pageLimit}
+                onChange={handlePageLimitChange}
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
               />
             </div>
 
             <div className="flex justify-center items-center">
-              <button className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]">
+              <button
+                onClick={() => dispatch(fetchGetProductsData({ page: currentPage, pageLimit, searchQuery }))}
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
+              >
                 Apply
               </button>
             </div>
@@ -79,7 +105,7 @@ const ProductDetails = () => {
               OPTIONS
               <span
                 className={`ml-1 transition-transform duration-300 ${
-                  isTopBaropen ? "rotate-180" : "rotate-0"
+                  isTopBarOpen ? "rotate-180" : "rotate-0"
                 }`}
               >
                 ▼
@@ -105,12 +131,17 @@ const ProductDetails = () => {
             <div>
               <input
                 type="text"
+                value={searchQuery}
+                onChange={handleSearchChange}
                 className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px] "
               />
             </div>
 
             <div>
-              <button className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]">
+              <button
+                onClick={() => dispatch(fetchGetProductsData({ page: currentPage, pageLimit, searchQuery }))}
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]"
+              >
                 Search Products
               </button>
             </div>
@@ -228,156 +259,137 @@ const ProductDetails = () => {
         {/* Pagination section */}
         <div className="flex px-5 py-2 gap-3 justify-end">
           <div>
-            <p>2949 items</p>
+            <p>{allProductsData?.totalProducts}</p>
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(1)}
+          >
             <MdOutlineKeyboardDoubleArrowLeft />
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() =>
+              handlePageChange(Math.max(currentPage - 1, 1))
+            }
+          >
             <MdOutlineKeyboardArrowLeft />
           </div>
           <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
-            <p>25 </p>
+            <p>{currentPage}</p>
           </div>
           <div>
-            <p>of 59</p>
+            <p>of {allProductsData?.totalPages}</p>
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() =>
+              handlePageChange(
+                Math.min(currentPage + 1, allProductsData?.totalPages || 1)
+              )
+            }
+          >
             <MdKeyboardArrowRight />
           </div>
-          <div className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center">
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(allProductsData?.totalPages || 1)}
+          >
             <MdKeyboardDoubleArrowRight />
           </div>
         </div>
 
         {/* table section */}
         <div className="overflow-x-auto mt-5 border-2 p-5">
-          <table className="min-w-full bg-white">
+          <Table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[2%]">
                   <input type="checkbox" className="form-checkbox" />
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                   Image
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[18%]">
                   Name
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                   SKU
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[15%]">
                   Stock
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                   Price
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                   Categories
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                   Tags
                 </th>
-                <th className="py-2 px-4 border-b-2 border-gray-300 text-left">
+                <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[15%]">
                   Date
                 </th>
               </tr>
             </thead>
             <tbody className="border-gray-300 border-2">
-              <tr className="bg-gray-100">
-                <td className="py-2 px-4 border-b border-gray-200">
-                  <input type="checkbox" className="form-checkbox" />
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  <img
-                    src="https://via.placeholder.com/50"
-                    alt="Product Image"
-                    className="w-12 h-12 object-cover"
-                  />
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200 w-[250px]">
-                  <div>
-                    <p className="font-semibold text-[#2271b1]">
-                      RAHIKA 200MG TABLET
-                    </p>
-                  </div>
-                  <div className="flex flex-col flex-wrap gap-0">
+              {allProductsData?.data.map((singleItem) => (
+                <tr className="bg-gray-100" key={singleItem._id}>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    <input type="checkbox" className="form-checkbox" />
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    <img
+                      src={singleItem.images[0].url || " "}
+                      alt="Product Image"
+                      className="w-12 h-12 object-cover"
+                    />
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 w-[250px]">
                     <div>
-                      <p className="font-normal">ID:19232 </p>
+                      <p className="font-semibold text-[#2271b1] text-[12px]">
+                        {singleItem.title || ""}
+                      </p>
                     </div>
-                    <div className="flex gap-2">
-                      <button className="text-[#2271b1]">Edit</button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">View</button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">Duplicate</button>
+                    <div className="flex flex-col flex-wrap gap-0">
+                      <div>
+                        <p className="font-normal text-[12px]">
+                          {singleItem._id}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="text-[#2271b1]">Edit</button>{" "}
+                        <span className="text-[#2271b1]">|</span>
+                        <button className="text-[#2271b1]">View</button>{" "}
+                        <span className="text-[#2271b1]">|</span>
+                        <button className="text-[#2271b1]">Duplicate</button>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">SKU12345</td>
-                <td className="py-2 px-4 border-b border-gray-200 text-green-700 font-bold">
-                  In Stock
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">$99.99</td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  Category 1
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  Tag 1, Tag 2
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  2024-07-02
-                </td>
-              </tr>
-
-              <tr className="bg-gray-100">
-                <td className="py-2 px-4 border-b border-gray-200">
-                  <input type="checkbox" className="form-checkbox" />
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  <img
-                    src="https://via.placeholder.com/50"
-                    alt="Product Image"
-                    className="w-12 h-12 object-cover"
-                  />
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200 w-[250px]">
-                  <div>
-                    <p className="font-semibold text-[#2271b1]">
-                      RAHIKA 200MG TABLET
-                    </p>
-                  </div>
-                  <div className="flex flex-col flex-wrap gap-0">
-                    <div>
-                      <p className="font-normal">ID:19232 </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="text-[#2271b1]">Edit</button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">View</button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">Duplicate</button>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">SKU12345</td>
-                <td className="py-2 px-4 border-b border-gray-200 text-green-700 font-bold">
-                  In Stock
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">$99.99</td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  Category 1
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  Tag 1, Tag 2
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  2024-07-02
-                </td>
-              </tr>
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    {singleItem.variants[0].sku}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-green-700 font-bold text-[12px]">
+                    {singleItem.isStockAvailable ? "In Stock" : "Out of Stock"}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    {singleItem.variants[0].currency}{" "}
+                    {singleItem.variants[0].price}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    {singleItem.categoryID}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    {singleItem.tags}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    {singleItem.modifiedAt || "--"}
+                  </td>
+                </tr>
+              ))}
             </tbody>
-          </table>
+          </Table>
         </div>
       </div>
     </div>

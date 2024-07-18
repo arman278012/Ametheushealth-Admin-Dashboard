@@ -3,10 +3,10 @@ import axios from "axios";
 
 export const fetchGetProductsData = createAsyncThunk(
   "GetProducts/fetchGetProductsData",
-  async (_, thunkAPI) => {
+  async ({ page, searchQuery, pageLimit }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/category",
+        `https://api.assetorix.com:4100/ah/api/v1/product/?page=${page}&limit=${pageLimit}&search=${searchQuery}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -14,9 +14,10 @@ export const fetchGetProductsData = createAsyncThunk(
           },
         }
       );
+      console.log("slice response", response.data);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.message); // Handle error
     }
   }
 );
@@ -28,12 +29,23 @@ const initialState = {
   error: "",
   currentPage: 1,
   searchQuery: "",
+  pageLimit: 5,
 };
 
 const getProductsSlice = createSlice({
   name: "getProductsData",
   initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+    setPageLimit: (state, action) => {
+      state.pageLimit = action.payload;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchGetProductsData.pending, (state) => {
       state.isLoading = true;
@@ -51,4 +63,6 @@ const getProductsSlice = createSlice({
   },
 });
 
+export const { setPage, setPageLimit, setSearchQuery } =
+  getProductsSlice.actions;
 export default getProductsSlice.reducer;
