@@ -3,10 +3,10 @@ import axios from "axios";
 
 export const getCategoryData = createAsyncThunk(
   "getCategoryData/fetchGetCategoryData",
-  async ({ page }, { rejectWithValue }) => {
+  async ({ page, searchQuery }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/?page=${page}`,
+        `https://api.assetorix.com:4100/ah/api/v1/category/?page=${page}&search=${searchQuery}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -27,6 +27,7 @@ const initialState = {
   isError: false,
   error: "",
   currentPage: 1,
+  searchQuery: "",
 };
 
 const getCategoryDataSlice = createSlice({
@@ -35,6 +36,9 @@ const getCategoryDataSlice = createSlice({
   reducers: {
     setPage: (state, action) => {
       state.currentPage = action.payload;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -55,5 +59,5 @@ const getCategoryDataSlice = createSlice({
   },
 });
 
-export const { setPage } = getCategoryDataSlice.actions;
+export const { setPage, setSearchQuery } = getCategoryDataSlice.actions;
 export default getCategoryDataSlice.reducer;

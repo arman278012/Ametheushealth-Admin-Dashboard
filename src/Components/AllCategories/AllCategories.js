@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import parse from "html-react-parser";
 import {
   getCategoryData,
   setPage,
+  setSearchQuery,
 } from "../../redux/slice/GetCategoryDataSlice";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -20,11 +21,13 @@ import {
 } from "react-icons/md";
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import debounce from "lodash.debounce";
 
 const AllCategories = () => {
-  const { allCategoryData, isLoading, currentPage } = useSelector(
+  const { allCategoryData, isLoading, currentPage, searchQuery } = useSelector(
     (state) => state.getCategoryData
   );
+
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,29 +35,33 @@ const AllCategories = () => {
   const [expanded, setExpanded] = useState({});
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    dispatch(getCategoryData({ page: currentPage }));
-  }, [dispatch, currentPage]);
+    dispatch(getCategoryData({ page: currentPage, searchQuery }));
+  }, [dispatch, currentPage, searchQuery]);
 
   const handlePageChange = (newPage) => {
     dispatch(setPage(newPage));
   };
 
-  useEffect(() => {
-    dispatch(getCategoryData());
-  }, [dispatch]);
+  const debouncedSearch = useCallback(
+    debounce((query) => {
+      dispatch(setSearchQuery(query));
+      dispatch(setPage(1)); // Reset to the first page on a new search
+    }, 300),
+    []
+  );
 
-  const toggleExpand = (index) => {
-    setExpanded((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchInput(query);
+    debouncedSearch(query);
   };
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api.assetorix.com:4100/ah/api/v1/category/${id}`,
         {
           headers: {
@@ -64,7 +71,7 @@ const AllCategories = () => {
         }
       );
       toast.success("Data Deleted Successfully...");
-      window.location.reload();
+      dispatch(getCategoryData({ page: currentPage, searchQuery }));
     } catch (error) {
       console.log(error);
     }
@@ -79,10 +86,9 @@ const AllCategories = () => {
           type="text"
           className="py-2 rounded-xl px-3"
           placeholder="Search..."
+          value={searchInput}
+          onChange={handleSearchInputChange}
         />
-        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white sm:px-3 px-2 text-sm sm:text-[15px] rounded-xl">
-          Search Categories
-        </button>
       </div>
 
       <div>
@@ -231,26 +237,12 @@ const AllCategories = () => {
                   <Td className="py-2 px-4 border-b text-[14px]">
                     {item?.description ? (
                       expanded[index] ? (
-                        <>
-                          {parse(`<p>${item?.description}</p>`)}
-                          {/* <button
-                            onClick={() => toggleExpand(index)}
-                            className="text-blue-500 hover:underline"
-                          >
-                            Read less
-                          </button> */}
-                        </>
+                        <>{parse(`<p>${item?.description}</p>`)}</>
                       ) : (
                         <>
                           {parse(
                             `<p>${item?.description?.slice(0, 50)}...</p>`
                           )}
-                          {/* <button
-                            onClick={() => toggleExpand(index)}
-                            className="text-blue-500 hover:underline"
-                          >
-                            Read more
-                          </button> */}
                         </>
                       )
                     ) : (
