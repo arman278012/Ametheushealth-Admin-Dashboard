@@ -67,7 +67,7 @@ const AllGeneric = () => {
     }, 100);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, currentPage,pageLimit]);
+  }, [searchQuery, currentPage, pageLimit]);
 
   //delete generic data
   const deleteGenericData = async (id) => {

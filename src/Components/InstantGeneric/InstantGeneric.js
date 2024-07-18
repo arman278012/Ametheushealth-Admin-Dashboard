@@ -1,15 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
+import {
+  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
+import Skeleton from "react-loading-skeleton";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { storeGenericId } from "../../redux/slice/GetGenericIdSlice";
+import { AppContext } from "../../Context/ContextProvider";
+import parse from "html-react-parser";
 
 const InstantGeneric = () => {
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [expanded, setExpanded] = useState({});
+  const [allGenericData, setAllGenericData] = useState({});
   const [genericData, setGenericData] = useState({
     name: "",
     _id: "",
   });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { setEditGenericForm } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -67,11 +90,11 @@ const InstantGeneric = () => {
     });
   };
 
-  const searchGeneric = async (query) => {
+  const searchGeneric = async (query, page) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/?&name=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&name=${query}&limit=${9}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -79,7 +102,8 @@ const InstantGeneric = () => {
           },
         }
       );
-      setGenericData(response.data);
+      setAllGenericData(response.data);
+      console.log(genericData);
     } catch (error) {
       console.log(error);
     }
@@ -89,14 +113,18 @@ const InstantGeneric = () => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
-        searchGeneric(searchQuery);
+        searchGeneric(searchQuery, currentPage);
       } else {
-        searchGeneric("");
+        searchGeneric("", currentPage);
       }
     }, 100);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]);
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -181,7 +209,147 @@ const InstantGeneric = () => {
         </div>
       </div>
 
-      <div></div>
+      <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start">
+        <div>
+          <p className="font-bold">
+            {loading ? (
+              <Skeleton width={50} />
+            ) : (
+              (allGenericData?.totalCount || 0) + " Total items"
+            )}
+          </p>
+        </div>
+        <div
+          className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+          onClick={() => goToPage(1)}
+        >
+          <MdOutlineKeyboardDoubleArrowLeft />
+        </div>
+        <div
+          className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+          onClick={() => goToPage(allGenericData?.page - 1)}
+        >
+          <MdOutlineKeyboardArrowLeft />
+        </div>
+        <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+          <p>{loading ? <Skeleton width={20} /> : allGenericData?.page || 0}</p>
+        </div>
+        <div>
+          <p>
+            of{" "}
+            {loading ? (
+              <Skeleton width={20} />
+            ) : (
+              allGenericData?.totalPages || 0
+            )}
+          </p>
+        </div>
+        <div
+          className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+          onClick={() => goToPage(allGenericData?.page + 1)}
+        >
+          <MdKeyboardArrowRight />
+        </div>
+        <div
+          className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+          onClick={() => goToPage(allGenericData?.totalPages)}
+        >
+          <MdKeyboardDoubleArrowRight />
+        </div>
+      </div>
+
+      <div className="h-[500px]">
+        <Table className="min-w-full bg-white border border-gray-300]">
+          <Thead>
+            <Tr className=" bg-gray-200 w-[100%]">
+              <Th className="py-2 px-4 border-b w-[10%]">
+                <input type="checkbox" />
+              </Th>
+              <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
+              <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
+              <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
+              <Th className="py-2 px-4 border-b w-[40%] text-start">Uses</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {loading
+              ? Array.from({
+                  length: allGenericData.data ? allGenericData.data.length : 5,
+                }).map((_, index) => (
+                  <Tr key={index}>
+                    <Td className="py-2 px-4 border-b text-center">
+                      <Skeleton circle width={20} height={20} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <Skeleton width={100} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      <Skeleton width={100} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      <Skeleton width={200} />
+                    </Td>
+                  </Tr>
+                ))
+              : allGenericData.data?.map((item) => (
+                  <Tr
+                    key={item._id}
+                    onClick={() => dispatch(storeGenericId(item._id))}
+                  >
+                    <Td className="py-2 px-4 border-b text-center">
+                      <input type="checkbox" />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      {item?.name}
+                      {/* <div className="flex gap-2">
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => setEditGenericForm(true)}
+                      >
+                        Edit
+                      </button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => navigate(`/generic-details`)}
+                      >
+                        View
+                      </button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => {
+                          setDeleteAlert(true);
+                          setDeleteId(item._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div> */}
+                    </Td>
+
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {item?.slug}
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {item?._id}
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {item?.uses ? (
+                        expanded[item._id] ? (
+                          <>{parse(`<p>${item?.uses}</p>`)}</>
+                        ) : (
+                          <>{parse(`<p>${item.uses.slice(0, 50)}...</p>`)}</>
+                        )
+                      ) : (
+                        <>No uses available</>
+                      )}
+                    </Td>
+                  </Tr>
+                ))}
+          </Tbody>
+        </Table>
+      </div>
     </>
   );
 };
