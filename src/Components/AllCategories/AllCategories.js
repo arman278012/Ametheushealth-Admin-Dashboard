@@ -36,10 +36,12 @@ const AllCategories = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [searchInput, setSearchInput] = useState("");
+  const [isTopBaropen, setIsTopBarOpen] = useState(true);
+  const [pageLimit, setPageLimit] = useState("5");
 
   useEffect(() => {
-    dispatch(getCategoryData({ page: currentPage, searchQuery }));
-  }, [dispatch, currentPage, searchQuery]);
+    dispatch(getCategoryData({ page: currentPage, searchQuery, pageLimit }));
+  }, [dispatch, currentPage, searchQuery, pageLimit]);
 
   const handlePageChange = (newPage) => {
     dispatch(setPage(newPage));
@@ -49,7 +51,8 @@ const AllCategories = () => {
     debounce((query) => {
       dispatch(setSearchQuery(query));
       dispatch(setPage(1)); // Reset to the first page on a new search
-    }, 300),
+      dispatch(pageLimit());
+    }, 100),
     []
   );
 
@@ -79,19 +82,71 @@ const AllCategories = () => {
 
   const placeholderImage = "https://via.placeholder.com/150";
 
+  const toggleTopBar = () => {
+    setIsTopBarOpen(!isTopBaropen);
+  };
+
   return (
-    <div className="overflow-x-auto p-5 bg-gray-300">
-      <div className="mb-5 flex gap-2 justify-end">
-        <input
-          type="text"
-          className="py-2 rounded-xl px-3 w-[250px]"
-          placeholder="Search Categories..."
-          value={searchInput}
-          onChange={handleSearchInputChange}
-        />
+    <div className="overflow-x-auto p-5 ">
+      <p className="font-bold text-xl">All Categories</p>
+      <div className="mb-2">
+        <div
+          className={`overflow-hidden transition-all duration-300 ${
+            isTopBaropen ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <div className="flex gap-3">
+            {/* <p>Pagination</p> */}
+
+            <div className="flex gap-2">
+              <p>Number of items per page:</p>
+              <input
+                type="text"
+                className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
+                onChange={(e) => setPageLimit(e.target.value)}
+                value={pageLimit}
+              />
+            </div>
+
+            {/* <div className="flex justify-center items-center">
+              <button
+                onClick={(e) => setPageLimit(e.target.value)}
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
+              >
+                Apply
+              </button>
+            </div> */}
+          </div>
+        </div>
       </div>
 
-      <div>
+      <div className="main-content-div bg-gray-300 p-5">
+        <div className="flex justify-end relative -top-5">
+          <div className="bg-white h-[30px] px-3 py-1 flex justify-end">
+            <p
+              className={`cursor-pointer text-sm flex items-center`}
+              onClick={toggleTopBar}
+            >
+              OPTIONS
+              <span
+                className={`ml-1 transition-transform duration-300 ${
+                  isTopBaropen ? "rotate-180" : "rotate-0"
+                }`}
+              >
+                ▼
+              </span>
+            </p>
+          </div>
+        </div>
+        <div className="mb-5 flex gap-2 justify-end">
+          <input
+            type="text"
+            className="py-2 rounded-xl px-3 w-[250px]"
+            placeholder="Search Categories..."
+            value={searchInput}
+            onChange={handleSearchInputChange}
+          />
+        </div>
         <div className="flex sm:flex-row flex-col justify-between mb-5">
           <div className="flex gap-5">
             <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
@@ -148,124 +203,132 @@ const AllCategories = () => {
             </div>
           </div>
         </div>
-      </div>
-      <Table className="min-w-full bg-white border border-gray-300">
-        <Thead>
-          <Tr className=" bg-gray-200 w-[100%]">
-            <Th className="py-2 px-4 border-b w-[5%]">
-              <input type="checkbox" />
-            </Th>
-            <Th className="py-2 px-4 border-b text-start sm:w-[10%]">Image</Th>
-            <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Name</Th>
-            <Th className="py-2 px-4 border-b text-start sm:w-[25%]">
-              Description
-            </Th>
-            <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Slug</Th>
-            <Th className="py-2 px-4 border-b text-start sm:w-[20%]">Id</Th>
-            <Th className="py-2 px-4 border-b text-start sm:w-[10%]">Date</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {isLoading
-            ? Array.from({ length: 10 })?.map((_, index) => (
-                <Tr key={index} className="border-t">
-                  <Td className="py-2 px-4 border-b text-center">
-                    <Skeleton circle={true} height={12} width={12} />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-center">
-                    <Skeleton circle={true} height={48} width={48} />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    <Skeleton width={`80%`} />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    <Skeleton width={`80%`} count={2} />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    <Skeleton width={`50%`} />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    <Skeleton width={`50%`} />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[13px]">
-                    <Skeleton width={`50%`} />
-                  </Td>
-                </Tr>
-              ))
-            : allCategoryData?.data?.map((item, index) => (
-                <Tr
-                  key={index}
-                  className="border-t"
-                  onClick={() => dispatch(storeMyId(item._id))}
-                >
-                  <Td className="py-2 px-4 border-b text-center">
-                    <input type="checkbox" />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-center">
-                    <img
-                      src={item?.image ? item?.image : placeholderImage}
-                      alt={item?.name}
-                      className="h-12 w-12 object-cover rounded-full"
-                    />
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    {item?.name}
-                    <div className="flex gap-2">
-                      <button
-                        className="text-[#2271b1]"
-                        onClick={() => setEditAllCategoriesForm(true)}
-                      >
-                        Edit
-                      </button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button
-                        className="text-[#2271b1]"
-                        onClick={() => navigate(`/all-categories/${item?._id}`)}
-                      >
-                        View
-                      </button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button
-                        className="text-[#2271b1]"
-                        onClick={() => {
-                          setDeleteAlert(true);
-                          setSelectedId(item._id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    {item?.description ? (
-                      expanded[index] ? (
-                        <>{parse(`<p>${item?.description}</p>`)}</>
+        <Table className="min-w-full bg-white border border-gray-300">
+          <Thead>
+            <Tr className=" bg-gray-200 w-[100%]">
+              <Th className="py-2 px-4 border-b w-[5%]">
+                <input type="checkbox" />
+              </Th>
+              <Th className="py-2 px-4 border-b text-start sm:w-[10%]">
+                Image
+              </Th>
+              <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Name</Th>
+              <Th className="py-2 px-4 border-b text-start sm:w-[25%]">
+                Description
+              </Th>
+              <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Slug</Th>
+              <Th className="py-2 px-4 border-b text-start sm:w-[20%]">Id</Th>
+              <Th className="py-2 px-4 border-b text-start sm:w-[10%]">Date</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {isLoading
+              ? Array.from({ length: 10 })?.map((_, index) => (
+                  <Tr key={index} className="border-t">
+                    <Td className="py-2 px-4 border-b text-center">
+                      <Skeleton circle={true} height={12} width={12} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-center">
+                      <Skeleton circle={true} height={48} width={48} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <Skeleton width={`80%`} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <Skeleton width={`80%`} count={2} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <Skeleton width={`50%`} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <Skeleton width={`50%`} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[13px]">
+                      <Skeleton width={`50%`} />
+                    </Td>
+                  </Tr>
+                ))
+              : allCategoryData?.data?.map((item, index) => (
+                  <Tr
+                    key={index}
+                    className="border-t"
+                    onClick={() => dispatch(storeMyId(item._id))}
+                  >
+                    <Td className="py-2 px-4 border-b text-center">
+                      <input type="checkbox" />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-center">
+                      <img
+                        src={item?.image ? item?.image : placeholderImage}
+                        alt={item?.name}
+                        className="h-12 w-12 object-cover rounded-full"
+                      />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      {item?.name}
+                      <div className="flex gap-2">
+                        <button
+                          className="text-[#2271b1]"
+                          onClick={() => setEditAllCategoriesForm(true)}
+                        >
+                          Edit
+                        </button>{" "}
+                        <span className="text-[#2271b1]">|</span>
+                        <button
+                          className="text-[#2271b1]"
+                          onClick={() =>
+                            navigate(`/all-categories/${item?._id}`)
+                          }
+                        >
+                          View
+                        </button>{" "}
+                        <span className="text-[#2271b1]">|</span>
+                        <button
+                          className="text-[#2271b1]"
+                          onClick={() => {
+                            setDeleteAlert(true);
+                            setSelectedId(item._id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      {item?.description ? (
+                        expanded[index] ? (
+                          <>{parse(`<p>${item?.description}</p>`)}</>
+                        ) : (
+                          <>
+                            {parse(
+                              `<p>${item?.description?.slice(0, 50)}...</p>`
+                            )}
+                          </>
+                        )
                       ) : (
-                        <>
-                          {parse(
-                            `<p>${item?.description?.slice(0, 50)}...</p>`
-                          )}
-                        </>
-                      )
-                    ) : (
-                      <span>No description available</span>
-                    )}
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    <span className="text-green-600 font-semibold">
-                      {item?.slug}
-                    </span>
-                  </Td>
-                  <Td className="py-2 px-4 border-b text-[14px]">
-                    <span className="mr-3"> {item?._id}</span>
-                  </Td>
-                  <Td className="py-2 px-0 border-b text-[13px]">
-                    <span className=""> {item?.createdAt?.split("T")[0]}</span>
-                  </Td>
-                </Tr>
-              ))}
-        </Tbody>
-      </Table>
+                        <span>No description available</span>
+                      )}
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <span className="text-green-600 font-semibold">
+                        {item?.slug}
+                      </span>
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <span className="mr-3"> {item?._id}</span>
+                    </Td>
+                    <Td className="py-2 px-0 border-b text-[13px]">
+                      <span className="">
+                        {" "}
+                        {item?.createdAt?.split("T")[0]}
+                      </span>
+                    </Td>
+                  </Tr>
+                ))}
+          </Tbody>
+        </Table>
+      </div>
+
       {deleteAlert && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
