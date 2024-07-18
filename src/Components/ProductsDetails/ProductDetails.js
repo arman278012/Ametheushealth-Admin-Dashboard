@@ -250,27 +250,6 @@ const ProductDetails = () => {
             <option value="elderberry">Elderberry</option>
           </select>
 
-          {/* <select
-            id="fruits"
-            name="fruits"
-            className="px-3 py-1 sm:w-[220px] w-[230px] focus:outline-none rounded-md bg-white"
-          >
-            <option
-              value=""
-              selected
-              disabled
-              hidden
-              className="placeholder opacity-50"
-            >
-              Filter by product type
-            </option>
-            <option value="apple">Apple</option>
-            <option value="banana">Banana</option>
-            <option value="cherry">Cherry</option>
-            <option value="date">Date</option>
-            <option value="elderberry">Elderberry</option>
-          </select> */}
-
           <select
             id="fruits"
             name="fruits"
@@ -375,7 +354,7 @@ const ProductDetails = () => {
               </tr>
             </thead>
             <tbody className="border-gray-300 border-2">
-              {filteredProducts.map((singleItem) => (
+              {filteredProducts?.map((singleItem) => (
                 <tr className="bg-gray-100" key={singleItem._id}>
                   <td className="py-2 px-4 border-b border-gray-200">
                     <input type="checkbox" className="form-checkbox" />
