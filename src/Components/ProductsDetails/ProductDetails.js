@@ -29,7 +29,9 @@ const ProductDetails = () => {
   } = useSelector((state) => state.getproductsSlice);
 
   useEffect(() => {
-    dispatch(fetchGetProductsData({ page: currentPage, pageLimit, searchQuery }));
+    dispatch(
+      fetchGetProductsData({ page: currentPage, pageLimit, searchQuery })
+    );
   }, [dispatch, currentPage, pageLimit, searchQuery]);
 
   const toggleTopBar = () => {
@@ -47,6 +49,16 @@ const ProductDetails = () => {
   const handleSearchChange = (event) => {
     dispatch(setSearchQuery(event.target.value));
   };
+
+  const clearSearch = () => {
+    dispatch(setSearchQuery(""));
+  };
+
+  const filteredProducts = searchQuery
+    ? allProductsData?.data.filter((item) =>
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : allProductsData?.data;
 
   return (
     <div className="">
@@ -67,7 +79,7 @@ const ProductDetails = () => {
             <div className="flex gap-2">
               <p>Number of items per page:</p>
               <input
-                type="number"
+                type="text"
                 value={pageLimit}
                 onChange={handlePageLimitChange}
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
@@ -76,7 +88,15 @@ const ProductDetails = () => {
 
             <div className="flex justify-center items-center">
               <button
-                onClick={() => dispatch(fetchGetProductsData({ page: currentPage, pageLimit, searchQuery }))}
+                onClick={() =>
+                  dispatch(
+                    fetchGetProductsData({
+                      page: currentPage,
+                      pageLimit,
+                      searchQuery,
+                    })
+                  )
+                }
                 className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
               >
                 Apply
@@ -130,6 +150,7 @@ const ProductDetails = () => {
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <div>
               <input
+                placeholder="search products..."
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
@@ -139,12 +160,28 @@ const ProductDetails = () => {
 
             <div>
               <button
-                onClick={() => dispatch(fetchGetProductsData({ page: currentPage, pageLimit, searchQuery }))}
+                onClick={() =>
+                  dispatch(
+                    fetchGetProductsData({
+                      page: currentPage,
+                      pageLimit,
+                      searchQuery,
+                    })
+                  )
+                }
                 className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]"
               >
                 Search Products
               </button>
             </div>
+            {/* <div>
+              <button
+                onClick={clearSearch}
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]"
+              >
+                Clear
+              </button>
+            </div> */}
           </div>
         </div>
 
@@ -154,11 +191,17 @@ const ProductDetails = () => {
             name="fruits"
             className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
           >
-            <option value="apple">Apple</option>
-            <option value="banana">Banana</option>
-            <option value="cherry">Cherry</option>
-            <option value="date">Date</option>
-            <option value="elderberry">Elderberry</option>
+            <option
+              value=""
+              selected
+              disabled
+              hidden
+              className="placeholder opacity-50"
+            >
+              Bulk Actions
+            </option>
+            <option value="apple">Edit</option>
+            <option value="banana">Move to Trash</option>
           </select>
           <div className="sm:flex md:flex hidden justify-center items-center">
             <button className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[70px] h-[30px] text-white rounded-md">
@@ -207,7 +250,7 @@ const ProductDetails = () => {
             <option value="elderberry">Elderberry</option>
           </select>
 
-          <select
+          {/* <select
             id="fruits"
             name="fruits"
             className="px-3 py-1 sm:w-[220px] w-[230px] focus:outline-none rounded-md bg-white"
@@ -226,7 +269,7 @@ const ProductDetails = () => {
             <option value="cherry">Cherry</option>
             <option value="date">Date</option>
             <option value="elderberry">Elderberry</option>
-          </select>
+          </select> */}
 
           <select
             id="fruits"
@@ -242,11 +285,11 @@ const ProductDetails = () => {
             >
               Filter by stock status
             </option>
-            <option value="apple">Apple</option>
-            <option value="banana">Banana</option>
-            <option value="cherry">Cherry</option>
+            <option value="apple">In stock</option>
+            <option value="banana">Out of stock</option>
+            {/* <option value="cherry">Cherry</option>
             <option value="date">Date</option>
-            <option value="elderberry">Elderberry</option>
+            <option value="elderberry">Elderberry</option> */}
           </select>
 
           <div className="flex justify-center items-center">
@@ -259,7 +302,7 @@ const ProductDetails = () => {
         {/* Pagination section */}
         <div className="flex px-5 py-2 gap-3 justify-end">
           <div>
-            <p>{allProductsData?.totalProducts}</p>
+            <p>{filteredProducts?.length || 0} results</p>
           </div>
           <div
             className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
@@ -269,9 +312,7 @@ const ProductDetails = () => {
           </div>
           <div
             className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-            onClick={() =>
-              handlePageChange(Math.max(currentPage - 1, 1))
-            }
+            onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
           >
             <MdOutlineKeyboardArrowLeft />
           </div>
@@ -334,7 +375,7 @@ const ProductDetails = () => {
               </tr>
             </thead>
             <tbody className="border-gray-300 border-2">
-              {allProductsData?.data.map((singleItem) => (
+              {filteredProducts.map((singleItem) => (
                 <tr className="bg-gray-100" key={singleItem._id}>
                   <td className="py-2 px-4 border-b border-gray-200">
                     <input type="checkbox" className="form-checkbox" />
