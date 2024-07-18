@@ -51,7 +51,6 @@ const AllCategories = () => {
     debounce((query) => {
       dispatch(setSearchQuery(query));
       dispatch(setPage(1)); // Reset to the first page on a new search
-      dispatch(pageLimit());
     }, 100),
     []
   );
