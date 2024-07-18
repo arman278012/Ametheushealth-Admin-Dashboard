@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 
 const InstantGeneric = () => {
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [genericData, setGenericData] = useState({
     name: "",
     _id: "",
@@ -65,6 +67,37 @@ const InstantGeneric = () => {
     });
   };
 
+  const searchGeneric = async (query) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/generic/?&name=${query}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setGenericData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery) {
+        searchGeneric(searchQuery);
+      } else {
+        searchGeneric("");
+      }
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
   return (
     <>
       <div className="w-[75vw] mx-auto flex justify-center items-center py-1 gap-5">
@@ -79,8 +112,8 @@ const InstantGeneric = () => {
                 <input
                   type="text"
                   name="name"
-                  //   value={formData.name}
-                  //   onChange={handleChange}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="search data here..."
                   className="p-3 border rounded-xl h-[45px] w-[300px]"
                 />
