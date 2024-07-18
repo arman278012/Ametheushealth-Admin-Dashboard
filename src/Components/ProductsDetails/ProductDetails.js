@@ -16,6 +16,23 @@ import {
 } from "../../redux/slice/GetProductsSlice";
 
 const ProductDetails = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selected, setSelected] = useState("");
+
+  const categories = [
+    "Apple",
+    "Banana",
+    "Cherry",
+    "Date",
+    "Fig",
+    "Grape",
+    "Honeydew",
+  ];
+
+  const filteredCategories = categories.filter((category) =>
+    category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const [isTopBarOpen, setIsTopBarOpen] = useState(true);
   const dispatch = useDispatch();
   const {
@@ -229,26 +246,40 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <select
-            id="fruits"
-            name="fruits"
-            className="px-3 py-1 sm:w-[200px] w-[230px] focus:outline-none rounded-md bg-white"
-          >
-            <option
-              value=""
-              selected
-              disabled
-              hidden
-              className="placeholder opacity-50"
+          <div className="relative inline-block w-full sm:w-[200px]">
+            <button
+              className="px-3 py-1 w-full text-left focus:outline-none rounded-md bg-white border"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              Filter by category
-            </option>
-            <option value="apple">Apple</option>
-            <option value="banana">Banana</option>
-            <option value="cherry">Cherry</option>
-            <option value="date">Date</option>
-            <option value="elderberry">Elderberry</option>
-          </select>
+              {selected || "Filter by category"}
+            </button>
+            {isOpen && (
+              <div className="absolute mt-1 w-full bg-white border rounded-md shadow-lg">
+                <input
+                  type="text"
+                  className="px-3 py-1 w-full focus:outline-none rounded-md"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <ul className="max-h-60 overflow-y-auto">
+                  {filteredCategories.map((category, index) => (
+                    <li
+                      key={index}
+                      className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        setSelected(category);
+                        setIsOpen(false);
+                        setSearchTerm("");
+                      }}
+                    >
+                      {category}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
           <select
             id="fruits"
@@ -266,9 +297,6 @@ const ProductDetails = () => {
             </option>
             <option value="apple">In stock</option>
             <option value="banana">Out of stock</option>
-            {/* <option value="cherry">Cherry</option>
-            <option value="date">Date</option>
-            <option value="elderberry">Elderberry</option> */}
           </select>
 
           <div className="flex justify-center items-center">
