@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { fetchGetProductsData } from "../../redux/slice/GetProductsSlice";
 
 const ProductDetails = () => {
   const [isTopBaropen, setIsTopBarOpen] = useState(true);
+  const dispatch = useDispatch();
+  const { allProductsData, isLoading, isError, error } = useSelector(
+    (state) => state.getproductsSlice
+  );
+
+  console.log(allProductsData);
+
+  useEffect(() => {
+    dispatch(fetchGetProductsData());
+  }, [dispatch]);
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBaropen);
