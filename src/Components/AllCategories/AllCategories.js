@@ -84,8 +84,8 @@ const AllCategories = () => {
       <div className="mb-5 flex gap-2 justify-end">
         <input
           type="text"
-          className="py-2 rounded-xl px-3"
-          placeholder="Search..."
+          className="py-2 rounded-xl px-3 w-[250px]"
+          placeholder="Search Categories..."
           value={searchInput}
           onChange={handleSearchInputChange}
         />
@@ -151,16 +151,18 @@ const AllCategories = () => {
       </div>
       <Table className="min-w-full bg-white border border-gray-300">
         <Thead>
-          <Tr className="w-full bg-gray-200">
-            <Th className="py-2 px-4 border-b">
+          <Tr className=" bg-gray-200 w-[100%]">
+            <Th className="py-2 px-4 border-b w-[5%]">
               <input type="checkbox" />
             </Th>
-            <Th className="py-2 px-4 border-b">Image</Th>
-            <Th className="py-2 px-4 border-b">Name</Th>
-            <Th className="py-2 px-4 border-b">Description</Th>
-            <Th className="py-2 px-4 border-b">Slug</Th>
-            <Th className="py-2 px-4 border-b">Id</Th>
-            <Th className="py-2 px-4 border-b">Date</Th>
+            <Th className="py-2 px-4 border-b text-start sm:w-[10%]">Image</Th>
+            <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Name</Th>
+            <Th className="py-2 px-4 border-b text-start sm:w-[25%]">
+              Description
+            </Th>
+            <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Slug</Th>
+            <Th className="py-2 px-4 border-b text-start sm:w-[20%]">Id</Th>
+            <Th className="py-2 px-4 border-b text-start sm:w-[10%]">Date</Th>
           </Tr>
         </Thead>
         <Tbody>
