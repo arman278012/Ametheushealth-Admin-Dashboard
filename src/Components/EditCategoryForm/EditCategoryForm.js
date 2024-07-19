@@ -35,6 +35,8 @@ const EditCategoryForm = () => {
   const storedId = useSelector(selectStoredId); // Fetch stored ID from Redux store
   const { data } = useSelector((state) => state.AddCategory);
 
+  console.log(storedId);
+
   const dispatch = useDispatch();
   const { setEditAllCategoriesForm } = useContext(AppContext);
 
@@ -51,21 +53,23 @@ const EditCategoryForm = () => {
           },
         }
       );
-      const categoryData = response.data.category;
+      console.log("1", response.data);
+      const categoryData = response.data;
+      console.log("2", response.data, categoryData);
       setFormValues({
-        name: categoryData.name || "",
-        parent: categoryData.parent || "",
-        slug: categoryData.slug || "",
-        description: categoryData.description || "",
-        metaTags: categoryData.metaTags || "",
-        metaTitle: categoryData.metaTitle || "",
-        metaDescription: categoryData.metaDescription || "",
+        name: categoryData?.name || "",
+        parent: categoryData?.parent || "",
+        slug: categoryData?.slug || "",
+        description: categoryData?.description || "",
+        metaTags: categoryData?.metaTags || "",
+        metaTitle: categoryData?.metaTitle || "",
+        metaDescription: categoryData?.metaDescription || "",
         image: null,
         file: null,
       });
-      setImageData(response.data.category);
+      setImageData(response.data);
       console.log(imageData);
-      // console.log(response.data.category)
+      console.log("category", response?.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -263,7 +267,7 @@ const EditCategoryForm = () => {
                       name="name"
                       type="text"
                       placeholder="Enter your name"
-                      value={formValues.name}
+                      value={formValues?.name || ""}
                       onChange={handleChange}
                     />
                   )}
@@ -482,7 +486,9 @@ const EditCategoryForm = () => {
                           Delete
                         </button>
                       </div>
-                    ):(<p className="font-semibold">No image here</p>)}
+                    ) : (
+                      <p className="font-semibold">No image here</p>
+                    )}
                     {deleteAlert && (
                       <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="absolute inset-0 opacity-50"></div>
@@ -547,7 +553,9 @@ const EditCategoryForm = () => {
                         </button>
                       </div>
                     ) : (
-                      <span className="font-semibold">No document file here</span>
+                      <span className="font-semibold">
+                        No document file here
+                      </span>
                     )}
                     {deleteAlert && (
                       <div className="fixed inset-0 flex items-center justify-center z-50">
