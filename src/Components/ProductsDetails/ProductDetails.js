@@ -19,16 +19,10 @@ const ProductDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selected, setSelected] = useState("");
+  const [isDropOpen, setIsDropOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
-  const categories = [
-    "Apple",
-    "Banana",
-    "Cherry",
-    "Date",
-    "Fig",
-    "Grape",
-    "Honeydew",
-  ];
+  const categories = ["Date", "Fig", "Grape", "Honeydew"];
 
   const filteredCategories = categories.filter((category) =>
     category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -76,6 +70,14 @@ const ProductDetails = () => {
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : allProductsData?.data;
+
+  const toggleDropdown = () => {
+    setIsDropOpen(!isDropOpen);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
   return (
     <div className="">
@@ -246,37 +248,47 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <div className="relative inline-block w-full sm:w-[200px]">
-            <button
-              className="px-3 py-1 w-full text-left focus:outline-none rounded-md bg-white border"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {selected || "Filter by category"}
-            </button>
-            {isOpen && (
-              <div className="absolute mt-1 w-full bg-white border rounded-md shadow-lg">
-                <input
-                  type="text"
-                  className="px-3 py-1 w-full focus:outline-none rounded-md"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <ul className="max-h-60 overflow-y-auto">
-                  {filteredCategories.map((category, index) => (
-                    <li
-                      key={index}
-                      className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        setSelected(category);
-                        setIsOpen(false);
-                        setSearchTerm("");
-                      }}
-                    >
-                      {category}
-                    </li>
-                  ))}
-                </ul>
+          <div className="relative inline-block text-left">
+            <div>
+              <button
+                type="button"
+                className="w-[200px] px-3 py-1 h-[33px] inline-flex justify-center rounded-md border border-gray-300 shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none "
+                onClick={toggleDropdown}
+              >
+                Options
+                <svg
+                  className="-mr-1 ml-2 h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {isDropOpen && (
+              <div
+                className="origin-top-right absolute -right-2 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabIndex="-1"
+              >
+                <div className="p-2" role="none">
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                    placeholder="Search here..."
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -291,7 +303,7 @@ const ProductDetails = () => {
               selected
               disabled
               hidden
-              className="placeholder opacity-50"
+              className="placeholder opacity-50 foutline-none"
             >
               Filter by stock status
             </option>
