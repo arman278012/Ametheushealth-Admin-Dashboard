@@ -206,6 +206,8 @@ const AddGeneric = () => {
                       )}
                     </div>
                   </div>
+
+                  
                 </div>
 
                 <button className="mt-5 bg-[#13a3bc] hover:bg-[#13b6d5] w-[100%] font-bold text-white py-2 rounded-xl">
