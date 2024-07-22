@@ -9,6 +9,7 @@ import { MdOutlineDescription } from "react-icons/md";
 import { LiaQuestionSolid } from "react-icons/lia";
 import { MdAssignmentAdd } from "react-icons/md";
 import { DiHtml53dEffects } from "react-icons/di";
+import { PiSelectionSlashFill } from "react-icons/pi";
 
 const initialValues = {
   title: "",
@@ -157,129 +158,146 @@ const AddProduct = () => {
             touched,
           }) => (
             <form onSubmit={handleSubmit}>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-[100%] main-parent">
                 <div className="w-[75%] flex gap-5">
-                  <div className="flex flex-col gap-3 w-[25%] p-3">
-                    <div
-                      className={`${
-                        activeSection === "name"
-                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                          : " flex gap-2"
-                      }`}
-                    >
-                      <button onClick={() => setActiveSection("name")}>
-                        Names
-                      </button>
-                      <MdDriveFileRenameOutline className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
-
-                    <div
-                      className={`${
-                        activeSection === "description"
-                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                          : "flex gap-2"
-                      }`}
-                    >
-                      <button
-                        className="text-sm"
-                        onClick={() => setActiveSection("description")}
+                  <div className="flex w-[100%]">
+                    <div className="flex flex-col gap-3 w-[25%] p-3">
+                      <div
+                        className={`${
+                          activeSection === "name"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
                       >
-                        Description
-                      </button>
-                      <MdOutlineDescription className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
+                        <button onClick={() => setActiveSection("name")}>
+                          Names
+                        </button>
+                        <MdDriveFileRenameOutline className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
 
-                    <div
-                      className={`${
-                        activeSection === "shortDescription"
-                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                          : " flex gap-2"
-                      }`}
-                    >
-                      <button
-                        className="text-sm"
-                        onClick={() => setActiveSection("shortDescription")}
+                      <div
+                        className={`${
+                          activeSection === "description"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : "flex gap-2"
+                        }`}
                       >
-                        Short Description
-                      </button>
-                      <MdOutlineDescription className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("description")}
+                        >
+                          Description
+                        </button>
+                        <MdOutlineDescription className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
 
-                    <div
-                      className={`${
-                        activeSection === "moreInformation"
-                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                          : " flex gap-2"
-                      }`}
-                    >
-                      <button
-                        className="text-sm"
-                        onClick={() => setActiveSection("moreInformation")}
+                      <div
+                        className={`${
+                          activeSection === "shortDescription"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
                       >
-                        More Information
-                      </button>
-                      <MdMore className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("shortDescription")}
+                        >
+                          Short Description
+                        </button>
+                        <MdOutlineDescription className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
 
-                    <div
-                      className={`${
-                        activeSection === "faq"
-                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                          : " flex gap-2"
-                      }`}
-                    >
-                      <button
-                        className="text-sm"
-                        onClick={() => setActiveSection("faq")}
+                      <div
+                        className={`${
+                          activeSection === "moreInformation"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
                       >
-                        Faq
-                      </button>
-                      <LiaQuestionSolid className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("moreInformation")}
+                        >
+                          More Information
+                        </button>
+                        <MdMore className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
 
-                    <div
-                      className={`${
-                        activeSection === "additionalInformation"
-                          ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
-                          : " flex gap-2 text-sm"
-                      }`}
-                    >
-                      <button
-                        onClick={() =>
-                          setActiveSection("additionalInformation")
-                        }
+                      <div
+                        className={`${
+                          activeSection === "faq"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
                       >
-                        Additional Information
-                      </button>
-                      <MdAssignmentAdd className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("faq")}
+                        >
+                          Faq
+                        </button>
+                        <LiaQuestionSolid className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
 
-                    <div
-                      className={`${
-                        activeSection === "sideEffects"
-                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                          : " flex gap-2"
-                      }`}
-                    >
-                      <button
-                        className="text-sm"
-                        onClick={() => setActiveSection("sideEffects")}
+                      <div
+                        className={`${
+                          activeSection === "additionalInformation"
+                            ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
+                            : " flex gap-2 text-sm"
+                        }`}
                       >
-                        Side Effects
-                      </button>
-                      <DiHtml53dEffects className="mt-1 text-sm" />
-                    </div>
-                    <div className="w-full h-[1px] bg-gray-300"></div>
-                  </div>
+                        <button
+                          onClick={() =>
+                            setActiveSection("additionalInformation")
+                          }
+                        >
+                          Additional Information
+                        </button>
+                        <MdAssignmentAdd className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
 
-                  <div className="left flex flex-col gap-3 p-3 border w-[75%] mt-5">
-                    <div className="flex flex-col gap-5">
+                      <div
+                        className={`${
+                          activeSection === "sideEffects"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
+                      >
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("sideEffects")}
+                        >
+                          Side Effects
+                        </button>
+                        <DiHtml53dEffects className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
+
+                      <div
+                        className={`${
+                          activeSection === "yes-no"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
+                      >
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("yes-no")}
+                        >
+                          Selections
+                        </button>
+                        <PiSelectionSlashFill className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
+                    </div>
+
+                    <div className="flex flex-col gap-5 left  p-3 border w-[75%] mt-5">
                       {activeSection === "name" && (
                         <div>
                           <div className="flex flex-col w-full">
@@ -504,6 +522,25 @@ const AddProduct = () => {
                                 {errors.sideEffects}
                               </div>
                             )}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "yes-no" && (
+                        <div className="flex flex-col">
+                          <label className="px-3 font-bold">
+                            IsReturnable?
+                          </label>
+                          <div className="relative inline-block text-left">
+                            <select
+                              value={retunSelectedOption}
+                              onChange={handleChange}
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option disabled>Select an option</option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
                           </div>
                         </div>
                       )}
