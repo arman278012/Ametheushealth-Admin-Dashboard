@@ -66,14 +66,21 @@ const AddProduct = () => {
   }, []);
 
   const handleTagInputChange = (e, setFieldValue) => {
-    setFieldValue("tags", e.target.value);
+    const value = e.target.value;
+    setFieldValue("tagsInput", value);
   };
 
   const handleAddTag = (e, values, setFieldValue) => {
     e.preventDefault();
-    if (values.tags.trim()) {
-      setTags([...tags, values.tags.trim()]);
-      setFieldValue("tags", ""); // Clear the input field
+    const newTags = values.tagsInput
+      .split(" ")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag); // Filter out empty tags
+    if (newTags.length > 0) {
+      const updatedTags = [...tags, ...newTags];
+      setTags(updatedTags);
+      setFieldValue("tags", updatedTags.join(", "));
+      setFieldValue("tagsInput", ""); // Clear the input field
     }
   };
 
@@ -312,6 +319,7 @@ const AddProduct = () => {
               </div>
 
               <div className="right w-[30%] mt-5 px-2">
+                {/* product categories */}
                 <div className="product-categories border rounded-xl p-3 fixed-width-card">
                   <div className="flex justify-between items-center px-3">
                     <label className="font-bold">All Categories</label>
@@ -462,7 +470,7 @@ const AddProduct = () => {
                     >
                       <div className="flex flex-col gap-3">
                         <div className="flex justify-around">
-                          <Field name="tags">
+                          <Field name="tagsInput">
                             {({ field }) => (
                               <input
                                 type="text"
@@ -472,7 +480,7 @@ const AddProduct = () => {
                                 onChange={(e) =>
                                   handleTagInputChange(e, setFieldValue)
                                 }
-                                value={values.tags}
+                                value={values.tagsInput}
                               />
                             )}
                           </Field>
@@ -490,11 +498,9 @@ const AddProduct = () => {
                       {tags.length > 0 && (
                         <div className="mt-3">
                           {tags.map((tag, index) => (
-                            <>
-                              <p key={index} className="px-2 py-1">
-                                {tag}
-                              </p>
-                            </>
+                            <p key={index} className="px-2 py-1">
+                              {tag}
+                            </p>
                           ))}
                         </div>
                       )}
