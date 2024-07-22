@@ -3,6 +3,12 @@ import { Field, Formik } from "formik";
 import JoditEditor from "jodit-react";
 import React, { useEffect, useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { MdMore } from "react-icons/md";
+import { MdOutlineDescription } from "react-icons/md";
+import { LiaQuestionSolid } from "react-icons/lia";
+import { MdAssignmentAdd } from "react-icons/md";
+import { DiHtml53dEffects } from "react-icons/di";
 
 const initialValues = {
   title: "",
@@ -17,6 +23,11 @@ const initialValues = {
   categoryID: "",
   tags: "",
   genericID: "",
+  isReturnable: "false",
+  isPrescriptionRequired: "true",
+  isVisible: "true",
+  isFeatured: "false",
+  isDiscontinued: "false",
 };
 
 const AddProduct = () => {
@@ -26,8 +37,10 @@ const AddProduct = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [productTags, setProductTags] = useState(false);
   const [tags, setTags] = useState([]);
-  const [genericsopen, setGenericsOpen] = useState(true);
+  const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
+  const [retunSelectedOption, setReturnSelectedOption] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   const toggleOpen = (e) => {
     e.preventDefault();
@@ -126,6 +139,7 @@ const AddProduct = () => {
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
       <p className="text-[16px] font-bold">Add Products</p>
+      <div></div>
       <div className="flex flex-wrap gap-10 border border-gray-300 mt-5">
         <Formik
           initialValues={initialValues}
@@ -142,351 +156,371 @@ const AddProduct = () => {
             errors,
             touched,
           }) => (
-            <form onSubmit={handleSubmit} className="flex gap-10 py-5">
-              <div className="left w-[70%] flex flex-col gap-3 ml-2">
-                <div className="flex flex-col gap-5">
-                  <div className="flex flex-col w-full">
-                    <label className="font-semibold px-2 opacity-65">
-                      Product Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Product name"
-                      className="h-[35px] border px-2"
-                      onChange={handleChange}
-                      name="title"
-                      value={values.title}
-                    />
-                  </div>
-
-                  <div className="flex flex-col md:flex-row gap-5">
-                    <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65">
-                        Generic Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Generic name"
-                        name="generic"
-                        value={values.generic}
-                        className="h-[35px] border px-2"
-                        onChange={handleChange}
-                      />
+            <form onSubmit={handleSubmit}>
+              <div className="flex gap-2">
+                <div className="w-[75%] flex gap-5">
+                  <div className="flex flex-col gap-3 w-[25%] p-3">
+                    <div
+                      className={`${
+                        activeSection === "name"
+                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                          : " flex gap-2"
+                      }`}
+                    >
+                      <button onClick={() => setActiveSection("name")}>
+                        Names
+                      </button>
+                      <MdDriveFileRenameOutline className="mt-1 text-sm" />
                     </div>
-                    <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65">
-                        Treatment
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Treatment"
-                        className="h-[35px] border px-2"
-                        onChange={handleChange}
-                        value={values.treatment}
-                        name="treatment"
-                      />
-                    </div>
-                  </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
 
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">Description</label>
-                    <div>
-                      <Field name="description">
-                        {({ field }) => (
-                          <JoditEditor
-                            value={values.description}
-                            onChange={(value) =>
-                              handleChange({
-                                target: {
-                                  name: "description",
-                                  value: value,
-                                },
-                              })
-                            }
-                            required
-                          />
-                        )}
-                      </Field>
-                      {errors.description && touched.description && (
-                        <div className="text-red-500">{errors.description}</div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">Short Description</label>
-                    <div>
-                      <Field name="shortDescription">
-                        {({ field }) => (
-                          <JoditEditor
-                            value={values.shortDescription}
-                            onChange={(value) =>
-                              handleChange({
-                                target: {
-                                  name: "shortDescription",
-                                  value: value,
-                                },
-                              })
-                            }
-                            required
-                          />
-                        )}
-                      </Field>
-                      {errors.shortDescription && touched.shortDescription && (
-                        <div className="text-red-500">
-                          {errors.shortDescription}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">More Information</label>
-                    <div>
-                      <Field name="moreInformation">
-                        {({ field }) => (
-                          <JoditEditor
-                            value={values.moreInformation}
-                            onChange={(value) =>
-                              handleChange({
-                                target: {
-                                  name: "moreInformation",
-                                  value: value,
-                                },
-                              })
-                            }
-                            required
-                          />
-                        )}
-                      </Field>
-                      {errors.moreInformation && touched.moreInformation && (
-                        <div className="text-red-500">
-                          {errors.moreInformation}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">Faq</label>
-                    <div>
-                      <Field name="faq">
-                        {({ field }) => (
-                          <JoditEditor
-                            value={values.faq}
-                            onChange={(value) =>
-                              handleChange({
-                                target: {
-                                  name: "faq",
-                                  value: value,
-                                },
-                              })
-                            }
-                            required
-                          />
-                        )}
-                      </Field>
-                      {errors.faq && touched.faq && (
-                        <div className="text-red-500">{errors.faq}</div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">
-                      Additional Information
-                    </label>
-                    <div>
-                      <Field name="additionalInformation">
-                        {({ field }) => (
-                          <JoditEditor
-                            value={values.additionalInformation}
-                            onChange={(value) =>
-                              handleChange({
-                                target: {
-                                  name: "additionalInformation",
-                                  value: value,
-                                },
-                              })
-                            }
-                            required
-                          />
-                        )}
-                      </Field>
-                      {errors.additionalInformation &&
-                        touched.additionalInformation && (
-                          <div className="text-red-500">
-                            {errors.additionalInformation}
-                          </div>
-                        )}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-2">
-                    <label className="px-3 font-bold">Side Effects</label>
-                    <div>
-                      <Field name="sideEffects">
-                        {({ field }) => (
-                          <JoditEditor
-                            value={values.sideEffects}
-                            onChange={(value) =>
-                              handleChange({
-                                target: {
-                                  name: "sideEffects",
-                                  value: value,
-                                },
-                              })
-                            }
-                            required
-                          />
-                        )}
-                      </Field>
-                      {errors.sideEffects && touched.sideEffects && (
-                        <div className="text-red-500">{errors.sideEffects}</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="right w-[30%] mt-5 px-2">
-                {/* product categories */}
-                <div className="product-categories border rounded-xl p-3 fixed-width-card">
-                  <div className="flex justify-between items-center px-3">
-                    <label className="font-bold">All Categories</label>
-                    <button onClick={toggleOpen} className="focus:outline-none">
-                      {isOpen ? (
-                        <FaChevronUp className="text-blue-500" />
-                      ) : (
-                        <FaChevronDown className="text-blue-500" />
-                      )}
-                    </button>
-                  </div>
-                  <div
-                    className={`category-list mt-3 ${
-                      isOpen
-                        ? "h-[300px] overflow-y-auto"
-                        : "h-0 overflow-hidden"
-                    } transition-all duration-300`}
-                  >
-                    {hierarchyData?.map((item) => (
-                      <div className="border-2 p-5" key={item._id}>
-                        <div className="flex items-center mb-2">
-                          <input
-                            type="radio"
-                            id={item._id}
-                            name="categoryID"
-                            value={item._id}
-                            className="mr-2"
-                            onChange={(e) =>
-                              handleRadioChange(setFieldValue, e)
-                            }
-                            checked={values.categoryID === item._id}
-                          />
-                          <label htmlFor={item._id} className="font-bold">
-                            {item.name}
-                          </label>
-                        </div>
-                        {item.children &&
-                          item.children.map((child) => (
-                            <div key={child._id}>
-                              <div className="flex items-center mb-2 ml-4">
-                                <input
-                                  type="radio"
-                                  id={child._id}
-                                  name="categoryID"
-                                  value={child._id}
-                                  className="mr-2"
-                                  onChange={handleChange}
-                                  checked={values.categoryID.includes(
-                                    child._id
-                                  )}
-                                />
-                                <label htmlFor={child._id}>
-                                  &nbsp; {child.name}
-                                </label>
-                              </div>
-                              {child.children &&
-                                child.children.map((child2) => (
-                                  <div key={child2._id}>
-                                    <div className="flex items-center mb-2 ml-8">
-                                      <input
-                                        type="radio"
-                                        id={child2._id}
-                                        name="categoryID"
-                                        value={child2._id}
-                                        className="mr-2"
-                                        onChange={handleChange}
-                                        checked={values.categoryID.includes(
-                                          child2._id
-                                        )}
-                                      />
-                                      <label htmlFor={child2._id}>
-                                        &nbsp; &nbsp; {child2.name}
-                                      </label>
-                                    </div>
-                                    {child2.children &&
-                                      child2.children.map((child3) => (
-                                        <div key={child3._id}>
-                                          <div className="flex items-center mb-2 ml-12">
-                                            <input
-                                              type="radio"
-                                              id={child3._id}
-                                              name="categoryID"
-                                              value={child3._id}
-                                              className="mr-2"
-                                              onChange={handleChange}
-                                              checked={values.categoryID.includes(
-                                                child3._id
-                                              )}
-                                            />
-                                            <label htmlFor={child3._id}>
-                                              &nbsp; &nbsp; &nbsp; {child3.name}
-                                            </label>
-                                          </div>
-                                          {child3.children &&
-                                            child3.children.map((child4) => (
-                                              <div key={child4._id}>
-                                                <div className="flex items-center mb-2 ml-16">
-                                                  <input
-                                                    type="radio"
-                                                    id={child4._id}
-                                                    name="categoryID"
-                                                    value={child4._id}
-                                                    className="mr-2"
-                                                    onChange={handleChange}
-                                                    checked={values.categoryID.includes(
-                                                      child4._id
-                                                    )}
-                                                  />
-                                                  <label htmlFor={child4._id}>
-                                                    &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                                                    {child4.name}
-                                                  </label>
-                                                </div>
-                                              </div>
-                                            ))}
-                                        </div>
-                                      ))}
-                                  </div>
-                                ))}
-                            </div>
-                          ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* product tags */}
-                <div className="mt-5">
-                  <div className="product-tags border rounded-xl p-3 fixed-width-card">
-                    <div className="flex justify-between items-center px-3">
-                      <label className="font-bold">Product Tags</label>
+                    <div
+                      className={`${
+                        activeSection === "description"
+                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                          : "flex gap-2"
+                      }`}
+                    >
                       <button
-                        onClick={toggleProductOpen}
+                        className="text-sm"
+                        onClick={() => setActiveSection("description")}
+                      >
+                        Description
+                      </button>
+                      <MdOutlineDescription className="mt-1 text-sm" />
+                    </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
+
+                    <div
+                      className={`${
+                        activeSection === "shortDescription"
+                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                          : " flex gap-2"
+                      }`}
+                    >
+                      <button
+                        className="text-sm"
+                        onClick={() => setActiveSection("shortDescription")}
+                      >
+                        Short Description
+                      </button>
+                      <MdOutlineDescription className="mt-1 text-sm" />
+                    </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
+
+                    <div
+                      className={`${
+                        activeSection === "moreInformation"
+                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                          : " flex gap-2"
+                      }`}
+                    >
+                      <button
+                        className="text-sm"
+                        onClick={() => setActiveSection("moreInformation")}
+                      >
+                        More Information
+                      </button>
+                      <MdMore className="mt-1 text-sm" />
+                    </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
+
+                    <div
+                      className={`${
+                        activeSection === "faq"
+                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                          : " flex gap-2"
+                      }`}
+                    >
+                      <button
+                        className="text-sm"
+                        onClick={() => setActiveSection("faq")}
+                      >
+                        Faq
+                      </button>
+                      <LiaQuestionSolid className="mt-1 text-sm" />
+                    </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
+
+                    <div
+                      className={`${
+                        activeSection === "additionalInformation"
+                          ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
+                          : " flex gap-2 text-sm"
+                      }`}
+                    >
+                      <button
+                        onClick={() =>
+                          setActiveSection("additionalInformation")
+                        }
+                      >
+                        Additional Information
+                      </button>
+                      <MdAssignmentAdd className="mt-1 text-sm" />
+                    </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
+
+                    <div
+                      className={`${
+                        activeSection === "sideEffects"
+                          ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                          : " flex gap-2"
+                      }`}
+                    >
+                      <button
+                        className="text-sm"
+                        onClick={() => setActiveSection("sideEffects")}
+                      >
+                        Side Effects
+                      </button>
+                      <DiHtml53dEffects className="mt-1 text-sm" />
+                    </div>
+                    <div className="w-full h-[1px] bg-gray-300"></div>
+                  </div>
+
+                  <div className="left flex flex-col gap-3 p-3 border w-[75%] mt-5">
+                    <div className="flex flex-col gap-5">
+                      {activeSection === "name" && (
+                        <div>
+                          <div className="flex flex-col w-full">
+                            <label className="font-semibold px-2 opacity-65">
+                              Product Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Product name"
+                              className="h-[35px] border px-2"
+                              onChange={handleChange}
+                              name="title"
+                              value={values.title}
+                            />
+                          </div>
+
+                          <div className="flex flex-col md:flex-row gap-5">
+                            <div className="flex flex-col w-full">
+                              <label className="font-semibold px-2 opacity-65">
+                                Generic Name
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Generic name"
+                                name="generic"
+                                value={values.generic}
+                                className="h-[35px] border px-2"
+                                onChange={handleChange}
+                              />
+                            </div>
+                            <div className="flex flex-col w-full">
+                              <label className="font-semibold px-2 opacity-65">
+                                Treatment
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Treatment"
+                                className="h-[35px] border px-2"
+                                onChange={handleChange}
+                                value={values.treatment}
+                                name="treatment"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "description" && (
+                        <div className="mt-5 flex flex-col gap-2">
+                          <label className="px-3 font-bold">Description</label>
+                          <div>
+                            <Field name="description">
+                              {({ field }) => (
+                                <JoditEditor
+                                  value={values.description}
+                                  onChange={(value) =>
+                                    handleChange({
+                                      target: {
+                                        name: "description",
+                                        value: value,
+                                      },
+                                    })
+                                  }
+                                  required
+                                />
+                              )}
+                            </Field>
+                            {errors.description && touched.description && (
+                              <div className="text-red-500">
+                                {errors.description}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "shortDescription" && (
+                        <div className="mt-5 flex flex-col gap-2">
+                          <label className="px-3 font-bold">
+                            Short Description
+                          </label>
+                          <div>
+                            <Field name="shortDescription">
+                              {({ field }) => (
+                                <JoditEditor
+                                  value={values.shortDescription}
+                                  onChange={(value) =>
+                                    handleChange({
+                                      target: {
+                                        name: "shortDescription",
+                                        value: value,
+                                      },
+                                    })
+                                  }
+                                  required
+                                />
+                              )}
+                            </Field>
+                            {errors.shortDescription &&
+                              touched.shortDescription && (
+                                <div className="text-red-500">
+                                  {errors.shortDescription}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "moreInformation" && (
+                        <div className="mt-5 flex flex-col gap-2">
+                          <label className="px-3 font-bold">
+                            More Information
+                          </label>
+                          <div>
+                            <Field name="moreInformation">
+                              {({ field }) => (
+                                <JoditEditor
+                                  value={values.moreInformation}
+                                  onChange={(value) =>
+                                    handleChange({
+                                      target: {
+                                        name: "moreInformation",
+                                        value: value,
+                                      },
+                                    })
+                                  }
+                                  required
+                                />
+                              )}
+                            </Field>
+                            {errors.moreInformation &&
+                              touched.moreInformation && (
+                                <div className="text-red-500">
+                                  {errors.moreInformation}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "faq" && (
+                        <div className="mt-5 flex flex-col gap-2">
+                          <label className="px-3 font-bold">Faq</label>
+                          <div>
+                            <Field name="faq">
+                              {({ field }) => (
+                                <JoditEditor
+                                  value={values.faq}
+                                  onChange={(value) =>
+                                    handleChange({
+                                      target: {
+                                        name: "faq",
+                                        value: value,
+                                      },
+                                    })
+                                  }
+                                  required
+                                />
+                              )}
+                            </Field>
+                            {errors.faq && touched.faq && (
+                              <div className="text-red-500">{errors.faq}</div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "additionalInformation" && (
+                        <div className="mt-5 flex flex-col gap-2">
+                          <label className="px-3 font-bold">
+                            Additional Information
+                          </label>
+                          <div>
+                            <Field name="additionalInformation">
+                              {({ field }) => (
+                                <JoditEditor
+                                  value={values.additionalInformation}
+                                  onChange={(value) =>
+                                    handleChange({
+                                      target: {
+                                        name: "additionalInformation",
+                                        value: value,
+                                      },
+                                    })
+                                  }
+                                  required
+                                />
+                              )}
+                            </Field>
+                            {errors.additionalInformation &&
+                              touched.additionalInformation && (
+                                <div className="text-red-500">
+                                  {errors.additionalInformation}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeSection === "sideEffects" && (
+                        <div className="mt-5 flex flex-col gap-2">
+                          <label className="px-3 font-bold">Side Effects</label>
+                          <div>
+                            <Field name="sideEffects">
+                              {({ field }) => (
+                                <JoditEditor
+                                  value={values.sideEffects}
+                                  onChange={(value) =>
+                                    handleChange({
+                                      target: {
+                                        name: "sideEffects",
+                                        value: value,
+                                      },
+                                    })
+                                  }
+                                  required
+                                />
+                              )}
+                            </Field>
+                            {errors.sideEffects && touched.sideEffects && (
+                              <div className="text-red-500">
+                                {errors.sideEffects}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="right w-[25%] mt-5 p-3">
+                  {/* product categories */}
+                  <div className="product-categories border rounded-xl p-3 fixed-width-card">
+                    <div className="flex justify-between items-center">
+                      <label className="font-bold">All Categories</label>
+                      <button
+                        onClick={toggleOpen}
                         className="focus:outline-none"
                       >
-                        {productTags ? (
+                        {isOpen ? (
                           <FaChevronUp className="text-blue-500" />
                         ) : (
                           <FaChevronDown className="text-blue-500" />
@@ -494,126 +528,308 @@ const AddProduct = () => {
                       </button>
                     </div>
                     <div
-                      className={`tag-list mt-3 ${
-                        productTags
-                          ? "h-auto overflow-y-auto"
+                      className={`category-list mt-3 ${
+                        isOpen
+                          ? "h-[300px] overflow-y-auto"
                           : "h-0 overflow-hidden"
                       } transition-all duration-300`}
                     >
-                      <div className="flex flex-col gap-3">
-                        <div className="flex justify-around">
-                          <Field name="tagsInput">
-                            {({ field }) => (
-                              <input
-                                type="text"
-                                placeholder="Enter tags"
-                                className="h-[35px] border px-2"
-                                {...field}
-                                onChange={(e) =>
-                                  handleTagInputChange(e, setFieldValue)
-                                }
-                                value={values.tagsInput}
-                              />
-                            )}
-                          </Field>
-                          <button
-                            type="button"
-                            onClick={(e) =>
-                              handleAddTag(e, values, setFieldValue)
-                            }
-                            className="bg-blue-500 text-white px-2 py-1 rounded"
-                          >
-                            Add
-                          </button>
-                        </div>
-                      </div>
-                      {tags.length > 0 && (
-                        <div className="mt-3">
-                          {tags.map((tag, index) => (
-                            <p key={index} className="px-2 py-1">
-                              {tag}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* image upload section */}
-                <div className="image-upload-section border rounded-xl p-3 mt-5">
-                  <div className="flex justify-between items-center px-3">
-                    <label className="font-bold">Upload Image</label>
-                    <button
-                      onClick={toggleOpenImageUpload}
-                      className="focus:outline-none"
-                    >
-                      {isImageOpen ? (
-                        <FaChevronUp className="text-blue-500" />
-                      ) : (
-                        <FaChevronDown className="text-blue-500" />
-                      )}
-                    </button>
-                  </div>
-                  <div
-                    className={`upload-image mt-3 ${
-                      isImageOpen
-                        ? "h-auto overflow-y-auto"
-                        : "h-0 overflow-hidden"
-                    } transition-all duration-300`}
-                  >
-                    <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
-                      <input type="file" className="w-[225px]" />
-                      <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
-                        Upload Images
-                      </button>
-                      {/* <p>Image upload section is here dfvdfb ed d</p> */}
-                    </div>
-                  </div>
-                </div>
-
-                {/* generics mapping */}
-                <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
-                  <div className="flex justify-between items-center px-3">
-                    <label className="font-bold">Generics Id</label>
-                    <button
-                      onClick={toggleGenericsOpen}
-                      className="focus:outline-none"
-                    >
-                      {genericsopen ? (
-                        <FaChevronUp className="text-blue-500" />
-                      ) : (
-                        <FaChevronDown className="text-blue-500" />
-                      )}
-                    </button>
-                  </div>
-
-                  <div
-                    className={`generic-map mt-3 ${
-                      genericsopen
-                        ? "h-[250px] overflow-y-auto"
-                        : "h-0 overflow-hidden"
-                    } transition-all duration-300`}
-                  >
-                    <div>
-                      {genericsMap?.map((generic) => (
-                        <div key={generic?.id} className="flex gap-2">
-                          <input
-                            type="radio"
-                            name="genericID"
-                            value={generic?._id}
-                            onChange={(e) =>
-                              handleGenericsChange(setFieldValue, e)
-                            }
-                            checked={values.genericID === generic._id}
-                          />
-                          <p>{generic?.name}</p>
+                      {hierarchyData?.map((item) => (
+                        <div className="border-2 p-5" key={item._id}>
+                          <div className="flex items-center mb-2">
+                            <input
+                              type="radio"
+                              id={item._id}
+                              name="categoryID"
+                              value={item._id}
+                              className="mr-2"
+                              onChange={(e) =>
+                                handleRadioChange(setFieldValue, e)
+                              }
+                              checked={values.categoryID === item._id}
+                            />
+                            <label htmlFor={item._id} className="font-bold">
+                              {item.name}
+                            </label>
+                          </div>
+                          {item.children &&
+                            item.children.map((child) => (
+                              <div key={child._id}>
+                                <div className="flex items-center mb-2 ml-4">
+                                  <input
+                                    type="radio"
+                                    id={child._id}
+                                    name="categoryID"
+                                    value={child._id}
+                                    className="mr-2"
+                                    onChange={handleChange}
+                                    checked={values.categoryID.includes(
+                                      child._id
+                                    )}
+                                  />
+                                  <label htmlFor={child._id}>
+                                    &nbsp; {child.name}
+                                  </label>
+                                </div>
+                                {child.children &&
+                                  child.children.map((child2) => (
+                                    <div key={child2._id}>
+                                      <div className="flex items-center mb-2 ml-8">
+                                        <input
+                                          type="radio"
+                                          id={child2._id}
+                                          name="categoryID"
+                                          value={child2._id}
+                                          className="mr-2"
+                                          onChange={handleChange}
+                                          checked={values.categoryID.includes(
+                                            child2._id
+                                          )}
+                                        />
+                                        <label htmlFor={child2._id}>
+                                          &nbsp; &nbsp; {child2.name}
+                                        </label>
+                                      </div>
+                                      {child2.children &&
+                                        child2.children.map((child3) => (
+                                          <div key={child3._id}>
+                                            <div className="flex items-center mb-2 ml-12">
+                                              <input
+                                                type="radio"
+                                                id={child3._id}
+                                                name="categoryID"
+                                                value={child3._id}
+                                                className="mr-2"
+                                                onChange={handleChange}
+                                                checked={values.categoryID.includes(
+                                                  child3._id
+                                                )}
+                                              />
+                                              <label htmlFor={child3._id}>
+                                                &nbsp; &nbsp; &nbsp;{" "}
+                                                {child3.name}
+                                              </label>
+                                            </div>
+                                            {child3.children &&
+                                              child3.children.map((child4) => (
+                                                <div key={child4._id}>
+                                                  <div className="flex items-center mb-2 ml-16">
+                                                    <input
+                                                      type="radio"
+                                                      id={child4._id}
+                                                      name="categoryID"
+                                                      value={child4._id}
+                                                      className="mr-2"
+                                                      onChange={handleChange}
+                                                      checked={values.categoryID.includes(
+                                                        child4._id
+                                                      )}
+                                                    />
+                                                    <label htmlFor={child4._id}>
+                                                      &nbsp; &nbsp; &nbsp;
+                                                      &nbsp; {child4.name}
+                                                    </label>
+                                                  </div>
+                                                </div>
+                                              ))}
+                                          </div>
+                                        ))}
+                                    </div>
+                                  ))}
+                              </div>
+                            ))}
                         </div>
                       ))}
                     </div>
                   </div>
+
+                  {/* product tags */}
+                  <div className="mt-5">
+                    <div className="product-tags border rounded-xl p-3 fixed-width-card">
+                      <div className="flex justify-between items-center px-3">
+                        <label className="font-bold">Product Tags</label>
+                        <button
+                          onClick={toggleProductOpen}
+                          className="focus:outline-none"
+                        >
+                          {productTags ? (
+                            <FaChevronUp className="text-blue-500" />
+                          ) : (
+                            <FaChevronDown className="text-blue-500" />
+                          )}
+                        </button>
+                      </div>
+                      <div
+                        className={`tag-list mt-3 ${
+                          productTags
+                            ? "h-auto overflow-y-auto"
+                            : "h-0 overflow-hidden"
+                        } transition-all duration-300`}
+                      >
+                        <div className="flex flex-col gap-3">
+                          <div className="flex justify-around">
+                            <Field name="tagsInput">
+                              {({ field }) => (
+                                <input
+                                  type="text"
+                                  placeholder="Enter tags"
+                                  className="h-[35px] border px-2"
+                                  {...field}
+                                  onChange={(e) =>
+                                    handleTagInputChange(e, setFieldValue)
+                                  }
+                                  value={values.tagsInput}
+                                />
+                              )}
+                            </Field>
+                            <button
+                              type="button"
+                              onClick={(e) =>
+                                handleAddTag(e, values, setFieldValue)
+                              }
+                              className="bg-blue-500 text-white px-2 py-1 rounded"
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        {tags.length > 0 && (
+                          <div className="mt-3">
+                            {tags.map((tag, index) => (
+                              <p key={index} className="px-2 py-1">
+                                {tag}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* image upload section */}
+                  <div className="image-upload-section border rounded-xl p-3 mt-5">
+                    <div className="flex justify-between items-center px-3">
+                      <label className="font-bold">Upload Image</label>
+                      <button
+                        onClick={toggleOpenImageUpload}
+                        className="focus:outline-none"
+                      >
+                        {isImageOpen ? (
+                          <FaChevronUp className="text-blue-500" />
+                        ) : (
+                          <FaChevronDown className="text-blue-500" />
+                        )}
+                      </button>
+                    </div>
+                    <div
+                      className={`upload-image mt-3 ${
+                        isImageOpen
+                          ? "h-auto overflow-y-auto"
+                          : "h-0 overflow-hidden"
+                      } transition-all duration-300`}
+                    >
+                      <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
+                        <input type="file" className="w-[225px]" />
+                        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
+                          Upload Images
+                        </button>
+                        {/* <p>Image upload section is here dfvdfb ed d</p> */}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* generics mapping */}
+                  <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
+                    <div className="flex justify-between items-center px-3">
+                      <label className="font-bold">Generics Id</label>
+                      <button
+                        onClick={toggleGenericsOpen}
+                        className="focus:outline-none"
+                      >
+                        {genericsopen ? (
+                          <FaChevronUp className="text-blue-500" />
+                        ) : (
+                          <FaChevronDown className="text-blue-500" />
+                        )}
+                      </button>
+                    </div>
+
+                    <div
+                      className={`generic-map mt-3 ${
+                        genericsopen
+                          ? "h-[250px] overflow-y-auto"
+                          : "h-0 overflow-hidden"
+                      } transition-all duration-300`}
+                    >
+                      <div>
+                        {genericsMap?.map((generic) => (
+                          <div key={generic?.id} className="flex gap-2">
+                            <input
+                              type="radio"
+                              name="genericID"
+                              value={generic?._id}
+                              onChange={(e) =>
+                                handleGenericsChange(setFieldValue, e)
+                              }
+                              checked={values.genericID === generic._id}
+                            />
+                            <p>{generic?.name}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* booleans here */}
+
+                  {/* isReturnable */}
+                  {/* <div className="relative inline-block w-64 mt-5">
+                    <label className="font-bold">Do you want to return</label>
+                    <select
+                      value={retunSelectedOption}
+                      onChange={(e) => setReturnSelectedOption(e.target.value)}
+                      className="block w-full appearance-none mt-2 bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-[55px] right-0 flex items-center px-2 text-gray-700">
+                      <svg
+                        className="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M5.293 7.293l1.414 1.414L10 5.414l3.293 3.293 1.414-1.414L10 2.586l-4.707 4.707zM4 10l1.293-1.293 1.414 1.414L10 6.414l3.293 3.293 1.414-1.414L16 10H4z" />
+                      </svg>
+                    </div>
+                  </div> */}
+
+                  {/* prescription required */}
+                  {/* <div className="relative inline-block w-64 mt-5">
+                    <label className="font-bold px-3">
+                      Do you want to return
+                    </label>
+                    <select
+                      value={retunSelectedOption}
+                      onChange={(e) => setReturnSelectedOption(e.target.value)}
+                      className="block w-full appearance-none mt-2 bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-[55px] right-0 flex items-center px-2 text-gray-700">
+                      <svg
+                        className="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M5.293 7.293l1.414 1.414L10 5.414l3.293 3.293 1.414-1.414L10 2.586l-4.707 4.707zM4 10l1.293-1.293 1.414 1.414L10 6.414l3.293 3.293 1.414-1.414L16 10H4z" />
+                      </svg>
+                    </div>
+                  </div> */}
                 </div>
               </div>
+
               <button type="submit">Submit</button>
             </form>
           )}
