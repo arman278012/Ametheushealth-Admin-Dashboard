@@ -16,6 +16,7 @@ const initialValues = {
   sideEffects: "",
   categoryID: "",
   tags: "",
+  genericID: "",
 };
 
 const AddProduct = () => {
@@ -25,6 +26,8 @@ const AddProduct = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [productTags, setProductTags] = useState(false);
   const [tags, setTags] = useState([]);
+  const [genericsopen, setGenericsOpen] = useState(true);
+  const [genericsMap, setGenericMap] = useState([]);
 
   const toggleOpen = (e) => {
     e.preventDefault();
@@ -39,6 +42,11 @@ const AddProduct = () => {
   const toggleProductOpen = (e) => {
     e.preventDefault();
     setProductTags(!productTags);
+  };
+
+  const toggleGenericsOpen = (e) => {
+    e.preventDefault();
+    setGenericsOpen(!genericsopen);
   };
 
   const productCategoriesData = async () => {
@@ -61,8 +69,27 @@ const AddProduct = () => {
     }
   };
 
+  const genericsData = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.assetorix.com:4100/ah/api/v1/generic/names",
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setGenericMap(response.data);
+      console.log("generic data", genericsMap);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     productCategoriesData();
+    genericsData();
   }, []);
 
   const handleTagInputChange = (e, setFieldValue) => {
@@ -86,6 +113,10 @@ const AddProduct = () => {
 
   const handleRadioChange = (setFieldValue, e) => {
     setFieldValue("categoryID", e.target.value);
+  };
+
+  const handleGenericsChange = (setFieldValue, e) => {
+    setFieldValue("genericID", e.target.value);
   };
 
   if (loading) {
@@ -446,6 +477,7 @@ const AddProduct = () => {
                   </div>
                 </div>
 
+                {/* product tags */}
                 <div className="mt-5">
                   <div className="product-tags border rounded-xl p-3 fixed-width-card">
                     <div className="flex justify-between items-center px-3">
@@ -536,6 +568,48 @@ const AddProduct = () => {
                         Upload Images
                       </button>
                       {/* <p>Image upload section is here dfvdfb ed d</p> */}
+                    </div>
+                  </div>
+                </div>
+
+                {/* generics mapping */}
+                <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
+                  <div className="flex justify-between items-center px-3">
+                    <label className="font-bold">Generics Id</label>
+                    <button
+                      onClick={toggleGenericsOpen}
+                      className="focus:outline-none"
+                    >
+                      {genericsopen ? (
+                        <FaChevronUp className="text-blue-500" />
+                      ) : (
+                        <FaChevronDown className="text-blue-500" />
+                      )}
+                    </button>
+                  </div>
+
+                  <div
+                    className={`generic-map mt-3 ${
+                      genericsopen
+                        ? "h-[250px] overflow-y-auto"
+                        : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
+                  >
+                    <div>
+                      {genericsMap?.map((generic) => (
+                        <div key={generic?.id} className="flex gap-2">
+                          <input
+                            type="radio"
+                            name="genericID"
+                            value={generic?._id}
+                            onChange={(e) =>
+                              handleGenericsChange(setFieldValue, e)
+                            }
+                            checked={values.genericID === generic._id}
+                          />
+                          <p>{generic?.name}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>

@@ -462,7 +462,7 @@ const ProductDetails = () => {
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <img
-                        src={singleItem.images[0].url || " "}
+                        src={singleItem?.images[0]?.url || " "}
                         alt="Product Image"
                         className="w-12 h-12 object-cover"
                       />
