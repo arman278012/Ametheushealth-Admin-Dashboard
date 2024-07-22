@@ -5,21 +5,26 @@ import React, { useEffect, useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 const initialValues = {
+  title: "",
+  generic: "",
+  treatment: "",
   shortDescription: "",
   description: "",
   moreInformation: "",
   faq: "",
   additionalInformation: "",
   sideEffects: "",
-  categories: [], // Added for handling categories
+  categoryID: "",
+  tags: "",
 };
 
-const Addproduct = () => {
+const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const [hierarchyData, setHierarchyData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [productTags, setProductTags] = useState(false);
+  const [tags, setTags] = useState([]);
 
   const toggleOpen = (e) => {
     e.preventDefault();
@@ -38,7 +43,7 @@ const Addproduct = () => {
 
   const productCategoriesData = async () => {
     try {
-      setLoading(true); // Set loading to true while fetching
+      setLoading(true);
       const response = await axios.get(
         "https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names",
         {
@@ -52,7 +57,7 @@ const Addproduct = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // Set loading to false once done
+      setLoading(false);
     }
   };
 
@@ -60,8 +65,24 @@ const Addproduct = () => {
     productCategoriesData();
   }, []);
 
+  const handleTagInputChange = (e, setFieldValue) => {
+    setFieldValue("tags", e.target.value);
+  };
+
+  const handleAddTag = (e, values, setFieldValue) => {
+    e.preventDefault();
+    if (values.tags.trim()) {
+      setTags([...tags, values.tags.trim()]);
+      setFieldValue("tags", ""); // Clear the input field
+    }
+  };
+
+  const handleRadioChange = (setFieldValue, e) => {
+    setFieldValue("categoryID", e.target.value);
+  };
+
   if (loading) {
-    return <p>Loading...</p>; // Properly return loading state
+    return <p>Loading...</p>;
   }
 
   return (
@@ -70,16 +91,22 @@ const Addproduct = () => {
       <div className="flex flex-wrap gap-10 border border-gray-300 mt-5">
         <Formik
           initialValues={initialValues}
-          onSubmit={(values) => {
-            console.log(values);
-            // Handle form submission
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(false);
+            console.log("Form values:", values);
           }}
         >
-          {({ handleSubmit, handleChange, errors, values, touched }) => (
+          {({
+            handleSubmit,
+            handleChange,
+            setFieldValue,
+            values,
+            errors,
+            touched,
+          }) => (
             <form onSubmit={handleSubmit} className="flex gap-10 py-5">
               <div className="left w-[70%] flex flex-col gap-3 ml-2">
                 <div className="flex flex-col gap-5">
-                  {/* Product Name */}
                   <div className="flex flex-col w-full">
                     <label className="font-semibold px-2 opacity-65">
                       Product Name
@@ -89,11 +116,11 @@ const Addproduct = () => {
                       placeholder="Product name"
                       className="h-[35px] border px-2"
                       onChange={handleChange}
-                      name="productName"
+                      name="title"
+                      value={values.title}
                     />
                   </div>
 
-                  {/* Generic Name and Treatment */}
                   <div className="flex flex-col md:flex-row gap-5">
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65">
@@ -102,9 +129,10 @@ const Addproduct = () => {
                       <input
                         type="text"
                         placeholder="Generic name"
+                        name="generic"
+                        value={values.generic}
                         className="h-[35px] border px-2"
                         onChange={handleChange}
-                        name="genericName"
                       />
                     </div>
                     <div className="flex flex-col w-full">
@@ -116,34 +144,23 @@ const Addproduct = () => {
                         placeholder="Treatment"
                         className="h-[35px] border px-2"
                         onChange={handleChange}
+                        value={values.treatment}
                         name="treatment"
                       />
                     </div>
                   </div>
 
-                  {/* Jodit Editors */}
-                  {[
-                    "shortDescription",
-                    "description",
-                    "additionalInformation",
-                    "moreInformation",
-                    "faq",
-                    "sideEffects",
-                  ].map((field, index) => (
-                    <div className="mt-5 flex flex-col gap-2" key={index}>
-                      <label className="px-3 font-semibold opacity-65">
-                        {field
-                          .replace(/([A-Z])/g, " $1")
-                          .replace(/^./, (str) => str.toUpperCase())}
-                      </label>
-                      <Field name={field}>
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label className="px-3 font-bold">Description</label>
+                    <div>
+                      <Field name="description">
                         {({ field }) => (
                           <JoditEditor
-                            value={values[field]}
+                            value={values.description}
                             onChange={(value) =>
                               handleChange({
                                 target: {
-                                  name: field,
+                                  name: "description",
                                   value: value,
                                 },
                               })
@@ -152,16 +169,149 @@ const Addproduct = () => {
                           />
                         )}
                       </Field>
-                      {errors[field] && touched[field] && (
-                        <div className="text-red-500">{errors[field]}</div>
+                      {errors.description && touched.description && (
+                        <div className="text-red-500">{errors.description}</div>
                       )}
                     </div>
-                  ))}
+                  </div>
+
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label className="px-3 font-bold">Short Description</label>
+                    <div>
+                      <Field name="shortDescription">
+                        {({ field }) => (
+                          <JoditEditor
+                            value={values.shortDescription}
+                            onChange={(value) =>
+                              handleChange({
+                                target: {
+                                  name: "shortDescription",
+                                  value: value,
+                                },
+                              })
+                            }
+                            required
+                          />
+                        )}
+                      </Field>
+                      {errors.shortDescription && touched.shortDescription && (
+                        <div className="text-red-500">
+                          {errors.shortDescription}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label className="px-3 font-bold">More Information</label>
+                    <div>
+                      <Field name="moreInformation">
+                        {({ field }) => (
+                          <JoditEditor
+                            value={values.moreInformation}
+                            onChange={(value) =>
+                              handleChange({
+                                target: {
+                                  name: "moreInformation",
+                                  value: value,
+                                },
+                              })
+                            }
+                            required
+                          />
+                        )}
+                      </Field>
+                      {errors.moreInformation && touched.moreInformation && (
+                        <div className="text-red-500">
+                          {errors.moreInformation}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label className="px-3 font-bold">Faq</label>
+                    <div>
+                      <Field name="faq">
+                        {({ field }) => (
+                          <JoditEditor
+                            value={values.faq}
+                            onChange={(value) =>
+                              handleChange({
+                                target: {
+                                  name: "faq",
+                                  value: value,
+                                },
+                              })
+                            }
+                            required
+                          />
+                        )}
+                      </Field>
+                      {errors.faq && touched.faq && (
+                        <div className="text-red-500">{errors.faq}</div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label className="px-3 font-bold">
+                      Additional Information
+                    </label>
+                    <div>
+                      <Field name="additionalInformation">
+                        {({ field }) => (
+                          <JoditEditor
+                            value={values.additionalInformation}
+                            onChange={(value) =>
+                              handleChange({
+                                target: {
+                                  name: "additionalInformation",
+                                  value: value,
+                                },
+                              })
+                            }
+                            required
+                          />
+                        )}
+                      </Field>
+                      {errors.additionalInformation &&
+                        touched.additionalInformation && (
+                          <div className="text-red-500">
+                            {errors.additionalInformation}
+                          </div>
+                        )}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label className="px-3 font-bold">Side Effects</label>
+                    <div>
+                      <Field name="sideEffects">
+                        {({ field }) => (
+                          <JoditEditor
+                            value={values.sideEffects}
+                            onChange={(value) =>
+                              handleChange({
+                                target: {
+                                  name: "sideEffects",
+                                  value: value,
+                                },
+                              })
+                            }
+                            required
+                          />
+                        )}
+                      </Field>
+                      {errors.sideEffects && touched.sideEffects && (
+                        <div className="text-red-500">{errors.sideEffects}</div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div className="right w-[30%] mt-5 px-2">
-                {/* Categories */}
                 <div className="product-categories border rounded-xl p-3 fixed-width-card">
                   <div className="flex justify-between items-center px-3">
                     <label className="font-bold">All Categories</label>
@@ -184,13 +334,15 @@ const Addproduct = () => {
                       <div className="border-2 p-5" key={item._id}>
                         <div className="flex items-center mb-2">
                           <input
-                            type="checkbox"
+                            type="radio"
                             id={item._id}
-                            name="categories"
+                            name="categoryID"
                             value={item._id}
                             className="mr-2"
-                            onChange={handleChange}
-                            checked={values.categories.includes(item._id)}
+                            onChange={(e) =>
+                              handleRadioChange(setFieldValue, e)
+                            }
+                            checked={values.categoryID === item._id}
                           />
                           <label htmlFor={item._id} className="font-bold">
                             {item.name}
@@ -201,13 +353,13 @@ const Addproduct = () => {
                             <div key={child._id}>
                               <div className="flex items-center mb-2 ml-4">
                                 <input
-                                  type="checkbox"
+                                  type="radio"
                                   id={child._id}
-                                  name="categories"
+                                  name="categoryID"
                                   value={child._id}
                                   className="mr-2"
                                   onChange={handleChange}
-                                  checked={values.categories.includes(
+                                  checked={values.categoryID.includes(
                                     child._id
                                   )}
                                 />
@@ -220,13 +372,13 @@ const Addproduct = () => {
                                   <div key={child2._id}>
                                     <div className="flex items-center mb-2 ml-8">
                                       <input
-                                        type="checkbox"
+                                        type="radio"
                                         id={child2._id}
-                                        name="categories"
+                                        name="categoryID"
                                         value={child2._id}
                                         className="mr-2"
                                         onChange={handleChange}
-                                        checked={values.categories.includes(
+                                        checked={values.categoryID.includes(
                                           child2._id
                                         )}
                                       />
@@ -239,13 +391,13 @@ const Addproduct = () => {
                                         <div key={child3._id}>
                                           <div className="flex items-center mb-2 ml-12">
                                             <input
-                                              type="checkbox"
+                                              type="radio"
                                               id={child3._id}
-                                              name="categories"
+                                              name="categoryID"
                                               value={child3._id}
                                               className="mr-2"
                                               onChange={handleChange}
-                                              checked={values.categories.includes(
+                                              checked={values.categoryID.includes(
                                                 child3._id
                                               )}
                                             />
@@ -258,18 +410,18 @@ const Addproduct = () => {
                                               <div key={child4._id}>
                                                 <div className="flex items-center mb-2 ml-16">
                                                   <input
-                                                    type="checkbox"
+                                                    type="radio"
                                                     id={child4._id}
-                                                    name="categories"
+                                                    name="categoryID"
                                                     value={child4._id}
                                                     className="mr-2"
                                                     onChange={handleChange}
-                                                    checked={values.categories.includes(
+                                                    checked={values.categoryID.includes(
                                                       child4._id
                                                     )}
                                                   />
                                                   <label htmlFor={child4._id}>
-                                                    &nbsp; &nbsp; &nbsp;&nbsp;{" "}
+                                                    &nbsp; &nbsp; &nbsp; &nbsp;{" "}
                                                     {child4.name}
                                                   </label>
                                                 </div>
@@ -283,6 +435,70 @@ const Addproduct = () => {
                           ))}
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                <div className="mt-5">
+                  <div className="product-tags border rounded-xl p-3 fixed-width-card">
+                    <div className="flex justify-between items-center px-3">
+                      <label className="font-bold">Product Tags</label>
+                      <button
+                        onClick={toggleProductOpen}
+                        className="focus:outline-none"
+                      >
+                        {productTags ? (
+                          <FaChevronUp className="text-blue-500" />
+                        ) : (
+                          <FaChevronDown className="text-blue-500" />
+                        )}
+                      </button>
+                    </div>
+                    <div
+                      className={`tag-list mt-3 ${
+                        productTags
+                          ? "h-auto overflow-y-auto"
+                          : "h-0 overflow-hidden"
+                      } transition-all duration-300`}
+                    >
+                      <div className="flex flex-col gap-3">
+                        <div className="flex justify-around">
+                          <Field name="tags">
+                            {({ field }) => (
+                              <input
+                                type="text"
+                                placeholder="Enter tags"
+                                className="h-[35px] border px-2"
+                                {...field}
+                                onChange={(e) =>
+                                  handleTagInputChange(e, setFieldValue)
+                                }
+                                value={values.tags}
+                              />
+                            )}
+                          </Field>
+                          <button
+                            type="button"
+                            onClick={(e) =>
+                              handleAddTag(e, values, setFieldValue)
+                            }
+                            className="bg-blue-500 text-white px-2 py-1 rounded"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                      {tags.length > 0 && (
+                        <div className="mt-3">
+                          {tags.map((tag, index) => (
+                            <>
+                              <p key={index} className="px-2 py-1">
+                                {tag}
+                              </p>
+                            </>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -313,53 +529,12 @@ const Addproduct = () => {
                       <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
                         Upload Images
                       </button>
-                      {/* <p>Image upload section is here dfvdfb ed d   </p> */}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Product tags */}
-                <div className="product-tags-section border rounded-xl p-3 mt-5">
-                  <div className="flex justify-between items-center px-3">
-                    <label className="font-bold">Product Tags</label>
-                    <button
-                      onClick={toggleProductOpen}
-                      className="focus:outline-none"
-                    >
-                      {productTags ? (
-                        <FaChevronUp className="text-blue-500" />
-                      ) : (
-                        <FaChevronDown className="text-blue-500" />
-                      )}
-                    </button>
-                  </div>
-                  <div
-                    className={`product-tags mt-3 ${
-                      productTags
-                        ? "h-auto overflow-y-auto"
-                        : "h-0 overflow-hidden"
-                    } transition-all duration-300`}
-                  >
-                    <div>
-                      <div className="flex justify-around">
-                        <div>
-                          <input
-                            type="text"
-                            className="border bg-none px-2 text-sm h-[35px]"
-                          />
-                          <p className="text-[12px] ml-3">
-                            Separate tags with commas
-                          </p>
-                        </div>
-
-                        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md h-[35px]">
-                          Add
-                        </button>
-                      </div>
+                      {/* <p>Image upload section is here dfvdfb ed d</p> */}
                     </div>
                   </div>
                 </div>
               </div>
+              <button type="submit">Submit</button>
             </form>
           )}
         </Formik>
@@ -368,4 +543,4 @@ const Addproduct = () => {
   );
 };
 
-export default Addproduct;
+export default AddProduct;
