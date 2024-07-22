@@ -17,11 +17,23 @@ const initialValues = {
 const Addproduct = () => {
   const [loading, setLoading] = useState(false);
   const [hierarchyData, setHierarchyData] = useState([]);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [productTags, setProductTags] = useState(false);
 
   const toggleOpen = (e) => {
     e.preventDefault();
     setIsOpen(!isOpen);
+  };
+
+  const toggleOpenImageUpload = (e) => {
+    e.preventDefault();
+    setIsImageOpen(!isImageOpen);
+  };
+
+  const toggleProductOpen = (e) => {
+    e.preventDefault();
+    setProductTags(!productTags);
   };
 
   const productCategoriesData = async () => {
@@ -55,7 +67,7 @@ const Addproduct = () => {
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
       <p className="text-[16px] font-bold">Add Products</p>
-      <div className="flex flex-wrap gap-10 mt-5">
+      <div className="flex flex-wrap gap-10 border border-gray-300 mt-5">
         <Formik
           initialValues={initialValues}
           onSubmit={(values) => {
@@ -64,8 +76,8 @@ const Addproduct = () => {
           }}
         >
           {({ handleSubmit, handleChange, errors, values, touched }) => (
-            <form onSubmit={handleSubmit} className="flex gap-10">
-              <div className="left w-full md:w-[70%] flex flex-col gap-3">
+            <form onSubmit={handleSubmit} className="flex gap-10 py-5">
+              <div className="left w-[70%] flex flex-col gap-3 ml-2">
                 <div className="flex flex-col gap-5">
                   {/* Product Name */}
                   <div className="flex flex-col w-full">
@@ -148,8 +160,8 @@ const Addproduct = () => {
                 </div>
               </div>
 
-              {/* Categories */}
-              <div className="right w-full md:w-[30%] mt-5">
+              <div className="right w-[30%] mt-5 px-2">
+                {/* Categories */}
                 <div className="product-categories border rounded-xl p-3 fixed-width-card">
                   <div className="flex justify-between items-center px-3">
                     <label className="font-bold">All Categories</label>
@@ -271,6 +283,80 @@ const Addproduct = () => {
                           ))}
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* image upload section */}
+                <div className="image-upload-section border rounded-xl p-3 mt-5">
+                  <div className="flex justify-between items-center px-3">
+                    <label className="font-bold">Upload Image</label>
+                    <button
+                      onClick={toggleOpenImageUpload}
+                      className="focus:outline-none"
+                    >
+                      {isImageOpen ? (
+                        <FaChevronUp className="text-blue-500" />
+                      ) : (
+                        <FaChevronDown className="text-blue-500" />
+                      )}
+                    </button>
+                  </div>
+                  <div
+                    className={`upload-image mt-3 ${
+                      isImageOpen
+                        ? "h-auto overflow-y-auto"
+                        : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
+                  >
+                    <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
+                      <input type="file" className="w-[225px]" />
+                      <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
+                        Upload Images
+                      </button>
+                      {/* <p>Image upload section is here dfvdfb ed d   </p> */}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Product tags */}
+                <div className="product-tags-section border rounded-xl p-3 mt-5">
+                  <div className="flex justify-between items-center px-3">
+                    <label className="font-bold">Product Tags</label>
+                    <button
+                      onClick={toggleProductOpen}
+                      className="focus:outline-none"
+                    >
+                      {productTags ? (
+                        <FaChevronUp className="text-blue-500" />
+                      ) : (
+                        <FaChevronDown className="text-blue-500" />
+                      )}
+                    </button>
+                  </div>
+                  <div
+                    className={`product-tags mt-3 ${
+                      productTags
+                        ? "h-auto overflow-y-auto"
+                        : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
+                  >
+                    <div>
+                      <div className="flex justify-around">
+                        <div>
+                          <input
+                            type="text"
+                            className="border bg-none px-2 text-sm h-[35px]"
+                          />
+                          <p className="text-[12px] ml-3">
+                            Separate tags with commas
+                          </p>
+                        </div>
+
+                        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md h-[35px]">
+                          Add
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

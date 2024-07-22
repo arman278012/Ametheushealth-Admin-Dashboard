@@ -146,7 +146,7 @@ const ProductDetails = () => {
   return (
     <div className="">
       {/* top section is here */}
-      <div className="flex flex-col gap-3 p-5">
+      <div className="flex flex-col p-5">
         <div>
           <p className="font-bold text-xl flex items-center cursor-pointer">
             Products
@@ -187,7 +187,7 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-        <div className="sm:w-[100%] w-[320px] h-[1px] bg-gray-400"></div>
+        {/* <div className="sm:w-[100%] w-[320px] h-[1px] bg-gray-400"></div> */}
       </div>
 
       {/* bottom section is here */}
