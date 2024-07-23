@@ -24,11 +24,11 @@ const initialValues = {
   categoryID: "",
   tags: "",
   genericID: "",
-  isReturnable: "false",
-  isPrescriptionRequired: "true",
-  isVisible: "true",
-  isFeatured: "false",
-  isDiscontinued: "false",
+  isReturnable: false,
+  isPrescriptionRequired: true,
+  isVisible: true,
+  isFeatured: false,
+  isDiscontinued: false,
   purchaseNote: "",
   externalLink: "",
   position: "",
@@ -639,7 +639,10 @@ const AddProduct = () => {
                                   as="select"
                                   name="isReturnable"
                                   value={values.isReturnable}
-                                  onChange={handleChange}
+                                  onChange={(event) => {
+                                    const value = event.target.value === "true";
+                                    setFieldValue("isReturnable", value);
+                                  }}
                                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
@@ -658,7 +661,13 @@ const AddProduct = () => {
                                   as="select"
                                   name="isPrescriptionRequired"
                                   value={values.isPrescriptionRequired}
-                                  onChange={handleChange}
+                                  onChange={(event) => {
+                                    const value = event.target.value === "true";
+                                    setFieldValue(
+                                      "isPrescriptionRequired",
+                                      value
+                                    );
+                                  }}
                                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
@@ -679,7 +688,10 @@ const AddProduct = () => {
                                   as="select"
                                   name="isVisible"
                                   value={values.isVisible}
-                                  onChange={handleChange}
+                                  onChange={(event) => {
+                                    const value = event.target.value === "true";
+                                    setFieldValue("isVisible", value);
+                                  }}
                                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
@@ -698,7 +710,10 @@ const AddProduct = () => {
                                   as="select"
                                   name="isFeatured"
                                   value={values.isFeatured}
-                                  onChange={handleChange}
+                                  onChange={(event) => {
+                                    const value = event.target.value === "true";
+                                    setFieldValue("isFeatured", value);
+                                  }}
                                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
@@ -718,7 +733,10 @@ const AddProduct = () => {
                                 as="select"
                                 name="isDiscontinued"
                                 value={values.isDiscontinued}
-                                onChange={handleChange}
+                                onChange={(event) => {
+                                  const value = event.target.value === "true";
+                                  setFieldValue("isDiscontinued", value);
+                                }}
                                 className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                               >
                                 <option disabled>Select an option</option>
@@ -800,14 +818,14 @@ const AddProduct = () => {
                       {activeSection === "variants" && (
                         <div className="w-[500px] flex flex-col gap-5">
                           <FieldArray name="variants">
-                            {({ push }) => (
+                            {({ push, remove }) => (
                               <>
                                 {values.variants.map((variant, index) => (
                                   <div
                                     key={index}
-                                    className="w-[500px] flex flex-col gap-5"
+                                    className="w-[500px] flex flex-col gap-3"
                                   >
-                                    <div className="flex gap-5">
+                                    <div className="flex gap-4">
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           SKU
@@ -832,6 +850,19 @@ const AddProduct = () => {
                                       </div>
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
+                                          Margin
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].margin`}
+                                          type="number"
+                                          placeholder="Margin"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-5">
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
                                           Price
                                         </label>
                                         <Field
@@ -841,8 +872,6 @@ const AddProduct = () => {
                                           className="h-[35px] border px-2"
                                         />
                                       </div>
-                                    </div>
-                                    <div className="flex gap-5">
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Sale price
@@ -856,18 +885,22 @@ const AddProduct = () => {
                                       </div>
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
-                                          Margin
+                                          Stock Available
                                         </label>
                                         <Field
-                                          name={`variants[${index}].margin`}
-                                          type="number"
-                                          placeholder="Margin"
-                                          className="h-[35px] border px-2"
-                                        />
+                                          as="select"
+                                          name={`variants[${index}].isStockAvailable`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
+                                        >
+                                          <option value={false}>No</option>
+                                          <option value={true}>Yes</option>
+                                        </Field>
                                       </div>
+                                    </div>
+                                    <div className="flex gap-5">
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
-                                          Minimum Order
+                                          Min Order Qty
                                         </label>
                                         <Field
                                           name={`variants[${index}].minOrderQuantity`}
@@ -876,11 +909,9 @@ const AddProduct = () => {
                                           className="h-[35px] border px-2"
                                         />
                                       </div>
-                                    </div>
-                                    <div className="flex gap-5">
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
-                                          Maximum order
+                                          Max order Qty
                                         </label>
                                         <Field
                                           name={`variants[${index}].maxOrderQuantity`}
@@ -889,19 +920,7 @@ const AddProduct = () => {
                                           className="h-[35px] border px-2"
                                         />
                                       </div>
-                                      <div className="flex flex-col w-[165px]">
-                                        <label className="font-semibold px-2 opacity-65">
-                                          Stock Available
-                                        </label>
-                                        <Field
-                                          as="select"
-                                          name={`variants[${index}].isStockAvailable`}
-                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[165px]"
-                                        >
-                                          <option value={false}>No</option>
-                                          <option value={true}>Yes</option>
-                                        </Field>
-                                      </div>
+
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Currency
@@ -909,7 +928,7 @@ const AddProduct = () => {
                                         <Field
                                           as="select"
                                           name={`variants[${index}].currency`}
-                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[165px]"
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
                                         >
                                           <option value="₹">₹</option>
                                           <option value="Euro">Euro</option>
@@ -988,6 +1007,17 @@ const AddProduct = () => {
                                       </div>
                                       <div className="flex flex-col w-[120px]">
                                         <label className="font-semibold px-2 opacity-65">
+                                          Width
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].width`}
+                                          type="number"
+                                          placeholder="Width"
+                                          className="h-[35px] border px-2 w-[120px]"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[120px]">
+                                        <label className="font-semibold px-2 opacity-65">
                                           Length
                                         </label>
                                         <Field
@@ -1008,18 +1038,14 @@ const AddProduct = () => {
                                           className="h-[35px] border px-2 w-[120px]"
                                         />
                                       </div>
-                                      <div className="flex flex-col w-[120px]">
-                                        <label className="font-semibold px-2 opacity-65">
-                                          Width
-                                        </label>
-                                        <Field
-                                          name={`variants[${index}].width`}
-                                          type="number"
-                                          placeholder="Width"
-                                          className="h-[35px] border px-2 w-[120px]"
-                                        />
-                                      </div>
                                     </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => remove(index)}
+                                      className="mt-2 bg-red-500 text-white px-4 py-2 rounded self-end"
+                                    >
+                                      Remove
+                                    </button>
                                   </div>
                                 ))}
                                 <button
@@ -1377,7 +1403,7 @@ const AddProduct = () => {
                 </div>
               </div>
 
-              <div className="flex justify-center mb-10">
+              <div className="flex justify-center mt-5 mb-5">
                 <button
                   type="submit"
                   className="bg-[#13a3bc] hover:bg-[#13b6d5] py-1 text-white font-bold px-4 rounded-md"
