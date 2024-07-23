@@ -10,6 +10,8 @@ import { LiaQuestionSolid } from "react-icons/lia";
 import { MdAssignmentAdd } from "react-icons/md";
 import { DiHtml53dEffects } from "react-icons/di";
 import { PiSelectionSlashFill } from "react-icons/pi";
+import toast from "react-hot-toast";
+import "./AddProduct.css";
 
 const initialValues = {
   title: "",
@@ -192,13 +194,19 @@ const AddProduct = () => {
           },
         }
       );
+      toast.success("Product Created Successfully...");
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-[100vh] w-[100vw]">
+        <span class="loader"></span>
+      </div>
+    );
   }
 
   return (
