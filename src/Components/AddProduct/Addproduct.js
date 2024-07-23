@@ -1377,7 +1377,14 @@ const AddProduct = () => {
                 </div>
               </div>
 
-              <button type="submit">Submit</button>
+              <div className="flex justify-center mb-10">
+                <button
+                  type="submit"
+                  className="bg-[#13a3bc] hover:bg-[#13b6d5] py-1 text-white font-bold px-4 rounded-md"
+                >
+                  Submit Total Data
+                </button>
+              </div>
             </form>
           )}
         </Formik>
