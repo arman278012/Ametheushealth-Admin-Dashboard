@@ -49,6 +49,8 @@ const AddProduct = () => {
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
   const [activeSection, setActiveSection] = useState("name");
+  const [externalLink, setExternalLink] = useState("");
+  const [isUrlValid, setIsUrlValid] = useState(true);
 
   const toggleOpen = (e) => {
     e.preventDefault();
@@ -159,6 +161,23 @@ const AddProduct = () => {
     setFieldValue("genericID", e.target.value);
   };
 
+  function isValidUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    setIsUrlValid(isValidUrl(externalLink));
+  }, [externalLink]);
+
+  const handleExChange = (e) => {
+    setExternalLink(e.target.value);
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -179,6 +198,7 @@ const AddProduct = () => {
             handleSubmit,
             handleChange,
             setFieldValue,
+            handleBlur,
             values,
             errors,
             touched,
@@ -423,11 +443,16 @@ const AddProduct = () => {
                             <input
                               type="text"
                               placeholder="External Link"
-                              className="h-[35px] border px-2"
-                              onChange={handleChange}
-                              value={values.externalLink}
+                              className={`h-[35px] border px-2 ${
+                                !isUrlValid ? "border-red-500" : ""
+                              }`}
+                              onChange={handleExChange}
+                              value={externalLink}
                               name="externalLink"
                             />
+                            {!isUrlValid && (
+                              <div className="text-red-500">Invalid URL</div>
+                            )}
                           </div>
 
                           <div className="flex flex-col w-full">
