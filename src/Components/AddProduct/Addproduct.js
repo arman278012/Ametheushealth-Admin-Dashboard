@@ -29,6 +29,9 @@ const initialValues = {
   isVisible: "true",
   isFeatured: "false",
   isDiscontinued: "false",
+  purchaseNote: "",
+  externalLink: "",
+  position: "",
 };
 
 const AddProduct = () => {
@@ -299,7 +302,7 @@ const AddProduct = () => {
 
                     <div className="flex flex-col gap-5 left  p-3 border w-[75%] mt-5">
                       {activeSection === "name" && (
-                        <div>
+                        <div className="flex flex-col gap-5">
                           <div className="flex flex-col w-full">
                             <label className="font-semibold px-2 opacity-65">
                               Product Name
@@ -341,6 +344,47 @@ const AddProduct = () => {
                                 name="treatment"
                               />
                             </div>
+                          </div>
+                          <div className="flex flex-col w-full">
+                            <label className="font-semibold px-2 opacity-65">
+                              Purchase Note
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Purchase Note"
+                              className="h-[35px] border px-2"
+                              onChange={handleChange}
+                              value={values.purchaseNote}
+                              name="purchaseNote"
+                            />
+                          </div>
+
+                          <div className="flex flex-col w-full">
+                            <label className="font-semibold px-2 opacity-65">
+                              External Link
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="External Link"
+                              className="h-[35px] border px-2"
+                              onChange={handleChange}
+                              value={values.externalLink}
+                              name="externalLink"
+                            />
+                          </div>
+
+                          <div className="flex flex-col w-full">
+                            <label className="font-semibold px-2 opacity-65">
+                              Position
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Position"
+                              className="h-[35px] border px-2"
+                              onChange={handleChange}
+                              value={values.position}
+                              name="position"
+                            />
                           </div>
                         </div>
                       )}
@@ -541,6 +585,7 @@ const AddProduct = () => {
                                   onChange={handleChange}
                                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
+                                  <option disabled>Select an option</option>
                                   <option value={false}>No</option>
                                   <option value={true}>Yes</option>
                                 </Field>
@@ -557,7 +602,7 @@ const AddProduct = () => {
                                   name="isPrescriptionRequired"
                                   value={values.isPrescriptionRequired}
                                   onChange={handleChange}
-                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
                                   <option value={true}>Yes</option>
@@ -578,7 +623,7 @@ const AddProduct = () => {
                                   name="isVisible"
                                   value={values.isVisible}
                                   onChange={handleChange}
-                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
                                   <option value={true}>Yes</option>
@@ -597,7 +642,7 @@ const AddProduct = () => {
                                   name="isFeatured"
                                   value={values.isFeatured}
                                   onChange={handleChange}
-                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                                 >
                                   <option disabled>Select an option</option>
                                   <option value={true}>Yes</option>
@@ -617,7 +662,7 @@ const AddProduct = () => {
                                 name="isDiscontinued"
                                 value={values.isDiscontinued}
                                 onChange={handleChange}
-                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                               >
                                 <option disabled>Select an option</option>
                                 <option value={true}>Yes</option>
