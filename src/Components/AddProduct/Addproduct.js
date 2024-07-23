@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Field, Formik } from "formik";
+import { Field, FieldArray, Formik } from "formik";
 import JoditEditor from "jodit-react";
 import React, { useEffect, useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
@@ -35,6 +35,7 @@ const initialValues = {
   metaTitle: "",
   metaDescription: "",
   metaTags: "",
+  variants: [{}],
 };
 
 const AddProduct = () => {
@@ -333,6 +334,23 @@ const AddProduct = () => {
                           onClick={() => setActiveSection("meta")}
                         >
                           Meta
+                        </button>
+                        <PiSelectionSlashFill className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
+
+                      <div
+                        className={`${
+                          activeSection === "variants"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
+                      >
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("variants")}
+                        >
+                          Variants
                         </button>
                         <PiSelectionSlashFill className="mt-1 text-sm" />
                       </div>
@@ -777,6 +795,264 @@ const AddProduct = () => {
                             </div>
                           </div>
                         </>
+                      )}
+
+                      {activeSection === "variants" && (
+                        <div className="w-[500px] flex flex-col gap-5">
+                          <FieldArray name="variants">
+                            {({ push }) => (
+                              <>
+                                {values.variants.map((variant, index) => (
+                                  <div
+                                    key={index}
+                                    className="w-[500px] flex flex-col gap-5"
+                                  >
+                                    <div className="flex gap-5">
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          SKU
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].sku`}
+                                          type="text"
+                                          placeholder="sku"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Packsize
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].packSize`}
+                                          type="number"
+                                          placeholder="packsize"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Price
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].price`}
+                                          type="number"
+                                          placeholder="price"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-5">
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Sale price
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].salePrice`}
+                                          type="number"
+                                          placeholder="Sale price"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Margin
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].margin`}
+                                          type="number"
+                                          placeholder="Margin"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Minimum Order
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].minOrderQuantity`}
+                                          type="number"
+                                          placeholder="Minimum Order"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-5">
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Maximum order
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].maxOrderQuantity`}
+                                          type="number"
+                                          placeholder="Maximum order"
+                                          className="h-[35px] border px-2"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Stock Available
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`variants[${index}].isStockAvailable`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[165px]"
+                                        >
+                                          <option value={false}>No</option>
+                                          <option value={true}>Yes</option>
+                                        </Field>
+                                      </div>
+                                      <div className="flex flex-col w-[165px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Currency
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`variants[${index}].currency`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[165px]"
+                                        >
+                                          <option value="₹">₹</option>
+                                          <option value="Euro">Euro</option>
+                                        </Field>
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                      <div className="flex flex-col gap-2 w-[120px]">
+                                        <label className="px-3 font-semibold opacity-65">
+                                          Weight Unit
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`variants[${index}].weightUnit`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                                        >
+                                          <option value="kg">kg</option>
+                                          <option value="gm">gm</option>
+                                          <option value="mg">mg</option>
+                                        </Field>
+                                      </div>
+                                      <div className="flex flex-col gap-2 w-[120px]">
+                                        <label className="px-3 font-semibold opacity-65">
+                                          Width Unit
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`variants[${index}].widthUnit`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                                        >
+                                          <option value="m">m</option>
+                                          <option value="cm">cm</option>
+                                          <option value="mm">mm</option>
+                                        </Field>
+                                      </div>
+                                      <div className="flex flex-col gap-2 w-[120px]">
+                                        <label className="px-3 font-semibold opacity-65">
+                                          Length Unit
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`variants[${index}].lengthUnit`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                                        >
+                                          <option value="m">m</option>
+                                          <option value="cm">cm</option>
+                                          <option value="mm">mm</option>
+                                        </Field>
+                                      </div>
+                                      <div className="flex flex-col gap-2 w-[120px]">
+                                        <label className="px-3 font-semibold opacity-65">
+                                          Height Unit
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`variants[${index}].heightUnit`}
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                                        >
+                                          <option value="m">m</option>
+                                          <option value="cm">cm</option>
+                                          <option value="mm">mm</option>
+                                        </Field>
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                      <div className="flex flex-col w-[120px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Weight
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].weight`}
+                                          type="number"
+                                          placeholder="Weight"
+                                          className="h-[35px] border px-2 w-[120px]"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[120px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Length
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].length`}
+                                          type="number"
+                                          placeholder="Length"
+                                          className="h-[35px] border px-2 w-[120px]"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[120px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Height
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].height`}
+                                          type="number"
+                                          placeholder="Height"
+                                          className="h-[35px] border px-2 w-[120px]"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[120px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          Width
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].width`}
+                                          type="number"
+                                          placeholder="Width"
+                                          className="h-[35px] border px-2 w-[120px]"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    push({
+                                      sku: "",
+                                      packSize: "",
+                                      price: "",
+                                      salePrice: "",
+                                      margin: "",
+                                      minOrderQuantity: "",
+                                      maxOrderQuantity: "",
+                                      isStockAvailable: false,
+                                      currency: "₹",
+                                      weightUnit: "gm",
+                                      widthUnit: "cm",
+                                      lengthUnit: "cm",
+                                      heightUnit: "cm",
+                                      weight: "",
+                                      length: "",
+                                      height: "",
+                                      width: "",
+                                    })
+                                  }
+                                  className="mt-5 bg-blue-500 text-white px-4 py-2 rounded"
+                                >
+                                  Add another variant
+                                </button>
+                              </>
+                            )}
+                          </FieldArray>
+                        </div>
                       )}
                     </div>
                   </div>
