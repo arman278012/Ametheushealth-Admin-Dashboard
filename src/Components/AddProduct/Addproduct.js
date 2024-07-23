@@ -32,6 +32,9 @@ const initialValues = {
   purchaseNote: "",
   externalLink: "",
   position: "",
+  metaTitle: "",
+  metaDescription: "",
+  metaTags: "",
 };
 
 const AddProduct = () => {
@@ -41,9 +44,9 @@ const AddProduct = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [productTags, setProductTags] = useState(false);
   const [tags, setTags] = useState([]);
+  const [storeMetaTag, setStoreMetaTag] = useState([]);
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
-  const [retunSelectedOption, setReturnSelectedOption] = useState(false);
   const [activeSection, setActiveSection] = useState("name");
 
   const toggleOpen = (e) => {
@@ -128,6 +131,25 @@ const AddProduct = () => {
     }
   };
 
+  const handleMetaTagInputChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    setFieldValue("metaTagsInput", value);
+  };
+
+  const handleAddMetaTag = (e, values, setFieldValue) => {
+    e.preventDefault();
+    const newMetaTags = values.metaTagsInput
+      .split(" ")
+      .map((metaTag) => metaTag.trim())
+      .filter((metaTag) => metaTag); // Filter out empty tags
+    if (newMetaTags.length > 0) {
+      const updatedMetaTags = [...storeMetaTag, ...newMetaTags];
+      setStoreMetaTag(updatedMetaTags);
+      setFieldValue("metaTags", updatedMetaTags.join(", "));
+      setFieldValue("metaTagsInput", ""); // Clear the input field
+    }
+  };
+
   const handleRadioChange = (setFieldValue, e) => {
     setFieldValue("categoryID", e.target.value);
   };
@@ -164,7 +186,7 @@ const AddProduct = () => {
               <div className="flex gap-2 w-[100%] main-parent">
                 <div className="w-[75%] flex gap-5">
                   <div className="flex w-[100%] justify-between">
-                    <div className="flex flex-col gap-3 w-[25%] p-3">
+                    <div className="flex flex-col gap-3 w-[30%] p-3">
                       <div
                         className={`${
                           activeSection === "name"
@@ -298,9 +320,26 @@ const AddProduct = () => {
                         <PiSelectionSlashFill className="mt-1 text-sm" />
                       </div>
                       <div className="w-full h-[1px] bg-gray-300"></div>
+
+                      <div
+                        className={`${
+                          activeSection === "meta"
+                            ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                            : " flex gap-2"
+                        }`}
+                      >
+                        <button
+                          className="text-sm"
+                          onClick={() => setActiveSection("meta")}
+                        >
+                          Meta
+                        </button>
+                        <PiSelectionSlashFill className="mt-1 text-sm" />
+                      </div>
+                      <div className="w-full h-[1px] bg-gray-300"></div>
                     </div>
 
-                    <div className="flex flex-col gap-5 left  p-3 border w-[75%] mt-5">
+                    <div className="flex flex-col gap-5 left  p-3 border w-[70%] mt-5">
                       {activeSection === "name" && (
                         <div className="flex flex-col gap-5">
                           <div className="flex flex-col w-full">
@@ -671,6 +710,73 @@ const AddProduct = () => {
                             </div>
                           </div>
                         </div>
+                      )}
+
+                      {activeSection === "meta" && (
+                        <>
+                          <div className="flex flex-col gap-5 justify-center w-[500px]">
+                            <div className="flex flex-col w-full">
+                              <label className="font-semibold px-2 opacity-65">
+                                Meta Title
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Title"
+                                className="h-[35px] border px-2"
+                                onChange={handleChange}
+                                name="metaTitle"
+                                value={values.metaTitle}
+                              />
+                            </div>
+
+                            <div className="flex flex-col w-full">
+                              <label className="font-semibold px-2 opacity-65">
+                                Meta Description
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Description"
+                                className="h-[35px] border px-2"
+                                onChange={handleChange}
+                                name="metaDescription"
+                                value={values.metaDescription}
+                              />
+                            </div>
+
+                            <div className="flex flex-col w-full">
+                              <label className="font-semibold px-2 opacity-65">
+                                Meta Tags
+                              </label>
+                              <div className="flex gap-3">
+                                <Field name="metaTagsInput">
+                                  {({ field }) => (
+                                    <input
+                                      type="text"
+                                      placeholder="Enter tags"
+                                      className="h-[35px] border px-2 w-[400px]"
+                                      {...field}
+                                      onChange={(e) =>
+                                        handleMetaTagInputChange(
+                                          e,
+                                          setFieldValue
+                                        )
+                                      }
+                                      value={values.metaTagsInput}
+                                    />
+                                  )}
+                                </Field>
+                                <button
+                                  onClick={(e) =>
+                                    handleAddMetaTag(e, values, setFieldValue)
+                                  }
+                                  className="bg-blue-500 text-white px-2 py-1 rounded"
+                                >
+                                  Add Tags
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </>
                       )}
                     </div>
                   </div>
