@@ -41,7 +41,7 @@ const AddProduct = () => {
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
   const [retunSelectedOption, setReturnSelectedOption] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("name");
 
   const toggleOpen = (e) => {
     e.preventDefault();
@@ -160,7 +160,7 @@ const AddProduct = () => {
             <form onSubmit={handleSubmit}>
               <div className="flex gap-2 w-[100%] main-parent">
                 <div className="w-[75%] flex gap-5">
-                  <div className="flex w-[100%]">
+                  <div className="flex w-[100%] justify-between">
                     <div className="flex flex-col gap-3 w-[25%] p-3">
                       <div
                         className={`${
@@ -527,20 +527,103 @@ const AddProduct = () => {
                       )}
 
                       {activeSection === "yes-no" && (
-                        <div className="flex flex-col">
-                          <label className="px-3 font-bold">
-                            IsReturnable?
-                          </label>
-                          <div className="relative inline-block text-left">
-                            <select
-                              value={retunSelectedOption}
-                              onChange={handleChange}
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option disabled>Select an option</option>
-                              <option value="Yes">Yes</option>
-                              <option value="No">No</option>
-                            </select>
+                        <div className="flex flex-col gap-10 justify-center items-center">
+                          <div className="flex gap-10">
+                            <div className="flex flex-col gap-2">
+                              <label className="px-3 font-bold">
+                                IsReturnable?
+                              </label>
+                              <div className="relative inline-block text-left">
+                                <Field
+                                  as="select"
+                                  name="isReturnable"
+                                  value={values.isReturnable}
+                                  onChange={handleChange}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                                >
+                                  <option value={false}>No</option>
+                                  <option value={true}>Yes</option>
+                                </Field>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                              <label className="px-3 font-bold">
+                                IsPrescriptionRequired?
+                              </label>
+                              <div className="relative inline-block text-left">
+                                <Field
+                                  as="select"
+                                  name="isPrescriptionRequired"
+                                  value={values.isPrescriptionRequired}
+                                  onChange={handleChange}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option disabled>Select an option</option>
+                                  <option value={true}>Yes</option>
+                                  <option value={false}>No</option>
+                                </Field>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-10">
+                            <div className="flex flex-col gap-2">
+                              <label className="px-3 font-bold">
+                                IsVisible?
+                              </label>
+                              <div className="relative inline-block text-left">
+                                <Field
+                                  as="select"
+                                  name="isVisible"
+                                  value={values.isVisible}
+                                  onChange={handleChange}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option disabled>Select an option</option>
+                                  <option value={true}>Yes</option>
+                                  <option value={false}>No</option>
+                                </Field>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                              <label className="px-3 font-bold">
+                                IsFeatured?
+                              </label>
+                              <div className="relative inline-block text-left">
+                                <Field
+                                  as="select"
+                                  name="isFeatured"
+                                  value={values.isFeatured}
+                                  onChange={handleChange}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option disabled>Select an option</option>
+                                  <option value={true}>Yes</option>
+                                  <option value={false}>No</option>
+                                </Field>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col justify-start gap-2">
+                            <label className="px-3 font-bold">
+                              IsDiscontinued?
+                            </label>
+                            <div className="relative inline-block text-left">
+                              <Field
+                                as="select"
+                                name="isDiscontinued"
+                                value={values.isDiscontinued}
+                                onChange={handleChange}
+                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option disabled>Select an option</option>
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Field>
+                            </div>
                           </div>
                         </div>
                       )}
