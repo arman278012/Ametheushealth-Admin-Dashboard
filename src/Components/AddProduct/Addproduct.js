@@ -161,21 +161,40 @@ const AddProduct = () => {
     setFieldValue("genericID", e.target.value);
   };
 
-  function isValidUrl(string) {
+  const isValidUrl = (string) => {
     try {
       new URL(string);
       return true;
     } catch (err) {
       return false;
     }
-  }
+  };
 
   useEffect(() => {
     setIsUrlValid(isValidUrl(externalLink));
   }, [externalLink]);
 
   const handleExChange = (e) => {
-    setExternalLink(e.target.value);
+    const { value } = e.target;
+    setExternalLink(value);
+  };
+
+  //posting data to the backend
+  const postProductsData = async (values) => {
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/product`,
+        values,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (loading) {
@@ -191,6 +210,7 @@ const AddProduct = () => {
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false);
+            postProductsData(values);
             console.log("Form values:", values);
           }}
         >
@@ -446,7 +466,10 @@ const AddProduct = () => {
                               className={`h-[35px] border px-2 ${
                                 !isUrlValid ? "border-red-500" : ""
                               }`}
-                              onChange={handleExChange}
+                              onChange={(e) => {
+                                handleExChange(e);
+                                handleChange(e);
+                              }}
                               value={externalLink}
                               name="externalLink"
                             />
@@ -460,9 +483,9 @@ const AddProduct = () => {
                               Position
                             </label>
                             <input
-                              type="text"
+                              type="number"
                               placeholder="Position"
-                              className="h-[35px] border px-2"
+                              className="h-[35px] border px-2 focus:outline-none"
                               onChange={handleChange}
                               value={values.position}
                               name="position"
@@ -870,7 +893,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].packSize`}
                                           type="number"
                                           placeholder="packsize"
-                                          className="h-[35px] border px-2"
+                                          className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
                                       <div className="flex flex-col w-[165px]">
@@ -881,7 +904,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].margin`}
                                           type="number"
                                           placeholder="Margin"
-                                          className="h-[35px] border px-2"
+                                          className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
                                     </div>
@@ -894,7 +917,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].price`}
                                           type="number"
                                           placeholder="price"
-                                          className="h-[35px] border px-2"
+                                          className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
                                       <div className="flex flex-col w-[165px]">
@@ -905,7 +928,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].salePrice`}
                                           type="number"
                                           placeholder="Sale price"
-                                          className="h-[35px] border px-2"
+                                          className="h-[35px] border px-2 focus:outline-none "
                                         />
                                       </div>
                                       <div className="flex flex-col w-[165px]">
@@ -931,7 +954,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].minOrderQuantity`}
                                           type="number"
                                           placeholder="Minimum Order"
-                                          className="h-[35px] border px-2"
+                                          className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
                                       <div className="flex flex-col w-[165px]">
@@ -942,7 +965,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].maxOrderQuantity`}
                                           type="number"
                                           placeholder="Maximum order"
-                                          className="h-[35px] border px-2"
+                                          className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
 
@@ -1027,7 +1050,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].weight`}
                                           type="number"
                                           placeholder="Weight"
-                                          className="h-[35px] border px-2 w-[120px]"
+                                          className="h-[35px] border px-2 w-[120px] focus:outline-none"
                                         />
                                       </div>
                                       <div className="flex flex-col w-[120px]">
@@ -1038,7 +1061,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].width`}
                                           type="number"
                                           placeholder="Width"
-                                          className="h-[35px] border px-2 w-[120px]"
+                                          className="h-[35px] border px-2 w-[120px] focus:outline-none"
                                         />
                                       </div>
                                       <div className="flex flex-col w-[120px]">
@@ -1049,7 +1072,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].length`}
                                           type="number"
                                           placeholder="Length"
-                                          className="h-[35px] border px-2 w-[120px]"
+                                          className="h-[35px] border px-2 w-[120px] focus:outline-none"
                                         />
                                       </div>
                                       <div className="flex flex-col w-[120px]">
@@ -1060,7 +1083,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].height`}
                                           type="number"
                                           placeholder="Height"
-                                          className="h-[35px] border px-2 w-[120px]"
+                                          className="h-[35px] border px-2 w-[120px] focus:outline-none"
                                         />
                                       </div>
                                     </div>
@@ -1082,8 +1105,8 @@ const AddProduct = () => {
                                       price: "",
                                       salePrice: "",
                                       margin: "",
-                                      minOrderQuantity: "",
-                                      maxOrderQuantity: "",
+                                      minOrderQuantity: "1",
+                                      maxOrderQuantity: "100",
                                       isStockAvailable: false,
                                       currency: "₹",
                                       weightUnit: "gm",
