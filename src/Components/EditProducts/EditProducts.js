@@ -491,7 +491,7 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
                 </div>
               </div>
-              <div className="flex flex-col gap-5 left p-3 border w-[70%] mt-5">
+              <div className="flex flex-col gap-5 left border w-[70%] mt-5">
                 {activeSection === "name" && (
                   <div className="flex flex-col gap-5">
                     <div className="flex flex-col w-full">
@@ -935,250 +935,253 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "variants" && (
-                  <div className="w-[500px] flex flex-col ">
+                  <div className="w-[500px] flex flex-col p-5">
                     {productValues.variants.map((variant, index) => (
-                      <div key={index} className="flex flex-col gap-5 mb-5">
-                        <div className="flex gap-4 justify-around">
-                          <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              SKU
-                            </label>
-                            <input
-                              value={variant.sku}
-                              name={`variants[${index}].sku`}
-                              onChange={handleVariantChange}
-                              type="text"
-                              placeholder="sku"
-                              className="h-[35px] border px-2"
-                            />
+                      <>
+                        <div key={index} className="flex flex-col gap-5 mb-5">
+                          <div className="flex gap-4 justify-around">
+                            <div className="flex flex-col w-[165px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                SKU
+                              </label>
+                              <input
+                                value={variant.sku}
+                                name={`variants[${index}].sku`}
+                                onChange={handleVariantChange}
+                                type="text"
+                                placeholder="sku"
+                                className="h-[35px] border px-2"
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Packsize
+                              </label>
+                              <input
+                                value={variant.packSize}
+                                name={`variants[${index}].packsize`}
+                                type="number"
+                                placeholder="packsize"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Margin
+                              </label>
+                              <input
+                                name={`variants[${index}].margin`}
+                                value={variant.margin}
+                                type="number"
+                                placeholder="Margin"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
                           </div>
-                          <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Packsize
-                            </label>
-                            <input
-                              value={variant.packSize}
-                              name={`variants[${index}].packsize`}
-                              type="number"
-                              placeholder="packsize"
-                              className="h-[35px] border px-2 focus:outline-none"
-                              onChange={handleVariantChange}
-                            />
+                          <div className="flex gap-5 justify-around">
+                            <div className="flex flex-col w-[105px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Price
+                              </label>
+                              <input
+                                name={`variants[${index}].price`}
+                                value={variant.price}
+                                type="number"
+                                placeholder="price"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
+                            <div className="flex flex-col w-[105px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Sale price
+                              </label>
+                              <input
+                                name={`variants[${index}].salePrice`}
+                                value={variant.salePrice}
+                                type="number"
+                                placeholder="Sale price"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
+                            <div className="flex flex-col w-[165px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Stock Available
+                              </label>
+                              <select
+                                value={variant.isStockAvailable}
+                                onChange={handleVariantChange}
+                                name={`variants[${index}].isStockAvailable`}
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
+                              >
+                                <option value={false}>No</option>
+                                <option value={true}>Yes</option>
+                              </select>
+                            </div>
                           </div>
-                          <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Margin
-                            </label>
-                            <input
-                              name={`variants[${index}].margin`}
-                              value={variant.margin}
-                              type="number"
-                              placeholder="Margin"
-                              className="h-[35px] border px-2 focus:outline-none"
-                              onChange={handleVariantChange}
-                            />
+                          <div className="flex gap-5 justify-around">
+                            <div className="flex flex-col w-[125px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Min Order Qty
+                              </label>
+                              <input
+                                name={`variants[${index}].minOrderQuantity`}
+                                value={variant.minOrderQuantity}
+                                onChange={handleVariantChange}
+                                type="number"
+                                placeholder="Minimum Order"
+                                className="h-[35px] border px-2 focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col w-[125px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Max order Qty
+                              </label>
+                              <input
+                                name={`variants[${index}].maxOrderQuantity`}
+                                value={variant.maxOrderQuantity}
+                                onChange={handleVariantChange}
+                                type="number"
+                                placeholder="Maximum order"
+                                className="h-[35px] border px-2 focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col w-[125px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Currency
+                              </label>
+                              <select
+                                name={`variants[${index}].currency`}
+                                value={variant.currency}
+                                onChange={handleVariantChange}
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                              >
+                                <option value="₹">₹</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="flex justify-evenly">
+                            <div className="flex flex-col gap-2 w-[100px]">
+                              <label className="px-3 font-semibold opacity-65 text-[12px] ">
+                                Weight Unit
+                              </label>
+                              <select
+                                name={`variants[${index}].weightUnit`}
+                                value={variant.weightUnit}
+                                onChange={handleVariantChange}
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
+                              >
+                                <option value="kg">kg</option>
+                                <option value="gm">gm</option>
+                                <option value="mg">mg</option>
+                              </select>
+                            </div>
+                            <div className="flex flex-col gap-2 w-[100px]">
+                              <label className="px-3 font-semibold opacity-65 text-[12px] ">
+                                Width Unit
+                              </label>
+                              <select
+                                onChange={handleVariantChange}
+                                name={`variants[${index}].widthUnit`}
+                                value={variant.widthUnit}
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
+                              >
+                                <option value="m">m</option>
+                                <option value="cm">cm</option>
+                                <option value="mm">mm</option>
+                              </select>
+                            </div>
+                            <div className="flex flex-col gap-2 w-[100px]">
+                              <label className="px-3 font-semibold opacity-65 text-[12px]">
+                                Length Unit
+                              </label>
+                              <select
+                                name={`variants[${index}].lengthUnit`}
+                                onChange={handleVariantChange}
+                                value={variant.lengthUnit}
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
+                              >
+                                <option value="m">m</option>
+                                <option value="cm">cm</option>
+                                <option value="mm">mm</option>
+                              </select>
+                            </div>
+                            <div className="flex flex-col gap-2 w-[100px]">
+                              <label className="px-3 font-semibold opacity-65 text-[12px]">
+                                Height Unit
+                              </label>
+                              <select
+                                name={`variants[${index}].heightUnit`}
+                                onChange={handleVariantChange}
+                                value={variant.heightUnit}
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
+                              >
+                                <option value="m">m</option>
+                                <option value="cm">cm</option>
+                                <option value="mm">mm</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="flex justify-around">
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Weight
+                              </label>
+                              <input
+                                value={variant.weight}
+                                onChange={handleVariantChange}
+                                name={`variants[${index}].weight`}
+                                type="number"
+                                placeholder="Weight"
+                                className="h-[35px] border px-2 w-[100px] focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Width
+                              </label>
+                              <input
+                                onChange={handleVariantChange}
+                                name={`variants[${index}].width`}
+                                value={variant.width}
+                                type="number"
+                                placeholder="Width"
+                                className="h-[35px] border px-2 w-[100px] focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Length
+                              </label>
+                              <input
+                                onChange={handleVariantChange}
+                                name={`variants[${index}].length`}
+                                value={variant.length}
+                                type="number"
+                                placeholder="Length"
+                                className="h-[35px] border px-2 w-[100px] focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Height
+                              </label>
+                              <input
+                                onChange={handleVariantChange}
+                                value={variant.height}
+                                name={`variants[${index}].height`}
+                                type="number"
+                                placeholder="Height"
+                                className="h-[35px] border px-2 w-[100px] focus:outline-none"
+                              />
+                            </div>
                           </div>
                         </div>
-                        <div className="flex gap-5 justify-around">
-                          <div className="flex flex-col w-[105px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Price
-                            </label>
-                            <input
-                              name={`variants[${index}].price`}
-                              value={variant.price}
-                              type="number"
-                              placeholder="price"
-                              className="h-[35px] border px-2 focus:outline-none"
-                              onChange={handleVariantChange}
-                            />
-                          </div>
-                          <div className="flex flex-col w-[105px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Sale price
-                            </label>
-                            <input
-                              name={`variants[${index}].salePrice`}
-                              value={variant.salePrice}
-                              type="number"
-                              placeholder="Sale price"
-                              className="h-[35px] border px-2 focus:outline-none"
-                              onChange={handleVariantChange}
-                            />
-                          </div>
-                          <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Stock Available
-                            </label>
-                            <select
-                              value={variant.isStockAvailable}
-                              onChange={handleVariantChange}
-                              name={`variants[${index}].isStockAvailable`}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
-                            >
-                              <option value={false}>No</option>
-                              <option value={true}>Yes</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="flex gap-5 justify-around">
-                          <div className="flex flex-col w-[125px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Min Order Qty
-                            </label>
-                            <input
-                              name={`variants[${index}].minOrderQuantity`}
-                              value={variant.minOrderQuantity}
-                              onChange={handleVariantChange}
-                              type="number"
-                              placeholder="Minimum Order"
-                              className="h-[35px] border px-2 focus:outline-none"
-                            />
-                          </div>
-                          <div className="flex flex-col w-[125px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Max order Qty
-                            </label>
-                            <input
-                              name={`variants[${index}].maxOrderQuantity`}
-                              value={variant.maxOrderQuantity}
-                              onChange={handleVariantChange}
-                              type="number"
-                              placeholder="Maximum order"
-                              className="h-[35px] border px-2 focus:outline-none"
-                            />
-                          </div>
-                          <div className="flex flex-col w-[125px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Currency
-                            </label>
-                            <select
-                              name={`variants[${index}].currency`}
-                              value={variant.currency}
-                              onChange={handleVariantChange}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
-                            >
-                              <option value="₹">₹</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="flex justify-evenly">
-                          <div className="flex flex-col gap-2 w-[100px]">
-                            <label className="px-3 font-semibold opacity-65 text-[12px] ">
-                              Weight Unit
-                            </label>
-                            <select
-                              name={`variants[${index}].weightUnit`}
-                              value={variant.weightUnit}
-                              onChange={handleVariantChange}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
-                            >
-                              <option value="kg">kg</option>
-                              <option value="gm">gm</option>
-                              <option value="mg">mg</option>
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-2 w-[100px]">
-                            <label className="px-3 font-semibold opacity-65 text-[12px] ">
-                              Width Unit
-                            </label>
-                            <select
-                              onChange={handleVariantChange}
-                              name={`variants[${index}].widthUnit`}
-                              value={variant.widthUnit}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
-                            >
-                              <option value="m">m</option>
-                              <option value="cm">cm</option>
-                              <option value="mm">mm</option>
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-2 w-[100px]">
-                            <label className="px-3 font-semibold opacity-65 text-[12px]">
-                              Length Unit
-                            </label>
-                            <select
-                              name={`variants[${index}].lengthUnit`}
-                              onChange={handleVariantChange}
-                              value={variant.lengthUnit}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
-                            >
-                              <option value="m">m</option>
-                              <option value="cm">cm</option>
-                              <option value="mm">mm</option>
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-2 w-[100px]">
-                            <label className="px-3 font-semibold opacity-65 text-[12px]">
-                              Height Unit
-                            </label>
-                            <select
-                              name={`variants[${index}].heightUnit`}
-                              onChange={handleVariantChange}
-                              value={variant.heightUnit}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
-                            >
-                              <option value="m">m</option>
-                              <option value="cm">cm</option>
-                              <option value="mm">mm</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="flex justify-around">
-                          <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Weight
-                            </label>
-                            <input
-                              value={variant.weight}
-                              onChange={handleVariantChange}
-                              name={`variants[${index}].weight`}
-                              type="number"
-                              placeholder="Weight"
-                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
-                            />
-                          </div>
-                          <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Width
-                            </label>
-                            <input
-                              onChange={handleVariantChange}
-                              name={`variants[${index}].width`}
-                              value={variant.width}
-                              type="number"
-                              placeholder="Width"
-                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
-                            />
-                          </div>
-                          <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Length
-                            </label>
-                            <input
-                              onChange={handleVariantChange}
-                              name={`variants[${index}].length`}
-                              value={variant.length}
-                              type="number"
-                              placeholder="Length"
-                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
-                            />
-                          </div>
-                          <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65 text-[12px]">
-                              Height
-                            </label>
-                            <input
-                              onChange={handleVariantChange}
-                              value={variant.height}
-                              name={`variants[${index}].height`}
-                              type="number"
-                              placeholder="Height"
-                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                        <div className="bg-black h-[2px] w-full mb-5"></div>
+                      </>
                     ))}
 
                     {/* <button
@@ -1452,7 +1455,7 @@ const EditProducts = () => {
               {/* generics mapping */}
               <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
                 <div className="flex justify-between items-center px-3">
-                  <label className="font-bold">Generics Id</label>
+                  <label className="font-bold">All Generics</label>
                   <button
                     type="button"
                     onClick={toggleGenericsOpen}
