@@ -80,11 +80,17 @@ const EditProducts = () => {
     setProductValues({ ...productValues, [name]: value });
   };
 
-  const handleVariantChange = (e, index) => {
+  const handleVariantChange = (e) => {
     const { name, value } = e.target;
-    const updatedVariants = [...productValues.variants];
-    updatedVariants[index] = { ...updatedVariants[index], [name]: value };
-    setProductValues({ ...productValues, variants: updatedVariants });
+    const [field, index, subField] = name.split(/[\[\].]+/).filter(Boolean);
+    const updatedVariants = productValues.variants.map((variant, i) =>
+      i === Number(index) ? { ...variant, [subField]: value } : variant
+    );
+
+    setProductValues({
+      ...productValues,
+      [field]: updatedVariants,
+    });
   };
 
   const handleTagInputChange = (e) => {
@@ -220,11 +226,29 @@ const EditProducts = () => {
     setExternalLink(value);
   };
 
+  const editProductCategory = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.patch(
+        `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
+        productValues,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
       <p className="font-bold">Edit products</p>
       <div className="w-full">
-        <form>
+        <form onSubmit={editProductCategory}>
           <div className="w-full flex">
             <div className="w-[75%] flex left">
               <div className="w-[30%]">
@@ -612,6 +636,7 @@ const EditProducts = () => {
                     </label>
                     <div>
                       <JoditEditor
+                        className="h-[400px]"
                         value={productValues.additionalInformation}
                         onChange={(value) =>
                           handleChange({
@@ -835,9 +860,9 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "variants" && (
-                  <div className="w-[500px] flex flex-col gap-3">
+                  <div className="w-[500px] flex">
                     {productValues.variants.map((variant, index) => (
-                      <div key={index}>
+                      <div key={index} className="flex flex-col gap-5">
                         <div className="flex gap-4">
                           <div className="flex flex-col w-[165px]">
                             <label className="font-semibold px-2 opacity-65">
@@ -846,6 +871,7 @@ const EditProducts = () => {
                             <input
                               value={variant.sku}
                               name={`variants[${index}].sku`}
+                              onChange={handleVariantChange}
                               type="text"
                               placeholder="sku"
                               className="h-[35px] border px-2"
@@ -861,6 +887,7 @@ const EditProducts = () => {
                               type="number"
                               placeholder="packsize"
                               className="h-[35px] border px-2 focus:outline-none"
+                              onChange={handleVariantChange}
                             />
                           </div>
                           <div className="flex flex-col w-[165px]">
@@ -873,6 +900,7 @@ const EditProducts = () => {
                               type="number"
                               placeholder="Margin"
                               className="h-[35px] border px-2 focus:outline-none"
+                              onChange={handleVariantChange}
                             />
                           </div>
                         </div>
@@ -887,6 +915,7 @@ const EditProducts = () => {
                               type="number"
                               placeholder="price"
                               className="h-[35px] border px-2 focus:outline-none"
+                              onChange={handleVariantChange}
                             />
                           </div>
                           <div className="flex flex-col w-[165px]">
@@ -899,6 +928,7 @@ const EditProducts = () => {
                               type="number"
                               placeholder="Sale price"
                               className="h-[35px] border px-2 focus:outline-none"
+                              onChange={handleVariantChange}
                             />
                           </div>
                           <div className="flex flex-col w-[165px]">
@@ -907,6 +937,7 @@ const EditProducts = () => {
                             </label>
                             <select
                               value={variant.isStockAvailable}
+                              onChange={handleVariantChange}
                               name={`variants[${index}].isStockAvailable`}
                               className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
                             >
@@ -923,6 +954,7 @@ const EditProducts = () => {
                             <input
                               name={`variants[${index}].minOrderQuantity`}
                               value={variant.minOrderQuantity}
+                              onChange={handleVariantChange}
                               type="number"
                               placeholder="Minimum Order"
                               className="h-[35px] border px-2 focus:outline-none"
@@ -935,6 +967,7 @@ const EditProducts = () => {
                             <input
                               name={`variants[${index}].maxOrderQuantity`}
                               value={variant.maxOrderQuantity}
+                              onChange={handleVariantChange}
                               type="number"
                               placeholder="Maximum order"
                               className="h-[35px] border px-2 focus:outline-none"
@@ -947,10 +980,10 @@ const EditProducts = () => {
                             <select
                               name={`variants[${index}].currency`}
                               value={variant.currency}
+                              onChange={handleVariantChange}
                               className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
                             >
                               <option value="₹">₹</option>
-                              <option value="Euro">Euro</option>
                             </select>
                           </div>
                         </div>
@@ -962,6 +995,7 @@ const EditProducts = () => {
                             <select
                               name={`variants[${index}].weightUnit`}
                               value={variant.weightUnit}
+                              onChange={handleVariantChange}
                               className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
                             >
                               <option value="kg">kg</option>
@@ -974,6 +1008,7 @@ const EditProducts = () => {
                               Width Unit
                             </label>
                             <select
+                              onChange={handleVariantChange}
                               name={`variants[${index}].widthUnit`}
                               value={variant.widthUnit}
                               className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
@@ -989,6 +1024,7 @@ const EditProducts = () => {
                             </label>
                             <select
                               name={`variants[${index}].lengthUnit`}
+                              onChange={handleVariantChange}
                               value={variant.lengthUnit}
                               className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
                             >
@@ -1003,6 +1039,7 @@ const EditProducts = () => {
                             </label>
                             <select
                               name={`variants[${index}].heightUnit`}
+                              onChange={handleVariantChange}
                               value={variant.heightUnit}
                               className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
                             >
@@ -1019,6 +1056,7 @@ const EditProducts = () => {
                             </label>
                             <input
                               value={variant.weight}
+                              onChange={handleVariantChange}
                               name={`variants[${index}].weight`}
                               type="number"
                               placeholder="Weight"
@@ -1030,6 +1068,7 @@ const EditProducts = () => {
                               Width
                             </label>
                             <input
+                              onChange={handleVariantChange}
                               name={`variants[${index}].width`}
                               value={variant.width}
                               type="number"
@@ -1042,6 +1081,7 @@ const EditProducts = () => {
                               Length
                             </label>
                             <input
+                              onChange={handleVariantChange}
                               name={`variants[${index}].length`}
                               value={variant.length}
                               type="number"
@@ -1054,6 +1094,7 @@ const EditProducts = () => {
                               Height
                             </label>
                             <input
+                              onChange={handleVariantChange}
                               value={variant.height}
                               name={`variants[${index}].height`}
                               type="number"
@@ -1332,9 +1373,15 @@ const EditProducts = () => {
                   </div>
                 </div>
               </div>
-
-              {/* booleans here */}
             </div>
+          </div>
+          <div className="flex justify-center mt-5 mb-5">
+            <button
+              type="submit"
+              className="bg-[#13a3bc] hover:bg-[#13b6d5] py-1 text-white font-bold px-4 rounded-md"
+            >
+              Update Data
+            </button>
           </div>
         </form>
       </div>
