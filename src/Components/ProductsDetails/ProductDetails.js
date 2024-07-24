@@ -15,6 +15,7 @@ import {
   setSearchQuery,
 } from "../../redux/slice/GetProductsSlice";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,8 @@ const ProductDetails = () => {
   const filteredCategories = categories.filter((category) =>
     category.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const navigate = useNavigate();
 
   const [isTopBarOpen, setIsTopBarOpen] = useState(true);
   const dispatch = useDispatch();
@@ -195,7 +198,10 @@ const ProductDetails = () => {
         <div className="flex justify-between mr-5">
           <div className="flex gap-3 p-5">
             <p className="text-xl font-semibold">Products</p>
-            <button className="bg-[#13a3bc] text-white font-semibold text-sm p-2 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out">
+            <button
+              onClick={() => navigate("/add-product")}
+              className="bg-[#13a3bc] text-white font-semibold text-sm p-2 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out"
+            >
               Add New
             </button>
           </div>
@@ -492,9 +498,10 @@ const ProductDetails = () => {
                       {singleItem.variants[0].sku}
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-green-700 font-bold text-[12px]">
-                      {singleItem.isStockAvailable
-                        ? "In Stock"
-                        : "Out of Stock"}
+                      {console.log(singleItem.isStockAvailable)}
+                      {singleItem.variants[0].isStockAvailable
+                        ? `In Stock (${singleItem.variants[0].length})`
+                        : `Out of Stock (${singleItem.variants[0].length})`}
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {singleItem.variants[0].currency}{" "}
