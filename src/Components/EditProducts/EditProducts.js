@@ -11,12 +11,12 @@ import { DiHtml53dEffects } from "react-icons/di";
 import { PiSelectionSlashFill } from "react-icons/pi";
 import { Field } from "formik";
 import JoditEditor from "jodit-react";
+import { RxCross2 } from "react-icons/rx";
 
 const EditProducts = () => {
   const { id } = useParams();
 
   const [activeSection, setActiveSection] = useState("name");
-  const [productsData, setProductsData] = useState({});
   const [externalLink, setExternalLink] = useState("");
   const [isUrlValid, setIsUrlValid] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -141,7 +141,7 @@ const EditProducts = () => {
           margin: variant.margin || "",
           minOrderQuantity: variant.minOrderQuantity || "",
           maxOrderQuantity: variant.maxOrderQuantity || "",
-          isStockAvailable: variant.isStockAvailable || "",
+          isStockAvailable: variant.isStockAvailable || true,
           currency: variant.currency || "",
           weightUnit: variant.weightUnit || "",
           widthUnit: variant.widthUnit || "",
@@ -283,6 +283,24 @@ const EditProducts = () => {
       console.log(error);
     } finally {
       getDataForEdit();
+    }
+  };
+
+  //delete single image
+  const deleteSingleImage = async (key) => {
+    try {
+      const response = await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/product/${id}/single-images`,
+        { key },
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -736,14 +754,18 @@ const EditProducts = () => {
                             value={productValues.isReturnable}
                             onChange={(event) => {
                               const value = event.target.value === "true";
-                              setProductValues("isReturnable", value);
-                              //   setFieldValue();
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isReturnable: value,
+                              }));
                             }}
                             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                           >
-                            <option disabled>Select an option</option>
-                            <option value={false}>No</option>
-                            <option value={true}>Yes</option>
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                           </select>
                         </div>
                       </div>
@@ -754,19 +776,22 @@ const EditProducts = () => {
                         </label>
                         <div className="relative inline-block text-left">
                           <select
-                            as="select"
                             name="isPrescriptionRequired"
                             value={productValues.isPrescriptionRequired}
                             onChange={(event) => {
                               const value = event.target.value === "true";
-                              setProductValues("isPrescriptionRequired", value);
-                              //   setFieldValue("isPrescriptionRequired", value);
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isPrescriptionRequired: value,
+                              }));
                             }}
                             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                           >
-                            <option disabled>Select an option</option>
-                            <option value={true}>Yes</option>
-                            <option value={false}>No</option>
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                           </select>
                         </div>
                       </div>
@@ -777,19 +802,22 @@ const EditProducts = () => {
                         <label className="px-3 font-bold">IsVisible?</label>
                         <div className="relative inline-block text-left">
                           <select
-                            as="select"
                             name="isVisible"
                             value={productValues.isVisible}
                             onChange={(event) => {
                               const value = event.target.value === "true";
-                              setProductValues("isVisible", value);
-                              //   setFieldValue("isVisible", value);
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isVisible: value,
+                              }));
                             }}
                             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                           >
-                            <option disabled>Select an option</option>
-                            <option value={true}>Yes</option>
-                            <option value={false}>No</option>
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                           </select>
                         </div>
                       </div>
@@ -798,19 +826,22 @@ const EditProducts = () => {
                         <label className="px-3 font-bold">IsFeatured?</label>
                         <div className="relative inline-block text-left">
                           <select
-                            as="select"
                             name="isFeatured"
                             value={productValues.isFeatured}
                             onChange={(event) => {
                               const value = event.target.value === "true";
-                              setProductValues("isFeatured", value);
-                              //   setFieldValue("isFeatured", value);
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isFeatured: value,
+                              }));
                             }}
                             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                           >
-                            <option disabled>Select an option</option>
-                            <option value={true}>Yes</option>
-                            <option value={false}>No</option>
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                           </select>
                         </div>
                       </div>
@@ -820,19 +851,22 @@ const EditProducts = () => {
                       <label className="px-3 font-bold">IsDiscontinued?</label>
                       <div className="relative inline-block text-left">
                         <select
-                          as="select"
                           name="isDiscontinued"
                           value={productValues.isDiscontinued}
                           onChange={(event) => {
                             const value = event.target.value === "true";
-                            setProductValues("isDiscontinued", value);
-                            // setFieldValue("isDiscontinued", value);
+                            setProductValues((prevValues) => ({
+                              ...prevValues,
+                              isDiscontinued: value,
+                            }));
                           }}
                           className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
                         >
-                          <option disabled>Select an option</option>
-                          <option value={true}>Yes</option>
-                          <option value={false}>No</option>
+                          <option value="" disabled>
+                            Select an option
+                          </option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
                         </select>
                       </div>
                     </div>
@@ -902,9 +936,9 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "variants" && (
-                  <div className="w-[500px] flex">
+                  <div className="w-[500px] flex flex-col ">
                     {productValues.variants.map((variant, index) => (
-                      <div key={index} className="flex flex-col gap-5">
+                      <div key={index} className="flex flex-col gap-5 border-2 mb-5">
                         <div className="flex gap-4">
                           <div className="flex flex-col w-[165px]">
                             <label className="font-semibold px-2 opacity-65">
@@ -919,7 +953,7 @@ const EditProducts = () => {
                               className="h-[35px] border px-2"
                             />
                           </div>
-                          <div className="flex flex-col w-[165px]">
+                          <div className="flex flex-col w-[100px]">
                             <label className="font-semibold px-2 opacity-65">
                               Packsize
                             </label>
@@ -947,7 +981,7 @@ const EditProducts = () => {
                           </div>
                         </div>
                         <div className="flex gap-5">
-                          <div className="flex flex-col w-[165px]">
+                          <div className="flex flex-col w-[105px]">
                             <label className="font-semibold px-2 opacity-65">
                               Price
                             </label>
@@ -960,7 +994,7 @@ const EditProducts = () => {
                               onChange={handleVariantChange}
                             />
                           </div>
-                          <div className="flex flex-col w-[165px]">
+                          <div className="flex flex-col w-[105px]">
                             <label className="font-semibold px-2 opacity-65">
                               Sale price
                             </label>
@@ -1398,13 +1432,19 @@ const EditProducts = () => {
                       Upload Images
                     </button>
                   </div>
-                  <div className="grid grid-cols-3 border-[1px] border-gray-300 rounded-xl p-2 gap-2">
+                  <div className="grid grid-cols-3 border-[1px] border-gray-300 rounded-xl p-2 gap-2 ">
                     {productValues?.images?.map((image) => (
-                      <div className="flex gap-2">
-                        <div className="border-[1px] border-gray-300 rounded-xl p-2">
-                          <img src={image.url} />
+                      <>
+                        <div className="flex gap-2">
+                          <div className="border-[1px] border-gray-300 rounded-xl p-2 relative group">
+                            <img src={image.url} alt="Image" />
+                            <RxCross2
+                              onClick={() => deleteSingleImage(image.key)}
+                              className="text-red-800 absolute top-[-6px] left-[60px] cursor-pointer hidden group-hover:block"
+                            />
+                          </div>
                         </div>
-                      </div>
+                      </>
                     ))}
                   </div>
                 </div>
