@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { FaChevronUp, FaChevronDown, FaTrash } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { MdMore } from "react-icons/md";
 import { MdOutlineDescription } from "react-icons/md";
@@ -28,6 +28,8 @@ const EditProducts = () => {
   const [genericsOpen, setGenericsOpen] = useState(false);
   const [tagsInput, setTagsInput] = useState("");
   const [genericsMap, setGenericMap] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
   const [productValues, setProductValues] = useState({
     title: "",
     generic: "",
@@ -116,47 +118,47 @@ const EditProducts = () => {
   const toggleGenericsOpen = () => setGenericsOpen(!genericsOpen);
   console.log(id);
 
-  useEffect(() => {
-    const getDataForEdit = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
-          {
-            headers: {
-              authorization: `Bearer ${localStorage.getItem("authorization")}`,
-              id: localStorage.getItem("id"),
-            },
-          }
-        );
-        const productData = response.data.data;
-        console.log("productData", productData);
-        setProductValues({
-          ...productData,
-          variants: productData.variants.map((variant) => ({
-            sku: variant.sku || "",
-            packSize: variant.packSize || "",
-            price: variant.price || "",
-            salePrice: variant.salePrice || "",
-            margin: variant.margin || "",
-            minOrderQuantity: variant.minOrderQuantity || "",
-            maxOrderQuantity: variant.maxOrderQuantity || "",
-            isStockAvailable: variant.isStockAvailable || "",
-            currency: variant.currency || "",
-            weightUnit: variant.weightUnit || "",
-            widthUnit: variant.widthUnit || "",
-            lengthUnit: variant.lengthUnit || "",
-            heightUnit: variant.heightUnit || "",
-            weight: variant.weight || "",
-            length: variant.length || "",
-            height: variant.height || "",
-            width: variant.width || "",
-          })),
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const getDataForEdit = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      const productData = response.data.data;
+      console.log("productData", productData);
+      setProductValues({
+        ...productData,
+        variants: productData.variants.map((variant) => ({
+          sku: variant.sku || "",
+          packSize: variant.packSize || "",
+          price: variant.price || "",
+          salePrice: variant.salePrice || "",
+          margin: variant.margin || "",
+          minOrderQuantity: variant.minOrderQuantity || "",
+          maxOrderQuantity: variant.maxOrderQuantity || "",
+          isStockAvailable: variant.isStockAvailable || "",
+          currency: variant.currency || "",
+          weightUnit: variant.weightUnit || "",
+          widthUnit: variant.widthUnit || "",
+          lengthUnit: variant.lengthUnit || "",
+          heightUnit: variant.heightUnit || "",
+          weight: variant.weight || "",
+          length: variant.length || "",
+          height: variant.height || "",
+          width: variant.width || "",
+        })),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
     getDataForEdit();
   }, [id]);
 
@@ -244,13 +246,53 @@ const EditProducts = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setPreviewImages(previews);
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+    const updatedPreviews = previewImages.filter((_, i) => i !== index);
+
+    setSelectedFiles(updatedFiles);
+    setPreviewImages(updatedPreviews);
+  };
+
+  //Add image to a product
+  const addImageToProduct = async () => {
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append("images", file);
+    });
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/product/${id}/images`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getDataForEdit();
+    }
+  };
+
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
       <p className="font-bold">Edit products</p>
       <div className="w-full">
         <form onSubmit={editProductCategory}>
-          <div className="w-full flex">
-            <div className="w-[75%] flex left">
+          <div className="w-[100%] flex gap-5">
+            <div className="w-[70%] flex left">
               <div className="w-[30%]">
                 <div className="flex flex-col gap-3 p-3">
                   <div
@@ -1117,8 +1159,7 @@ const EditProducts = () => {
                 )}
               </div>
             </div>
-            <div className="right w-[25%] mt-5 p-3">
-              {/* product categories */}
+            <div className="right w-[30%] mt-5 p-3">
               {/* product categories */}
               <div className="product-categories border rounded-xl p-3 fixed-width-card">
                 <div className="flex justify-between items-center">
@@ -1141,7 +1182,7 @@ const EditProducts = () => {
                   } transition-all duration-300`}
                 >
                   {hierarchyData?.map((item) => (
-                    <div className="border-2 p-5" key={item._id}>
+                    <div className="border-2 p-2" key={item._id}>
                       <div className="flex items-center mb-2">
                         <input
                           type="radio"
@@ -1325,10 +1366,46 @@ const EditProducts = () => {
                   } transition-all duration-300`}
                 >
                   <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
-                    <input type="file" className="w-[225px]" />
-                    <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
+                    <input
+                      type="file"
+                      multiple
+                      className="w-[225px]"
+                      onChange={handleFileChange}
+                    />
+                    {previewImages.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {previewImages.map((preview, index) => (
+                          <div key={index} className="relative">
+                            <img
+                              src={preview}
+                              alt={`preview-${index}`}
+                              className="w-[100px] h-[100px] object-cover rounded-md"
+                            />
+                            <button
+                              onClick={() => handleDeleteImage(index)}
+                              className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <button
+                      onClick={addImageToProduct}
+                      className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md"
+                    >
                       Upload Images
                     </button>
+                  </div>
+                  <div className="grid grid-cols-3 border-[1px] border-gray-300 rounded-xl p-2 gap-2">
+                    {productValues?.images?.map((image) => (
+                      <div className="flex gap-2">
+                        <div className="border-[1px] border-gray-300 rounded-xl p-2">
+                          <img src={image.url} />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
