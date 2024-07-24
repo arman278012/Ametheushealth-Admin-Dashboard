@@ -486,7 +486,14 @@ const ProductDetails = () => {
                           </p>
                         </div>
                         <div className="flex gap-2">
-                          <button className="text-[#2271b1]">Edit</button>{" "}
+                          <button
+                            className="text-[#2271b1]"
+                            onClick={() =>
+                              navigate(`/edit-products/${singleItem._id}`)
+                            }
+                          >
+                            Edit
+                          </button>{" "}
                           <span className="text-[#2271b1]">|</span>
                           <button className="text-[#2271b1]">View</button>{" "}
                           <span className="text-[#2271b1]">|</span>

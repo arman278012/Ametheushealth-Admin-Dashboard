@@ -212,7 +212,6 @@ const AddProduct = () => {
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
       <p className="text-[16px] font-bold">Add Products</p>
-      <div></div>
       <div className="flex flex-wrap gap-10 border border-gray-300 mt-5">
         <Formik
           initialValues={initialValues}

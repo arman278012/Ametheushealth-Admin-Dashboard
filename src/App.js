@@ -49,7 +49,7 @@ function App() {
             <Route path="/all-generic" element={<AllGenericPage />} />
             <Route path="/generic-details" element={<GenericDetailsPage />} />
             <Route path="/instant-generic" element={<InstantGenericPage />} />
-            <Route path="/edit-products" element={<EditProductsPage />} />
+            <Route path="/edit-products/:id" element={<EditProductsPage />} />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}
