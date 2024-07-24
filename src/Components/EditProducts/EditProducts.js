@@ -287,11 +287,10 @@ const EditProducts = () => {
   };
 
   //delete single image
-  const deleteSingleImage = async (key) => {
+  const deleteSingleImage = async (imgId) => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/product/${id}/single-images`,
-        { key },
+        `https://api.assetorix.com:4100/ah/api/v1/product/${id}/single-image/${imgId}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -496,7 +495,7 @@ const EditProducts = () => {
                 {activeSection === "name" && (
                   <div className="flex flex-col gap-5">
                     <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65">
+                      <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Product Name
                       </label>
                       <input
@@ -511,7 +510,7 @@ const EditProducts = () => {
 
                     <div className="flex flex-col md:flex-row gap-5">
                       <div className="flex flex-col w-full">
-                        <label className="font-semibold px-2 opacity-65">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Generic Name
                         </label>
                         <input
@@ -524,7 +523,7 @@ const EditProducts = () => {
                         />
                       </div>
                       <div className="flex flex-col w-full">
-                        <label className="font-semibold px-2 opacity-65">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Treatment
                         </label>
                         <input
@@ -538,7 +537,7 @@ const EditProducts = () => {
                       </div>
                     </div>
                     <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65">
+                      <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Purchase Note
                       </label>
                       <input
@@ -552,7 +551,7 @@ const EditProducts = () => {
                     </div>
 
                     <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65">
+                      <label className="font-semibold px-2 opacity-65 text-[12px]">
                         External Link
                       </label>
                       <input
@@ -574,7 +573,7 @@ const EditProducts = () => {
                     </div>
 
                     <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65">
+                      <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Position
                       </label>
                       <input
@@ -877,7 +876,7 @@ const EditProducts = () => {
                   <>
                     <div className="flex flex-col gap-5 justify-center w-[500px]">
                       <div className="flex flex-col w-full">
-                        <label className="font-semibold px-2 opacity-65">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Title
                         </label>
                         <input
@@ -891,7 +890,7 @@ const EditProducts = () => {
                       </div>
 
                       <div className="flex flex-col w-full">
-                        <label className="font-semibold px-2 opacity-65">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Description
                         </label>
                         <input
@@ -905,7 +904,7 @@ const EditProducts = () => {
                       </div>
 
                       <div className="flex flex-col w-full">
-                        <label className="font-semibold px-2 opacity-65">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Tags
                         </label>
                         <div className="flex gap-3">
@@ -938,10 +937,10 @@ const EditProducts = () => {
                 {activeSection === "variants" && (
                   <div className="w-[500px] flex flex-col ">
                     {productValues.variants.map((variant, index) => (
-                      <div key={index} className="flex flex-col gap-5 border-2 mb-5">
-                        <div className="flex gap-4">
+                      <div key={index} className="flex flex-col gap-5 mb-5">
+                        <div className="flex gap-4 justify-around">
                           <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               SKU
                             </label>
                             <input
@@ -954,7 +953,7 @@ const EditProducts = () => {
                             />
                           </div>
                           <div className="flex flex-col w-[100px]">
-                            <label className="font-semibold px-2 opacity-65">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Packsize
                             </label>
                             <input
@@ -966,8 +965,8 @@ const EditProducts = () => {
                               onChange={handleVariantChange}
                             />
                           </div>
-                          <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65">
+                          <div className="flex flex-col w-[100px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Margin
                             </label>
                             <input
@@ -980,9 +979,9 @@ const EditProducts = () => {
                             />
                           </div>
                         </div>
-                        <div className="flex gap-5">
+                        <div className="flex gap-5 justify-around">
                           <div className="flex flex-col w-[105px]">
-                            <label className="font-semibold px-2 opacity-65">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Price
                             </label>
                             <input
@@ -995,7 +994,7 @@ const EditProducts = () => {
                             />
                           </div>
                           <div className="flex flex-col w-[105px]">
-                            <label className="font-semibold px-2 opacity-65">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Sale price
                             </label>
                             <input
@@ -1008,7 +1007,7 @@ const EditProducts = () => {
                             />
                           </div>
                           <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Stock Available
                             </label>
                             <select
@@ -1022,9 +1021,9 @@ const EditProducts = () => {
                             </select>
                           </div>
                         </div>
-                        <div className="flex gap-5">
-                          <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65">
+                        <div className="flex gap-5 justify-around">
+                          <div className="flex flex-col w-[125px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Min Order Qty
                             </label>
                             <input
@@ -1036,8 +1035,8 @@ const EditProducts = () => {
                               className="h-[35px] border px-2 focus:outline-none"
                             />
                           </div>
-                          <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65">
+                          <div className="flex flex-col w-[125px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Max order Qty
                             </label>
                             <input
@@ -1049,75 +1048,75 @@ const EditProducts = () => {
                               className="h-[35px] border px-2 focus:outline-none"
                             />
                           </div>
-                          <div className="flex flex-col w-[165px]">
-                            <label className="font-semibold px-2 opacity-65">
+                          <div className="flex flex-col w-[125px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Currency
                             </label>
                             <select
                               name={`variants[${index}].currency`}
                               value={variant.currency}
                               onChange={handleVariantChange}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
+                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
                             >
                               <option value="₹">₹</option>
                             </select>
                           </div>
                         </div>
-                        <div className="flex gap-4">
-                          <div className="flex flex-col gap-2 w-[120px]">
-                            <label className="px-3 font-semibold opacity-65">
+                        <div className="flex justify-evenly">
+                          <div className="flex flex-col gap-2 w-[100px]">
+                            <label className="px-3 font-semibold opacity-65 text-[12px] ">
                               Weight Unit
                             </label>
                             <select
                               name={`variants[${index}].weightUnit`}
                               value={variant.weightUnit}
                               onChange={handleVariantChange}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
                             >
                               <option value="kg">kg</option>
                               <option value="gm">gm</option>
                               <option value="mg">mg</option>
                             </select>
                           </div>
-                          <div className="flex flex-col gap-2 w-[120px]">
-                            <label className="px-3 font-semibold opacity-65">
+                          <div className="flex flex-col gap-2 w-[100px]">
+                            <label className="px-3 font-semibold opacity-65 text-[12px] ">
                               Width Unit
                             </label>
                             <select
                               onChange={handleVariantChange}
                               name={`variants[${index}].widthUnit`}
                               value={variant.widthUnit}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
                             >
                               <option value="m">m</option>
                               <option value="cm">cm</option>
                               <option value="mm">mm</option>
                             </select>
                           </div>
-                          <div className="flex flex-col gap-2 w-[120px]">
-                            <label className="px-3 font-semibold opacity-65">
+                          <div className="flex flex-col gap-2 w-[100px]">
+                            <label className="px-3 font-semibold opacity-65 text-[12px]">
                               Length Unit
                             </label>
                             <select
                               name={`variants[${index}].lengthUnit`}
                               onChange={handleVariantChange}
                               value={variant.lengthUnit}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
                             >
                               <option value="m">m</option>
                               <option value="cm">cm</option>
                               <option value="mm">mm</option>
                             </select>
                           </div>
-                          <div className="flex flex-col gap-2 w-[120px]">
-                            <label className="px-3 font-semibold opacity-65">
+                          <div className="flex flex-col gap-2 w-[100px]">
+                            <label className="px-3 font-semibold opacity-65 text-[12px]">
                               Height Unit
                             </label>
                             <select
                               name={`variants[${index}].heightUnit`}
                               onChange={handleVariantChange}
                               value={variant.heightUnit}
-                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[120px]"
+                              className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
                             >
                               <option value="m">m</option>
                               <option value="cm">cm</option>
@@ -1125,9 +1124,9 @@ const EditProducts = () => {
                             </select>
                           </div>
                         </div>
-                        <div className="flex gap-4">
-                          <div className="flex flex-col w-[120px]">
-                            <label className="font-semibold px-2 opacity-65">
+                        <div className="flex justify-around">
+                          <div className="flex flex-col w-[100px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Weight
                             </label>
                             <input
@@ -1136,11 +1135,11 @@ const EditProducts = () => {
                               name={`variants[${index}].weight`}
                               type="number"
                               placeholder="Weight"
-                              className="h-[35px] border px-2 w-[120px] focus:outline-none"
+                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
                             />
                           </div>
-                          <div className="flex flex-col w-[120px]">
-                            <label className="font-semibold px-2 opacity-65">
+                          <div className="flex flex-col w-[100px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Width
                             </label>
                             <input
@@ -1149,11 +1148,11 @@ const EditProducts = () => {
                               value={variant.width}
                               type="number"
                               placeholder="Width"
-                              className="h-[35px] border px-2 w-[120px] focus:outline-none"
+                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
                             />
                           </div>
-                          <div className="flex flex-col w-[120px]">
-                            <label className="font-semibold px-2 opacity-65">
+                          <div className="flex flex-col w-[100px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Length
                             </label>
                             <input
@@ -1162,11 +1161,11 @@ const EditProducts = () => {
                               value={variant.length}
                               type="number"
                               placeholder="Length"
-                              className="h-[35px] border px-2 w-[120px] focus:outline-none"
+                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
                             />
                           </div>
-                          <div className="flex flex-col w-[120px]">
-                            <label className="font-semibold px-2 opacity-65">
+                          <div className="flex flex-col w-[100px]">
+                            <label className="font-semibold px-2 opacity-65 text-[12px]">
                               Height
                             </label>
                             <input
@@ -1175,7 +1174,7 @@ const EditProducts = () => {
                               name={`variants[${index}].height`}
                               type="number"
                               placeholder="Height"
-                              className="h-[35px] border px-2 w-[120px] focus:outline-none"
+                              className="h-[35px] border px-2 w-[100px] focus:outline-none"
                             />
                           </div>
                         </div>
@@ -1439,7 +1438,7 @@ const EditProducts = () => {
                           <div className="border-[1px] border-gray-300 rounded-xl p-2 relative group">
                             <img src={image.url} alt="Image" />
                             <RxCross2
-                              onClick={() => deleteSingleImage(image.key)}
+                              onClick={() => deleteSingleImage(image._id)}
                               className="text-red-800 absolute top-[-6px] left-[60px] cursor-pointer hidden group-hover:block"
                             />
                           </div>
