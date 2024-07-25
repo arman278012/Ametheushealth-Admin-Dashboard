@@ -31,6 +31,8 @@ const EditProducts = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const [variantsToDelete, setVariantsToDelete] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchGenericQuery, setSearchGenericQuery] = useState("");
 
   const [productValues, setProductValues] = useState({
     title: "",
@@ -60,11 +62,11 @@ const EditProducts = () => {
       {
         sku: "",
         packSize: "",
-        price: "",
-        salePrice: "",
-        margin: "",
-        minOrderQuantity: "1",
-        maxOrderQuantity: "100",
+        price: 0,
+        salePrice: 0,
+        margin: 0,
+        minOrderQuantity: 1,
+        maxOrderQuantity: 100,
         isStockAvailable: false,
         currency: "₹",
         weightUnit: "gm",
@@ -95,42 +97,9 @@ const EditProducts = () => {
     });
   };
 
-  const handleAddMetaTag = (e) => {
-    e.preventDefault();
-    // Add your logic to handle adding the meta tag
-    // For example, you can update a list of meta tags in the state
-    console.log("Meta Tag Added: ", productValues.metaTags);
-    // Clear the input field after adding the tag
-    setProductValues((prevValues) => ({
-      ...prevValues,
-      metaTags: "",
-    }));
-  };
-
   useEffect(() => {
     setTags(productValues.tags);
   }, [productValues.tags]);
-
-  const handleTagInputChange = (e) => {
-    setTagsInput(e.target.value);
-  };
-
-  const handleAddTag = () => {
-    if (tagsInput) {
-      setTags([...tags, tagsInput]);
-      setTagsInput("");
-    }
-  };
-
-  const handleEditTag = (index, newTag) => {
-    const updatedTags = tags.map((tag, i) => (i === index ? newTag : tag));
-    setTags(updatedTags);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProductValues({ ...productValues, [name]: value });
-  };
 
   const handleVariantChange = (e) => {
     const { name, value } = e.target;
@@ -175,11 +144,11 @@ const EditProducts = () => {
         variants: productData.variants.map((variant) => ({
           sku: variant.sku || "",
           packSize: variant.packSize || "",
-          price: variant.price || "",
-          salePrice: variant.salePrice || "",
-          margin: variant.margin || "",
-          minOrderQuantity: variant.minOrderQuantity || "",
-          maxOrderQuantity: variant.maxOrderQuantity || "",
+          price: variant.price || 0,
+          salePrice: variant.salePrice || 0,
+          margin: variant.margin || 0,
+          minOrderQuantity: variant.minOrderQuantity || 1,
+          maxOrderQuantity: variant.maxOrderQuantity || 100,
           isStockAvailable: variant.isStockAvailable || true,
           currency: variant.currency || "",
           weightUnit: variant.weightUnit || "",
@@ -202,10 +171,10 @@ const EditProducts = () => {
     getDataForEdit();
   }, [id]);
 
-  const getHierarchy = async () => {
+  const getHierarchy = async (query) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names`,
+        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -219,10 +188,22 @@ const EditProducts = () => {
     }
   };
 
-  const genericsData = async () => {
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery) {
+        getHierarchy(searchQuery);
+      } else {
+        getHierarchy("");
+      }
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const genericsData = async (genericQuery) => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/generic/names",
+        `https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${genericQuery}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -236,6 +217,18 @@ const EditProducts = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchGenericQuery) {
+        genericsData(searchGenericQuery);
+      } else {
+        genericsData("");
+      }
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchGenericQuery]);
 
   useEffect(() => {
     getHierarchy();
@@ -535,7 +528,7 @@ const EditProducts = () => {
               </div>
               <div className="flex flex-col gap-5 left border w-[70%] mt-5">
                 {activeSection === "name" && (
-                  <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-5 p-5">
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Product Name
@@ -631,7 +624,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "description" && (
-                  <div className="mt-5 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2 p-5">
                     <label className="px-3 font-bold">Description</label>
                     <div>
                       <JoditEditor
@@ -655,7 +648,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "shortDescription" && (
-                  <div className="mt-5 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2 p-5">
                     <label className="px-3 font-bold">Short Description</label>
                     <div>
                       <JoditEditor
@@ -681,7 +674,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "moreInformation" && (
-                  <div className="mt-5 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2 p-5">
                     <label className="px-3 font-bold">More Information</label>
                     <div>
                       <JoditEditor
@@ -707,7 +700,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "faq" && (
-                  <div className="mt-5 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2 p-5">
                     <label className="px-3 font-bold">Faq</label>
                     <div>
                       (
@@ -731,7 +724,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "additionalInformation" && (
-                  <div className="mt-5 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2 p-5">
                     <label className="px-3 font-bold">
                       Additional Information
                     </label>
@@ -761,7 +754,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "sideEffects" && (
-                  <div className="mt-5 flex flex-col gap-2">
+                  <div className="mt-5 flex flex-col gap-2 p-5">
                     <label className="px-3 font-bold">Side Effects</label>
                     <div>
                       <JoditEditor
@@ -785,7 +778,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "yes-no" && (
-                  <div className="flex flex-col gap-10 justify-center items-center">
+                  <div className="flex flex-col gap-10 justify-center items-center p-5">
                     <div className="flex gap-10">
                       <div className="flex flex-col gap-2">
                         <label className="px-3 font-bold">IsReturnable?</label>
@@ -998,7 +991,7 @@ const EditProducts = () => {
                               <input
                                 value={variant.packSize}
                                 name={`variants[${index}].packsize`}
-                                type="number"
+                                type="text"
                                 placeholder="packsize"
                                 className="h-[35px] border px-2 focus:outline-none"
                                 onChange={handleVariantChange}
@@ -1257,6 +1250,13 @@ const EditProducts = () => {
                     isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
                   } transition-all duration-300`}
                 >
+                  <input
+                    type="text"
+                    className="w-full px-2 py-1"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   {hierarchyData?.map((item) => (
                     <div className="border-2 p-2" key={item._id}>
                       <div className="flex items-center mb-2">
@@ -1528,17 +1528,26 @@ const EditProducts = () => {
                   } transition-all duration-300`}
                 >
                   <div>
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1"
+                      placeholder="Search..."
+                      value={searchGenericQuery}
+                      onChange={(e) => setSearchGenericQuery(e.target.value)}
+                    />
                     {genericsMap?.map((generic) => (
-                      <div key={generic?._id} className="flex gap-2">
-                        <input
-                          type="radio"
-                          name="genericID"
-                          value={generic?._id}
-                          onChange={handleRadioChange}
-                          checked={productValues.genericID === generic._id}
-                        />
-                        <p>{generic?.name}</p>
-                      </div>
+                      <>
+                        <div key={generic?._id} className="flex gap-2">
+                          <input
+                            type="radio"
+                            name="genericID"
+                            value={generic?._id}
+                            onChange={handleRadioChange}
+                            checked={productValues.genericID === generic._id}
+                          />
+                          <p>{generic?.name}</p>
+                        </div>
+                      </>
                     ))}
                   </div>
                 </div>
