@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   name: "",
@@ -10,6 +11,8 @@ const initialValues = {
 
 const AddManufacturer = () => {
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -27,6 +30,7 @@ const AddManufacturer = () => {
           },
         }
       );
+      navigate("/all-manufacturers");
     } catch (error) {
       console.log(error);
     }
