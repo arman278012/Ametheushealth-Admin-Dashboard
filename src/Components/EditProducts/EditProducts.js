@@ -87,6 +87,14 @@ const EditProducts = () => {
     }));
   };
 
+  const handleProductTagChange = (event) => {
+    const { name, value } = event.target;
+    setProductValues({
+      ...productValues,
+      [name]: value,
+    });
+  };
+
   const handleAddMetaTag = (e) => {
     e.preventDefault();
     // Add your logic to handle adding the meta tag
@@ -1383,18 +1391,19 @@ const EditProducts = () => {
                       <div className="flex justify-around">
                         <input
                           type="text"
+                          name="tags"
                           placeholder="Enter tags"
-                          className="h-[35px] border px-2"
-                          onChange={handleTagInputChange}
-                          value={tagsInput}
+                          className="h-[35px] border px-2 w-full"
+                          onChange={handleProductTagChange}
+                          value={productValues.tags}
                         />
-                        <button
+                        {/* <button
                           type="button"
                           onClick={handleAddTag}
                           className="bg-blue-500 text-white px-2 py-1 rounded"
                         >
                           Add
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                     {tags.length > 0 && (
