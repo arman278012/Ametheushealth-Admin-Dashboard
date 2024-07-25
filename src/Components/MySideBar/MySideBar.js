@@ -159,7 +159,10 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isManufacturersMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
-                  <NavLink className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink
+                    to={"/all-manufacturers"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     All Manufacturers
                   </NavLink>
                   <NavLink
