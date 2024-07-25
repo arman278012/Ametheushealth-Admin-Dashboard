@@ -10,7 +10,6 @@ import Skeleton from "react-loading-skeleton";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
-import parse from "html-react-parser";
 
 const AllManufacturers = () => {
   const [isTopBaropen, setIsTopBarOpen] = useState(true);
@@ -20,7 +19,7 @@ const AllManufacturers = () => {
   const [expanded, setExpanded] = useState({});
 
   const navigate = useNavigate();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBaropen);
@@ -50,6 +49,25 @@ const AllManufacturers = () => {
 
   const goToPage = (page) => {
     setCurrentPage(page);
+  };
+
+  //delete manufacturer
+  const deleteManufacturer = async (id) => {
+    try {
+      const response = await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getManufacturersData();
+    }
   };
 
   return (
@@ -189,94 +207,88 @@ const AllManufacturers = () => {
               <MdKeyboardDoubleArrowRight />
             </div>
           </div>
-
-          
         </div>
         <Table className="min-w-full bg-white border border-gray-300">
-            <Thead>
-              <Tr className=" bg-gray-200 w-[100%]">
-                <Th className="py-2 px-4 border-b w-[10%]">
-                  <input type="checkbox" />
-                </Th>
-                <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
-                <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
-                <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
-                <Th className="py-2 px-4 border-b w-[40%] text-start">Address</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {loading
-                ? Array.from({
-                    length: manufacturersData.data
-                      ? manufacturersData.data.length
-                      : 5,
-                  }).map((_, index) => (
-                    <Tr key={index}>
-                      <Td className="py-2 px-4 border-b text-center">
-                        <Skeleton circle width={20} height={20} />
-                      </Td>
-                      <Td className="py-2 px-4 border-b text-[14px]">
-                        <Skeleton width={100} />
-                      </Td>
-                      <Td className="py-2 px-4 border-b text-start text-[14px]">
-                        <Skeleton width={100} />
-                      </Td>
-                      <Td className="py-2 px-4 border-b text-start text-[14px]">
-                        <Skeleton width={200} />
-                      </Td>
-                    </Tr>
-                  ))
-                : manufacturersData.data?.map((item) => (
-                    <Tr
-                      key={item._id}
+          <Thead>
+            <Tr className=" bg-gray-200 w-[100%]">
+              <Th className="py-2 px-4 border-b w-[10%]">
+                <input type="checkbox" />
+              </Th>
+              <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
+              <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
+              <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
+              <Th className="py-2 px-4 border-b w-[40%] text-start">Address</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {loading
+              ? Array.from({
+                  length: manufacturersData.data
+                    ? manufacturersData.data.length
+                    : 5,
+                }).map((_, index) => (
+                  <Tr key={index}>
+                    <Td className="py-2 px-4 border-b text-center">
+                      <Skeleton circle width={20} height={20} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      <Skeleton width={100} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      <Skeleton width={100} />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      <Skeleton width={200} />
+                    </Td>
+                  </Tr>
+                ))
+              : manufacturersData.data?.map((item) => (
+                  <Tr
+                    key={item._id}
                     //   onClick={() => dispatch(storeGenericId(item._id))}
-                    >
-                      <Td className="py-2 px-4 border-b text-center">
-                        <input type="checkbox" />
-                      </Td>
-                      <Td className="py-2 px-4 border-b text-[14px]">
-                        {item?.name}
-                        <div className="flex gap-2">
-                          <button
-                            className="text-[#2271b1]"
-                            // onClick={() => setEditGenericForm(true)}
-                          >
-                            Edit
-                          </button>{" "}
-                          <span className="text-[#2271b1]">|</span>
-                          <button
-                            className="text-[#2271b1]"
-                            onClick={() => navigate(`/generic-details`)}
-                          >
-                            View
-                          </button>{" "}
-                          <span className="text-[#2271b1]">|</span>
-                          <button
-                            className="text-[#2271b1]"
-                            onClick={() => {
-                            //   setDeleteAlert(true);
-                            //   setDeleteId(item._id);
-                            }}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </Td>
+                  >
+                    <Td className="py-2 px-4 border-b text-center">
+                      <input type="checkbox" />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-[14px]">
+                      {item?.name}
+                      <div className="flex gap-2">
+                        <button
+                          className="text-[#2271b1]"
+                          //   onClick={() => deleteManufacturer(item._id)}
+                        >
+                          Edit
+                        </button>{" "}
+                        <span className="text-[#2271b1]">|</span>
+                        <button
+                          className="text-[#2271b1]"
+                          onClick={() => navigate(`/generic-details`)}
+                        >
+                          View
+                        </button>{" "}
+                        <span className="text-[#2271b1]">|</span>
+                        <button
+                          className="text-[#2271b1]"
+                          onClick={() => deleteManufacturer(item._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </Td>
 
-                      <Td className="py-2 px-4 border-b text-start text-[14px]">
-                        {item?.slug}
-                      </Td>
-                      <Td className="py-2 px-4 border-b text-start text-[14px]">
-                        {item?._id}
-                      </Td>
-                      <Td className="py-2 px-4 border-b text-start text-[14px]">
-                        {item?.address?(item?.address) :("No Address Available")
-                        }
-                      </Td>
-                    </Tr>
-                  ))}
-            </Tbody>
-          </Table>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {item?.slug}
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {item?._id}
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {item?.address ? item?.address : "No Address Available"}
+                    </Td>
+                  </Tr>
+                ))}
+          </Tbody>
+        </Table>
       </div>
     </>
   );
