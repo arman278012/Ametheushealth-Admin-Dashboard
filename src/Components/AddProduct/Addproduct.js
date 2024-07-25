@@ -1295,7 +1295,7 @@ const AddProduct = () => {
                         } transition-all duration-300`}
                       >
                         <div className="flex flex-col gap-3">
-                          <div className="flex justify-around">
+                          <div className="flex justify-around flex-col">
                             <Field name="tagsInput">
                               {({ field }) => (
                                 <input
@@ -1335,7 +1335,7 @@ const AddProduct = () => {
                   </div>
 
                   {/* image upload section */}
-                  <div className="image-upload-section border rounded-xl p-3 mt-5">
+                  <div className="image-upload-section border rounded-xl p-3 mt-5 overflow-x-hidden">
                     <div className="flex justify-between items-center px-3">
                       <label className="font-bold">Upload Image</label>
                       <button
@@ -1352,16 +1352,15 @@ const AddProduct = () => {
                     <div
                       className={`upload-image mt-3 ${
                         isImageOpen
-                          ? "h-auto overflow-y-auto"
+                          ? "h-auto"
                           : "h-0 overflow-hidden"
                       } transition-all duration-300`}
                     >
-                      <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
+                      <div className="p-5 w-[230px] flex justify-center items-center flex-col gap-3 text-sm overflow-x-hidden">
                         <input type="file" className="w-[225px]" />
                         <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
                           Upload Images
                         </button>
-                        {/* <p>Image upload section is here dfvdfb ed d</p> */}
                       </div>
                     </div>
                   </div>

@@ -30,6 +30,8 @@ const EditProducts = () => {
   const [genericsMap, setGenericMap] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
+  const [variantsToDelete, setVariantsToDelete] = useState([]);
+
   const [productValues, setProductValues] = useState({
     title: "",
     generic: "",
@@ -41,7 +43,7 @@ const EditProducts = () => {
     additionalInformation: "",
     sideEffects: "",
     categoryID: "",
-    tags: "",
+    tags: [],
     genericID: "",
     isReturnable: false,
     isPrescriptionRequired: true,
@@ -77,6 +79,46 @@ const EditProducts = () => {
     ],
   });
 
+  const handleMetaTagChange = (e) => {
+    const { name, value } = e.target;
+    setProductValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleAddMetaTag = (e) => {
+    e.preventDefault();
+    // Add your logic to handle adding the meta tag
+    // For example, you can update a list of meta tags in the state
+    console.log("Meta Tag Added: ", productValues.metaTags);
+    // Clear the input field after adding the tag
+    setProductValues((prevValues) => ({
+      ...prevValues,
+      metaTags: "",
+    }));
+  };
+
+  useEffect(() => {
+    setTags(productValues.tags);
+  }, [productValues.tags]);
+
+  const handleTagInputChange = (e) => {
+    setTagsInput(e.target.value);
+  };
+
+  const handleAddTag = () => {
+    if (tagsInput) {
+      setTags([...tags, tagsInput]);
+      setTagsInput("");
+    }
+  };
+
+  const handleEditTag = (index, newTag) => {
+    const updatedTags = tags.map((tag, i) => (i === index ? newTag : tag));
+    setTags(updatedTags);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProductValues({ ...productValues, [name]: value });
@@ -93,18 +135,6 @@ const EditProducts = () => {
       ...productValues,
       [field]: updatedVariants,
     });
-  };
-
-  const handleTagInputChange = (e) => {
-    setTagsInput(e.target.value);
-  };
-
-  const handleAddTag = () => {
-    if (tagsInput) {
-      setTags([...tags, tagsInput]);
-      setTagsInput("");
-      setProductValues({ ...productValues, tags: [...tags, tagsInput] });
-    }
   };
 
   const handleRadioChange = (e) => {
@@ -133,6 +163,7 @@ const EditProducts = () => {
       console.log("productData", productData);
       setProductValues({
         ...productData,
+        tags: productData.tags || [],
         variants: productData.variants.map((variant) => ({
           sku: variant.sku || "",
           packSize: variant.packSize || "",
@@ -153,6 +184,7 @@ const EditProducts = () => {
           width: variant.width || "",
         })),
       });
+      setTags(productData.tags || []);
     } catch (error) {
       console.log(error);
     }
@@ -302,6 +334,8 @@ const EditProducts = () => {
       console.log(error);
     }
   };
+
+  //for deleting the variants
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -875,7 +909,7 @@ const EditProducts = () => {
                 {activeSection === "meta" && (
                   <>
                     <div className="flex flex-col gap-5 justify-center w-[500px]">
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full p-5">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Title
                         </label>
@@ -889,45 +923,41 @@ const EditProducts = () => {
                         />
                       </div>
 
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full p-5">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Description
                         </label>
-                        <input
+                        <textarea
                           type="text"
                           placeholder="Description"
-                          className="h-[35px] border px-2"
+                          className="border px-2 focus:outline-none"
                           onChange={handleChange}
                           name="metaDescription"
                           value={productValues.metaDescription}
                         />
                       </div>
 
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full p-5">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Tags
                         </label>
                         <div className="flex gap-3">
-                          <div name="metaTagsInput">
-                            <input
+                          <div>
+                            <textarea
                               type="text"
+                              name="metaTags"
                               placeholder="Enter tags"
-                              className="h-[35px] border px-2 w-[400px]"
-                              //   {...field}
-                              // onChange={(e) =>
-                              //   handleMetaTagInputChange(e, setFieldValue)
-                              // }
-                              value={productValues.metaTagsInput}
+                              className=" border px-2 w-[460px] focus:outline-none"
+                              value={productValues.metaTags}
+                              onChange={handleMetaTagChange}
                             />
                           </div>
-                          <button
-                            // onClick={(e) =>
-                            //   handleAddMetaTag(e, values, setFieldValue)
-                            // }
+                          {/* <button
+                            onClick={handleAddMetaTag}
                             className="bg-blue-500 text-white px-2 py-1 rounded"
                           >
                             Add Tags
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -937,8 +967,8 @@ const EditProducts = () => {
                 {activeSection === "variants" && (
                   <div className="w-[500px] flex flex-col p-5">
                     {productValues.variants.map((variant, index) => (
-                      <>
-                        <div key={index} className="flex flex-col gap-5 mb-5">
+                      <React.Fragment key={index}>
+                        <div className="flex flex-col gap-5 mb-5">
                           <div className="flex gap-4 justify-around">
                             <div className="flex flex-col w-[165px]">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
@@ -1180,17 +1210,19 @@ const EditProducts = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="bg-black h-[2px] w-full mb-5"></div>
-                      </>
-                    ))}
+                        <div className="flex justify-center items-center mb-5">
+                          <button
+                            type="button"
+                            // onClick={() => handleRemove(index)}
+                            className="mt-2 bg-red-500 text-white px-4 py-1 rounded self-end"
+                          >
+                            Remove variant
+                          </button>
+                        </div>
 
-                    {/* <button
-                   type="button"
-                   onClick={() => remove(index)}
-                   className="mt-2 bg-red-500 text-white px-4 py-2 rounded self-end"
-                 >
-                   Remove
-                 </button> */}
+                        <div className="bg-black h-[2px] w-full mb-5"></div>
+                      </React.Fragment>
+                    ))}
                   </div>
                 )}
               </div>
@@ -1367,11 +1399,21 @@ const EditProducts = () => {
                     </div>
                     {tags.length > 0 && (
                       <div className="mt-3">
-                        {tags.map((tag, index) => (
-                          <p key={index} className="px-2 py-1">
-                            {tag}
-                          </p>
-                        ))}
+                        {/* {tags?.map((tag, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center px-2 py-1"
+                          >
+                            <input
+                              type="text"
+                              value={tag}
+                              onChange={(e) =>
+                                handleEditTag(index, e.target.value)
+                              }
+                              className="border p-1 flex-grow"
+                            />
+                          </div>
+                        ))} */}
                       </div>
                     )}
                   </div>
