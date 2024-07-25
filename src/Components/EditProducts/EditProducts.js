@@ -24,13 +24,10 @@ const EditProducts = () => {
   const [productTags, setProductTags] = useState(false);
   const [hierarchyData, setHierarchyData] = useState([]);
   const [tags, setTags] = useState([]);
-  const [storeMetaTag, setStoreMetaTag] = useState([]);
   const [genericsOpen, setGenericsOpen] = useState(false);
-  const [tagsInput, setTagsInput] = useState("");
   const [genericsMap, setGenericMap] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
-  const [variantsToDelete, setVariantsToDelete] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchGenericQuery, setSearchGenericQuery] = useState("");
 
@@ -80,6 +77,17 @@ const EditProducts = () => {
       },
     ],
   });
+
+  //remove the variant
+  const handleRemoveVariant = (index) => {
+    setProductValues((prevValues) => {
+      const updatedVariants = prevValues.variants.filter((_, i) => i !== index);
+      return {
+        ...prevValues,
+        variants: updatedVariants,
+      };
+    });
+  };
 
   const handleMetaTagChange = (e) => {
     const { name, value } = e.target;
@@ -1211,11 +1219,14 @@ const EditProducts = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center mb-5">
+                        <div
+                          key={index}
+                          className="flex justify-center items-center mb-5"
+                        >
                           <button
                             type="button"
-                            // onClick={() => handleRemove(index)}
                             className="mt-2 bg-red-500 text-white px-4 py-1 rounded self-end"
+                            onClick={() => handleRemoveVariant(index)}
                           >
                             Remove variant
                           </button>
@@ -1250,13 +1261,13 @@ const EditProducts = () => {
                     isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
                   } transition-all duration-300`}
                 >
-                  <input
+                  {/* <input
                     type="text"
                     className="w-full px-2 py-1"
                     placeholder="Search..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                  /> */}
                   {hierarchyData?.map((item) => (
                     <div className="border-2 p-2" key={item._id}>
                       <div className="flex items-center mb-2">
