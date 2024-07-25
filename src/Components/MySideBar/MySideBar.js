@@ -70,23 +70,32 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isProductsMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
-                  <a
-                    href="product-details"
+                  <NavLink
+                    to={"/product-details"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     All Products
-                  </a>
-                  <a href="add-product" className="hover:bg-gray-700 px-4 py-2">
+                  </NavLink>
+                  <NavLink
+                    href="add-product"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Add Products
-                  </a>
+                  </NavLink>
 
-                  <a href="add-product" className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink
+                    href="add-product"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Import Products
-                  </a>
+                  </NavLink>
 
-                  <a href="add-product" className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink
+                    href="add-product"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Export Products
-                  </a>
+                  </NavLink>
                 </div>
               )}
             </div>
@@ -150,15 +159,18 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isManufacturersMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink className="hover:bg-gray-700 px-4 py-2">
                     All Manufacturers
-                  </a>
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  </NavLink>
+                  <NavLink
+                    to={"/add-manufacturer"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Add Manufacturers
-                  </a>
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  </NavLink>
+                  <NavLink href="#" className="hover:bg-gray-700 px-4 py-2">
                     Attach Manufacturers
-                  </a>
+                  </NavLink>
                 </div>
               )}
             </div>

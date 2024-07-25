@@ -17,6 +17,7 @@ import EditGenericForm from "./Components/EditGenericForm/EditGenericForm";
 import GenericDetailsPage from "./Pages/GenericDetailsPage/GenericDetailsPage";
 import InstantGenericPage from "./Pages/InstantGenericPage/InstantGenericPage";
 import EditProductsPage from "./Pages/EditProductsPage/EditProductsPage";
+import AddManufacturerPage from "./Pages/AddManufacturerPage/AddManufacturerPage";
 
 function App() {
   const {
@@ -50,6 +51,7 @@ function App() {
             <Route path="/generic-details" element={<GenericDetailsPage />} />
             <Route path="/instant-generic" element={<InstantGenericPage />} />
             <Route path="/edit-products/:id" element={<EditProductsPage />} />
+            <Route path="/add-manufacturer" element={<AddManufacturerPage />} />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}
