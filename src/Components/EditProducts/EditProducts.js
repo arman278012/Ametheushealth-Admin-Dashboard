@@ -212,7 +212,7 @@ const EditProducts = () => {
         }
       );
       setGenericMap(response.data);
-      console.log("generic data", genericsMap);
+      console.log("generics data", genericsMap);
     } catch (error) {
       console.log(error);
     }
