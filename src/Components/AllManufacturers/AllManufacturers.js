@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
@@ -10,6 +10,8 @@ import Skeleton from "react-loading-skeleton";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import { AppContext } from "../../Context/ContextProvider";
+import { storeManufacturerId } from "../../redux/slice/ManufacturerIdSlice";
 
 const AllManufacturers = () => {
   const [isTopBaropen, setIsTopBarOpen] = useState(true);
@@ -21,6 +23,8 @@ const AllManufacturers = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { setEditManufacturerForm } = useContext(AppContext);
 
   console.log(deleteId);
 
@@ -248,7 +252,7 @@ const AllManufacturers = () => {
               : manufacturersData.data?.map((item) => (
                   <Tr
                     key={item._id}
-                    //   onClick={() => dispatch(storeGenericId(item._id))}
+                    onClick={() => dispatch(storeManufacturerId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
                       <input type="checkbox" />
@@ -258,7 +262,9 @@ const AllManufacturers = () => {
                       <div className="flex gap-2">
                         <button
                           className="text-[#2271b1]"
-                          //   onClick={() => deleteManufacturer(item._id)}
+                          onClick={() =>
+                            setEditManufacturerForm(true, item._id)
+                          }
                         >
                           Edit
                         </button>{" "}

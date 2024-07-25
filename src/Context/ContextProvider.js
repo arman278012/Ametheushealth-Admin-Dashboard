@@ -5,6 +5,7 @@ export const AppContext = createContext();
 const ContextProvider = ({ children }) => {
   const [editAllCattegoriesForm, setEditAllCategoriesForm] = useState(false);
   const [editGenericForm, setEditGenericForm] = useState(false);
+  const [editManufacturerForm, setEditManufacturerForm] = useState(false);
 
   return (
     <AppContext.Provider
@@ -13,6 +14,8 @@ const ContextProvider = ({ children }) => {
         setEditAllCategoriesForm,
         editGenericForm,
         setEditGenericForm,
+        editManufacturerForm,
+        setEditManufacturerForm,
       }}
     >
       {children}

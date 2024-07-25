@@ -19,6 +19,7 @@ import InstantGenericPage from "./Pages/InstantGenericPage/InstantGenericPage";
 import EditProductsPage from "./Pages/EditProductsPage/EditProductsPage";
 import AddManufacturerPage from "./Pages/AddManufacturerPage/AddManufacturerPage";
 import AllManufacturersPage from "./Pages/AllManufacturersPage/AllManufacturersPage";
+import EditManufacturers from "./Components/EditManufacturers/EditManufacturers";
 
 function App() {
   const {
@@ -26,6 +27,8 @@ function App() {
     setEditAllCategoriesForm,
     editGenericForm,
     setEditGenericForm,
+    editManufacturerForm,
+    setEditManufacturerForm,
   } = useContext(AppContext);
 
   return (
@@ -60,6 +63,7 @@ function App() {
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}
+          {editManufacturerForm ? <EditManufacturers /> : <></>}
         </div>
       </BrowserRouter>
     </div>
