@@ -12,6 +12,7 @@ import { DiHtml53dEffects } from "react-icons/di";
 import { PiSelectionSlashFill } from "react-icons/pi";
 import toast from "react-hot-toast";
 import "./AddProduct.css";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   title: "",
@@ -192,6 +193,8 @@ const AddProduct = () => {
     setExternalLink(value);
   };
 
+  const navigate = useNavigate();
+
   //posting data to the backend
   const postProductsData = async (values) => {
     try {
@@ -205,6 +208,7 @@ const AddProduct = () => {
           },
         }
       );
+      navigate(`/edit-products/${response.data._id}`);
       toast.success("Product Created Successfully...");
       // window.location.reload();
     } catch (error) {
