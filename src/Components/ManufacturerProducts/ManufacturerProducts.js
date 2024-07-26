@@ -118,7 +118,7 @@ const ManufacturerProducts = () => {
                       <button
                         className="text-[#2271b1]"
                         onClick={() =>
-                          navigate(`/edit-manufacturer-products/${product._id}`)
+                          navigate(`/edit-products/${product._id}`)
                         }
                       >
                         Edit

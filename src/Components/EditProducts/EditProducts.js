@@ -30,6 +30,8 @@ const EditProducts = () => {
   const [previewImages, setPreviewImages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchGenericQuery, setSearchGenericQuery] = useState("");
+  const [manuIdOpen, setManuIdOpen] = useState(false);
+  const [manufacturerNamesId, setManufacturerNamesId] = useState("");
 
   const [productValues, setProductValues] = useState({
     title: "",
@@ -55,6 +57,7 @@ const EditProducts = () => {
     metaTitle: "",
     metaDescription: "",
     metaTags: "",
+    manufacturerID: "",
     variants: [
       {
         sku: "",
@@ -344,7 +347,39 @@ const EditProducts = () => {
     }
   };
 
-  //for deleting the variants
+  const getManufacturerNames = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.assetorix.com:4100/ah/api/v1/manufacturer/names",
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      console.log("getManufacturerNames", response.data.data);
+      setManufacturerNamesId(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getManufacturerNames();
+  }, []);
+
+  const toggleManuId = () => {
+    setManuIdOpen(!manuIdOpen);
+  };
+
+  const handleManuIdChange = (e) => {
+    const { name, value } = e.target;
+    setProductValues({
+      ...productValues,
+      [name]: value,
+    });
+  };
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -1559,6 +1594,45 @@ const EditProducts = () => {
                           <p>{generic?.name}</p>
                         </div>
                       </>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* manufacturer mapping */}
+              <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
+                <div className="flex justify-between items-center px-3">
+                  <label className="font-bold">Manufacturer Id</label>
+                  <button onClick={toggleManuId} className="focus:outline-none">
+                    {manuIdOpen ? (
+                      <FaChevronUp className="text-blue-500" />
+                    ) : (
+                      <FaChevronDown className="text-blue-500" />
+                    )}
+                  </button>
+                </div>
+
+                <div
+                  className={`generic-map mt-3 ${
+                    manuIdOpen
+                      ? "h-auto overflow-y-auto"
+                      : "h-0 overflow-hidden"
+                  } transition-all duration-300`}
+                >
+                  <div>
+                    {manufacturerNamesId?.data?.map((manufacturer) => (
+                      <div key={manufacturer?.id} className="flex gap-2">
+                        <input
+                          type="radio"
+                          name="manufacturerID"
+                          value={manufacturer?._id}
+                          onChange={handleManuIdChange}
+                          checked={
+                            productValues.manufacturerID === manufacturer._id
+                          }
+                        />
+                        <p>{manufacturer?.name}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
