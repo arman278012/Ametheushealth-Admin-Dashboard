@@ -42,7 +42,7 @@ const AllGeneric = () => {
     console.log("page", pageLimit);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&limit=${pageLimit}&name=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&limit=${pageLimit}&search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

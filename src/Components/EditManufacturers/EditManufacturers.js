@@ -29,8 +29,8 @@ const EditManufacturers = () => {
           },
         }
       );
-      setManufacturersData(response.data.data);
-      console.log("manufacturersData", manufacturersData);
+      setManufacturersData(response.data);
+      console.log("manufacturersData", response.data);
       setFormData({
         name: response.data.data.name || "",
         address: response.data.data.address || "",

@@ -20,22 +20,23 @@ const AllManufacturers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [pageLimit, setPageLimit] = useState("5");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { setEditManufacturerForm } = useContext(AppContext);
 
-  console.log(deleteId);
-
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBaropen);
   };
 
-  const getManufacturersData = async () => {
+  const getManufacturersData = async (page = 1, search = "") => {
+    setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer`,
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -44,24 +45,30 @@ const AllManufacturers = () => {
         }
       );
       setManufacturersData(response.data);
-      console.log("manufacturersData", manufacturersData);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getManufacturersData();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      getManufacturersData(currentPage, searchQuery);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [currentPage, searchQuery, pageLimit]);
 
   const goToPage = (page) => {
-    setCurrentPage(page);
+    if (page > 0 && page <= manufacturersData.totalPages) {
+      setCurrentPage(page);
+    }
   };
 
-  //delete manufacturer
   const deleteManufacturer = async (id) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api.assetorix.com:4100/ah/api/v1/manufacturer/${id}`,
         {
           headers: {
@@ -73,7 +80,7 @@ const AllManufacturers = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      getManufacturersData();
+      getManufacturersData(currentPage, searchQuery);
     }
   };
 
@@ -92,26 +99,15 @@ const AllManufacturers = () => {
           }`}
         >
           <div className="flex gap-3">
-            {/* <p>Pagination</p> */}
-
             <div className="flex gap-2">
               <p>Number of items per page:</p>
               <input
                 type="text"
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
-                // onChange={(e) => setPageLimit(e.target.value)}
-                // value={pageLimit}
+                onChange={(e) => setPageLimit(e.target.value)}
+                value={pageLimit}
               />
             </div>
-
-            {/* <div className="flex justify-center items-center">
-              <button
-                onClick={(e) => setPageLimit(e.target.value)}
-                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
-              >
-                Apply
-              </button>
-            </div> */}
           </div>
         </div>
 
@@ -140,8 +136,8 @@ const AllManufacturers = () => {
                 type="text"
                 className="py-2 rounded-xl px-3 w-[250px]"
                 placeholder="Search manufacturers..."
-                // value={searchQuery}
-                // onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
