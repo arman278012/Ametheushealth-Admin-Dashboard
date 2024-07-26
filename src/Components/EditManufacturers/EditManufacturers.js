@@ -32,8 +32,8 @@ const EditManufacturers = () => {
       setManufacturersData(response.data.data);
       console.log("manufacturersData", manufacturersData);
       setFormData({
-        name: manufacturersData.name || "",
-        address: manufacturersData.address || "",
+        name: response.data.data.name || "",
+        address: response.data.data.address || "",
       });
     } catch (error) {
       console.log(error);
@@ -52,6 +52,27 @@ const EditManufacturers = () => {
     });
   };
 
+  const editManufacturers = async () => {
+    try {
+      const response = await axios.patch(
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/${manufacturerId}`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setEditManufacturerForm(false);
+      getManufacturersData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      window.location.reload();
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-8 z-50 w-[80%] relative max-h-[90vh] overflow-y-auto">
@@ -67,22 +88,19 @@ const EditManufacturers = () => {
             <label className="px-3 font-bold">Name</label>
             <input
               name="name"
-              value={formData.name || ""}
+              value={formData.name ? formData.name : ""}
               onChange={handleChange}
               type="text"
               placeholder="Enter name here"
               className="p-3 border rounded-xl h-[45px]"
             />
-            {/* {errors.name && touched.name && (
-              <div className="text-red-500">{errors.name}</div>
-            )} */}
           </div>
 
           <div className="flex flex-col gap-2 mt-5">
             <label className="px-3 font-bold">Address</label>
             <input
               name="address"
-              value={formData.address || "sdfs"}
+              value={formData.address ? formData.address : ""}
               onChange={handleChange}
               type="text"
               placeholder="Enter address here"
@@ -92,7 +110,8 @@ const EditManufacturers = () => {
 
           <div className="flex flex-col gap-2 mt-5">
             <button
-              type="submit"
+              type="button"
+              onClick={editManufacturers}
               className="bg-[#13a3bc] hover:bg-[#13b6d5] rounded-xl flex justify-center items-center p-2 text-white"
             >
               {loading ? "Saving" : "Submit Data"}
