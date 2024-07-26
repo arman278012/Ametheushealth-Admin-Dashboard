@@ -5,6 +5,7 @@ import axios from "axios";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import Skeleton from "react-loading-skeleton";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ManufacturerProducts = () => {
   const [manufacturersProducts, setManufacturersProducts] = useState([]);
@@ -13,6 +14,8 @@ const ManufacturerProducts = () => {
   const [deleteId, setDeleteId] = useState("");
 
   const manufacturerId = useSelector(selectManufacturerId);
+
+  const navigate = useNavigate();
 
   const getManufacturersProducts = async () => {
     try {
@@ -114,7 +117,9 @@ const ManufacturerProducts = () => {
                     <div className="flex gap-2">
                       <button
                         className="text-[#2271b1]"
-                        // onClick={() => setEditManufacturerForm(true, item._id)}
+                        onClick={() =>
+                          navigate(`/edit-manufacturer-products/${product._id}`)
+                        }
                       >
                         Edit
                       </button>{" "}
@@ -133,7 +138,7 @@ const ManufacturerProducts = () => {
                           setDeleteAlert(true);
                         }}
                       >
-                        Delete
+                        Remove
                       </button>
                     </div>
                   </Td>
