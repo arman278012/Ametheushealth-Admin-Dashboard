@@ -37,6 +37,7 @@ const initialValues = {
   metaTitle: "",
   metaDescription: "",
   metaTags: "",
+  manufacturerID: "",
   variants: [{}],
 };
 
@@ -53,6 +54,12 @@ const AddProduct = () => {
   const [activeSection, setActiveSection] = useState("name");
   const [externalLink, setExternalLink] = useState("");
   const [isUrlValid, setIsUrlValid] = useState(true);
+  const [manufacturerNamesId, setManufacturerNamesId] = useState("");
+  const [manuIdOpen, setManuIdOpen] = useState(false);
+
+  const toggleManuId = () => {
+    setManuIdOpen(!manuIdOpen);
+  };
 
   const toggleOpen = (e) => {
     e.preventDefault();
@@ -163,6 +170,10 @@ const AddProduct = () => {
     setFieldValue("genericID", e.target.value);
   };
 
+  const handleManuIdChange = (setFieldValue, e) => {
+    setFieldValue("manufacturerID", e.target.value);
+  };
+
   const isValidUrl = (string) => {
     try {
       new URL(string);
@@ -200,6 +211,30 @@ const AddProduct = () => {
       console.log(error);
     }
   };
+
+  //get manufacturer data
+
+  const getManufacturerNames = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.assetorix.com:4100/ah/api/v1/manufacturer/names",
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      console.log("getManufacturerNames", response.data.data);
+      setManufacturerNamesId(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getManufacturerNames();
+  }, []);
 
   if (loading) {
     return (
@@ -1334,37 +1369,6 @@ const AddProduct = () => {
                     </div>
                   </div>
 
-                  {/* image upload section */}
-                  <div className="image-upload-section border rounded-xl p-3 mt-5 overflow-x-hidden">
-                    <div className="flex justify-between items-center px-3">
-                      <label className="font-bold">Upload Image</label>
-                      <button
-                        onClick={toggleOpenImageUpload}
-                        className="focus:outline-none"
-                      >
-                        {isImageOpen ? (
-                          <FaChevronUp className="text-blue-500" />
-                        ) : (
-                          <FaChevronDown className="text-blue-500" />
-                        )}
-                      </button>
-                    </div>
-                    <div
-                      className={`upload-image mt-3 ${
-                        isImageOpen
-                          ? "h-auto"
-                          : "h-0 overflow-hidden"
-                      } transition-all duration-300`}
-                    >
-                      <div className="p-5 w-[230px] flex justify-center items-center flex-col gap-3 text-sm overflow-x-hidden">
-                        <input type="file" className="w-[225px]" />
-                        <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md">
-                          Upload Images
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* generics mapping */}
                   <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
                     <div className="flex justify-between items-center px-3">
@@ -1407,53 +1411,49 @@ const AddProduct = () => {
                     </div>
                   </div>
 
-                  {/* booleans here */}
-
-                  {/* isReturnable */}
-                  {/* <div className="relative inline-block w-64 mt-5">
-                    <label className="font-bold">Do you want to return</label>
-                    <select
-                      value={retunSelectedOption}
-                      onChange={(e) => setReturnSelectedOption(e.target.value)}
-                      className="block w-full appearance-none mt-2 bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-[55px] right-0 flex items-center px-2 text-gray-700">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
+                  {/* manufacturers Mapping */}
+                  <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
+                    <div className="flex justify-between items-center px-3">
+                      <label className="font-bold">Manufacturer Id</label>
+                      <button
+                        onClick={toggleManuId}
+                        className="focus:outline-none"
                       >
-                        <path d="M5.293 7.293l1.414 1.414L10 5.414l3.293 3.293 1.414-1.414L10 2.586l-4.707 4.707zM4 10l1.293-1.293 1.414 1.414L10 6.414l3.293 3.293 1.414-1.414L16 10H4z" />
-                      </svg>
+                        {manuIdOpen ? (
+                          <FaChevronUp className="text-blue-500" />
+                        ) : (
+                          <FaChevronDown className="text-blue-500" />
+                        )}
+                      </button>
                     </div>
-                  </div> */}
 
-                  {/* prescription required */}
-                  {/* <div className="relative inline-block w-64 mt-5">
-                    <label className="font-bold px-3">
-                      Do you want to return
-                    </label>
-                    <select
-                      value={retunSelectedOption}
-                      onChange={(e) => setReturnSelectedOption(e.target.value)}
-                      className="block w-full appearance-none mt-2 bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                    <div
+                      className={`generic-map mt-3 ${
+                        manuIdOpen
+                          ? "h-auto overflow-y-auto"
+                          : "h-0 overflow-hidden"
+                      } transition-all duration-300`}
                     >
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-[55px] right-0 flex items-center px-2 text-gray-700">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M5.293 7.293l1.414 1.414L10 5.414l3.293 3.293 1.414-1.414L10 2.586l-4.707 4.707zM4 10l1.293-1.293 1.414 1.414L10 6.414l3.293 3.293 1.414-1.414L16 10H4z" />
-                      </svg>
+                      <div>
+                        {manufacturerNamesId?.data?.map((manufacturer) => (
+                          <div key={manufacturer?.id} className="flex gap-2">
+                            <input
+                              type="radio"
+                              name="manufacturerID"
+                              value={manufacturer?._id}
+                              onChange={(e) =>
+                                handleManuIdChange(setFieldValue, e)
+                              }
+                              checked={
+                                values.manufacturerID === manufacturer._id
+                              }
+                            />
+                            <p>{manufacturer?.name}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
 

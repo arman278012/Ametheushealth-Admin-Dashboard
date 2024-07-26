@@ -267,7 +267,7 @@ const AllManufacturers = () => {
                         <span className="text-[#2271b1]">|</span>
                         <button
                           className="text-[#2271b1]"
-                          onClick={() => navigate(`/generic-details`)}
+                          onClick={() => navigate(`/manufacturer-products`)}
                         >
                           View
                         </button>{" "}

@@ -20,6 +20,7 @@ import EditProductsPage from "./Pages/EditProductsPage/EditProductsPage";
 import AddManufacturerPage from "./Pages/AddManufacturerPage/AddManufacturerPage";
 import AllManufacturersPage from "./Pages/AllManufacturersPage/AllManufacturersPage";
 import EditManufacturers from "./Components/EditManufacturers/EditManufacturers";
+import ManufacturerProductsPage from "./Pages/ManufacturerProductsPage/ManufacturerProductsPage";
 
 function App() {
   const {
@@ -59,6 +60,10 @@ function App() {
             <Route
               path="/all-manufacturers"
               element={<AllManufacturersPage />}
+            />
+            <Route
+              path="/manufacturer-products"
+              element={<ManufacturerProductsPage />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
