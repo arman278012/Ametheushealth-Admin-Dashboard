@@ -218,9 +218,9 @@ const AllManufacturers = () => {
                 <input type="checkbox" />
               </Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
-              <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
+              <Th className="py-2 px-4 border-b w-[20%] text-start">Slug</Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
-              <Th className="py-2 px-4 border-b w-[40%] text-start">Address</Th>
+              <Th className="py-2 px-4 border-b w-[30%] text-start">Address</Th>
             </Tr>
           </Thead>
           <Tbody>
