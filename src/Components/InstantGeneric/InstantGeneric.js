@@ -44,6 +44,7 @@ const InstantGeneric = () => {
       ...formData,
       [name]: value,
     });
+    setSearchQuery(e.target.value);
   };
 
   const postGenericData = async () => {
