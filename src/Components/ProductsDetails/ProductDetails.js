@@ -172,7 +172,7 @@ const ProductDetails = () => {
               />
             </div>
 
-            <div className="flex justify-center items-center">
+            {/* <div className="flex justify-center items-center">
               <button
                 onClick={() =>
                   dispatch(
@@ -187,7 +187,7 @@ const ProductDetails = () => {
               >
                 Apply
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* <div className="sm:w-[100%] w-[320px] h-[1px] bg-gray-400"></div> */}
