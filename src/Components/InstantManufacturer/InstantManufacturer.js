@@ -14,7 +14,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import { storeGenericId } from "../../redux/slice/GetGenericIdSlice";
 import { useDispatch } from "react-redux";
 import parse from "html-react-parser";
-
+  
 const InstantManufacturer = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ const InstantManufacturer = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [allManufacturerData, setAllManufacturerData] = useState([]);
-  const [pageLimit, setPageLimit] = useState("5");
+  const [pageLimit, setPageLimit] = useState("9");
   const [expanded, setExpanded] = useState({});
   const [manufacturerData, setManufacturerData] = useState({
     name: "",
