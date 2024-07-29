@@ -217,7 +217,6 @@ const AddProduct = () => {
   };
 
   //get manufacturer data
-
   const getManufacturerNames = async () => {
     try {
       const response = await axios.get(
