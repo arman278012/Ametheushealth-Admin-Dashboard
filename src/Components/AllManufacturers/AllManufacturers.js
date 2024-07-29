@@ -21,7 +21,7 @@ const AllManufacturers = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [pageLimit, setPageLimit] = useState("5");
+  const [pageLimit, setPageLimit] = useState("10");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

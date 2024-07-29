@@ -28,7 +28,7 @@ const AllCategories = () => {
     (state) => state.getCategoryData
   );
 
-  console.log(allCategoryData);
+  console.log("allCategoryData", allCategoryData);
 
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const AllCategories = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [isTopBaropen, setIsTopBarOpen] = useState(true);
-  const [pageLimit, setPageLimit] = useState("5");
+  const [pageLimit, setPageLimit] = useState("10");
   const [allData, setAllData] = useState([]);
 
   useEffect(() => {
@@ -76,12 +76,14 @@ const AllCategories = () => {
         }
       );
       allCategoryData();
-      dispatch(getCategoryData({ page: currentPage, searchQuery }));
+      dispatch(
+        getCategoryData({ page: currentPage, searchQuery, allCategoryData })
+      );
       toast.success("Data Deleted Successfully...");
     } catch (error) {
       console.log(error);
     } finally {
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
