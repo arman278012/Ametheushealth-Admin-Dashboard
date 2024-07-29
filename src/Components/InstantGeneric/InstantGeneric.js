@@ -95,7 +95,7 @@ const InstantGeneric = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&name=${query}&limit=${9}`,
+        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&search=${query}&limit=${9}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
