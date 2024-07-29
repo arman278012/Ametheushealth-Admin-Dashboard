@@ -9,7 +9,7 @@ const InstantGenericPage = () => {
         <MySideBar />
       </div>
 
-      <div>
+      <div className="w-[100%]">
         <InstantGeneric />
       </div>
     </div>

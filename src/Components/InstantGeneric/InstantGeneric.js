@@ -152,7 +152,7 @@ const InstantGeneric = () => {
  
   return (
     <>
-      <div className="w-[75vw] mx-auto flex justify-center items-center py-1 gap-5">
+      <div className="w-full mx-auto flex justify-center items-center py-1 gap-5">
         <div className="w-[50%] flex flex-col gap-2 border-2 p-5">
           <div className="flex justify-start">
             <p className="font-bold text-xl -mt-4 text-start">Generics</p>
