@@ -84,6 +84,13 @@ const MySideBar = () => {
                   </NavLink>
 
                   <NavLink
+                    to="/attach-products"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Attach Products
+                  </NavLink>
+
+                  <NavLink
                     href="add-product"
                     className="hover:bg-gray-700 px-4 py-2"
                   >
@@ -133,7 +140,10 @@ const MySideBar = () => {
                   >
                     Add Categories
                   </NavLink>
-                  <NavLink href="#" className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink
+                    to="/attach-categories"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Attach Categories
                   </NavLink>
                 </div>

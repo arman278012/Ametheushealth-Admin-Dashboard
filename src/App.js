@@ -24,6 +24,7 @@ import ManufacturerProductsPage from "./Pages/ManufacturerProductsPage/Manufactu
 import EditManufacturerProductsPage from "./Pages/EditManufacturerProductsPage/EditManufacturerProductsPage";
 import InstantManufacturerPage from "./Pages/InstantManufacturerPage/InstantManufacturerPage";
 import AttachCategoriesPage from "./Pages/AttachCategoriesPage/AttachCategoriesPage";
+import AttachProductsPage from "./Pages/AttachProductsPage/AttachProductsPage";
 
 function App() {
   const {
@@ -80,6 +81,7 @@ function App() {
               path="/attach-categories"
               element={<AttachCategoriesPage />}
             />
+            <Route path="/attach-products" element={<AttachProductsPage />} />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}
