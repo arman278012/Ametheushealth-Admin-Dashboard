@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { storeGenericId } from "../../redux/slice/GetGenericIdSlice";
 import { AppContext } from "../../Context/ContextProvider";
 import parse from "html-react-parser";
+import { MdDelete } from "react-icons/md";
 
 const InstantGeneric = () => {
   const [loading, setLoading] = useState(false);
@@ -125,6 +126,28 @@ const InstantGeneric = () => {
 
   const goToPage = (page) => {
     setCurrentPage(page);
+  };
+
+  //delete generic data
+  const deleteGenericData = async (id) => {
+    try {
+      await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/generic/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      toast.success("Deleted Successfully...");
+      setDeleteAlert(false);
+      allGenericData(searchQuery, currentPage); // Reload current page data after deletion
+    } catch (error) {
+      console.log(error);
+    } finally {
+      searchGeneric();
+    }
   };
 
   return (
@@ -269,7 +292,8 @@ const InstantGeneric = () => {
               <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
               <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
-              <Th className="py-2 px-4 border-b w-[40%] text-start">Uses</Th>
+              <Th className="py-2 px-4 border-b w-[30%] text-start">Uses</Th>
+              <Th className="py-2 px-4 border-b w-[10%] text-start">Delete</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -349,10 +373,46 @@ const InstantGeneric = () => {
                         <>No uses available</>
                       )}
                     </Td>
+                    <Td
+                      className="py-2 px-4 border-b text-start text-[14px] cursor-pointer"
+                      onClick={() => {
+                        setDeleteAlert(true);
+                        setDeleteId(item._id);
+                      }}
+                    >
+                      <MdDelete className="text-red-500" />
+                    </Td>
                   </Tr>
                 ))}
           </Tbody>
         </Table>
+        {deleteAlert && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="absolute inset-0"></div>
+            <div className="bg-white p-6 rounded-lg border-2 z-10">
+              <p className="text-lg mb-4">
+                Are you sure you want to delete this item?
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => {
+                    deleteGenericData(deleteId);
+                    setDeleteAlert(false);
+                  }}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => setDeleteAlert(false)}
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
