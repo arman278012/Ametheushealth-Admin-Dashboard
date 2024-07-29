@@ -13,7 +13,7 @@ const initialValues = {
   name: "",
   description: "",
   image: "",
-  file: "",
+  docFileURL: "",
   parent: "",
   metaTitle: "",
   metaDescription: "",
@@ -22,10 +22,10 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  description: Yup.string().required("Description is required"),
-  metaTitle: Yup.string().required("Meta title is required"),
-  metaDescription: Yup.string().required("Meta description is required"),
-  metaTags: Yup.string().required("Meta tags are required"),
+  // description: Yup.string().required("Description is required"),
+  // metaTitle: Yup.string().required("Meta title is required"),
+  // metaDescription: Yup.string().required("Meta description is required"),
+  // metaTags: Yup.string().required("Meta tags are required"),
 });
 
 const AddCategory = () => {
@@ -95,7 +95,7 @@ const AddCategory = () => {
   const docFileUpload = async (file) => {
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("docFileURL", file);
 
       const response = await axios.patch(
         `https://api.assetorix.com:4100/ah/api/v1/category/${categoryId}/docFile`,
@@ -137,8 +137,8 @@ const AddCategory = () => {
     if (currentStep === 2 && values.image) {
       await addImage(values.image);
     }
-    if (currentStep === 3 && values.file) {
-      await docFileUpload(values.file);
+    if (currentStep === 3 && values.docFileURL) {
+      await docFileUpload(values.docFileURL);
     }
     setIsSubmitting(false);
   };
@@ -381,7 +381,7 @@ const AddCategory = () => {
                       type="button"
                       onClick={() => handleNext(values)}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      disabled={!values.image || isSubmitting}
+                      // disabled={!values.image || isSubmitting}
                     >
                       {isSubmitting ? "Loading..." : "Next"}
                     </button>
@@ -403,10 +403,10 @@ const AddCategory = () => {
                     <label className="px-3 font-bold">Upload Docs</label>
                     <input
                       type="file"
-                      name="file"
+                      name="docFileURL"
                       onChange={(event) => {
                         const file = event.currentTarget.files[0];
-                        setFieldValue("file", file);
+                        setFieldValue("docFileURL", file);
                       }}
                       className="p-3 border rounded-xl h-[45px]"
                       disabled={isSubmitting}
@@ -417,7 +417,7 @@ const AddCategory = () => {
                     <button
                       type="submit"
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      disabled={!values.file || isSubmitting}
+                      // disabled={!values.file || isSubmitting}
                     >
                       {isSubmitting ? "Saving..." : "Save Data"}
                     </button>

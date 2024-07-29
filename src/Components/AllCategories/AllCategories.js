@@ -6,7 +6,7 @@ import {
   setPage,
   setSearchQuery,
 } from "../../redux/slice/GetCategoryDataSlice";
-import axios from "axios";
+import axios, { all } from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -28,6 +28,8 @@ const AllCategories = () => {
     (state) => state.getCategoryData
   );
 
+  console.log(allCategoryData);
+
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ const AllCategories = () => {
   const [searchInput, setSearchInput] = useState("");
   const [isTopBaropen, setIsTopBarOpen] = useState(true);
   const [pageLimit, setPageLimit] = useState("5");
+  const [allData, setAllData] = useState([]);
 
   useEffect(() => {
     dispatch(getCategoryData({ page: currentPage, searchQuery, pageLimit }));
@@ -72,10 +75,13 @@ const AllCategories = () => {
           },
         }
       );
-      toast.success("Data Deleted Successfully...");
+      allCategoryData();
       dispatch(getCategoryData({ page: currentPage, searchQuery }));
+      toast.success("Data Deleted Successfully...");
     } catch (error) {
       console.log(error);
+    } finally {
+      // window.location.reload();
     }
   };
 
