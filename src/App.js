@@ -23,6 +23,7 @@ import EditManufacturers from "./Components/EditManufacturers/EditManufacturers"
 import ManufacturerProductsPage from "./Pages/ManufacturerProductsPage/ManufacturerProductsPage";
 import EditManufacturerProductsPage from "./Pages/EditManufacturerProductsPage/EditManufacturerProductsPage";
 import InstantManufacturerPage from "./Pages/InstantManufacturerPage/InstantManufacturerPage";
+import AttachCategoriesPage from "./Pages/AttachCategoriesPage/AttachCategoriesPage";
 
 function App() {
   const {
@@ -74,6 +75,10 @@ function App() {
             <Route
               path="/instant-manufacturer"
               element={<InstantManufacturerPage />}
+            />
+            <Route
+              path="/attach-categories"
+              element={<AttachCategoriesPage />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
