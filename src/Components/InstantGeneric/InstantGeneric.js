@@ -331,7 +331,10 @@ const InstantGeneric = () => {
                     <Td className="py-2 px-4 border-b text-start text-[14px]">
                       {item?.slug}
                     </Td>
-                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                    <Td
+                      className="py-2 px-4 border-b text-start text-[14px] cursor-pointer"
+                      onClick={() => handleCopy(item?._id)}
+                    >
                       {item?._id}
                     </Td>
                     <Td className="py-2 px-4 border-b text-start text-[14px]">

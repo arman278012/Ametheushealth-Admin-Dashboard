@@ -62,7 +62,6 @@ const AddCategory = () => {
           },
         }
       );
-      navigate("/all-categories");
       setCategoryId(response.data.data._id);
       return response.data.data._id;
     } catch (error) {
@@ -214,6 +213,9 @@ const AddCategory = () => {
                           />
                         )}
                       </Field>
+                      {/* {errors.description && touched.description && (
+                        <div className="text-red-500">{errors.description}</div>
+                      )} */}
                     </div>
                   </div>
 
@@ -296,6 +298,9 @@ const AddCategory = () => {
                           placeholder="Enter meta title here"
                           className="p-3 border rounded-xl h-[45px]"
                         />
+                        {/* {errors.metaTitle && touched.metaTitle && (
+                          <div className="text-red-500">{errors.metaTitle}</div>
+                        )} */}
                       </div>
                     </div>
                   </div>
@@ -310,6 +315,11 @@ const AddCategory = () => {
                         placeholder="Enter meta description here"
                         className="p-3 border rounded-xl outline-none"
                       />
+                      {/* {errors.metaDescription && touched.metaDescription && (
+                        <div className="text-red-500">
+                          {errors.metaDescription}
+                        </div>
+                      )} */}
                     </div>
                   </div>
 
@@ -323,6 +333,9 @@ const AddCategory = () => {
                         placeholder="Enter meta tags here"
                         className="p-3 border rounded-xl outline-none"
                       />
+                      {/* {errors.metaTags && touched.metaTags && (
+                        <div className="text-red-500">{errors.metaTags}</div>
+                      )} */}
                     </div>
                   </div>
 
@@ -331,7 +344,14 @@ const AddCategory = () => {
                       type="button"
                       onClick={() => handleNext(values)}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      disabled={!values.name || isSubmitting}
+                      disabled={
+                        !values.name ||
+                        // !values.description ||
+                        // !values.metaTitle ||
+                        // !values.metaDescription ||
+                        // !values.metaTags ||
+                        isSubmitting
+                      }
                     >
                       {isSubmitting ? "Loading..." : "Next"}
                     </button>
@@ -361,7 +381,7 @@ const AddCategory = () => {
                       type="button"
                       onClick={() => handleNext(values)}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      // disabled={!values.image || isSubmitting}
+                      disabled={!values.image || isSubmitting}
                     >
                       {isSubmitting ? "Loading..." : "Next"}
                     </button>
@@ -397,7 +417,7 @@ const AddCategory = () => {
                     <button
                       type="submit"
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      disabled={isSubmitting}
+                      disabled={!values.file || isSubmitting}
                     >
                       {isSubmitting ? "Saving..." : "Save Data"}
                     </button>
@@ -405,7 +425,7 @@ const AddCategory = () => {
                       type="button"
                       onClick={handleBack}
                       className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-xl mt-2"
-                      // disabled={isSubmitting}
+                      disabled={isSubmitting}
                     >
                       Back
                     </button>
