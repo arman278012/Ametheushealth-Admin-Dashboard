@@ -2,8 +2,13 @@ import React from "react";
 import MySideBar from "../../Components/MySideBar/MySideBar";
 import AddCategory from "../../Components/AddCategory/AddCategory";
 import MobileNavbar from "../../Components/MobileNavbar/MobileNavbar";
+import LoginAlert from "../../Components/LoginAlert/LoginAlert";
 
 const AddCategoryPage = () => {
+
+  const authorization = localStorage.getItem("authorization");
+  const id = localStorage.getItem("id");
+
   return (
     <>
       <div className="sm:flex hidden">
@@ -22,7 +27,11 @@ const AddCategoryPage = () => {
         </div>
 
         <div>
-          <AddCategory className="w-[100%]"/>
+          {authorization && id ? (
+            <AddCategory className="w-[100%]" />
+          ) : (
+            <LoginAlert />
+          )}
         </div>
       </div>
     </>
