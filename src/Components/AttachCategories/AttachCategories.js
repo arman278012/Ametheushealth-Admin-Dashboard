@@ -8,6 +8,7 @@ import {
   setSearchQuery,
 } from "../../redux/slice/GetProductsSlice";
 import {
+  MdDeleteOutline,
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
   MdOutlineKeyboardArrowLeft,
@@ -135,6 +136,18 @@ const AttachCategories = () => {
     setSelectedProductDetails(updatedProductDetails);
   };
 
+  const handleDeleteProduct = (productID) => {
+    const updatedProductIDs = selectedProductIDs.filter(
+      (id) => id !== productID
+    );
+    setSelectedProductIDs(updatedProductIDs);
+
+    const updatedProductDetails = updatedProductIDs.map((id) =>
+      allProductsData.data.find((product) => product._id === id)
+    );
+    setSelectedProductDetails(updatedProductDetails);
+  };
+
   return (
     <>
       <div className="overflow-x-auto p-5">
@@ -146,7 +159,7 @@ const AttachCategories = () => {
               name="name"
               value={searchQuery}
               onChange={handleSearchChange}
-              placeholder="search data here..."
+              placeholder="Search products here..."
               className="p-3 border rounded-xl h-[45px] w-[300px]"
             />
             <button
@@ -405,10 +418,11 @@ const AttachCategories = () => {
             <Table className="min-w-full bg-white border border-gray-300]">
               <Thead>
                 <Tr className=" bg-gray-200 w-[100%]">
-                  <Th className="py-2 px-4 border-r text-start w-[50%]">Id</Th>
-                  <Th className="py-2 px-4 border-r text-start w-[50%]">
+                  <Th className="py-2 px-4 border-r text-start w-[45%]">Id</Th>
+                  <Th className="py-2 px-4 border-r text-start w-[45%]">
                     Name
                   </Th>
+                  <Th className="py-2 px-4 border-r text-start w-[10%]">Del</Th>
                 </Tr>
               </Thead>
 
@@ -420,6 +434,11 @@ const AttachCategories = () => {
                     </Td>
                     <Td className="p-3 border text-start text-[14px]">
                       {item.title}
+                    </Td>
+                    <Td className="p-3 border text-center text-red-700 text-xl text-[14px]">
+                      <MdDeleteOutline
+                        onClick={() => handleDeleteProduct(item._id)}
+                      />
                     </Td>
                   </Tr>
                 ))}
