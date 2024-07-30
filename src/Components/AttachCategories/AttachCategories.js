@@ -175,14 +175,16 @@ const AttachCategories = () => {
               onSubmit={formik.handleSubmit}
               className="w-full max-w-lg mx-auto"
             >
-              <div className="product-categories border shadow-lg relative">
-                <div className="flex gap-5 items-center mb-3">
+              <div className="product-categories border shadow-lg relative cursor-default">
+                <div
+                  onClick={toggleOpen}
+                  className="flex gap-5 justify-center items-center mb-3 w-[300px]"
+                >
                   <label className="font-bold text-lg text-gray-700 px-2 mt-2">
                     All Categories
                   </label>
                   <button
                     type="button"
-                    onClick={toggleOpen}
                     className="focus:outline-none text-blue-500 hover:text-blue-700 transition-colors"
                   >
                     {isOpen ? (
@@ -199,6 +201,19 @@ const AttachCategories = () => {
                       : "max-h-0 overflow-hidden"
                   }`}
                 >
+                  <div className="px-2 py-1 border-b last:border-0">
+                    <input
+                      type="radio"
+                      name="categoryID"
+                      value=""
+                      className="mr-2"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      // checked={formik.values.categoryID === item._id}
+                    />
+                    <label className="font-semibold text-gray-600">None</label>
+                  </div>
+
                   {hierarchyData?.map((item) => (
                     <div
                       className="px-2 py-1 border-b last:border-0"
@@ -422,7 +437,9 @@ const AttachCategories = () => {
                   <Th className="py-2 px-4 border-r text-start w-[45%]">
                     Name
                   </Th>
-                  <Th className="py-2 px-4 border-r text-start w-[10%]">Del</Th>
+                  <Th className="py-2 px-4 border-r text-start w-[10%]">
+                    Delete
+                  </Th>
                 </Tr>
               </Thead>
 
