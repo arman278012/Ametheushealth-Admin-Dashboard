@@ -53,6 +53,8 @@ const AttachCategories = () => {
     );
   });
 
+  console.log(filteredProducts);
+
   const handlePageChange = (newPage) => {
     dispatch(setPage(newPage));
   };
@@ -148,6 +150,8 @@ const AttachCategories = () => {
     setSelectedProductDetails(updatedProductDetails);
   };
 
+  console.log(selectedProductDetails);
+
   return (
     <>
       <div className="overflow-x-auto p-5">
@@ -162,12 +166,12 @@ const AttachCategories = () => {
               placeholder="Search products here..."
               className="p-3 border rounded-xl h-[45px] w-[300px]"
             />
-            <button
+            {/* <button
               type="submit"
               className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
             >
               Search
-            </button>
+            </button> */}
           </div>
 
           <div className="flex gap-4">
@@ -454,6 +458,7 @@ const AttachCategories = () => {
                     </Td>
                     <Td className="p-3 border text-center text-red-700 text-xl text-[14px]">
                       <MdDeleteOutline
+                        className="cursor-pointer"
                         onClick={() => handleDeleteProduct(item._id)}
                       />
                     </Td>
@@ -462,12 +467,16 @@ const AttachCategories = () => {
               </Tbody>
             </Table>
             <div className="flex justify-center mt-10">
-              <button
-                onClick={formik.handleSubmit}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              >
-                Attach Category
-              </button>
+              {selectedProductDetails.length > 0 ? (
+                <button
+                  onClick={formik.handleSubmit}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  Attach Category
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
