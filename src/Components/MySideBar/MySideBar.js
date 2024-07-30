@@ -84,13 +84,6 @@ const MySideBar = () => {
                   </NavLink>
 
                   <NavLink
-                    to="/attach-products"
-                    className="hover:bg-gray-700 px-4 py-2"
-                  >
-                    Attach Products
-                  </NavLink>
-
-                  <NavLink
                     href="add-product"
                     className="hover:bg-gray-700 px-4 py-2"
                   >
@@ -102,6 +95,12 @@ const MySideBar = () => {
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     Export Products
+                  </NavLink>
+                  <NavLink
+                    to="/attach-products"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Attach Products
                   </NavLink>
                 </div>
               )}

@@ -25,6 +25,7 @@ import EditManufacturerProductsPage from "./Pages/EditManufacturerProductsPage/E
 import InstantManufacturerPage from "./Pages/InstantManufacturerPage/InstantManufacturerPage";
 import AttachCategoriesPage from "./Pages/AttachCategoriesPage/AttachCategoriesPage";
 import AttachProductsPage from "./Pages/AttachProductsPage/AttachProductsPage";
+import AdminRoute from "./Components/AdminRoute/AdminRoute";
 
 function App() {
   const {
@@ -39,49 +40,85 @@ function App() {
   return (
     <div className="App flex">
       <BrowserRouter>
-        {/* <MySideBar /> */}
         <div className="flex-1">
           <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/product-details" element={<ProductDetailsPage />} />
-            <Route path="/add-product" element={<AddProductsPage />} />
-            <Route path="/add-category" element={<AddCategoryPage />} />
-            <Route path="/all-categories" element={<AllCategoriesPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/"
+              element={<AdminRoute element={ProductDetailsPage} />}
+            />
+            <Route
+              path="/product-details"
+              element={<AdminRoute element={ProductDetailsPage} />}
+            />
+            <Route
+              path="/add-product"
+              element={<AdminRoute element={AddProductsPage} />}
+            />
+            <Route
+              path="/add-category"
+              element={<AdminRoute element={AddCategoryPage} />}
+            />
+            <Route
+              path="/all-categories"
+              element={<AdminRoute element={AllCategoriesPage} />}
+            />
             <Route
               path="/all-categories/:id"
-              element={<CategoryDataDetailsPage />}
+              element={<AdminRoute element={CategoryDataDetailsPage} />}
             />
             <Route
               path="/all-categories/:id/:sid"
-              element={<CategorySubDetailsPage />}
+              element={<AdminRoute element={CategorySubDetailsPage} />}
             />
-            <Route path="/add-generic" element={<AddGenericPage />} />
-            <Route path="/all-generic" element={<AllGenericPage />} />
-            <Route path="/generic-details" element={<GenericDetailsPage />} />
-            <Route path="/instant-generic" element={<InstantGenericPage />} />
-            <Route path="/edit-products/:id" element={<EditProductsPage />} />
-            <Route path="/add-manufacturer" element={<AddManufacturerPage />} />
+            <Route
+              path="/add-generic"
+              element={<AdminRoute element={AddGenericPage} />}
+            />
+            <Route
+              path="/all-generic"
+              element={<AdminRoute element={AllGenericPage} />}
+            />
+            <Route
+              path="/generic-details"
+              element={<AdminRoute element={GenericDetailsPage} />}
+            />
+            <Route
+              path="/instant-generic"
+              element={<AdminRoute element={InstantGenericPage} />}
+            />
+            <Route
+              path="/edit-products/:id"
+              element={<AdminRoute element={EditProductsPage} />}
+            />
+            <Route
+              path="/add-manufacturer"
+              element={<AdminRoute element={AddManufacturerPage} />}
+            />
             <Route
               path="/all-manufacturers"
-              element={<AllManufacturersPage />}
+              element={<AdminRoute element={AllManufacturersPage} />}
             />
             <Route
               path="/manufacturer-products"
-              element={<ManufacturerProductsPage />}
+              element={<AdminRoute element={ManufacturerProductsPage} />}
             />
             <Route
               path="/edit-manufacturer-products/:id"
-              element={<EditManufacturerProductsPage />}
+              element={<AdminRoute element={EditManufacturerProductsPage} />}
             />
             <Route
               path="/instant-manufacturer"
-              element={<InstantManufacturerPage />}
+              element={<AdminRoute element={InstantManufacturerPage} />}
             />
             <Route
               path="/attach-categories"
-              element={<AttachCategoriesPage />}
+              element={<AdminRoute element={AttachCategoriesPage} />}
             />
-            <Route path="/attach-products" element={<AttachProductsPage />} />
+            <Route
+              path="/attach-products"
+              element={<AdminRoute element={AttachProductsPage} />}
+            />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}
