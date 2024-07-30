@@ -1,7 +1,8 @@
 import axios from "axios";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import {
   fetchGetProductsData,
   setPage,
@@ -14,17 +15,15 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { useFormik } from "formik";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
-const AttachCategories = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [hierarchyData, setHierarchyData] = useState([]);
-  const [loading, setLoading] = useState(false);
+const AttachManufacturer = () => {
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
   const [selectedProductDetails, setSelectedProductDetails] = useState([]);
-
-  console.log(selectedProductDetails);
+  const [isOpen, setIsOpen] = useState(false);
+  const [hierarchyData, setHierarchyData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [manufacturersData, setManufacturersData] = useState([]);
 
   const dispatch = useDispatch();
   const {
@@ -43,24 +42,6 @@ const AttachCategories = () => {
     );
   }, [dispatch, currentPage, pageLimit, searchQuery]);
 
-  console.log(allProductsData);
-
-  const filteredProducts = allProductsData?.data.filter((item) => {
-    const searchQueryLower = searchQuery.toLowerCase();
-    const itemIdLower = item._id.toLowerCase();
-
-    return (
-      item.title.toLowerCase().includes(searchQueryLower) ||
-      itemIdLower.includes(searchQueryLower)
-    );
-  });
-
-  console.log(filteredProducts);
-
-  const handlePageChange = (newPage) => {
-    dispatch(setPage(newPage));
-  };
-
   const handleSearchChange = (event) => {
     dispatch(setSearchQuery(event.target.value));
   };
@@ -70,15 +51,11 @@ const AttachCategories = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleRadioChange = (setFieldValue, e) => {
-    setFieldValue("categoryID", e.target.value);
-  };
-
-  const productCategoriesData = async () => {
+  //get manufacturer data
+  const getManufacturerNames = async () => {
     try {
-      setLoading(true);
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names",
+        "https://api.assetorix.com:4100/ah/api/v1/manufacturer/names",
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -86,31 +63,30 @@ const AttachCategories = () => {
           },
         }
       );
+      console.log("getManufacturerNames", response.data.data);
       setHierarchyData(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   useEffect(() => {
-    productCategoriesData();
+    getManufacturerNames();
   }, []);
 
   const formik = useFormik({
     initialValues: {
-      categoryID: "",
+      manufacturerID: "",
     },
     onSubmit: async (values) => {
       const data = {
         products: selectedProductIDs,
-        categoryID: values.categoryID,
+        manufacturerID: values.categoryID,
       };
 
       try {
         const response = await axios.post(
-          "https://api.assetorix.com:4100/ah/api/v1/category/rmcg",
+          "https://api.assetorix.com:4100/ah/api/v1/manufacturer/rmid",
           data,
           {
             headers: {
@@ -126,6 +102,10 @@ const AttachCategories = () => {
     },
   });
 
+  const handlePageChange = (newPage) => {
+    dispatch(setPage(newPage));
+  };
+
   const handleProductCheckboxChange = (product) => {
     const updatedProductIDs = selectedProductIDs.includes(product._id)
       ? selectedProductIDs.filter((id) => id !== product._id)
@@ -134,7 +114,7 @@ const AttachCategories = () => {
     setSelectedProductIDs(updatedProductIDs);
 
     const updatedProductDetails = updatedProductIDs.map((id) =>
-      allProductsData.data.find((product) => product._id === id)
+        allProductsData?.data?.find((p) => p._id === id)
     );
 
     setSelectedProductDetails(updatedProductDetails);
@@ -147,17 +127,44 @@ const AttachCategories = () => {
     setSelectedProductIDs(updatedProductIDs);
 
     const updatedProductDetails = updatedProductIDs.map((id) =>
-      allProductsData.data.find((product) => product._id === id)
+        allProductsData.data.find((product) => product._id === id)
     );
     setSelectedProductDetails(updatedProductDetails);
   };
 
-  console.log(selectedProductDetails);
+  const getManufacturersData = async (page = 1, search = "") => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setManufacturersData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      getManufacturersData(currentPage, searchQuery);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [currentPage, searchQuery, pageLimit]);
 
   return (
     <>
       <div className="overflow-x-auto p-5">
-        <p className="font-bold text-xl mb-5">Attach Categories</p>
+        <p className="font-bold text-xl mb-5">Attach Manufacturer</p>
         <div className="main-content-div bg-gray-300 p-5 w-full flex justify-between">
           <div className="flex gap-4">
             <input
@@ -187,7 +194,7 @@ const AttachCategories = () => {
                   className="flex gap-5 justify-center items-center mb-3 w-[300px]"
                 >
                   <label className="font-bold text-lg text-gray-700 px-2 mt-2">
-                    All Categories
+                    All Manufacturers
                   </label>
                   <button
                     type="button"
@@ -220,7 +227,7 @@ const AttachCategories = () => {
                     <label className="font-semibold text-gray-600">None</label>
                   </div>
 
-                  {hierarchyData?.map((item) => (
+                  {hierarchyData?.data?.map((item) => (
                     <div
                       className="px-2 py-1 border-b last:border-0"
                       key={item._id}
@@ -422,7 +429,7 @@ const AttachCategories = () => {
                       />
                     </Td>
                     <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      {product.name}
+                      {product.title}
                     </Td>
                     {/* <Td className="py-2 px-4 border-b text-start text-[14px]">
                       {product._id}
@@ -487,4 +494,4 @@ const AttachCategories = () => {
   );
 };
 
-export default AttachCategories;
+export default AttachManufacturer;
