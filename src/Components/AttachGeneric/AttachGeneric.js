@@ -1,10 +1,354 @@
-import React from "react";
+import axios from "axios";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchGetProductsData,
+  setPage,
+  setSearchQuery,
+} from "../../redux/slice/GetProductsSlice";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  MdDeleteOutline,
+  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const AttachGeneric = () => {
+  const [selectedProductIDs, setSelectedProductIDs] = useState([]);
+  const [selectedProductDetails, setSelectedProductDetails] = useState([]);
+  const [hierarchyData, setHierarchyData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [genericsopen, setGenericsOpen] = useState(false);
+  const [genericsMap, setGenericMap] = useState([]);
+
+  const dispatch = useDispatch();
+  const {
+    allProductsData,
+    isLoading,
+    isError,
+    error,
+    currentPage,
+    pageLimit,
+    searchQuery,
+  } = useSelector((state) => state.getproductsSlice);
+
+  useEffect(() => {
+    dispatch(
+      fetchGetProductsData({ page: currentPage, pageLimit, searchQuery })
+    );
+  }, [dispatch, currentPage, pageLimit, searchQuery]);
+
+  const handleSearchChange = (event) => {
+    dispatch(setSearchQuery(event.target.value));
+  };
+
+  const toggleOpen = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
+
+  const toggleGenericsOpen = (e) => {
+    e.preventDefault();
+    setGenericsOpen(!genericsopen);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      genericID: "",
+    },
+    onSubmit: async (values) => {
+      const data = {
+        products: selectedProductIDs,
+        genericID: values.genericID,
+      };
+
+      try {
+        const response = await axios.post(
+          "https://api.assetorix.com:4100/ah/api/v1/category/rmcg",
+          data,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        console.log("API response:", response.data);
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
+    },
+  });
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPage(newPage));
+  };
+
+  const handleProductCheckboxChange = (product) => {
+    const updatedProductIDs = selectedProductIDs.includes(product._id)
+      ? selectedProductIDs.filter((id) => id !== product._id)
+      : [...selectedProductIDs, product._id];
+
+    setSelectedProductIDs(updatedProductIDs);
+
+    const updatedProductDetails = updatedProductIDs.map((id) =>
+      allProductsData.data.find((product) => product._id === id)
+    );
+
+    setSelectedProductDetails(updatedProductDetails);
+  };
+
+  const handleDeleteProduct = (productID) => {
+    const updatedProductIDs = selectedProductIDs.filter(
+      (id) => id !== productID
+    );
+    setSelectedProductIDs(updatedProductIDs);
+
+    const updatedProductDetails = updatedProductIDs.map((id) =>
+      allProductsData.data.find((product) => product._id === id)
+    );
+    setSelectedProductDetails(updatedProductDetails);
+  };
+
+  const genericsData = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.assetorix.com:4100/ah/api/v1/generic/names",
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setGenericMap(response.data);
+      console.log("generic data", genericsMap);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    genericsData();
+  }, []);
+
+  const handleGenericsChange = (setFieldValue, e) => {
+    setFieldValue("genericID", e.target.value);
+  };
+
+  console.log("genericsMap", genericsMap);
+
   return (
-    <div>
-      <p>AttachGeneric</p>
-    </div>
+    <>
+      <div className="overflow-x-auto p-5">
+        <p className="font-bold text-xl mb-5">Attach Generic</p>
+        <div className="main-content-div bg-gray-300 p-5 w-full flex justify-between">
+          <div className="flex gap-4">
+            <input
+              type="text"
+              name="name"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Search products here..."
+              className="p-3 border rounded-xl h-[45px] w-[300px]"
+            />
+            {/* <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
+            >
+              Search
+            </button> */}
+          </div>
+
+          <div className="flex gap-4">
+            <form
+              onSubmit={formik.handleSubmit}
+              className="w-full max-w-lg mx-auto"
+            >
+              <div className="product-categories border shadow-lg relative cursor-default">
+                <div className="flex justify-between items-center px-3">
+                  <label className="font-bold text-lg text-gray-700 px-2 mt-2">
+                    All Generics
+                  </label>
+                  <button
+                    onClick={toggleGenericsOpen}
+                    className="focus:outline-none text-blue-500 hover:text-blue-700 transition-colors"
+                  >
+                    {genericsopen ? (
+                      <FaChevronUp className="text-blue-500" />
+                    ) : (
+                      <FaChevronDown className="text-blue-500" />
+                    )}
+                  </button>
+                </div>
+
+                <div
+                  className={`absolute left-0 top-12 w-full bg-white rounded-lg shadow-lg transition-all duration-300 ${
+                    genericsopen
+                      ? "h-[250px] overflow-y-auto"
+                      : "h-0 overflow-hidden"
+                  } transition-all duration-300`}
+                >
+                  <div>
+                    {genericsMap?.map((generic) => (
+                      <div
+                        key={generic?.id}
+                        className="px-2 py-1 border-b last:border-0 flex"
+                      >
+                        <input
+                          id={generic._id}
+                          type="radio"
+                          name="genericID"
+                          className="mr-2"
+                          value={generic?._id}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          checked={formik.values.genericID === generic._id}
+                        />
+                        <p>{generic?.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div className="flex px-5 py-2 gap-3 ">
+          <div>
+            <p>{allProductsData?.totalProducts || 0} results</p>
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(1)}
+          >
+            <MdOutlineKeyboardDoubleArrowLeft />
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+          >
+            <MdOutlineKeyboardArrowLeft />
+          </div>
+          <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+            <p>{currentPage}</p>
+          </div>
+          <div>
+            <p>of {allProductsData?.totalPages}</p>
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() =>
+              handlePageChange(
+                Math.min(currentPage + 1, allProductsData?.totalPages || 1)
+              )
+            }
+          >
+            <MdKeyboardArrowRight />
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(allProductsData?.totalPages || 1)}
+          >
+            <MdKeyboardDoubleArrowRight />
+          </div>
+        </div>
+
+        <div className="flex gap-10 p-5">
+          <div className="w-[50%]">
+            <Table className="min-w-full bg-white border border-gray-300]">
+              <Thead>
+                <Tr className=" bg-gray-200 w-[100%]">
+                  <Th className="py-2 px-4 border-b w-[10%] border-r">
+                    <input type="checkbox" />
+                  </Th>
+                  <Th className="py-2 px-4 border-b w-[40%] text-start border-r">
+                    Name
+                  </Th>
+                  {/* <Th className="py-2 px-4 border-b text-start">Id</Th> */}
+                  <Th className="py-2 px-4 border-b w-[50%] text-start border-r">
+                    Generic
+                  </Th>
+                </Tr>
+              </Thead>
+              {allProductsData?.data?.map((product) => (
+                <Tbody>
+                  <Tr>
+                    <Td className="p-3 border text-center">
+                      <input
+                        type="checkbox"
+                        checked={selectedProductIDs.includes(product._id)}
+                        onChange={() => handleProductCheckboxChange(product)}
+                      />
+                    </Td>
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {product.title}
+                    </Td>
+                    {/* <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {product._id}
+                    </Td> */}
+                    <Td className="py-2 px-4 border-b text-start text-[14px]">
+                      {product._id}
+                    </Td>
+                  </Tr>
+                </Tbody>
+              ))}
+            </Table>
+          </div>
+          <div className="w-[50%]">
+            <Table className="min-w-full bg-white border border-gray-300]">
+              <Thead>
+                <Tr className=" bg-gray-200 w-[100%]">
+                  <Th className="py-2 px-4 border-r text-start w-[45%]">Id</Th>
+                  <Th className="py-2 px-4 border-r text-start w-[45%]">
+                    Name
+                  </Th>
+                  <Th className="py-2 px-4 border-r text-start w-[10%]">
+                    Delete
+                  </Th>
+                </Tr>
+              </Thead>
+
+              <Tbody>
+                {selectedProductDetails.map((item) => (
+                  <Tr key={item._id}>
+                    <Td className="p-3 border text-start text-[14px]">
+                      {item._id}
+                    </Td>
+                    <Td className="p-3 border text-start text-[14px]">
+                      {item.title}
+                    </Td>
+                    <Td className="p-3 border text-center text-red-700 text-xl text-[14px]">
+                      <MdDeleteOutline
+                        className="cursor-pointer"
+                        onClick={() => handleDeleteProduct(item._id)}
+                      />
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+            <div className="flex justify-center mt-10">
+              {selectedProductDetails.length > 0 ? (
+                <button
+                  onClick={formik.handleSubmit}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  Attach Category
+                </button>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

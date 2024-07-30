@@ -422,7 +422,7 @@ const AttachCategories = () => {
                       />
                     </Td>
                     <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      {product.name}
+                      {product.title}
                     </Td>
                     {/* <Td className="py-2 px-4 border-b text-start text-[14px]">
                       {product._id}
