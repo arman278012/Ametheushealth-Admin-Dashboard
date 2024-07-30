@@ -114,7 +114,7 @@ const AttachManufacturer = () => {
     setSelectedProductIDs(updatedProductIDs);
 
     const updatedProductDetails = updatedProductIDs.map((id) =>
-        allProductsData?.data?.find((p) => p._id === id)
+      allProductsData?.data?.find((p) => p._id === id)
     );
 
     setSelectedProductDetails(updatedProductDetails);
@@ -127,7 +127,7 @@ const AttachManufacturer = () => {
     setSelectedProductIDs(updatedProductIDs);
 
     const updatedProductDetails = updatedProductIDs.map((id) =>
-        allProductsData.data.find((product) => product._id === id)
+      allProductsData.data.find((product) => product._id === id)
     );
     setSelectedProductDetails(updatedProductDetails);
   };

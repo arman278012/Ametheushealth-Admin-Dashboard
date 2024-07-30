@@ -27,6 +27,7 @@ import AttachCategoriesPage from "./Pages/AttachCategoriesPage/AttachCategoriesP
 import AttachProductsPage from "./Pages/AttachProductsPage/AttachProductsPage";
 import AdminRoute from "./Components/AdminRoute/AdminRoute";
 import AttachManufacturerPage from "./Pages/AttachManufacturerPage/AttachManufacturerPage";
+import AttachGenericPage from "./Pages/AttachGenericPage/AttachGenericPage";
 
 function App() {
   const {
@@ -123,6 +124,11 @@ function App() {
             <Route
               path="/attach-manufacturer"
               element={<AdminRoute element={AttachManufacturerPage} />}
+            />
+
+            <Route
+              path="/attach-generic"
+              element={<AdminRoute element={AttachGenericPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

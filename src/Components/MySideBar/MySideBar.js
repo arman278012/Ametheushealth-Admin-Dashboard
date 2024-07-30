@@ -223,9 +223,13 @@ const MySideBar = () => {
                   >
                     Add Generic
                   </NavLink>
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+
+                  <NavLink
+                    to={"/attach-generic"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     Attach Generic
-                  </a>
+                  </NavLink>
                 </div>
               )}
             </div>
