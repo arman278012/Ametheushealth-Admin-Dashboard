@@ -316,20 +316,13 @@ const AttachCategories = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                >
-                  Attach Category
-                </button>
-              </div>
             </form>
           </div>
         </div>
-        <div className="flex px-5 py-2 gap-3 justify-end">
+
+        <div className="flex px-5 py-2 gap-3 ">
           <div>
-            <p>{filteredProducts?.length || 0} results</p>
+            <p>{allProductsData?.totalProducts || 0} results</p>
           </div>
           <div
             className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
@@ -432,6 +425,14 @@ const AttachCategories = () => {
                 ))}
               </Tbody>
             </Table>
+            <div className="flex justify-center mt-10">
+              <button
+                onClick={formik.handleSubmit}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              >
+                Attach Category
+              </button>
+            </div>
           </div>
         </div>
       </div>
