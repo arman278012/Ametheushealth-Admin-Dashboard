@@ -28,16 +28,11 @@ import AttachProductsPage from "./Pages/AttachProductsPage/AttachProductsPage";
 import AdminRoute from "./Components/AdminRoute/AdminRoute";
 import AttachManufacturerPage from "./Pages/AttachManufacturerPage/AttachManufacturerPage";
 import AttachGenericPage from "./Pages/AttachGenericPage/AttachGenericPage";
+import OrdersPage from "./Pages/OrdersPage/OrdersPage";
 
 function App() {
-  const {
-    editAllCattegoriesForm,
-    setEditAllCategoriesForm,
-    editGenericForm,
-    setEditGenericForm,
-    editManufacturerForm,
-    setEditManufacturerForm,
-  } = useContext(AppContext);
+  const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
+    useContext(AppContext);
 
   return (
     <div className="App flex">
@@ -129,6 +124,11 @@ function App() {
             <Route
               path="/attach-generic"
               element={<AdminRoute element={AttachGenericPage} />}
+            />
+
+            <Route
+              path="/attach-generic"
+              element={<AdminRoute element={OrdersPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
