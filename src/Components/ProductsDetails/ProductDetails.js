@@ -76,40 +76,9 @@ const ProductDetails = () => {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-  // const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
-  //   (state) => state.getproductsSlice
-  // );
-
-  // useEffect(() => {
-  //   dispatch(
-  //     fetchGetProductsData({ page: currentPage, pageLimit, searchQuery })
-  //   );
-  // }, [dispatch, currentPage, pageLimit, searchQuery]);
-
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBarOpen);
   };
-
-  // const handlePageChange = (newPage) => {
-  //   dispatch(setPage(newPage));
-  // };
-
-  // const handlePageLimitChange = (event) => {
-  //   dispatch(setPageLimit(event.target.value));
-  // };
-
-  // const handleSearchChange = (event) => {
-  //   dispatch(setSearchQuery(event.target.value));
-  // };
-
-  // const clearSearch = () => {
-  //   dispatch(setSearchQuery(""));
-  // };
-
-  // useEffect(() => {
-  //   dispatch(setSearchQuery(debouncedSearchQuery));
-  // }, [debouncedSearchQuery, dispatch]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -118,16 +87,6 @@ const ProductDetails = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, searchQuery]);
-
-  // const filteredProducts = allproductsDetails?.data?.filter((item) => {
-  //   const searchQueryLower = searchQuery.toLowerCase();
-  //   const itemIdLower = item._id.toLowerCase();
-
-  //   return (
-  //     item.title.toLowerCase().includes(searchQueryLower) ||
-  //     itemIdLower.includes(searchQueryLower)
-  //   );
-  // });
 
   const toggleDropdown = () => {
     setIsDropOpen(!isDropOpen);
@@ -173,7 +132,7 @@ const ProductDetails = () => {
   const handleSelectOption = (option) => {
     setStoreOptionId(option._id);
     setSelectedOption(option);
-    dispatch(setSearchQuery(option._id)); // Set the search query to the selected option ID
+    setSearchQuery(option._id); // Set the search query to the selected option ID
     setIsDropOpen(false); // Close the dropdown
   };
 
