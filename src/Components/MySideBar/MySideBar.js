@@ -45,14 +45,32 @@ const MySideBar = () => {
             {/* orders Menu */}
             <div>
               <button
-                onClick={toggleOrdersMenu}
+                onClick={toggleProductsMenu}
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaUsers className="mr-2" />
+                  <FaBox className="mr-2" />
                   {!isCollapsed && "Orders"}
                 </span>
+                {!isCollapsed &&
+                  (isProductsMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
               </button>
+              {!isCollapsed && isProductsMenuOpen && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/orders"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    All Orders
+                  </NavLink>
+                  <NavLink
+                    to={"/add-orders"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Orders
+                  </NavLink>
+                </div>
+              )}
             </div>
 
             {/* Products Menu */}

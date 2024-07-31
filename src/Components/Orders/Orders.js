@@ -125,7 +125,7 @@ const Orders = () => {
           <div className="flex gap-3 p-5">
             <p className="text-xl font-semibold">Orders</p>
             <button
-              onClick={() => navigate("/add-product")}
+              onClick={() => navigate("/add-order")}
               className="bg-[#13a3bc] text-white font-semibold text-sm p-2 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out"
             >
               Add Order
@@ -386,7 +386,7 @@ const Orders = () => {
                 <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
                   Price
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[8%]">
+                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
                   Status
                 </Th>
               </Tr>
@@ -400,6 +400,28 @@ const Orders = () => {
                   </Td>
                   <Td className="py-2 px-4 border-b  text-[14px] border-gray-300">
                     {order.name}
+                    <div className="flex gap-2">
+                      <button
+                        className="text-[#2271b1]"
+                        // onClick={() =>
+                        //   navigate(`/edit-products/${singleItem._id}`)
+                        // }
+                      >
+                        Edit
+                      </button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button className="text-[#2271b1]">View</button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button
+                        className="text-[#2271b1]"
+                        // onClick={() => {
+                        //   setDeleteAlert(true);
+                        //   setDeleteId(singleItem._id);
+                        // }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
                     {order._id}
