@@ -11,7 +11,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const Orders = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(true);
-  const [pageLimit, setPageLimit] = useState("10");
+  const [pageLimit, setPageLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropOpen, setIsDropOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -43,10 +43,10 @@ const Orders = () => {
     setCurrentPage(page);
   };
 
-  const allOrders = async () => {
+  const allOrders = async (page, pageLimit, query) => {
     try {
       const response = await axios.get(
-        ` https://api.assetorix.com:4100/ah/api/v1/order/admin/orders`,
+        ` https://api.assetorix.com:4100/ah/api/v1/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -61,11 +61,13 @@ const Orders = () => {
     }
   };
 
-  
-
   useEffect(() => {
-    allOrders();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      allOrders(currentPage, pageLimit, searchQuery);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, currentPage, pageLimit]);
 
   const convertToIndianDate = (dateString) => {
     const date = new Date(dateString);
@@ -313,7 +315,7 @@ const Orders = () => {
         </div>
         <div className="flex px-5 py-2 gap-3 justify-end">
           <div>
-            <p>{allOrdersDetails?.totalProducts || 0} results</p>
+            <p>{allOrdersDetails?.totalOrders || 0} results</p>
           </div>
           <div
             className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
