@@ -20,7 +20,6 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 const AttachGeneric = () => {
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
   const [selectedProductDetails, setSelectedProductDetails] = useState([]);
-  const [hierarchyData, setHierarchyData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
@@ -28,9 +27,6 @@ const AttachGeneric = () => {
   const dispatch = useDispatch();
   const {
     allProductsData,
-    isLoading,
-    isError,
-    error,
     currentPage,
     pageLimit,
     searchQuery,

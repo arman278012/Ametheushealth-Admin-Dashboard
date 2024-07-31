@@ -14,15 +14,12 @@ import {
   setPageLimit,
   setSearchQuery,
 } from "../../redux/slice/GetProductsSlice";
-import axios from "axios";
+import axios, { all } from "axios";
 import { useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selected, setSelected] = useState("");
   const [isDropOpen, setIsDropOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [searchOptionQuery, setSearchOptionQuery] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,74 +28,106 @@ const ProductDetails = () => {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const [isTopBarOpen, setIsTopBarOpen] = useState(true);
+  const [allProductsDetails, setAllProductsDetails] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState("10");
 
   const categories = ["Date", "Fig", "Grape", "Honeydew"];
 
-  const filteredCategories = categories.filter((category) =>
-    category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredCategories = categories.filter((category) =>
+  //   category.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  //Products details API fetching again to solve the searching problem
+
+  const productDetailsAgain = async (page, pageLimit, query) => {
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/product/?page=${page}&limit=${pageLimit}&search=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setAllProductsDetails(response.data);
+      console.log("AllProductsDetails", response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      productDetailsAgain(currentPage, pageLimit, searchQuery);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, currentPage, pageLimit]);
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  //-------------------------------------------------------------------
 
   const navigate = useNavigate();
 
-  const [isTopBarOpen, setIsTopBarOpen] = useState(true);
   const dispatch = useDispatch();
-  const {
-    allProductsData,
-    isLoading,
-    isError,
-    error,
-    currentPage,
-    pageLimit,
-    searchQuery,
-  } = useSelector((state) => state.getproductsSlice);
+  // const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
+  //   (state) => state.getproductsSlice
+  // );
 
-  useEffect(() => {
-    dispatch(
-      fetchGetProductsData({ page: currentPage, pageLimit, searchQuery })
-    );
-  }, [dispatch, currentPage, pageLimit, searchQuery]);
+  // useEffect(() => {
+  //   dispatch(
+  //     fetchGetProductsData({ page: currentPage, pageLimit, searchQuery })
+  //   );
+  // }, [dispatch, currentPage, pageLimit, searchQuery]);
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBarOpen);
   };
 
-  const handlePageChange = (newPage) => {
-    dispatch(setPage(newPage));
-  };
+  // const handlePageChange = (newPage) => {
+  //   dispatch(setPage(newPage));
+  // };
 
-  const handlePageLimitChange = (event) => {
-    dispatch(setPageLimit(event.target.value));
-  };
+  // const handlePageLimitChange = (event) => {
+  //   dispatch(setPageLimit(event.target.value));
+  // };
 
-  const handleSearchChange = (event) => {
-    dispatch(setSearchQuery(event.target.value));
-  };
+  // const handleSearchChange = (event) => {
+  //   dispatch(setSearchQuery(event.target.value));
+  // };
 
-  const clearSearch = () => {
-    dispatch(setSearchQuery(""));
-  };
+  // const clearSearch = () => {
+  //   dispatch(setSearchQuery(""));
+  // };
 
-  useEffect(() => {
-    dispatch(setSearchQuery(debouncedSearchQuery));
-  }, [debouncedSearchQuery, dispatch]);
+  // useEffect(() => {
+  //   dispatch(setSearchQuery(debouncedSearchQuery));
+  // }, [debouncedSearchQuery, dispatch]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      setDebouncedSearchQuery(searchTerm);
+      setDebouncedSearchQuery(searchTerm, searchQuery);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  }, [searchTerm, searchQuery]);
 
-  const filteredProducts = allProductsData?.data.filter((item) => {
-    const searchQueryLower = searchQuery.toLowerCase();
-    const itemIdLower = item._id.toLowerCase();
+  // const filteredProducts = allproductsDetails?.data?.filter((item) => {
+  //   const searchQueryLower = searchQuery.toLowerCase();
+  //   const itemIdLower = item._id.toLowerCase();
 
-    return (
-      item.title.toLowerCase().includes(searchQueryLower) ||
-      itemIdLower.includes(searchQueryLower)
-    );
-  });
+  //   return (
+  //     item.title.toLowerCase().includes(searchQueryLower) ||
+  //     itemIdLower.includes(searchQueryLower)
+  //   );
+  // });
 
   const toggleDropdown = () => {
     setIsDropOpen(!isDropOpen);
@@ -107,11 +136,11 @@ const ProductDetails = () => {
   // Filter API
   const filterOptions = async (query) => {
     if (!query) {
-      setFilteredData([]); // Clear data if query is empty
+      setFilteredData([]);
       return;
     }
     try {
-      setSearchLoading(true); // Start loading
+      setSearchLoading(true);
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/category/view/?search=${query}`,
         {
@@ -125,14 +154,14 @@ const ProductDetails = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setSearchLoading(false); // End loading
+      setSearchLoading(false);
     }
   };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       filterOptions(searchOptionQuery);
-    }, 300); // Increased debounce delay for better UX
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchOptionQuery]);
@@ -184,8 +213,8 @@ const ProductDetails = () => {
               <p>Number of items per page:</p>
               <input
                 type="text"
+                onChange={(e) => setPageLimit(e.target.value)}
                 value={pageLimit}
-                onChange={handlePageLimitChange}
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
               />
             </div>
@@ -260,13 +289,13 @@ const ProductDetails = () => {
                 placeholder="search products..."
                 type="text"
                 value={searchQuery}
-                onChange={handleSearchChange}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px]"
               />
             </div>
 
             <div>
-              <button
+              {/* <button
                 onClick={() =>
                   dispatch(
                     fetchGetProductsData({
@@ -279,7 +308,7 @@ const ProductDetails = () => {
                 className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]"
               >
                 Search Products
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -405,19 +434,24 @@ const ProductDetails = () => {
               </button>
             </div>
           </div>
+
           <div className="flex px-5 py-2 gap-3 justify-end">
             <div>
-              <p>{filteredProducts?.length || 0} results</p>
+              <p>{allProductsDetails?.totalProducts || 0} results</p>
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => handlePageChange(1)}
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              onClick={() => currentPage > 1 && goToPage(1)}
             >
               <MdOutlineKeyboardDoubleArrowLeft />
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              onClick={() => currentPage > 1 && goToPage(currentPage - 1)}
             >
               <MdOutlineKeyboardArrowLeft />
             </div>
@@ -425,21 +459,31 @@ const ProductDetails = () => {
               <p>{currentPage}</p>
             </div>
             <div>
-              <p>of {allProductsData?.totalPages}</p>
+              <p>of {allProductsDetails?.totalPages || 1}</p>
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === allProductsDetails?.totalPages
+                  ? "cursor-not-allowed opacity-50"
+                  : ""
+              }`}
               onClick={() =>
-                handlePageChange(
-                  Math.min(currentPage + 1, allProductsData?.totalPages || 1)
-                )
+                currentPage < allProductsDetails?.totalPages &&
+                goToPage(currentPage + 1)
               }
             >
               <MdKeyboardArrowRight />
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => handlePageChange(allProductsData?.totalPages || 1)}
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === allProductsDetails?.totalPages
+                  ? "cursor-not-allowed opacity-50"
+                  : ""
+              }`}
+              onClick={() =>
+                currentPage < allProductsDetails?.totalPages &&
+                goToPage(allProductsDetails?.totalPages)
+              }
             >
               <MdKeyboardDoubleArrowRight />
             </div>
@@ -479,7 +523,7 @@ const ProductDetails = () => {
                 </tr>
               </thead>
               <tbody className="border-gray-300 border-2">
-                {filteredProducts?.map((singleItem) => (
+                {allProductsDetails?.data?.map((singleItem) => (
                   <tr className="bg-gray-100" key={singleItem._id}>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <input type="checkbox" className="form-checkbox" />
