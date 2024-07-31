@@ -68,7 +68,7 @@ const AttachGeneric = () => {
 
       try {
         const response = await axios.post(
-          "https://api.assetorix.com:4100/ah/api/v1/category/rmcg",
+          "https://api.assetorix.com:4100/ah/api/v1/generic/rmid",
           data,
           {
             headers: {
@@ -169,7 +169,7 @@ const AttachGeneric = () => {
               onSubmit={formik.handleSubmit}
               className="w-full max-w-lg mx-auto"
             >
-              <div className="product-categories border shadow-lg relative cursor-default">
+              <div className="product-categories border shadow-lg relative cursor-default w-[250px] h-[45px]">
                 <div className="flex justify-between items-center px-3">
                   <label className="font-bold text-lg text-gray-700 px-2 mt-2">
                     All Generics
@@ -194,6 +194,20 @@ const AttachGeneric = () => {
                   } transition-all duration-300`}
                 >
                   <div>
+                    <div className="px-2 py-1 border-b last:border-0">
+                      <input
+                        type="radio"
+                        name="genericID"
+                        value=""
+                        className="mr-2"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        // checked={formik.values.categoryID === item._id}
+                      />
+                      <label className="font-semibold text-gray-600">
+                        None
+                      </label>
+                    </div>
                     {genericsMap?.map((generic) => (
                       <div
                         key={generic?.id}
