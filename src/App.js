@@ -127,7 +127,7 @@ function App() {
             />
 
             <Route
-              path="/attach-generic"
+              path="/orders"
               element={<AdminRoute element={OrdersPage} />}
             />
           </Routes>
