@@ -63,7 +63,7 @@ const AddCategory = () => {
         }
       );
       setCategoryId(response.data.data._id);
-      navigate("/all-categories");
+      // navigate("/all-categories");
       return response.data.data._id;
     } catch (error) {
       console.log(error);

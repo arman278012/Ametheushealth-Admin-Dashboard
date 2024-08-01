@@ -19,7 +19,7 @@ const OrderDetails = () => {
             Payment via Stripe - Credit card / debit card. Customer IP:
             185.172.53.66
           </p>
-          <div>
+          <div className="flex justify-around">
             <div className="general mt-5">
               <div>
                 <div>
@@ -27,6 +27,7 @@ const OrderDetails = () => {
                   <p className="text-[18px] font-semibold">General</p>
                 </div>
                 <div className="flex flex-col gap-3">
+                  <p className="font-bold text-xl p-2">Customer Name</p>
                   <input
                     type="date"
                     className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white border"
@@ -56,7 +57,12 @@ const OrderDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="shipping"></div>
+            <div className="shipping mt-5">
+              <p>Nina Andrews</p>
+              <p>1300 W 9th St # 1</p>
+              <p>Cleveland, OH 44113</p>
+              <p>United States (US)</p>
+            </div>
           </div>
         </div>
 
