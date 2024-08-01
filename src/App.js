@@ -29,6 +29,7 @@ import AdminRoute from "./Components/AdminRoute/AdminRoute";
 import AttachManufacturerPage from "./Pages/AttachManufacturerPage/AttachManufacturerPage";
 import AttachGenericPage from "./Pages/AttachGenericPage/AttachGenericPage";
 import OrdersPage from "./Pages/OrdersPage/OrdersPage";
+import OrderDetailsPage from "./Pages/OrderDetailsPage/OrderDetailsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -129,6 +130,11 @@ function App() {
             <Route
               path="/orders"
               element={<AdminRoute element={OrdersPage} />}
+            />
+
+            <Route
+              path="/orders-details"
+              element={<AdminRoute element={OrderDetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
