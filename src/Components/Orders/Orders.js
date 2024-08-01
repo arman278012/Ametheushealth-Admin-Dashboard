@@ -154,8 +154,8 @@ const Orders = () => {
             </p>
           </div>
         </div>
-        <div className="flex sm:flex-row flex-col justify-between px-5 py-2">
-          <div className="left flex gap-3 justify-center items-center sm:justify-normal">
+        <div className="flex sm:flex-row flex-col justify-end px-5 py-2">
+          {/* <div className="left flex gap-3 justify-center items-center sm:justify-normal">
             <div className="all text-sm">All</div>{" "}
             <span className="text-sm">|</span>
             <div className="published text-blue-500 text-sm">
@@ -165,7 +165,7 @@ const Orders = () => {
             <div className="Draft text-blue-500 text-sm">Drafts</div>{" "}
             <span className="text-sm">|</span>
             <div className="Sorting text-blue-500 text-sm">Sorting</div>
-          </div>
+          </div> */}
 
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <div>
@@ -240,7 +240,7 @@ const Orders = () => {
             </div>
           </div>
 
-          <div className="relative inline-block text-left">
+          {/* <div className="relative inline-block text-left">
             <button
               type="button"
               className="w-[250px] px-3 py-1 h-[33px] inline-flex justify-center rounded-md border border-gray-300 shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
@@ -293,7 +293,7 @@ const Orders = () => {
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
 
           <select
             id="fruits"
