@@ -45,7 +45,7 @@ const MySideBar = () => {
             {/* orders Menu */}
             <div>
               <button
-                onClick={toggleProductsMenu}
+                onClick={toggleOrdersMenu}
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
@@ -53,9 +53,9 @@ const MySideBar = () => {
                   {!isCollapsed && "Orders"}
                 </span>
                 {!isCollapsed &&
-                  (isProductsMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+                  (isOrdersMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
               </button>
-              {!isCollapsed && isProductsMenuOpen && (
+              {!isCollapsed && isOrdersMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
                   <NavLink
                     to={"/orders"}

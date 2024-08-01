@@ -21,6 +21,7 @@ const Orders = () => {
   const [storeOptionId, setStoreOptionId] = useState(null);
   const [allOrdersDetails, setAllOrdersDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState("");
 
   const navigate = useNavigate();
 
@@ -43,10 +44,10 @@ const Orders = () => {
     setCurrentPage(page);
   };
 
-  const allOrders = async (page, pageLimit, query) => {
+  const allOrders = async (page, pageLimit, query, filter) => {
     try {
       const response = await axios.get(
-        ` https://api.assetorix.com:4100/ah/api/v1/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}&status=${filter}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -61,13 +62,20 @@ const Orders = () => {
     }
   };
 
+  const handleFilterChange = (event) => {
+    const selectedFilter = event.target.value;
+    setFilter(selectedFilter);
+    // Call the allOrders function with the new filter
+    allOrders(currentPage, pageLimit, searchQuery, selectedFilter);
+  };
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      allOrders(currentPage, pageLimit, searchQuery);
+      allOrders(currentPage, pageLimit, searchQuery, filter);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, currentPage, pageLimit]);
+  }, [searchQuery, currentPage, pageLimit, filter]);
 
   const convertToIndianDate = (dateString) => {
     const date = new Date(dateString);
@@ -79,9 +87,7 @@ const Orders = () => {
       {/* top section is here */}
       <div className="flex flex-col p-5">
         <div>
-          <p className="font-bold text-xl flex items-center cursor-pointer">
-            Orders
-          </p>
+          <p className="font-bold text-xl flex items-center">Orders</p>
         </div>
 
         <div
@@ -292,19 +298,24 @@ const Orders = () => {
           <select
             id="fruits"
             name="fruits"
-            className="px-3 py-1 sm:w-[200px] w-[230px] focus:outline-none rounded-md bg-white"
+            className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white"
+            value={filter}
+            onChange={handleFilterChange}
           >
             <option
               value=""
-              selected
               disabled
               hidden
               className="placeholder opacity-50 foutline-none"
             >
-              Filter by stock status
+              Filter by status
             </option>
-            <option value="apple">In stock</option>
-            <option value="banana">Out of stock</option>
+            <option value="Pending">Pending</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Processing Order">Processing Order</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Delivered">Delivered</option>
           </select>
 
           <div className="flex justify-center items-center">
@@ -409,8 +420,6 @@ const Orders = () => {
                       >
                         Edit
                       </button>{" "}
-                      <span className="text-[#2271b1]">|</span>
-                      <button className="text-[#2271b1]">View</button>{" "}
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
