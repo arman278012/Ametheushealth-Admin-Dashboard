@@ -414,9 +414,7 @@ const Orders = () => {
                     <div className="flex gap-2">
                       <button
                         className="text-[#2271b1]"
-                        // onClick={() =>
-                        //   navigate(`/edit-products/${singleItem._id}`)
-                        // }
+                        onClick={() => navigate(`/orders-details/${order._id}`)}
                       >
                         Edit
                       </button>{" "}

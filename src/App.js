@@ -133,7 +133,7 @@ function App() {
             />
 
             <Route
-              path="/orders-details"
+              path="/orders-details/:id"
               element={<AdminRoute element={OrderDetailsPage} />}
             />
           </Routes>

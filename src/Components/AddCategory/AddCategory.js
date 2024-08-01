@@ -427,7 +427,7 @@ const AddCategory = () => {
                       type="button"
                       onClick={handleBack}
                       className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-xl mt-2"
-                      disabled={isSubmitting}
+                      // disabled={isSubmitting}
                     >
                       Back
                     </button>
