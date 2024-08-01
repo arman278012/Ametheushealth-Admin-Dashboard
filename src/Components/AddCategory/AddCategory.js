@@ -140,6 +140,7 @@ const AddCategory = () => {
     }
     if (currentStep === 3 && values.docFileURL) {
       await docFileUpload(values.docFileURL);
+      navigate("/all-categories");
     }
     setIsSubmitting(false);
   };
