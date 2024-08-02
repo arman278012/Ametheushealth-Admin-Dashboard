@@ -24,13 +24,16 @@ const AttachGeneric = () => {
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
 
+  const [searchGeneric, setSearchGeneric] = useState("");
+
+  const handleSearchGeneric = (e) => {
+    setSearchGeneric(e.target.value);
+  };
+
   const dispatch = useDispatch();
-  const {
-    allProductsData,
-    currentPage,
-    pageLimit,
-    searchQuery,
-  } = useSelector((state) => state.getproductsSlice);
+  const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
+    (state) => state.getproductsSlice
+  );
 
   useEffect(() => {
     dispatch(
@@ -110,10 +113,10 @@ const AttachGeneric = () => {
     setSelectedProductDetails(updatedProductDetails);
   };
 
-  const genericsData = async () => {
+  const genericsData = async (searchGeneric) => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/generic/names",
+        ` https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${searchGeneric}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -129,8 +132,12 @@ const AttachGeneric = () => {
   };
 
   useEffect(() => {
-    genericsData();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      genericsData(searchGeneric);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchGeneric]);
 
   const handleGenericsChange = (setFieldValue, e) => {
     setFieldValue("genericID", e.target.value);
@@ -190,6 +197,16 @@ const AttachGeneric = () => {
                   } transition-all duration-300`}
                 >
                   <div>
+                    <div>
+                      <input
+                        type="text"
+                        name="name"
+                        value={searchGeneric}
+                        onChange={handleSearchGeneric}
+                        placeholder="Search products here..."
+                        className="p-3 border rounded-xl h-[45px] w-[250px]"
+                      />
+                    </div>
                     <div className="px-2 py-1 border-b last:border-0">
                       <input
                         type="radio"
