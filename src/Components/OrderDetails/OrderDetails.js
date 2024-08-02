@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const OrderDetails = () => {
-  const [pageLimit, setPageLimit] = useState(5);
-  const [isTopBarOpen, setIsTopBarOpen] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState({});
   const [orderDate, setOrderDate] = useState("");
@@ -90,7 +89,7 @@ const OrderDetails = () => {
       );
       console.log("Order updated successfully:", response.data);
       // Handle success, maybe show a success message or redirect
-      alert("Order updated successfully");
+      toast.success("Order updated successfully");
     } catch (error) {
       console.error("Error updating order:", error);
       // Handle error, show error message to the user
@@ -243,9 +242,10 @@ const OrderDetails = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 right-0 w-[300px] h-full bg-white shadow-lg border-l border-gray-200 z-50 p-5 transform transition-transform duration-300 ${
-          isSidebarOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 w-[400px] h-full bg-white shadow-lg border-l border-gray-200 z-50 p-5 
+            transform transition-transform duration-300 ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full"
+            }`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Tracking Information</h2>

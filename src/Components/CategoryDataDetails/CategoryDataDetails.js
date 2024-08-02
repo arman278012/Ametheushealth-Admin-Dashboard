@@ -116,7 +116,7 @@ const CategoryDataDetails = () => {
           </div>
 
           <div className="description">
-            <p className="text-justify font-semibold">
+            <p className="text-justify font-semibold general">
               {parse(`<p>${individualData?.description}</p>`)}
             </p>
           </div>

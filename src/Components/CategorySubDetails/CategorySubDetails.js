@@ -111,8 +111,8 @@ const CategorySubDetails = () => {
           </div>
 
           <div className="description">
-            <p className="text-justify font-semibold">
-              {parse(`<p>${subCategoryData?.description}</p>`)}
+            <p className="text-justify font-semibold general">
+              {parse(`${subCategoryData?.description}`)}
             </p>
           </div>
 
