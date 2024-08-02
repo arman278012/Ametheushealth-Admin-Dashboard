@@ -239,6 +239,20 @@ const AddProduct = () => {
     getManufacturerNames();
   }, []);
 
+  const handleCheckboxChange = (setFieldValue, e, values) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      // Add the selected category ID to the array
+      setFieldValue("categoryID", [...values.categoryID, value]);
+    } else {
+      // Remove the unselected category ID from the array
+      setFieldValue(
+        "categoryID",
+        values.categoryID.filter((id) => id !== value)
+      );
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[100vh] w-[100vw]">
@@ -1204,15 +1218,15 @@ const AddProduct = () => {
                         <div className="border-2 p-5" key={item._id}>
                           <div className="flex items-center mb-2">
                             <input
-                              type="radio"
+                              type="checkbox"
                               id={item._id}
                               name="categoryID"
                               value={item._id}
                               className="mr-2"
                               onChange={(e) =>
-                                handleRadioChange(setFieldValue, e)
+                                handleCheckboxChange(setFieldValue, e, values)
                               }
-                              checked={values.categoryID === item._id}
+                              checked={values.categoryID.includes(item._id)}
                             />
                             <label htmlFor={item._id} className="font-bold">
                               {item.name}
@@ -1223,12 +1237,18 @@ const AddProduct = () => {
                               <div key={child._id}>
                                 <div className="flex items-center mb-2 ml-4">
                                   <input
-                                    type="radio"
+                                    type="checkbox"
                                     id={child._id}
                                     name="categoryID"
                                     value={child._id}
                                     className="mr-2"
-                                    onChange={handleChange}
+                                    onChange={(e) =>
+                                      handleCheckboxChange(
+                                        setFieldValue,
+                                        e,
+                                        values
+                                      )
+                                    }
                                     checked={values.categoryID.includes(
                                       child._id
                                     )}
@@ -1242,12 +1262,18 @@ const AddProduct = () => {
                                     <div key={child2._id}>
                                       <div className="flex items-center mb-2 ml-8">
                                         <input
-                                          type="radio"
+                                          type="checkbox"
                                           id={child2._id}
                                           name="categoryID"
                                           value={child2._id}
                                           className="mr-2"
-                                          onChange={handleChange}
+                                          onChange={(e) =>
+                                            handleCheckboxChange(
+                                              setFieldValue,
+                                              e,
+                                              values
+                                            )
+                                          }
                                           checked={values.categoryID.includes(
                                             child2._id
                                           )}
@@ -1261,12 +1287,18 @@ const AddProduct = () => {
                                           <div key={child3._id}>
                                             <div className="flex items-center mb-2 ml-12">
                                               <input
-                                                type="radio"
+                                                type="checkbox"
                                                 id={child3._id}
                                                 name="categoryID"
                                                 value={child3._id}
                                                 className="mr-2"
-                                                onChange={handleChange}
+                                                onChange={(e) =>
+                                                  handleCheckboxChange(
+                                                    setFieldValue,
+                                                    e,
+                                                    values
+                                                  )
+                                                }
                                                 checked={values.categoryID.includes(
                                                   child3._id
                                                 )}
@@ -1281,12 +1313,18 @@ const AddProduct = () => {
                                                 <div key={child4._id}>
                                                   <div className="flex items-center mb-2 ml-16">
                                                     <input
-                                                      type="radio"
+                                                      type="checkbox"
                                                       id={child4._id}
                                                       name="categoryID"
                                                       value={child4._id}
                                                       className="mr-2"
-                                                      onChange={handleChange}
+                                                      onChange={(e) =>
+                                                        handleCheckboxChange(
+                                                          setFieldValue,
+                                                          e,
+                                                          values
+                                                        )
+                                                      }
                                                       checked={values.categoryID.includes(
                                                         child4._id
                                                       )}
