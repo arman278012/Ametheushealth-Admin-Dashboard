@@ -31,6 +31,7 @@ const AttachGeneric = () => {
   };
 
   const dispatch = useDispatch();
+  
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
     (state) => state.getproductsSlice
   );
@@ -106,7 +107,6 @@ const AttachGeneric = () => {
       (id) => id !== productID
     );
     setSelectedProductIDs(updatedProductIDs);
-
     const updatedProductDetails = updatedProductIDs.map((id) =>
       allProductsData.data.find((product) => product._id === id)
     );

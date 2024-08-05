@@ -470,12 +470,12 @@ const ProductDetails = () => {
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                     Price
                   </th>
-                  <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
+                  {/* <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                     Categories
-                  </th>
-                  <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
+                  </th> */}
+                  {/* <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                     Tags
-                  </th>
+                  </th> */}
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[15%]">
                     Date
                   </th>
@@ -543,12 +543,12 @@ const ProductDetails = () => {
                       {singleItem.variants[0].currency}{" "}
                       {singleItem.variants[0].price}
                     </td>
-                    <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    {/* <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {singleItem.categoryID}
-                    </td>
-                    <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
+                    </td> */}
+                    {/* <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {singleItem.tags}
-                    </td>
+                    </td> */}
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {singleItem.modifiedAt || "--"}
                     </td>
