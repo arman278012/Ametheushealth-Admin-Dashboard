@@ -32,6 +32,37 @@ const EditProducts = () => {
   const [searchGenericQuery, setSearchGenericQuery] = useState("");
   const [manuIdOpen, setManuIdOpen] = useState(false);
   const [manufacturerNamesId, setManufacturerNamesId] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const filterCategories = (items) => {
+    if (!searchQuery) return items;
+    return items.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const renderCategory = (item, level = 0) => {
+    return (
+      <div key={item._id} className={`ml-${level * 4}`}>
+        <div className="flex items-center mb-2">
+          <input
+            type="checkbox"
+            id={item._id}
+            name="categoryID"
+            value={item._id}
+            className="mr-2"
+            onChange={handleCheckboxChange}
+            checked={selectedCategories.includes(item._id)}
+          />
+          <label htmlFor={item._id}>
+            {`${"\u00A0".repeat(level * 2)}${item.name}`}
+          </label>
+        </div>
+        {item.children &&
+          item.children.map((child) => renderCategory(child, level + 1))}
+      </div>
+    );
+  };
 
   const [productValues, setProductValues] = useState({
     title: "",
@@ -172,10 +203,20 @@ const EditProducts = () => {
           width: variant.width || "",
         })),
       });
+      setSelectedCategories(productData.categoryID || []);
       setTags(productData.tags || []);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedCategories((prevSelected) =>
+      checked
+        ? [...prevSelected, value]
+        : prevSelected.filter((id) => id !== value)
+    );
   };
 
   useEffect(() => {
@@ -1296,116 +1337,16 @@ const EditProducts = () => {
                     isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
                   } transition-all duration-300`}
                 >
-                  {/* <input
+                  <input
                     type="text"
                     className="w-full px-2 py-1"
                     placeholder="Search..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                  /> */}
-                  {hierarchyData?.map((item) => (
-                    <div className="border-2 p-2" key={item._id}>
-                      <div className="flex items-center mb-2">
-                        <input
-                          type="radio"
-                          id={item._id}
-                          name="categoryID"
-                          value={item._id}
-                          className="mr-2"
-                          onChange={handleRadioChange}
-                          checked={productValues.categoryID === item._id}
-                        />
-                        <label htmlFor={item._id} className="font-bold">
-                          {item.name}
-                        </label>
-                      </div>
-                      {item.children &&
-                        item.children.map((child) => (
-                          <div key={child._id}>
-                            <div className="flex items-center mb-2 ml-4">
-                              <input
-                                type="radio"
-                                id={child._id}
-                                name="categoryID"
-                                value={child._id}
-                                className="mr-2"
-                                onChange={handleRadioChange}
-                                checked={productValues.categoryID === child._id}
-                              />
-                              <label htmlFor={child._id}>
-                                &nbsp; {child.name}
-                              </label>
-                            </div>
-                            {child.children &&
-                              child.children.map((child2) => (
-                                <div key={child2._id}>
-                                  <div className="flex items-center mb-2 ml-8">
-                                    <input
-                                      type="radio"
-                                      id={child2._id}
-                                      name="categoryID"
-                                      value={child2._id}
-                                      className="mr-2"
-                                      onChange={handleRadioChange}
-                                      checked={
-                                        productValues.categoryID === child2._id
-                                      }
-                                    />
-                                    <label htmlFor={child2._id}>
-                                      &nbsp; &nbsp; {child2.name}
-                                    </label>
-                                  </div>
-                                  {child2.children &&
-                                    child2.children.map((child3) => (
-                                      <div key={child3._id}>
-                                        <div className="flex items-center mb-2 ml-12">
-                                          <input
-                                            type="radio"
-                                            id={child3._id}
-                                            name="categoryID"
-                                            value={child3._id}
-                                            className="mr-2"
-                                            onChange={handleRadioChange}
-                                            checked={
-                                              productValues.categoryID ===
-                                              child3._id
-                                            }
-                                          />
-                                          <label htmlFor={child3._id}>
-                                            &nbsp; &nbsp; &nbsp; {child3.name}
-                                          </label>
-                                        </div>
-                                        {child3.children &&
-                                          child3.children.map((child4) => (
-                                            <div key={child4._id}>
-                                              <div className="flex items-center mb-2 ml-16">
-                                                <input
-                                                  type="radio"
-                                                  id={child4._id}
-                                                  name="categoryID"
-                                                  value={child4._id}
-                                                  className="mr-2"
-                                                  onChange={handleRadioChange}
-                                                  checked={
-                                                    productValues.categoryID ===
-                                                    child4._id
-                                                  }
-                                                />
-                                                <label htmlFor={child4._id}>
-                                                  &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                                                  {child4.name}
-                                                </label>
-                                              </div>
-                                            </div>
-                                          ))}
-                                      </div>
-                                    ))}
-                                </div>
-                              ))}
-                          </div>
-                        ))}
-                    </div>
-                  ))}
+                  />
+                  {filterCategories(hierarchyData).map((item) =>
+                    renderCategory(item)
+                  )}
                 </div>
               </div>
 
