@@ -122,6 +122,19 @@ const CategoryDataDetails = () => {
           </div>
 
           <div>
+            <p className="font-bold text-md">
+              ID:{" "}
+              <span className="font-semibold">{id}</span>
+            </p>
+
+            <div className="parent-id">
+              {individualData.parent && (
+                <p className="font-bold text-md">
+                  ParentID:{" "}
+                  <span className="font-semibold">{individualData?._id}</span>
+                </p>
+              )}
+            </div>
             <div className="parent-id">
               {individualData.parent && (
                 <p className="font-bold text-md">

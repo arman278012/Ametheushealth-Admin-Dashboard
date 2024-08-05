@@ -118,6 +118,14 @@ const CategorySubDetails = () => {
 
           <div>
             <div className="parent-id">
+            
+                <p className="font-bold text-md">
+                  ID:{" "}
+                  <span className="font-normal">{sid}</span>
+                </p>
+           
+            </div>
+            <div className="parent-id">
               {subCategoryData.parent && (
                 <p className="font-bold text-md">
                   ParentID:{" "}
