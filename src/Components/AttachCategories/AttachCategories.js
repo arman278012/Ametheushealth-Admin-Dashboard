@@ -29,9 +29,6 @@ const AttachCategories = () => {
   const dispatch = useDispatch();
   const {
     allProductsData,
-    isLoading,
-    isError,
-    error,
     currentPage,
     pageLimit,
     searchQuery,
@@ -70,10 +67,6 @@ const AttachCategories = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleRadioChange = (setFieldValue, e) => {
-    setFieldValue("categoryID", e.target.value);
-  };
-
   const productCategoriesData = async () => {
     try {
       setLoading(true);
@@ -100,7 +93,7 @@ const AttachCategories = () => {
 
   const formik = useFormik({
     initialValues: {
-      categoryID: "",
+      categoryID: [], // Initialize as an array
     },
     onSubmit: async (values) => {
       const data = {
@@ -125,6 +118,20 @@ const AttachCategories = () => {
       }
     },
   });
+
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+    const { categoryID } = formik.values;
+
+    if (checked) {
+      formik.setFieldValue("categoryID", [...categoryID, value]);
+    } else {
+      formik.setFieldValue(
+        "categoryID",
+        categoryID.filter((id) => id !== value)
+      );
+    }
+  };
 
   const handleProductCheckboxChange = (product) => {
     const updatedProductIDs = selectedProductIDs.includes(product._id)
@@ -209,7 +216,7 @@ const AttachCategories = () => {
                 >
                   <div className="px-2 py-1 border-b last:border-0">
                     <input
-                      type="radio"
+                      type="checkbox"
                       name="categoryID"
                       value=""
                       className="mr-2"
@@ -227,14 +234,13 @@ const AttachCategories = () => {
                     >
                       <div className="flex items-center mb-2">
                         <input
-                          type="radio"
+                          type="checkbox"
                           id={item._id}
                           name="categoryID"
                           value={item._id}
                           className="mr-2"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          checked={formik.values.categoryID === item._id}
+                          onChange={handleCheckboxChange}
+                          checked={formik.values.categoryID.includes(item._id)}
                         />
                         <label
                           htmlFor={item._id}
@@ -248,14 +254,15 @@ const AttachCategories = () => {
                           <div key={child._id} className="ml-4">
                             <div className="flex items-center mb-2">
                               <input
-                                type="radio"
+                                type="checkbox"
                                 id={child._id}
                                 name="categoryID"
                                 value={child._id}
                                 className="mr-2"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                checked={formik.values.categoryID === child._id}
+                                onChange={handleCheckboxChange}
+                                checked={formik.values.categoryID.includes(
+                                  child._id
+                                )}
                               />
                               <label
                                 htmlFor={child._id}
@@ -269,16 +276,15 @@ const AttachCategories = () => {
                                 <div key={child2._id} className="ml-4">
                                   <div className="flex items-center mb-2">
                                     <input
-                                      type="radio"
+                                      type="checkbox"
                                       id={child2._id}
                                       name="categoryID"
                                       value={child2._id}
                                       className="mr-2"
-                                      onChange={formik.handleChange}
-                                      onBlur={formik.handleBlur}
-                                      checked={
-                                        formik.values.categoryID === child2._id
-                                      }
+                                      onChange={handleCheckboxChange}
+                                      checked={formik.values.categoryID.includes(
+                                        child2._id
+                                      )}
                                     />
                                     <label
                                       htmlFor={child2._id}
@@ -292,17 +298,15 @@ const AttachCategories = () => {
                                       <div key={child3._id} className="ml-4">
                                         <div className="flex items-center mb-2">
                                           <input
-                                            type="radio"
+                                            type="checkbox"
                                             id={child3._id}
                                             name="categoryID"
                                             value={child3._id}
                                             className="mr-2"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            checked={
-                                              formik.values.categoryID ===
+                                            onChange={handleCheckboxChange}
+                                            checked={formik.values.categoryID.includes(
                                               child3._id
-                                            }
+                                            )}
                                           />
                                           <label
                                             htmlFor={child3._id}
@@ -319,17 +323,17 @@ const AttachCategories = () => {
                                             >
                                               <div className="flex items-center mb-2">
                                                 <input
-                                                  type="radio"
+                                                  type="checkbox"
                                                   id={child4._id}
                                                   name="categoryID"
                                                   value={child4._id}
                                                   className="mr-2"
-                                                  onChange={formik.handleChange}
-                                                  onBlur={formik.handleBlur}
-                                                  checked={
-                                                    formik.values.categoryID ===
-                                                    child4._id
+                                                  onChange={
+                                                    handleCheckboxChange
                                                   }
+                                                  checked={formik.values.categoryID.includes(
+                                                    child4._id
+                                                  )}
                                                 />
                                                 <label
                                                   htmlFor={child4._id}

@@ -252,7 +252,7 @@ const AddProduct = () => {
       );
     }
   };
-  
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[100vh] w-[100vw]">
