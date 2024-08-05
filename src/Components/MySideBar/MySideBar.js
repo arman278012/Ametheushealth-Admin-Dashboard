@@ -192,9 +192,6 @@ const MySideBar = () => {
                   >
                     Add Manufacturers
                   </NavLink>
-                  <NavLink href="#" className="hover:bg-gray-700 px-4 py-2">
-                    Attach Manufacturers
-                  </NavLink>
                   <NavLink
                     to={"/instant-manufacturer"}
                     className="hover:bg-gray-700 px-4 py-2"

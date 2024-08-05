@@ -27,12 +27,9 @@ const AttachCategories = () => {
   console.log(selectedProductDetails);
 
   const dispatch = useDispatch();
-  const {
-    allProductsData,
-    currentPage,
-    pageLimit,
-    searchQuery,
-  } = useSelector((state) => state.getproductsSlice);
+  const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
+    (state) => state.getproductsSlice
+  );
 
   useEffect(() => {
     dispatch(
