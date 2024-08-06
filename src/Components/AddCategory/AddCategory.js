@@ -108,13 +108,12 @@ const AddCategory = () => {
           },
         }
       );
-      navigate("/all-categories");
       console.log(response.data);
+      navigate("/all-categories"); // Navigate after document upload is successful
     } catch (error) {
       console.log(error);
     }
   };
-
   const handleNext = async (values) => {
     setIsSubmitting(true);
     if (currentStep === 1) {
@@ -135,14 +134,20 @@ const AddCategory = () => {
 
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
-    if (currentStep === 2 && values.image) {
-      await addImage(values.image);
+    try {
+      if (currentStep === 2 && values.image) {
+        await addImage(values.image);
+      }
+      if (currentStep === 3 && values.docFileURL) {
+        await docFileUpload(values.docFileURL);
+      } else if (currentStep === 3 && !values.docFileURL) {
+        navigate("/all-categories"); // Navigate if no document is uploaded
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
-    if (currentStep === 3 && values.docFileURL) {
-      await docFileUpload(values.docFileURL);
-      navigate("/all-categories");
-    }
-    setIsSubmitting(false);
   };
 
   return (
@@ -411,7 +416,7 @@ const AddCategory = () => {
                         setFieldValue("docFileURL", file);
                       }}
                       className="p-3 border rounded-xl h-[45px]"
-                      disabled={isSubmitting}
+                      // disabled={isSubmitting}
                     />
                   </div>
 

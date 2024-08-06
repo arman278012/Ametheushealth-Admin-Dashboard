@@ -1285,7 +1285,7 @@ const AddProduct = () => {
                           : "h-0 overflow-hidden"
                       } transition-all duration-300`}
                     >
-                      <div>
+                      {/* <div>
                         <input
                           type="text"
                           value={hierarchyQuery}
@@ -1293,7 +1293,7 @@ const AddProduct = () => {
                           placeholder="Search..."
                           onChange={(e) => setHierarchyQuery(e.target.value)}
                         />
-                      </div>
+                      </div> */}
                       {hierarchyData?.map((item) => (
                         <div className="border-2 p-5" key={item._id}>
                           <div className="flex items-center mb-2">
