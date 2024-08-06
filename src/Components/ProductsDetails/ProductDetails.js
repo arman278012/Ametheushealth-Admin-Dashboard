@@ -229,8 +229,8 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        <div className="flex sm:flex-row flex-col justify-between px-5 py-2">
-          <div className="left flex gap-3 justify-center items-center sm:justify-normal">
+        <div className="flex sm:flex-row flex-col justify-end px-5 py-2">
+          {/* <div className="left flex gap-3 justify-center items-center sm:justify-normal">
             <div className="all text-sm">All</div>{" "}
             <span className="text-sm">|</span>
             <div className="published text-blue-500 text-sm">
@@ -240,7 +240,7 @@ const ProductDetails = () => {
             <div className="Draft text-blue-500 text-sm">Drafts</div>{" "}
             <span className="text-sm">|</span>
             <div className="Sorting text-blue-500 text-sm">Sorting</div>
-          </div>
+          </div> */}
 
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <div>
