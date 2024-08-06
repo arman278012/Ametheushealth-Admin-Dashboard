@@ -12,6 +12,7 @@ import { PiSelectionSlashFill } from "react-icons/pi";
 import { Field } from "formik";
 import JoditEditor from "jodit-react";
 import { RxCross2 } from "react-icons/rx";
+import toast from "react-hot-toast";
 
 const EditProducts = () => {
   const { id } = useParams();
@@ -75,7 +76,7 @@ const EditProducts = () => {
     additionalInformation: "",
     sideEffects: "",
     categoryID: "",
-    tags: [],
+    tags: "",
     genericID: "",
     isReturnable: false,
     isPrescriptionRequired: true,
@@ -182,7 +183,7 @@ const EditProducts = () => {
       console.log("productData", productData);
       setProductValues({
         ...productData,
-        tags: productData.tags || [],
+        tags: productData.tags || "",
         variants: productData.variants.map((variant) => ({
           sku: variant.sku || "",
           packSize: variant.packSize || "",
@@ -223,7 +224,7 @@ const EditProducts = () => {
     getDataForEdit();
   }, [id]);
 
-  const getHierarchy = async (query) => {
+  const getHierarchy = async (query = "") => {
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${query}`,
@@ -241,6 +242,7 @@ const EditProducts = () => {
   };
 
   useEffect(() => {
+    getHierarchy();
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
         getHierarchy(searchQuery);
@@ -252,7 +254,7 @@ const EditProducts = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
 
-  const genericsData = async (genericQuery) => {
+  const fetchGenericsData = async (genericQuery = "") => {
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${genericQuery}`,
@@ -264,28 +266,23 @@ const EditProducts = () => {
         }
       );
       setGenericMap(response.data);
-      console.log("generics data", genericsMap);
+      console.log("generics data", response.data);
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching generics data:", error);
     }
   };
 
   useEffect(() => {
+    // Fetch all data initially
+    fetchGenericsData();
+
+    // Add debounce logic for search query
     const delayDebounceFn = setTimeout(() => {
-      if (searchGenericQuery) {
-        genericsData(searchGenericQuery);
-      } else {
-        genericsData("");
-      }
+      fetchGenericsData(searchGenericQuery);
     }, 100);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchGenericQuery]);
-
-  useEffect(() => {
-    getHierarchy();
-    genericsData();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -326,6 +323,7 @@ const EditProducts = () => {
           },
         }
       );
+      toast.success("Updated succesfully...");
     } catch (error) {
       console.log(error);
     }
@@ -708,7 +706,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "description" && (
-                  <div className="mt-5 flex flex-col gap-2 p-5">
+                  <div className="flex flex-col gap-2 px-5 py-1">
                     <label className="px-3 font-bold">Description</label>
                     <div>
                       <JoditEditor
@@ -732,7 +730,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "shortDescription" && (
-                  <div className="mt-5 flex flex-col gap-2 p-5">
+                  <div className="flex flex-col gap-2 px-5 py-1">
                     <label className="px-3 font-bold">Short Description</label>
                     <div>
                       <JoditEditor
@@ -758,7 +756,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "moreInformation" && (
-                  <div className="mt-5 flex flex-col gap-2 p-5">
+                  <div className="flex flex-col gap-2 px-5 py-1">
                     <label className="px-3 font-bold">More Information</label>
                     <div>
                       <JoditEditor
@@ -784,10 +782,9 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "faq" && (
-                  <div className="mt-5 flex flex-col gap-2 p-5">
+                  <div className="flex flex-col gap-2 px-5 py-1">
                     <label className="px-3 font-bold">Faq</label>
                     <div>
-                      (
                       <JoditEditor
                         value={productValues.faq}
                         onChange={(value) =>
@@ -808,7 +805,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "additionalInformation" && (
-                  <div className="mt-5 flex flex-col gap-2 p-5">
+                  <div className="flex flex-col gap-2 px-5 py-1">
                     <label className="px-3 font-bold">
                       Additional Information
                     </label>
@@ -838,7 +835,7 @@ const EditProducts = () => {
                 )}
 
                 {activeSection === "sideEffects" && (
-                  <div className="mt-5 flex flex-col gap-2 p-5">
+                  <div className="flex flex-col gap-2 px-5 py-1">
                     <label className="px-3 font-bold">Side Effects</label>
                     <div>
                       <JoditEditor
@@ -993,8 +990,8 @@ const EditProducts = () => {
 
                 {activeSection === "meta" && (
                   <>
-                    <div className="flex flex-col gap-5 justify-center w-[500px]">
-                      <div className="flex flex-col w-full p-5">
+                    <div className="flex flex-col justify-center w-[500px]">
+                      <div className="flex flex-col w-full p-2">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Title
                         </label>
@@ -1008,42 +1005,40 @@ const EditProducts = () => {
                         />
                       </div>
 
-                      <div className="flex flex-col w-full p-5">
+                      <div className="flex flex-col w-full p-2">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Description
                         </label>
                         <textarea
                           type="text"
                           placeholder="Description"
-                          className="border px-2 focus:outline-none"
+                          className="border px-2 focus:outline-none h-[100px]"
                           onChange={handleChange}
                           name="metaDescription"
                           value={productValues.metaDescription}
                         />
                       </div>
 
-                      <div className="flex flex-col w-full p-5">
+                      <div className="flex flex-col w-full p-2">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Meta Tags
                         </label>
-                        <div className="flex gap-3">
-                          <div>
-                            <textarea
-                              type="text"
-                              name="metaTags"
-                              placeholder="Enter tags"
-                              className=" border px-2 w-[460px] focus:outline-none"
-                              value={productValues.metaTags}
-                              onChange={handleMetaTagChange}
-                            />
-                          </div>
-                          {/* <button
+
+                        <textarea
+                          type="text"
+                          name="metaTags"
+                          placeholder="Enter tags"
+                          className=" border px-2 focus:outline-none h-[100px]"
+                          value={productValues.metaTags}
+                          onChange={handleMetaTagChange}
+                        />
+
+                        {/* <button
                             onClick={handleAddMetaTag}
                             className="bg-blue-500 text-white px-2 py-1 rounded"
                           >
                             Add Tags
                           </button> */}
-                        </div>
                       </div>
                     </div>
                   </>
