@@ -85,6 +85,8 @@ const AddProduct = () => {
     setGenericsOpen(!genericsopen);
   };
 
+  //-----------------------productCategoriesData-----------------------------------------------------------
+
   const productCategoriesData = async (hierarchySearch) => {
     try {
       setLoading(true);
@@ -106,16 +108,24 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    // Fetch all data initially
-    productCategoriesData("");
+    // Fetch all data initially or when component mounts
+    if (!hierarchyQuery) {
+      productCategoriesData(""); // Pass an empty string to fetch all categories initially
+      return;
+    }
 
     // Add debounce logic for search query
     const delayDebounceFn = setTimeout(() => {
       productCategoriesData(hierarchyQuery);
-    }, 300);
+    }, 200); // Adjust the debounce delay as needed
 
+    // Cleanup function to clear the timeout on component unmount or when hierarchyQuery changes
     return () => clearTimeout(delayDebounceFn);
   }, [hierarchyQuery]);
+
+  //-----------------------productCategoriesData-----------------------------------------------------------
+
+  //-------------genericsData----------------------------------------
 
   const genericsData = async (search = "") => {
     try {
@@ -136,16 +146,58 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    // Fetch all data initially
-    genericsData();
+    // Fetch all data initially or when component mounts
+    if (!genericQuery) {
+      genericsData(""); // Pass an empty string to fetch all categories initially
+      return;
+    }
 
     // Add debounce logic for search query
     const delayDebounceFn = setTimeout(() => {
       genericsData(genericQuery);
-    }, 100);
+    }, 200); // Adjust the debounce delay as needed
 
+    // Cleanup function to clear the timeout on component unmount or when hierarchyQuery changes
     return () => clearTimeout(delayDebounceFn);
   }, [genericQuery]);
+
+  //-------------genericsData----------------------------------------
+
+  //-------------getManufacturerNames----------------------------------------
+  const getManufacturerNames = async (search) => {
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${search}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      console.log("getManufacturerNames", response.data.data);
+      setManufacturerNamesId(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch all data initially or when component mounts
+    if (!manufacturerQuery) {
+      getManufacturerNames(""); // Pass an empty string to fetch all categories initially
+      return;
+    }
+
+    // Add debounce logic for search query
+    const delayDebounceFn = setTimeout(() => {
+      getManufacturerNames(manufacturerQuery);
+    }, 200); // Adjust the debounce delay as needed
+
+    // Cleanup function to clear the timeout on component unmount or when hierarchyQuery changes
+    return () => clearTimeout(delayDebounceFn);
+  }, [manufacturerQuery]);
+  //-------------getManufacturerNames----------------------------------------
 
   const handleTagInputChange = (e, setFieldValue) => {
     const value = e.target.value;
@@ -218,8 +270,9 @@ const AddProduct = () => {
   const navigate = useNavigate();
 
   //posting data to the backend
-  const postProductsData = async (values) => {
+  const postProductsData = async (values, e) => {
     try {
+      // e.preventDefault();
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/product`,
         values,
@@ -230,44 +283,12 @@ const AddProduct = () => {
           },
         }
       );
-      navigate(`/edit-products/${response.data._id}`);
       toast.success("Product Created Successfully...");
       // window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
-
-  //get manufacturer data
-  const getManufacturerNames = async (search) => {
-    try {
-      const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${search}`,
-        {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        }
-      );
-      console.log("getManufacturerNames", response.data.data);
-      setManufacturerNamesId(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch all data initially
-    getManufacturerNames();
-
-    // Add debounce logic for search query
-    const delayDebounceFn = setTimeout(() => {
-      getManufacturerNames(manufacturerQuery);
-    }, 100);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [manufacturerQuery]);
 
   const handleCheckboxChange = (setFieldValue, e, values) => {
     const { value, checked } = e.target;
@@ -329,7 +350,10 @@ const AddProduct = () => {
                             : " flex gap-2"
                         }`}
                       >
-                        <button onClick={() => setActiveSection("name")}>
+                        <button
+                          type="button"
+                          onClick={() => setActiveSection("name")}
+                        >
                           Names
                         </button>
                         <MdDriveFileRenameOutline className="mt-1 text-sm" />
@@ -344,6 +368,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("description")}
                         >
@@ -361,6 +386,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("shortDescription")}
                         >
@@ -378,6 +404,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("moreInformation")}
                         >
@@ -395,6 +422,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("faq")}
                         >
@@ -412,6 +440,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           onClick={() =>
                             setActiveSection("additionalInformation")
                           }
@@ -430,6 +459,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("sideEffects")}
                         >
@@ -447,6 +477,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("yes-no")}
                         >
@@ -464,6 +495,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("meta")}
                         >
@@ -481,6 +513,7 @@ const AddProduct = () => {
                         }`}
                       >
                         <button
+                          type="button"
                           className="text-sm"
                           onClick={() => setActiveSection("variants")}
                         >
@@ -944,6 +977,7 @@ const AddProduct = () => {
                                   )}
                                 </Field>
                                 <button
+                                  type="button"
                                   onClick={(e) =>
                                     handleAddMetaTag(e, values, setFieldValue)
                                   }
@@ -1232,6 +1266,7 @@ const AddProduct = () => {
                     <div className="flex justify-between items-center">
                       <label className="font-bold">All Categories</label>
                       <button
+                        type="button"
                         onClick={toggleOpen}
                         className="focus:outline-none"
                       >
@@ -1398,6 +1433,7 @@ const AddProduct = () => {
                       <div className="flex justify-between items-center px-3">
                         <label className="font-bold">Product Tags</label>
                         <button
+                          type="button"
                           onClick={toggleProductOpen}
                           className="focus:outline-none"
                         >
@@ -1460,6 +1496,7 @@ const AddProduct = () => {
                     <div className="flex justify-between items-center px-3">
                       <label className="font-bold">Generics Id</label>
                       <button
+                        type="button"
                         onClick={toggleGenericsOpen}
                         className="focus:outline-none"
                       >
@@ -1511,6 +1548,7 @@ const AddProduct = () => {
                     <div className="flex justify-between items-center px-3">
                       <label className="font-bold">Manufacturer Id</label>
                       <button
+                        type="button"
                         onClick={toggleManuId}
                         className="focus:outline-none"
                       >
