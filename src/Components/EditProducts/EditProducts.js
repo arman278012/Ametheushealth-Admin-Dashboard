@@ -408,7 +408,8 @@ const EditProducts = () => {
     getManufacturerNames();
   }, []);
 
-  const toggleManuId = () => {
+  const toggleManuId = (event) => {
+    event.preventDefault();
     setManuIdOpen(!manuIdOpen);
   };
 
