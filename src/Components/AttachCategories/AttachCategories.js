@@ -16,6 +16,7 @@ import {
 } from "react-icons/md";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useFormik } from "formik";
+import toast from "react-hot-toast";
 
 const AttachCategories = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -109,6 +110,7 @@ const AttachCategories = () => {
             },
           }
         );
+        toast.success("Products attached to Categories...");
         console.log("API response:", response.data);
       } catch (error) {
         console.error("Error posting data:", error);
