@@ -16,6 +16,7 @@ import {
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import toast from "react-hot-toast";
 
 const AttachManufacturer = () => {
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
@@ -26,15 +27,9 @@ const AttachManufacturer = () => {
   const [manufacturersData, setManufacturersData] = useState([]);
 
   const dispatch = useDispatch();
-  const {
-    allProductsData,
-    isLoading,
-    isError,
-    error,
-    currentPage,
-    pageLimit,
-    searchQuery,
-  } = useSelector((state) => state.getproductsSlice);
+  const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
+    (state) => state.getproductsSlice
+  );
 
   useEffect(() => {
     dispatch(
@@ -96,6 +91,9 @@ const AttachManufacturer = () => {
           }
         );
         console.log("API response:", response.data);
+        if (response.status === 200) {
+          toast.success("Manufacturer Attached");
+        }
       } catch (error) {
         console.error("Error posting data:", error);
       }
@@ -119,7 +117,7 @@ const AttachManufacturer = () => {
 
     setSelectedProductDetails(updatedProductDetails);
   };
-
+  
   const handleDeleteProduct = (productID) => {
     const updatedProductIDs = selectedProductIDs.filter(
       (id) => id !== productID

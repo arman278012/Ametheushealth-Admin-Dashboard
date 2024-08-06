@@ -280,7 +280,7 @@ const OrderDetails = () => {
                 onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="" disabled hidden>
-                  Filter by status
+                  Change status
                 </option>
                 <option value="Pending">Pending</option>
                 <option value="Shipped">Shipped</option>
