@@ -57,6 +57,9 @@ const AddProduct = () => {
   const [isUrlValid, setIsUrlValid] = useState(true);
   const [manufacturerNamesId, setManufacturerNamesId] = useState("");
   const [manuIdOpen, setManuIdOpen] = useState(false);
+  const [genericQuery, setGenericQuery] = useState("");
+  const [hierarchyQuery, setHierarchyQuery] = useState("");
+  const [manufacturerQuery, setManufacturerQuery] = useState("");
 
   const toggleManuId = () => {
     setManuIdOpen(!manuIdOpen);
@@ -82,11 +85,11 @@ const AddProduct = () => {
     setGenericsOpen(!genericsopen);
   };
 
-  const productCategoriesData = async () => {
+  const productCategoriesData = async (hierarchySearch) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names",
+        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${hierarchySearch}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -102,10 +105,22 @@ const AddProduct = () => {
     }
   };
 
-  const genericsData = async () => {
+  useEffect(() => {
+    // Fetch all data initially
+    productCategoriesData("");
+
+    // Add debounce logic for search query
+    const delayDebounceFn = setTimeout(() => {
+      productCategoriesData(hierarchyQuery);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [hierarchyQuery]);
+
+  const genericsData = async (search = "") => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/generic/names",
+        `https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -121,9 +136,16 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    productCategoriesData();
+    // Fetch all data initially
     genericsData();
-  }, []);
+
+    // Add debounce logic for search query
+    const delayDebounceFn = setTimeout(() => {
+      genericsData(genericQuery);
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [genericQuery]);
 
   const handleTagInputChange = (e, setFieldValue) => {
     const value = e.target.value;
@@ -217,10 +239,10 @@ const AddProduct = () => {
   };
 
   //get manufacturer data
-  const getManufacturerNames = async () => {
+  const getManufacturerNames = async (search) => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/manufacturer/names",
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -236,8 +258,16 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
+    // Fetch all data initially
     getManufacturerNames();
-  }, []);
+
+    // Add debounce logic for search query
+    const delayDebounceFn = setTimeout(() => {
+      getManufacturerNames(manufacturerQuery);
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [manufacturerQuery]);
 
   const handleCheckboxChange = (setFieldValue, e, values) => {
     const { value, checked } = e.target;
@@ -282,7 +312,12 @@ const AddProduct = () => {
             errors,
             touched,
           }) => (
-            <form onSubmit={handleSubmit}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit(e);
+              }}
+            >
               <div className="flex gap-2 w-[100%] main-parent">
                 <div className="w-[75%] flex gap-5">
                   <div className="flex w-[100%] justify-between">
@@ -1207,6 +1242,7 @@ const AddProduct = () => {
                         )}
                       </button>
                     </div>
+
                     <div
                       className={`category-list mt-3 ${
                         isOpen
@@ -1214,6 +1250,15 @@ const AddProduct = () => {
                           : "h-0 overflow-hidden"
                       } transition-all duration-300`}
                     >
+                      <div>
+                        <input
+                          type="text"
+                          value={hierarchyQuery}
+                          className="w-full px-2 py-1"
+                          placeholder="Search..."
+                          onChange={(e) => setHierarchyQuery(e.target.value)}
+                        />
+                      </div>
                       {hierarchyData?.map((item) => (
                         <div className="border-2 p-5" key={item._id}>
                           <div className="flex items-center mb-2">
@@ -1434,6 +1479,15 @@ const AddProduct = () => {
                       } transition-all duration-300`}
                     >
                       <div>
+                        <input
+                          type="text"
+                          className="w-full px-2 py-1"
+                          placeholder="Search..."
+                          value={genericQuery}
+                          onChange={(e) => setGenericQuery(e.target.value)}
+                        />
+                      </div>
+                      <div>
                         {genericsMap?.map((generic) => (
                           <div key={generic?.id} className="flex gap-2">
                             <input
@@ -1476,6 +1530,17 @@ const AddProduct = () => {
                       } transition-all duration-300`}
                     >
                       <div>
+                        <div>
+                          <input
+                            type="text"
+                            className="w-full px-2 py-1"
+                            placeholder="Search..."
+                            value={manufacturerQuery}
+                            onChange={(e) =>
+                              setManufacturerQuery(e.target.value)
+                            }
+                          />
+                        </div>
                         {manufacturerNamesId?.data?.map((manufacturer) => (
                           <div key={manufacturer?.id} className="flex gap-2">
                             <input
