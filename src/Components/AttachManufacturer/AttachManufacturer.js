@@ -117,7 +117,7 @@ const AttachManufacturer = () => {
 
     setSelectedProductDetails(updatedProductDetails);
   };
-  
+
   const handleDeleteProduct = (productID) => {
     const updatedProductIDs = selectedProductIDs.filter(
       (id) => id !== productID
@@ -412,7 +412,7 @@ const AttachManufacturer = () => {
                   </Th>
                   {/* <Th className="py-2 px-4 border-b text-start">Id</Th> */}
                   <Th className="py-2 px-4 border-b w-[50%] text-start border-r">
-                    Generic
+                    Manufacturer Name
                   </Th>
                 </Tr>
               </Thead>
@@ -433,7 +433,7 @@ const AttachManufacturer = () => {
                       {product._id}
                     </Td> */}
                     <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      {product._id}
+                      {product.manufacturer}
                     </Td>
                   </Tr>
                 </Tbody>

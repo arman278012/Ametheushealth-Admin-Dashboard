@@ -92,7 +92,7 @@ const EditProducts = () => {
     metaDescription: "",
     metaTags: "",
     manufacturerID: "",
-    manufacturer:"",
+    manufacturer: "",
     variants: [
       {
         sku: "",
@@ -743,8 +743,6 @@ const EditProducts = () => {
                         />
                       </div>
                     </div>
-
-                    
                   </div>
                 )}
 
