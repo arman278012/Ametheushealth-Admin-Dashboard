@@ -35,6 +35,7 @@ const initialValues = {
   purchaseNote: "",
   externalLink: "",
   position: "",
+  countryOrigin: "",
   metaTitle: "",
   metaDescription: "",
   metaTags: "",
@@ -603,6 +604,20 @@ const AddProduct = () => {
                             {!isUrlValid && (
                               <div className="text-red-500">Invalid URL</div>
                             )}
+                          </div>
+
+                          <div className="flex flex-col w-full">
+                            <label className="font-semibold px-2 opacity-65">
+                              Country Origin
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Country Origin"
+                              className="h-[35px] border px-2 focus:outline-none"
+                              onChange={handleChange}
+                              value={values.countryOrigin}
+                              name="countryOrigin"
+                            />
                           </div>
 
                           <div className="flex flex-col w-full">

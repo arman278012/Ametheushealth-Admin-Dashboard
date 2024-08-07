@@ -86,6 +86,7 @@ const EditProducts = () => {
     purchaseNote: "",
     externalLink: "",
     position: "",
+    countryOrigin: "",
     metaTitle: "",
     originCountry: "",
     metaDescription: "",
@@ -704,6 +705,7 @@ const EditProducts = () => {
                         name="originCountry"
                       />
                     </div>
+
 
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
