@@ -105,6 +105,17 @@ const AttachManufacturer = () => {
     dispatch(setPage(newPage));
   };
 
+  const handleSelectAllChange = () => {
+    if (isSelectAllChecked) {
+      setSelectedProductIDs([]);
+    } else {
+      const allProductIDs =
+        allProductsData?.data?.map((product) => product._id) || [];
+      setSelectedProductIDs(allProductIDs);
+    }
+    setIsSelectAllChecked(!isSelectAllChecked);
+  };
+
   const handleProductCheckboxChange = (product) => {
     const isSelected = selectedProductIDs.includes(product._id);
     if (isSelected) {
@@ -116,17 +127,17 @@ const AttachManufacturer = () => {
     }
   };
 
-  const handleDeleteProduct = (productID) => {
-    const updatedProductIDs = selectedProductIDs.filter(
-      (id) => id !== productID
-    );
-    setSelectedProductIDs(updatedProductIDs);
+  // const handleDeleteProduct = (productID) => {
+  //   const updatedProductIDs = selectedProductIDs.filter(
+  //     (id) => id !== productID
+  //   );
+  //   setSelectedProductIDs(updatedProductIDs);
 
-    const updatedProductDetails = updatedProductIDs.map((id) =>
-      allProductsData.data.find((product) => product._id === id)
-    );
-    setSelectedProductDetails(updatedProductDetails);
-  };
+  //   const updatedProductDetails = updatedProductIDs.map((id) =>
+  //     allProductsData.data.find((product) => product._id === id)
+  //   );
+  //   setSelectedProductDetails(updatedProductDetails);
+  // };
 
   const getManufacturersData = async (page = 1, search = "") => {
     setLoading(true);
@@ -157,15 +168,19 @@ const AttachManufacturer = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [currentPage, searchQuery, pageLimit]);
 
-  const handleSelectAllChange = () => {
-    if (isSelectAllChecked) {
-      setSelectedProductIDs([]);
-    } else {
-      const allProductIDs =
-        allProductsData?.data?.map((product) => product._id) || [];
-      setSelectedProductIDs(allProductIDs);
-    }
-    setIsSelectAllChecked(!isSelectAllChecked);
+  // const handleSelectAllChange = () => {
+  //   if (isSelectAllChecked) {
+  //     setSelectedProductIDs([]);
+  //   } else {
+  //     const allProductIDs =
+  //       allProductsData?.data?.map((product) => product._id) || [];
+  //     setSelectedProductIDs(allProductIDs);
+  //   }
+  //   setIsSelectAllChecked(!isSelectAllChecked);
+  // };
+
+  const handleDeleteProduct = (productId) => {
+    setSelectedProductIDs(selectedProductIDs.filter((id) => id !== productId));
   };
 
   return (
@@ -450,9 +465,9 @@ const AttachManufacturer = () => {
             </Table>
           </div>
           <div className="w-[50%]">
-            <Table className="min-w-full bg-white border border-gray-300]">
+            <Table className="min-w-full bg-white border border-gray-300">
               <Thead>
-                <Tr className=" bg-gray-200 w-[100%]">
+                <Tr className="bg-gray-200 w-[100%]">
                   <Th className="py-2 px-4 border-r text-start w-[45%]">Id</Th>
                   <Th className="py-2 px-4 border-r text-start w-[45%]">
                     Name
@@ -462,7 +477,6 @@ const AttachManufacturer = () => {
                   </Th>
                 </Tr>
               </Thead>
-
               <Tbody>
                 {selectedProductDetails.map((item) => (
                   <Tr key={item._id}>
@@ -483,16 +497,20 @@ const AttachManufacturer = () => {
               </Tbody>
             </Table>
             <div className="flex justify-center mt-10">
-              {selectedProductDetails.length > 0 ? (
+              <button
+                onClick={formik.handleSubmit}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              >
+                Attach Category
+              </button>
+              {/* {selectedProductDetails.length > 0 && (
                 <button
                   onClick={formik.handleSubmit}
                   className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                 >
                   Attach Category
                 </button>
-              ) : (
-                <></>
-              )}
+              )} */}
             </div>
           </div>
         </div>
