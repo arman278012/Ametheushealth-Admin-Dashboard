@@ -29,7 +29,7 @@ const initialState = {
   error: "",
   currentPage: 1,
   searchQuery: "",
-  pageLimit: 10,
+  pageLimit: 400,
 };
 
 const getProductsSlice = createSlice({
