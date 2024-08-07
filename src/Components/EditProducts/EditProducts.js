@@ -92,6 +92,7 @@ const EditProducts = () => {
     metaDescription: "",
     metaTags: "",
     manufacturerID: "",
+    manufacturer:"",
     variants: [
       {
         sku: "",
@@ -616,9 +617,9 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
                 </div>
               </div>
-              <div className="flex flex-col gap-5 left border w-[70%] mt-5">
+              <div className="flex flex-col left border w-[70%] mt-5">
                 {activeSection === "name" && (
-                  <div className="flex flex-col gap-5 p-5">
+                  <div className="flex flex-col gap-2 p-5">
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Product Name
@@ -633,7 +634,7 @@ const EditProducts = () => {
                       />
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-5">
+                    <div className="flex flex-col gap-2">
                       <div className="flex flex-col w-full">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Generic Name
@@ -663,67 +664,87 @@ const EditProducts = () => {
                     </div>
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
-                        Purchase Note
+                        Manufacturer Name
                       </label>
                       <input
                         type="text"
-                        placeholder="Purchase Note"
+                        placeholder="manufacturer"
                         className="h-[35px] border px-2"
                         onChange={handleChange}
-                        value={productValues.purchaseNote}
-                        name="purchaseNote"
+                        name="manufacturer"
+                        value={productValues.manufacturer}
                       />
                     </div>
 
-                    <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65 text-[12px]">
-                        External Link
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="External Link"
-                        className={`h-[35px] border px-2 ${
-                          !isUrlValid ? "border-red-500" : ""
-                        }`}
-                        onChange={(e) => {
-                          handleExChange(e);
-                          handleChange(e);
-                        }}
-                        value={productValues.externalLink}
-                        name="externalLink"
-                      />
-                      {!isUrlValid && (
-                        <div className="text-red-500">Invalid URL</div>
-                      )}
+                    <div className="flex gap-5">
+                      <div className="flex flex-col w-1/2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          Purchase Note
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Purchase Note"
+                          className="h-[35px] border px-2"
+                          onChange={handleChange}
+                          value={productValues.purchaseNote}
+                          name="purchaseNote"
+                        />
+                      </div>
+
+                      <div className="flex flex-col w-1/2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          External Link
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="External Link"
+                          className={`h-[35px] border px-2 ${
+                            !isUrlValid ? "border-red-500" : ""
+                          }`}
+                          onChange={(e) => {
+                            handleExChange(e);
+                            handleChange(e);
+                          }}
+                          value={productValues.externalLink}
+                          name="externalLink"
+                        />
+                        {/* {!isUrlValid && (
+                          <div className="text-red-500">Invalid URL</div>
+                        )} */}
+                      </div>
                     </div>
 
-                    <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65 text-[12px]">
-                        Origin Country
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Origin Country"
-                        className="h-[35px] border px-2 focus:outline-none"
-                        onChange={handleChange}
-                        value={productValues.originCountry}
-                        name="originCountry"
-                      />
+                    <div className="flex gap-5">
+                      <div className="flex flex-col w-1/2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          Origin Country
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Origin Country"
+                          className="h-[35px] border px-2 focus:outline-none"
+                          onChange={handleChange}
+                          value={productValues.originCountry}
+                          name="originCountry"
+                        />
+                      </div>
+
+                      <div className="flex flex-col w-1/2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          Position
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="Position"
+                          className="h-[35px] border px-2 focus:outline-none"
+                          onChange={handleChange}
+                          value={productValues.position}
+                          name="position"
+                        />
+                      </div>
                     </div>
 
-                    <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65 text-[12px]">
-                        Position
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="Position"
-                        className="h-[35px] border px-2 focus:outline-none"
-                        onChange={handleChange}
-                        value={productValues.position}
-                        name="position"
-                      />
-                    </div>
+                    
                   </div>
                 )}
 
