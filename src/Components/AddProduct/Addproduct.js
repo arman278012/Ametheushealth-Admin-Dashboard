@@ -1050,7 +1050,7 @@ const AddProduct = () => {
                                         </label>
                                         <Field
                                           name={`variants[${index}].packSize`}
-                                          type="number"
+                                          type="text"
                                           placeholder="packsize"
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
