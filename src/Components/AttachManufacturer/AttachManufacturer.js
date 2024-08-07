@@ -25,6 +25,7 @@ const AttachManufacturer = () => {
   const [hierarchyData, setHierarchyData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [manufacturersData, setManufacturersData] = useState([]);
+  const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   const dispatch = useDispatch();
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
@@ -105,17 +106,14 @@ const AttachManufacturer = () => {
   };
 
   const handleProductCheckboxChange = (product) => {
-    const updatedProductIDs = selectedProductIDs.includes(product._id)
-      ? selectedProductIDs.filter((id) => id !== product._id)
-      : [...selectedProductIDs, product._id];
-
-    setSelectedProductIDs(updatedProductIDs);
-
-    const updatedProductDetails = updatedProductIDs.map((id) =>
-      allProductsData?.data?.find((p) => p._id === id)
-    );
-
-    setSelectedProductDetails(updatedProductDetails);
+    const isSelected = selectedProductIDs.includes(product._id);
+    if (isSelected) {
+      setSelectedProductIDs(
+        selectedProductIDs.filter((id) => id !== product._id)
+      );
+    } else {
+      setSelectedProductIDs([...selectedProductIDs, product._id]);
+    }
   };
 
   const handleDeleteProduct = (productID) => {
@@ -158,6 +156,17 @@ const AttachManufacturer = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [currentPage, searchQuery, pageLimit]);
+
+  const handleSelectAllChange = () => {
+    if (isSelectAllChecked) {
+      setSelectedProductIDs([]);
+    } else {
+      const allProductIDs =
+        allProductsData?.data?.map((product) => product._id) || [];
+      setSelectedProductIDs(allProductIDs);
+    }
+    setIsSelectAllChecked(!isSelectAllChecked);
+  };
 
   return (
     <>
@@ -401,23 +410,26 @@ const AttachManufacturer = () => {
 
         <div className="flex gap-10 p-5">
           <div className="w-[50%]">
-            <Table className="min-w-full bg-white border border-gray-300]">
+            <Table className="min-w-full bg-white border border-gray-300">
               <Thead>
-                <Tr className=" bg-gray-200 w-[100%]">
+                <Tr className="bg-gray-200 w-[100%]">
                   <Th className="py-2 px-4 border-b w-[10%] border-r">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={isSelectAllChecked}
+                      onChange={handleSelectAllChange}
+                    />
                   </Th>
                   <Th className="py-2 px-4 border-b w-[40%] text-start border-r">
                     Name
                   </Th>
-                  {/* <Th className="py-2 px-4 border-b text-start">Id</Th> */}
                   <Th className="py-2 px-4 border-b w-[50%] text-start border-r">
                     Manufacturer Name
                   </Th>
                 </Tr>
               </Thead>
               {allProductsData?.data?.map((product) => (
-                <Tbody>
+                <Tbody key={product._id}>
                   <Tr>
                     <Td className="p-3 border text-center">
                       <input
@@ -429,9 +441,6 @@ const AttachManufacturer = () => {
                     <Td className="py-2 px-4 border-b text-start text-[14px]">
                       {product.title}
                     </Td>
-                    {/* <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      {product._id}
-                    </Td> */}
                     <Td className="py-2 px-4 border-b text-start text-[14px]">
                       {product.manufacturer}
                     </Td>
