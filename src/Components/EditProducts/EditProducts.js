@@ -186,6 +186,7 @@ const EditProducts = () => {
       setProductValues({
         ...productData,
         tags: productData.tags || "",
+        genericID: productData.genericID || "",
         variants: productData.variants.map((variant) => ({
           sku: variant.sku || "",
           packSize: variant.packSize || "",
@@ -422,6 +423,10 @@ const EditProducts = () => {
       [name]: value,
     });
   };
+
+  const selectedGeneric = genericsMap.find(
+    (generic) => generic._id === productValues.genericID
+  );
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -705,7 +710,6 @@ const EditProducts = () => {
                         name="originCountry"
                       />
                     </div>
-
 
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
@@ -1527,6 +1531,12 @@ const EditProducts = () => {
                       : "h-0 overflow-hidden"
                   } transition-all duration-300`}
                 >
+                  {/* Display selected generic name */}
+                  {selectedGeneric && (
+                    <div className="mb-2 font-semibold text-gray-700">
+                      {selectedGeneric.name}
+                    </div>
+                  )}
                   <div>
                     <input
                       type="text"
@@ -1536,18 +1546,16 @@ const EditProducts = () => {
                       onChange={(e) => setSearchGenericQuery(e.target.value)}
                     />
                     {genericsMap?.map((generic) => (
-                      <>
-                        <div key={generic?._id} className="flex gap-2">
-                          <input
-                            type="radio"
-                            name="genericID"
-                            value={generic?._id}
-                            onChange={handleRadioChange}
-                            checked={productValues.genericID === generic._id}
-                          />
-                          <p>{generic?.name}</p>
-                        </div>
-                      </>
+                      <div key={generic?._id} className="flex gap-2">
+                        <input
+                          type="radio"
+                          name="genericID"
+                          value={generic?._id}
+                          onChange={handleRadioChange}
+                          checked={productValues.genericID === generic._id}
+                        />
+                        <p>{generic?.name}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
