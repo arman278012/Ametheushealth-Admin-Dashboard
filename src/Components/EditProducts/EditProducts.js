@@ -87,6 +87,7 @@ const EditProducts = () => {
     externalLink: "",
     position: "",
     metaTitle: "",
+    originCountry: "",
     metaDescription: "",
     metaTags: "",
     manufacturerID: "",
@@ -688,6 +689,20 @@ const EditProducts = () => {
                       {!isUrlValid && (
                         <div className="text-red-500">Invalid URL</div>
                       )}
+                    </div>
+
+                    <div className="flex flex-col w-full">
+                      <label className="font-semibold px-2 opacity-65 text-[12px]">
+                        Origin Country
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Origin Country"
+                        className="h-[35px] border px-2 focus:outline-none"
+                        onChange={handleChange}
+                        value={productValues.originCountry}
+                        name="originCountry"
+                      />
                     </div>
 
                     <div className="flex flex-col w-full">
