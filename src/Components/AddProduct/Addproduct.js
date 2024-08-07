@@ -110,18 +110,15 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    // Fetch all data initially or when component mounts
     if (!hierarchyQuery) {
-      productCategoriesData(""); // Pass an empty string to fetch all categories initially
+      productCategoriesData("");
       return;
     }
 
-    // Add debounce logic for search query
     const delayDebounceFn = setTimeout(() => {
       productCategoriesData(hierarchyQuery);
-    }, 200); // Adjust the debounce delay as needed
+    }, 200);
 
-    // Cleanup function to clear the timeout on component unmount or when hierarchyQuery changes
     return () => clearTimeout(delayDebounceFn);
   }, [hierarchyQuery]);
 
