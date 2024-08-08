@@ -38,7 +38,7 @@ const AllCategories = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-  const [isTopBaropen, setIsTopBarOpen] = useState(true);
+  const [isTopBaropen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState("10");
   const [allData, setAllData] = useState([]);
 
@@ -334,6 +334,47 @@ const AllCategories = () => {
                 ))}
           </Tbody>
         </Table>
+        <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start mt-5">
+          <div>
+            <p className="font-bold">
+              {allCategoryData?.totalCount || 0} Total items
+            </p>
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(1)}
+          >
+            <MdOutlineKeyboardDoubleArrowLeft />
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+          >
+            <MdOutlineKeyboardArrowLeft />
+          </div>
+          <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+            <p>{allCategoryData?.page || 0}</p>
+          </div>
+          <div>
+            <p>of {allCategoryData?.totalPages || 0}</p>
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() =>
+              handlePageChange(
+                Math.min(currentPage + 1, allCategoryData?.totalPages || 1)
+              )
+            }
+          >
+            <MdKeyboardArrowRight />
+          </div>
+          <div
+            className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageChange(allCategoryData?.totalPages || 1)}
+          >
+            <MdKeyboardDoubleArrowRight />
+          </div>
+        </div>
       </div>
 
       {deleteAlert && (
