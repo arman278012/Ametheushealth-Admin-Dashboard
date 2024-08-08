@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchGetProductsData,
   setPage,
+  setPageLimit,
   setSearchQuery,
 } from "../../redux/slice/GetProductsSlice";
 import {
@@ -26,6 +27,7 @@ const AttachManufacturer = () => {
   const [loading, setLoading] = useState(true);
   const [manufacturersData, setManufacturersData] = useState([]);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
+  const [isTopBarOpen, setIsTopBarOpen] = useState(false);
 
   const dispatch = useDispatch();
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
@@ -40,6 +42,9 @@ const AttachManufacturer = () => {
 
   const handleSearchChange = (event) => {
     dispatch(setSearchQuery(event.target.value));
+  };
+  const toggleTopBar = () => {
+    setIsTopBarOpen(!isTopBarOpen);
   };
 
   const toggleOpen = (e) => {
@@ -187,6 +192,64 @@ const AttachManufacturer = () => {
     <>
       <div className="overflow-x-auto p-5">
         <p className="font-bold text-xl mb-5">Attach Manufacturer</p>
+        <div
+          className={`overflow-hidden transition-all duration-300 ${
+            isTopBarOpen ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <div className="flex gap-3">
+            <div className="flex gap-2">
+              <p>Number of items per page:</p>
+              <input
+                type="text"
+                onClick={() =>
+                  dispatch(
+                    fetchGetProductsData({
+                      pageLimit,
+                    })
+                  )
+                }
+                onChange={(e) => dispatch(setPageLimit(Number(e.target.value)))}
+                value={pageLimit}
+                className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
+              />
+            </div>
+
+            {/* <div className="flex justify-center items-center">
+              <button
+                onClick={() =>
+                  dispatch(
+                    fetchGetProductsData({
+                      page: currentPage,
+                      pageLimit,
+                      searchQuery,
+                    })
+                  )
+                }
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
+              >
+                Apply
+              </button>
+            </div> */}
+          </div>
+        </div>
+        <div className="flex justify-end mr-5">
+          <div className="bg-white h-[30px] px-3 py-1">
+            <p
+              className={`cursor-pointer text-sm flex items-center`}
+              onClick={toggleTopBar}
+            >
+              OPTIONS
+              <span
+                className={`ml-1 transition-transform duration-300 ${
+                  isTopBarOpen ? "rotate-180" : "rotate-0"
+                }`}
+              >
+                ▼
+              </span>
+            </p>
+          </div>
+        </div>
         <div className="main-content-div bg-gray-300 p-5 w-full flex justify-between">
           <div className="flex gap-4">
             <input
@@ -463,7 +526,49 @@ const AttachManufacturer = () => {
                 </Tbody>
               ))}
             </Table>
+            <div className="flex px-5 py-2 gap-3 ">
+              <div>
+                <p>{allProductsData?.totalProducts || 0} results</p>
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() => handlePageChange(1)}
+              >
+                <MdOutlineKeyboardDoubleArrowLeft />
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+              >
+                <MdOutlineKeyboardArrowLeft />
+              </div>
+              <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+                <p>{currentPage}</p>
+              </div>
+              <div>
+                <p>of {allProductsData?.totalPages}</p>
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() =>
+                  handlePageChange(
+                    Math.min(currentPage + 1, allProductsData?.totalPages || 1)
+                  )
+                }
+              >
+                <MdKeyboardArrowRight />
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() =>
+                  handlePageChange(allProductsData?.totalPages || 1)
+                }
+              >
+                <MdKeyboardDoubleArrowRight />
+              </div>
+            </div>
           </div>
+
           <div className="w-[50%]">
             <Table className="min-w-full bg-white border border-gray-300">
               <Thead>

@@ -14,7 +14,7 @@ import { AppContext } from "../../Context/ContextProvider";
 import { storeManufacturerId } from "../../redux/slice/ManufacturerIdSlice";
 
 const AllManufacturers = () => {
-  const [isTopBaropen, setIsTopBarOpen] = useState(true);
+  const [isTopBaropen, setIsTopBarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [manufacturersData, setManufacturersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

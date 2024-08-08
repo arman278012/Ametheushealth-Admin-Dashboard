@@ -505,6 +505,47 @@ const AttachCategories = () => {
                 </Tbody>
               ))}
             </Table>
+            <div className="flex px-5 py-2 gap-3 ">
+              <div>
+                <p>{allProductsData?.totalProducts || 0} results</p>
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() => handlePageChange(1)}
+              >
+                <MdOutlineKeyboardDoubleArrowLeft />
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+              >
+                <MdOutlineKeyboardArrowLeft />
+              </div>
+              <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+                <p>{currentPage}</p>
+              </div>
+              <div>
+                <p>of {allProductsData?.totalPages}</p>
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() =>
+                  handlePageChange(
+                    Math.min(currentPage + 1, allProductsData?.totalPages || 1)
+                  )
+                }
+              >
+                <MdKeyboardArrowRight />
+              </div>
+              <div
+                className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                onClick={() =>
+                  handlePageChange(allProductsData?.totalPages || 1)
+                }
+              >
+                <MdKeyboardDoubleArrowRight />
+              </div>
+            </div>
           </div>
           <div className="w-[50%]">
             <Table className="min-w-full bg-white border border-gray-300]">
