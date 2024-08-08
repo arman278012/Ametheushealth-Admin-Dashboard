@@ -24,7 +24,7 @@ const AllGeneric = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isTopBaropen, setIsTopBarOpen] = useState(true);
+  const [isTopBaropen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState("10");
 
   const toggleTopBar = () => {
