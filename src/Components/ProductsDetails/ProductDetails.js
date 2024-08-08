@@ -28,7 +28,7 @@ const ProductDetails = () => {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  const [isTopBarOpen, setIsTopBarOpen] = useState(true);
+  const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [allProductsDetails, setAllProductsDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -556,6 +556,59 @@ const ProductDetails = () => {
                 ))}
               </tbody>
             </Table>
+          </div>
+          <div className="flex px-5 py-2 gap-3 justify-end">
+            <div>
+              <p>{allProductsDetails?.totalProducts || 0} results</p>
+            </div>
+            <div
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              onClick={() => currentPage > 1 && goToPage(1)}
+            >
+              <MdOutlineKeyboardDoubleArrowLeft />
+            </div>
+            <div
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              onClick={() => currentPage > 1 && goToPage(currentPage - 1)}
+            >
+              <MdOutlineKeyboardArrowLeft />
+            </div>
+            <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+              <p>{currentPage}</p>
+            </div>
+            <div>
+              <p>of {allProductsDetails?.totalPages || 1}</p>
+            </div>
+            <div
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === allProductsDetails?.totalPages
+                  ? "cursor-not-allowed opacity-50"
+                  : ""
+              }`}
+              onClick={() =>
+                currentPage < allProductsDetails?.totalPages &&
+                goToPage(currentPage + 1)
+              }
+            >
+              <MdKeyboardArrowRight />
+            </div>
+            <div
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === allProductsDetails?.totalPages
+                  ? "cursor-not-allowed opacity-50"
+                  : ""
+              }`}
+              onClick={() =>
+                currentPage < allProductsDetails?.totalPages &&
+                goToPage(allProductsDetails?.totalPages)
+              }
+            >
+              <MdKeyboardDoubleArrowRight />
+            </div>
           </div>
         </div>
       </div>
