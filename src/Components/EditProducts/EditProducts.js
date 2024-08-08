@@ -65,6 +65,16 @@ const EditProducts = () => {
     );
   };
 
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedCategories(
+      (prevSelected) =>
+        checked
+          ? [...prevSelected, value] // Add the new value if checked
+          : prevSelected.filter((id) => id !== value) // Remove it if unchecked
+    );
+  };
+
   const [productValues, setProductValues] = useState({
     title: "",
     generic: "",
@@ -215,15 +225,6 @@ const EditProducts = () => {
     }
   };
 
-  const handleCheckboxChange = (event) => {
-    const { value, checked } = event.target;
-    setSelectedCategories((prevSelected) =>
-      checked
-        ? [...prevSelected, value]
-        : prevSelected.filter((id) => id !== value)
-    );
-  };
-
   useEffect(() => {
     getDataForEdit();
   }, [id]);
@@ -316,10 +317,19 @@ const EditProducts = () => {
 
   const editProductCategory = async (e) => {
     e.preventDefault();
+    console.log("Product ID:", id);
+
+    // Ensure the selected categories are part of the productValues
+    const updatedProductValues = {
+      ...productValues,
+      categoryID: selectedCategories, // Assuming you store categories under this key
+    };
+
+    console.log("Product Values:", updatedProductValues);
     try {
       const response = await axios.patch(
         `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
-        productValues,
+        updatedProductValues,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -327,9 +337,10 @@ const EditProducts = () => {
           },
         }
       );
-      toast.success("Updated succesfully...");
+      console.log("Response:", response.data);
+      toast.success("Updated successfully...");
     } catch (error) {
-      console.log(error);
+      console.error("Error updating product:", error);
     }
   };
 
