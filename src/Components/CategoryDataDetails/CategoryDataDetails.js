@@ -129,7 +129,7 @@ const CategoryDataDetails = () => {
             <div className="parent-id">
               {individualData.parentName && (
                 <p className="font-bold text-md">
-                  ParentID:{" "}
+                  Parent Name:{" "}
                   <span className="font-semibold">
                     {individualData?.parentName}
                   </span>
