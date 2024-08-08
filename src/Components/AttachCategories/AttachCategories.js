@@ -27,6 +27,7 @@ const AttachCategories = () => {
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
   const [selectedProductDetails, setSelectedProductDetails] = useState([]);
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
+  const [searchCatQuery, setSearchCatQuery] = useState("");
   // const [pageLimit, setPageLimit] = useState("10");
 
   console.log(selectedProductDetails);
@@ -75,11 +76,11 @@ const AttachCategories = () => {
     setIsOpen(!isOpen);
   };
 
-  const productCategoriesData = async () => {
+  const productCategoriesData = async (search) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names",
+        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -96,8 +97,17 @@ const AttachCategories = () => {
   };
 
   useEffect(() => {
-    productCategoriesData();
-  }, []);
+    if (!searchCatQuery) {
+      productCategoriesData("");
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      productCategoriesData(searchCatQuery);
+    }, 200);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchCatQuery]);
 
   const formik = useFormik({
     initialValues: {
@@ -283,11 +293,22 @@ const AttachCategories = () => {
                 >
                   <div className="px-2 py-1 border-b last:border-0">
                     <input
+                      type="text"
+                      // name="categoryID"
+                      value={searchCatQuery}
+                      onChange={(e) => setSearchCatQuery(e.target.value)}
+                      className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px]"
+                      // onBlur={formik.handleBlur}
+                      // checked={formik.values.categoryID === item._id}
+                    />
+                  </div>
+                  <div className="px-2 py-1 border-b last:border-0">
+                    <input
                       type="checkbox"
                       name="categoryID"
                       value=""
                       className="mr-2"
-                      onChange={formik.handleChange}
+                      onChange={(e) => setSearchCatQuery(e.target.value)}
                       onBlur={formik.handleBlur}
                       // checked={formik.values.categoryID === item._id}
                     />
