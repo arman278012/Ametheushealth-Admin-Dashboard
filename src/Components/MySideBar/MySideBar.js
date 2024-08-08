@@ -27,6 +27,9 @@ const MySideBar = () => {
     setIsManufacturersMenuOpen(!isManufacturersMenuOpen);
   const toggleGenericMenu = () => setIsGenericMenuOpen(!isGenericMenuOpen);
 
+  const id = localStorage.getItem("id");
+  const authorization = localStorage.getItem("authorization");
+
   return (
     <div className="sm:flex md:flex hidden sticky">
       <div
@@ -275,16 +278,29 @@ const MySideBar = () => {
             </div>
 
             {/* Login */}
-            <div>
-              <NavLink to="/">
-                <button className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700">
-                  <span className="flex items-center">
-                    <FaUsers className="mr-2" />
-                    {!isCollapsed && "Login"}
-                  </span>
-                </button>
-              </NavLink>
-            </div>
+            {authorization && id ? (
+              <div>
+                <NavLink to="/">
+                  <button className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700">
+                    <span className="flex items-center">
+                      <FaUsers className="mr-2" />
+                      {!isCollapsed && "Logout"}
+                    </span>
+                  </button>
+                </NavLink>
+              </div>
+            ) : (
+              <div>
+                <NavLink to="/">
+                  <button className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700">
+                    <span className="flex items-center">
+                      <FaUsers className="mr-2" />
+                      {!isCollapsed && "Login"}
+                    </span>
+                  </button>
+                </NavLink>
+              </div>
+            )}
           </div>
         </div>
       </div>

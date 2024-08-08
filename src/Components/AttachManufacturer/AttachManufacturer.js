@@ -28,6 +28,7 @@ const AttachManufacturer = () => {
   const [manufacturersData, setManufacturersData] = useState([]);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
+  const [searchManuQuery, setSearchManuQuery] = useState("");
 
   const dispatch = useDispatch();
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
@@ -53,10 +54,10 @@ const AttachManufacturer = () => {
   };
 
   //get manufacturer data
-  const getManufacturerNames = async () => {
+  const getManufacturerNames = async (search = "") => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/manufacturer/names",
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -72,8 +73,17 @@ const AttachManufacturer = () => {
   };
 
   useEffect(() => {
-    getManufacturerNames();
-  }, []);
+    if (!searchManuQuery) {
+      getManufacturerNames("");
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      getManufacturerNames(searchManuQuery);
+    }, 200);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchManuQuery]);
 
   const formik = useFormik({
     initialValues: {
@@ -310,6 +320,18 @@ const AttachManufacturer = () => {
                       // checked={formik.values.categoryID === item._id}
                     />
                     <label className="font-semibold text-gray-600">None</label>
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px]"
+                      // name="categoryID"
+                      value={searchManuQuery}
+                      // className="mr-2"
+                      onChange={(e) => setSearchManuQuery(e.target.value)}
+                      // onBlur={formik.handleBlur}
+                      // checked={formik.values.categoryID === item._id}
+                    />
                   </div>
 
                   {hierarchyData?.data?.map((item) => (
