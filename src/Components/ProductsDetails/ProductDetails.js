@@ -34,12 +34,6 @@ const ProductDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState("10");
 
-  const categories = ["Date", "Fig", "Grape", "Honeydew"];
-
-  // const filteredCategories = categories.filter((category) =>
-  //   category.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
-
   //Products details API fetching again to solve the searching problem
 
   const productDetailsAgain = async (page, pageLimit, query) => {

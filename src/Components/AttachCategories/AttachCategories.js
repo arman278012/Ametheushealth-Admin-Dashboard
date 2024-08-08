@@ -6,6 +6,7 @@ import {
   fetchGetProductsData,
   setPage,
   setSearchQuery,
+  setPageLimit,
 } from "../../redux/slice/GetProductsSlice";
 import {
   MdDeleteOutline,
@@ -17,6 +18,7 @@ import {
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AttachCategories = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +26,8 @@ const AttachCategories = () => {
   const [loading, setLoading] = useState(false);
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
   const [selectedProductDetails, setSelectedProductDetails] = useState([]);
+  const [isTopBarOpen, setIsTopBarOpen] = useState(false);
+  // const [pageLimit, setPageLimit] = useState("10");
 
   console.log(selectedProductDetails);
 
@@ -31,6 +35,12 @@ const AttachCategories = () => {
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
     (state) => state.getproductsSlice
   );
+
+  const navigate = useNavigate();
+
+  const toggleTopBar = () => {
+    setIsTopBarOpen(!isTopBarOpen);
+  };
 
   useEffect(() => {
     dispatch(
@@ -164,6 +174,64 @@ const AttachCategories = () => {
     <>
       <div className="overflow-x-auto p-5">
         <p className="font-bold text-xl mb-5">Attach Categories</p>
+        <div
+          className={`overflow-hidden transition-all duration-300 ${
+            isTopBarOpen ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <div className="flex gap-3">
+            <div className="flex gap-2">
+              <p>Number of items per page:</p>
+              <input
+                type="text"
+                onClick={() =>
+                  dispatch(
+                    fetchGetProductsData({
+                      pageLimit,
+                    })
+                  )
+                }
+                onChange={(e) => dispatch(setPageLimit(Number(e.target.value)))}
+                value={pageLimit}
+                className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
+              />
+            </div>
+
+            {/* <div className="flex justify-center items-center">
+              <button
+                onClick={() =>
+                  dispatch(
+                    fetchGetProductsData({
+                      page: currentPage,
+                      pageLimit,
+                      searchQuery,
+                    })
+                  )
+                }
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
+              >
+                Apply
+              </button>
+            </div> */}
+          </div>
+        </div>
+        <div className="flex justify-end mr-5">
+          <div className="bg-white h-[30px] px-3 py-1">
+            <p
+              className={`cursor-pointer text-sm flex items-center`}
+              onClick={toggleTopBar}
+            >
+              OPTIONS
+              <span
+                className={`ml-1 transition-transform duration-300 ${
+                  isTopBarOpen ? "rotate-180" : "rotate-0"
+                }`}
+              >
+                ▼
+              </span>
+            </p>
+          </div>
+        </div>
         <div className="main-content-div bg-gray-300 p-5 w-full flex justify-between">
           <div className="flex gap-4">
             <input

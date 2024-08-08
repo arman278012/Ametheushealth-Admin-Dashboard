@@ -29,7 +29,7 @@ const initialState = {
   error: "",
   currentPage: 1,
   searchQuery: "",
-  pageLimit: 400,
+  pageLimit: 400, // Set a default value for page limit
 };
 
 const getProductsSlice = createSlice({
