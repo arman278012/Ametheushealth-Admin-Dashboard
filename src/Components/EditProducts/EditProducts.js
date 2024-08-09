@@ -163,7 +163,6 @@ const EditProducts = () => {
     const updatedVariants = productValues.variants.map((variant, i) =>
       i === Number(index) ? { ...variant, [subField]: value } : variant
     );
-
     setProductValues({
       ...productValues,
       [field]: updatedVariants,
@@ -1121,11 +1120,11 @@ const EditProducts = () => {
                               </label>
                               <input
                                 value={variant.packSize}
-                                name={`variants[${index}].packsize`}
-                                type="text"
-                                placeholder="packsize"
-                                className="h-[35px] border px-2 focus:outline-none"
+                                name={`variants[${index}].packSize`}
                                 onChange={handleVariantChange}
+                                type="text"
+                                placeholder="packSize"
+                                className="h-[35px] border px-2"
                               />
                             </div>
                             <div className="flex flex-col w-[100px]">
