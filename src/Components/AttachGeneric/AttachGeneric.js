@@ -25,7 +25,7 @@ const AttachGeneric = () => {
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
-
+  const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
   const [searchGeneric, setSearchGeneric] = useState("");
 
   const handleSearchGeneric = (e) => {
@@ -34,6 +34,17 @@ const AttachGeneric = () => {
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBarOpen);
+  };
+
+  const handleSelectAllChange = () => {
+    if (isSelectAllChecked) {
+      setSelectedProductIDs([]);
+    } else {
+      const allProductIDs =
+        allProductsData?.data?.map((product) => product._id) || [];
+      setSelectedProductIDs(allProductIDs);
+    }
+    setIsSelectAllChecked(!isSelectAllChecked);
   };
 
   const dispatch = useDispatch();
@@ -356,7 +367,11 @@ const AttachGeneric = () => {
               <Thead>
                 <Tr className=" bg-gray-200 w-[100%]">
                   <Th className="py-2 px-4 border-b w-[10%] border-r">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={isSelectAllChecked}
+                      onChange={handleSelectAllChange}
+                    />
                   </Th>
                   <Th className="py-2 px-4 border-b w-[40%] text-start border-r">
                     Name

@@ -29,6 +29,7 @@ const AttachCategories = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [searchCatQuery, setSearchCatQuery] = useState("");
   // const [pageLimit, setPageLimit] = useState("10");
+  const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
 
   console.log(selectedProductDetails);
 
@@ -36,6 +37,17 @@ const AttachCategories = () => {
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
     (state) => state.getproductsSlice
   );
+
+  const handleSelectAllChange = () => {
+    if (isSelectAllChecked) {
+      setSelectedProductIDs([]);
+    } else {
+      const allProductIDs =
+        allProductsData?.data?.map((product) => product._id) || [];
+      setSelectedProductIDs(allProductIDs);
+    }
+    setIsSelectAllChecked(!isSelectAllChecked);
+  };
 
   const navigate = useNavigate();
 
@@ -492,7 +504,11 @@ const AttachCategories = () => {
               <Thead>
                 <Tr className=" bg-gray-200 w-[100%]">
                   <Th className="py-2 px-4 border-b w-[10%] border-r">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={isSelectAllChecked}
+                      onChange={handleSelectAllChange}
+                    />
                   </Th>
                   <Th className="py-2 px-4 border-b w-[40%] text-start border-r">
                     Name

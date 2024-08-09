@@ -1606,7 +1606,7 @@ const EditProducts = () => {
                 <div
                   className={`generic-map mt-3 ${
                     manuIdOpen
-                      ? "h-auto overflow-y-auto"
+                      ? "h-[300px] overflow-y-auto"
                       : "h-0 overflow-hidden"
                   } transition-all duration-300`}
                 >
