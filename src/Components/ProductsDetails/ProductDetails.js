@@ -525,17 +525,17 @@ const ProductDetails = () => {
                       </div>
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {singleItem.variants[0].sku}
+                      {singleItem?.variants[0]?.sku}
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-green-700 font-bold text-[12px]">
-                      {console.log(singleItem.isStockAvailable)}
-                      {singleItem.variants[0].isStockAvailable
-                        ? `In Stock (${singleItem.variants[0].length})`
-                        : `Out of Stock (${singleItem.variants[0].length})`}
+                      {console.log(singleItem?.isStockAvailable)}
+                      {singleItem?.variants[0]?.isStockAvailable
+                        ? `In Stock (${singleItem?.variants[0]?.length})`
+                        : `Out of Stock (${singleItem?.variants[0]?.length})`}
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {singleItem.variants[0].currency}{" "}
-                      {singleItem.variants[0].price}
+                      {singleItem?.variants[0]?.currency}{" "}
+                      {singleItem?.variants[0]?.price}
                     </td>
                     {/* <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {singleItem.categoryID}
