@@ -16,7 +16,7 @@ const CategorySubDetails = () => {
   const categorySubDetails = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/${sid}`,
+        `https://api.assetorix.com:4100/ah/api/v1/category/admin/${sid}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

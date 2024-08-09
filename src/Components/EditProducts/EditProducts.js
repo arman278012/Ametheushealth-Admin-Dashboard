@@ -184,7 +184,7 @@ const EditProducts = () => {
   const getDataForEdit = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
+        `https://api.assetorix.com:4100/ah/api/v1/product/admin/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

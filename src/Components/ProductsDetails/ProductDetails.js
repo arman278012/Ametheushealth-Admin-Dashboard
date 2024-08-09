@@ -39,7 +39,7 @@ const ProductDetails = () => {
   const productDetailsAgain = async (page, pageLimit, query) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/?page=${page}&limit=${pageLimit}&search=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

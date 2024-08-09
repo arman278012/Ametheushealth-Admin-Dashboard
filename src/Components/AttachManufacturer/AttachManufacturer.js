@@ -30,6 +30,20 @@ const AttachManufacturer = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [searchManuQuery, setSearchManuQuery] = useState("");
 
+  //-----------------------------------------------------------------
+
+  // const fetchProducts = async () => {
+  //   try {
+  //     const response = await axios(
+  //       `https://api.assetorix.com:4100/ah/api/v1/product/admin/search/manufacturer?search=${search}`
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  //----------------------------------------------------------------
+
   const dispatch = useDispatch();
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
     (state) => state.getproductsSlice
@@ -53,7 +67,7 @@ const AttachManufacturer = () => {
     setIsOpen(!isOpen);
   };
 
-  //get manufacturer data
+  //get manufacturer data for All manufacturer data
   const getManufacturerNames = async (search = "") => {
     try {
       const response = await axios.get(

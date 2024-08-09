@@ -13,7 +13,7 @@ const GenericDetails = () => {
   const getGenericDetails = async () => {
     try {
       const response = await axios(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/${genericId}`,
+        `https://api.assetorix.com:4100/ah/api/v1/generic/admin/${genericId}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
