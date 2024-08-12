@@ -169,11 +169,15 @@ const SingleProductDetails = () => {
           <p className="text-base font-medium my-2">
             <b> Manufacturer: </b>
 
-            <Link to={`/manufacturer/${product.manufacturerID}`}>
+            <span className="font-normal text-base">
+              {product?.manufacturer}
+            </span>
+
+            {/* <Link to={`/manufacturer/${product.manufacturerID}`}>
               <span className="font-normal text-base underline underline-offset-2">
                 {product?.manufacturer}
               </span>
-            </Link>
+            </Link> */}
           </p>
           <div>
             {product.variants?.length > 0 && (
