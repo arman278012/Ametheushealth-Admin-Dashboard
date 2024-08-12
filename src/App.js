@@ -30,6 +30,7 @@ import AttachManufacturerPage from "./Pages/AttachManufacturerPage/AttachManufac
 import AttachGenericPage from "./Pages/AttachGenericPage/AttachGenericPage";
 import OrdersPage from "./Pages/OrdersPage/OrdersPage";
 import OrderDetailsPage from "./Pages/OrderDetailsPage/OrderDetailsPage";
+import SingleProductDetailsPage from "./Pages/SingleProductDetailsPage/SingleProductDetailsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -135,6 +136,11 @@ function App() {
             <Route
               path="/orders-details/:id"
               element={<AdminRoute element={OrderDetailsPage} />}
+            />
+
+            <Route
+              path="/product-details/:id"
+              element={<AdminRoute element={SingleProductDetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

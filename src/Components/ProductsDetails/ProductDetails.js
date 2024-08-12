@@ -510,7 +510,14 @@ const ProductDetails = () => {
                             Edit
                           </button>{" "}
                           <span className="text-[#2271b1]">|</span>
-                          <button className="text-[#2271b1]">View</button>{" "}
+                          <button
+                            className="text-[#2271b1]"
+                            onClick={() => {
+                              navigate(`/product-details/${singleItem._id}`);
+                            }}
+                          >
+                            View
+                          </button>{" "}
                           <span className="text-[#2271b1]">|</span>
                           <button
                             className="text-[#2271b1]"
