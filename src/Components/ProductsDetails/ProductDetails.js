@@ -16,6 +16,7 @@ import {
 } from "../../redux/slice/GetProductsSlice";
 import axios, { all } from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -141,6 +142,10 @@ const ProductDetails = () => {
           },
         }
       );
+      if (response.status === 200) {
+        toast.success("Deleted Successfully...");
+        productDetailsAgain();
+      }
     } catch (error) {
       console.log(error);
     }
