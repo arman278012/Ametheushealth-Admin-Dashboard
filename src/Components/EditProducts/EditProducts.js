@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaChevronUp, FaChevronDown, FaTrash } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { MdMore } from "react-icons/md";
@@ -34,6 +34,8 @@ const EditProducts = () => {
   const [manuIdOpen, setManuIdOpen] = useState(false);
   const [manufacturerNamesId, setManufacturerNamesId] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const navigate = useNavigate();
 
   const filterCategories = (items) => {
     if (!searchQuery) return items;
@@ -338,6 +340,7 @@ const EditProducts = () => {
       );
       console.log("Response:", response.data);
       toast.success("Updated successfully...");
+      navigate("/product-details");
     } catch (error) {
       console.error("Error updating product:", error);
     }
