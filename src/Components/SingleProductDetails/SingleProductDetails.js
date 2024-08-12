@@ -9,13 +9,12 @@ import TabSection from "../TabSection/TabSection";
 const SingleProductDetails = () => {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [generic, setGenericData] = useState([]);
+  const [generic, setGenericData] = useState();
   const [storeGenericID, setStoreGenericID] = useState(null);
 
   const { id } = useParams();
 
   useEffect(() => {
-    // Fetch product data when the component mounts or the id changes
     const getSingleProductData = async () => {
       try {
         const response = await axios.get(
@@ -28,17 +27,25 @@ const SingleProductDetails = () => {
           }
         );
         const productData = response?.data?.data;
-        const genericID = productData.genericID;
-        setStoreGenericID(genericID);
-        setProduct(productData);
-        console.log(product);
+
+        if (productData) {
+          const genericID = productData.genericID;
+          setStoreGenericID(genericID);
+          setProduct(productData);
+          console.log("Generic ID:", genericID);
+          console.log("Product Data:", productData);
+        } else {
+          console.log("Product data not found");
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching product data:", error);
       }
     };
 
-    getSingleProductData();
-  }, [id]); // Dependency array ensures the effect runs when id changes
+    if (id) {
+      getSingleProductData();
+    }
+  }, [id]); // Add 'id' as a dependency to ensure it runs when 'id' changes
 
   const fetchGenericData = async () => {
     try {
@@ -204,7 +211,7 @@ const SingleProductDetails = () => {
                   >
                     <div className="flex flex-col">
                       <span className="text-gray-500 font-semibold">
-                        Price: {variant.price}
+                        Price: {variant.currency}{variant.price}
                       </span>
                       {variant.packSize}
                     </div>

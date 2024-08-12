@@ -283,6 +283,10 @@ const AddProduct = () => {
         }
       );
       toast.success("Product Created Successfully...");
+      if (response.status === 201) {
+        navigate(`/edit-products/${response.data.product._id}`);
+      }
+
       // window.location.reload();
     } catch (error) {
       console.log(error);
