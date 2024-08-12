@@ -6,21 +6,35 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import Skeleton from "react-loading-skeleton";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import {
+  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
 
 const ManufacturerProducts = () => {
   const [manufacturersProducts, setManufacturersProducts] = useState([]);
   const [loading, setLoadng] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [pageLimit, setPageLimit] = useState("10");
+  const [isTopBaropen, setIsTopBarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const manufacturerId = useSelector(selectManufacturerId);
 
   const navigate = useNavigate();
 
-  const getManufacturersProducts = async () => {
+  const toggleTopBar = () => {
+    setIsTopBarOpen(!isTopBaropen);
+  };
+
+  const getManufacturersProducts = async (page = currentPage, search = "") => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/admin/${manufacturerId}`,
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/admin/${manufacturerId}?page=${page}&limit=${pageLimit}&search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -28,16 +42,15 @@ const ManufacturerProducts = () => {
           },
         }
       );
-      console.log(response.data);
-      setManufacturersProducts(response.data.data);
+      setManufacturersProducts(response.data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching products:", error);
     }
   };
 
   useEffect(() => {
-    getManufacturersProducts();
-  }, []);
+    getManufacturersProducts(currentPage);
+  }, [currentPage]);
 
   const deleteManufacturerProducts = async (id) => {
     try {
@@ -58,16 +71,118 @@ const ManufacturerProducts = () => {
     }
   };
 
+  const goToPage = (page) => {
+    if (page > 0 && page <= manufacturersProducts.totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === manufacturersProducts.totalPages;
+
   return (
     <div className="flex flex-col gap-3 px-5 py-2 ">
       <div className="overflow-x-auto p-5 bg-gray-300">
         <div className="flex flex-col gap-3">
           <p className="font-bold text-xl flex items-center">
-            {manufacturersProducts.name}
+            {manufacturersProducts?.data?.name}
           </p>
-          <p className="font-bold text-xl flex items-center">
-            {manufacturersProducts.address}
+          <p className="font-bold text-sm flex items-center">
+            {manufacturersProducts?.data?.address
+              ? manufacturersProducts?.data?.address
+              : "No Address Available"}
           </p>
+        </div>
+        <div
+          className={`overflow-hidden transition-all duration-300 ${
+            isTopBaropen ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <div className="flex gap-3">
+            <div className="flex gap-2">
+              <p>Number of items per page:</p>
+              <input
+                type="text"
+                className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
+                onChange={(e) => setPageLimit(e.target.value)}
+                value={pageLimit}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-end relative -top-5"></div>
+        <div className=" h-[30px] px-3 py-1 flex justify-end">
+          <p
+            className={`cursor-pointer text-sm flex items-center`}
+            onClick={toggleTopBar}
+          >
+            OPTIONS
+            <span
+              className={`ml-1 transition-transform duration-300 ${
+                isTopBaropen ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              ▼
+            </span>
+          </p>
+        </div>
+        <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start">
+          <div>
+            <p className="font-bold">
+              {loading ? (
+                <Skeleton width={50} />
+              ) : (
+                (manufacturersProducts?.totalProducts || 50) + " Total items"
+              )}
+            </p>
+          </div>
+          <div
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+              isFirstPage ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => !isFirstPage && goToPage(1)}
+          >
+            <MdOutlineKeyboardDoubleArrowLeft />
+          </div>
+          <div
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+              isFirstPage ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => !isFirstPage && goToPage(currentPage - 1)}
+          >
+            <MdOutlineKeyboardArrowLeft />
+          </div>
+          <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+            <p>{loading ? <Skeleton width={20} /> : currentPage}</p>
+          </div>
+          <div>
+            <p>
+              of{" "}
+              {loading ? (
+                <Skeleton width={20} />
+              ) : (
+                manufacturersProducts?.totalPages || 5
+              )}
+            </p>
+          </div>
+          <div
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+              isLastPage ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => !isLastPage && goToPage(currentPage + 1)}
+          >
+            <MdKeyboardArrowRight />
+          </div>
+          <div
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+              isLastPage ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() =>
+              !isLastPage && goToPage(manufacturersProducts.totalPages)
+            }
+          >
+            <MdKeyboardDoubleArrowRight />
+          </div>
         </div>
       </div>
       <Table className="min-w-full bg-white border border-gray-300">
@@ -104,7 +219,7 @@ const ManufacturerProducts = () => {
                   </Td>
                 </Tr>
               ))
-            : manufacturersProducts?.products?.map((product) => (
+            : manufacturersProducts?.data?.products?.map((product) => (
                 <Tr
                 //   key={item._id}
                 //   onClick={() => dispatch(storeManufacturerId(item._id))}
@@ -126,7 +241,9 @@ const ManufacturerProducts = () => {
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
-                        // onClick={() => navigate(`/manufacturer-products`)}
+                        onClick={() =>
+                          navigate(`/product-details/${product._id}`)
+                        }
                       >
                         View
                       </button>{" "}
