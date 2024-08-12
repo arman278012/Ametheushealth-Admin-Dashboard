@@ -4,8 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useSelector } from "react-redux";
-import { selectGenericId } from "../../redux/slice/GetGenericIdSlice";
 import TabSection from "../TabSection/TabSection";
 
 const SingleProductDetails = () => {
@@ -34,7 +32,6 @@ const SingleProductDetails = () => {
         setStoreGenericID(genericID);
         setProduct(productData);
         console.log(product);
-        console.log(product?.variants[0]?.currency);
       } catch (error) {
         console.log(error);
       }
@@ -95,7 +92,13 @@ const SingleProductDetails = () => {
 
   return (
     <>
-      <div className="flex gap-5 w-full h-full lg:h-max p-4 mt-10">
+      <div className="p-4">
+        <p className="sm:text-3xl text:xl font-semibold mb-5">
+          {product.title}
+        </p>
+      </div>
+
+      <div className="flex gap-5 w-full h-full lg:h-max p-4">
         <div className="flex items-center h-max p-2 lg:items-start lg:flex-col flex-col-reverse border">
           <div className="upper">
             {loading ? (
@@ -120,7 +123,7 @@ const SingleProductDetails = () => {
               ) : (
                 <p className="border-2 text-center rounded-md border-[#00768a] leading-none w-max px-2 py-2 text-[#00768a]">
                   <span></span>
-                  {/* {product?.variants[0]?.currency}{" "} */}
+                  {product?.variants?.[0]?.currency}{" "}
                   {product?.selectedVariant?.price ||
                     product?.variants?.[0]?.price}
                 </p>
@@ -235,7 +238,7 @@ const SingleProductDetails = () => {
           </div>
         )}
       </div>
-      <div className="container mx-auto mt-10">
+      <div className="container mx-auto">
         <TabSection
           description={product?.description}
           sideEffects={product?.sideEffects}
