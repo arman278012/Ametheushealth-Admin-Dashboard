@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const Orders = () => {
-  const [isTopBarOpen, setIsTopBarOpen] = useState(true);
+  const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropOpen, setIsDropOpen] = useState(false);

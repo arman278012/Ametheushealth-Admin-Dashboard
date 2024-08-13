@@ -14,7 +14,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import { storeGenericId } from "../../redux/slice/GetGenericIdSlice";
 import { useDispatch } from "react-redux";
 import parse from "html-react-parser";
-  
+
 const InstantManufacturer = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
