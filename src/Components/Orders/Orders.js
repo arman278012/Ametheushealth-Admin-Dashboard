@@ -310,6 +310,7 @@ const Orders = () => {
             >
               Filter by status
             </option>
+            <option value="">All</option>
             <option value="Pending">Pending</option>
             <option value="Shipped">Shipped</option>
             <option value="Processing Order">Processing Order</option>
