@@ -211,7 +211,8 @@ const SingleProductDetails = () => {
                   >
                     <div className="flex flex-col">
                       <span className="text-gray-500 font-semibold">
-                        Price: {variant.currency}{variant.price}
+                        Price: {variant.currency}
+                        {variant.price}
                       </span>
                       {variant.packSize}
                     </div>
