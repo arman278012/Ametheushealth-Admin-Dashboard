@@ -37,6 +37,34 @@ const EditProducts = () => {
 
   const navigate = useNavigate();
 
+  const addVariant = () => {
+    setProductValues((prevState) => ({
+      ...prevState,
+      variants: [
+        ...prevState.variants,
+        {
+          sku: "",
+          packSize: "",
+          price: 0,
+          salePrice: 0,
+          margin: 0,
+          minOrderQuantity: 1,
+          maxOrderQuantity: 100,
+          isStockAvailable: false,
+          currency: "₹",
+          weightUnit: "gm",
+          widthUnit: "cm",
+          lengthUnit: "cm",
+          heightUnit: "cm",
+          weight: "",
+          length: "",
+          height: "",
+          width: "",
+        },
+      ],
+    }));
+  };
+
   const filterCategories = (items) => {
     if (!searchQuery) return items;
     return items.filter((item) =>
@@ -1344,17 +1372,28 @@ const EditProducts = () => {
                             </div>
                           </div>
                         </div>
-                        <div
-                          key={index}
-                          className="flex justify-center items-center mb-5"
-                        >
-                          <button
-                            type="button"
-                            className="mt-2 bg-red-500 text-white px-4 py-1 rounded self-end"
-                            onClick={() => handleRemoveVariant(index)}
+                        <div className="flex justify-around">
+                          <div
+                            key={index}
+                            className="flex justify-center items-center mb-5"
                           >
-                            Remove variant
-                          </button>
+                            <button
+                              type="button"
+                              className="mt-2 bg-red-500 text-white px-4 py-1 rounded self-end"
+                              onClick={() => handleRemoveVariant(index)}
+                            >
+                              Remove variant
+                            </button>
+                          </div>
+                          <div className="flex justify-center mb-5">
+                            <button
+                              type="button"
+                              className="bg-blue-500 mt-2 text-white px-4 py-1 rounded self-end"
+                              onClick={addVariant}
+                            >
+                              Add Variant
+                            </button>
+                          </div>
                         </div>
 
                         <div className="bg-black h-[2px] w-full mb-5"></div>

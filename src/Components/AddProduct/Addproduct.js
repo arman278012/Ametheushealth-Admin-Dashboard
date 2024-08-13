@@ -286,7 +286,6 @@ const AddProduct = () => {
       if (response.status === 201) {
         navigate(`/edit-products/${response.data.product._id}`);
       }
-
       // window.location.reload();
     } catch (error) {
       console.log(error);
@@ -1265,8 +1264,8 @@ const AddProduct = () => {
                                     push({
                                       sku: "",
                                       packSize: "",
-                                      price: "",
-                                      salePrice: "",
+                                      price: 0,
+                                      salePrice: 0,
                                       margin: "",
                                       minOrderQuantity: "1",
                                       maxOrderQuantity: "100",
