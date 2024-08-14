@@ -32,6 +32,10 @@ import OrdersPage from "./Pages/OrdersPage/OrdersPage";
 import OrderDetailsPage from "./Pages/OrderDetailsPage/OrderDetailsPage";
 import SingleProductDetailsPage from "./Pages/SingleProductDetailsPage/SingleProductDetailsPage";
 import AllContactsPage from "./Pages/AllContactsPage/AllContactsPage";
+import ContactDetailsPage from "./Pages/ContactDetailsPage/ContactDetailsPage";
+import AllPerscription from "./Components/AllPerscription/AllPerscription";
+import AllPerscriptionPage from "./Pages/AllPerscriptionPage/AllPerscriptionPage";
+import PrescriptiondetailsPage from "./Pages/PrescriptiondetailsPage/PrescriptiondetailsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -147,6 +151,21 @@ function App() {
             <Route
               path="/all-contacts"
               element={<AdminRoute element={AllContactsPage} />}
+            />
+
+            <Route
+              path="/contact-details/:id"
+              element={<AdminRoute element={ContactDetailsPage} />}
+            />
+
+            <Route
+              path="/all-persciption"
+              element={<AdminRoute element={AllPerscriptionPage} />}
+            />
+
+            <Route
+              path="/precription-details/:id"
+              element={<AdminRoute element={PrescriptiondetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

@@ -9,18 +9,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
-const AllContacts = () => {
+const AllPerscription = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [deleteAlert, setDeleteAlert] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
-  const [allContactDetails, setAllContactDetails] = useState({
-    data: [],
-    totalContacts: 0,
-    totalPages: 1,
-  });
+  const [prescriptionDetails, setPrescriptionDetails] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalContacts, setTotalContacts] = useState(0);
 
   const navigate = useNavigate();
 
@@ -28,59 +24,48 @@ const AllContacts = () => {
     setIsTopBarOpen(!isTopBarOpen);
   };
 
-  const getAllContacts = async (search = "", page = 1, pageLimit = 10) => {
-    try {
-      const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/contact?search=${search}&page=${page}&limit=${pageLimit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        }
-      );
-      setAllContactDetails(response.data);
-    } catch (error) {
-      console.log(error);
+  const goToPage = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
 
-  const deleteContact = async () => {
+  const getAllPerscription = async () => {
     try {
-      const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/contact/${deleteId}`,
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/prescription`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
             id: localStorage.getItem("id"),
           },
+          params: {
+            page: currentPage,
+            limit: pageLimit,
+            search: searchQuery,
+          },
         }
       );
-      getAllContacts();
+      const data = response.data;
+      setPrescriptionDetails(data.data);
+      setTotalPages(data.totalPages);
+      setTotalContacts(data.totalContacts);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      getAllContacts(searchQuery, currentPage, pageLimit);
-    }, 300);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, pageLimit, currentPage]);
-
-  const goToPage = (page) => {
-    if (page > 0 && page <= allContactDetails.totalPages) {
-      setCurrentPage(page);
-    }
-  };
+    getAllPerscription();
+  }, [currentPage, pageLimit, searchQuery]);
 
   return (
     <div>
       <div className="flex flex-col p-5">
         <div>
-          <p className="font-bold text-xl flex items-center">All Contacts</p>
+          <p className="font-bold text-xl flex items-center">
+            All Perscription
+          </p>
         </div>
 
         <div
@@ -93,7 +78,7 @@ const AllContacts = () => {
               <p>Number of items per page:</p>
               <input
                 type="number"
-                onChange={(e) => setPageLimit(e.target.value)}
+                onChange={(e) => setPageLimit(Number(e.target.value))}
                 value={pageLimit}
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
                 min="1"
@@ -125,7 +110,7 @@ const AllContacts = () => {
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <div>
               <input
-                placeholder="search contacts..."
+                placeholder="Search contacts..."
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -135,7 +120,7 @@ const AllContacts = () => {
           </div>
           <div className="flex px-5 py-2 gap-3 justify-end">
             <div>
-              <p>{allContactDetails?.totalContacts || 0} results</p>
+              <p>{totalContacts} results</p>
             </div>
             <div
               className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
@@ -157,11 +142,11 @@ const AllContacts = () => {
               <p>{currentPage}</p>
             </div>
             <div>
-              <p>of {allContactDetails?.totalPages || 1}</p>
+              <p>of {totalPages}</p>
             </div>
             <div
               className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
-                currentPage === allContactDetails?.totalPages
+                currentPage === totalPages
                   ? "cursor-not-allowed opacity-50"
                   : ""
               }`}
@@ -171,17 +156,16 @@ const AllContacts = () => {
             </div>
             <div
               className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
-                currentPage === allContactDetails?.totalPages
+                currentPage === totalPages
                   ? "cursor-not-allowed opacity-50"
                   : ""
               }`}
-              onClick={() => goToPage(allContactDetails?.totalPages)}
+              onClick={() => goToPage(totalPages)}
             >
               <MdKeyboardDoubleArrowRight />
             </div>
           </div>
         </div>
-
         <div className="overflow-x-auto mt-5 border-2 p-5">
           <Table>
             <Thead>
@@ -205,7 +189,7 @@ const AllContacts = () => {
             </Thead>
 
             <Tbody>
-              {allContactDetails?.data?.map((contact) => (
+              {prescriptionDetails?.map((contact) => (
                 <Tr key={contact._id}>
                   <Td className="py-2 px-4 border-b border-gray-300">
                     <input type="checkbox" className="form-checkbox" />
@@ -224,21 +208,20 @@ const AllContacts = () => {
                         <button
                           className="text-[#2271b1]"
                           onClick={() => {
-                            navigate(`/contact-details/${contact._id}`);
+                            navigate(`/precription-details/${contact._id}`);
                           }}
                         >
                           View
                         </button>{" "}
-                        <span className="text-[#2271b1]">|</span>
-                        <button
+                        {/* <span className="text-[#2271b1]">|</span> */}
+                        {/* <button
                           className="text-[#2271b1]"
-                          onClick={() => {
-                            setDeleteAlert(true);
-                            setDeleteId(contact._id);
-                          }}
+                        //   onClick={() => {
+                        //     setDeleteId(contact._id);
+                        //   }}
                         >
                           Delete
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </Td>
@@ -257,35 +240,8 @@ const AllContacts = () => {
           </Table>
         </div>
       </div>
-      {deleteAlert && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="absolute inset-0"></div>
-          <div className="bg-white p-6 rounded-lg border-2 z-10">
-            <p className="text-lg mb-4">
-              Are you sure you want to delete this item?
-            </p>
-            <div className="flex justify-end">
-              <button
-                onClick={() => {
-                  deleteContact(deleteId);
-                  setDeleteAlert(false);
-                }}
-                className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-              >
-                Delete
-              </button>
-              <button
-                onClick={() => setDeleteAlert(false)}
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default AllContacts;
+export default AllPerscription;

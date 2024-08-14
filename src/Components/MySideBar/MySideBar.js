@@ -17,6 +17,7 @@ const MySideBar = () => {
   const [isManufacturersMenuOpen, setIsManufacturersMenuOpen] = useState(false);
   const [isGenericMenuOpen, setIsGenericMenuOpen] = useState(false);
   const [isContactMenuOpen, setIsContactMenuOpen] = useState(false);
+  const [isPerscriptionMenuOpen, setIsPerscriptionMenuOpen] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleUsersMenu = () => setIsUsersMenuOpen(!isUsersMenuOpen);
@@ -28,6 +29,8 @@ const MySideBar = () => {
     setIsManufacturersMenuOpen(!isManufacturersMenuOpen);
   const toggleGenericMenu = () => setIsGenericMenuOpen(!isGenericMenuOpen);
   const toggleContactMenu = () => setIsContactMenuOpen(!isContactMenuOpen);
+  const togglePerscriptionMenu = () =>
+    setIsPerscriptionMenuOpen(!isPerscriptionMenuOpen);
 
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
@@ -47,6 +50,36 @@ const MySideBar = () => {
             <FaBars className="ml-[16px]" />
           </button>
           <div className="flex flex-col space-y-2">
+            {/* orders Menu */}
+            <div>
+              <button
+                onClick={toggleOrdersMenu}
+                className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+              >
+                <span className="flex items-center">
+                  <FaBox className="mr-2" />
+                  {!isCollapsed && "Orders"}
+                </span>
+                {!isCollapsed &&
+                  (isOrdersMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+              </button>
+              {!isCollapsed && isOrdersMenuOpen && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/orders"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    All Orders
+                  </NavLink>
+                  {/* <NavLink
+                    to={"/add-orders"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Orders
+                  </NavLink> */}
+                </div>
+              )}
+            </div>
             {/* contact Menu */}
             <div>
               <button
@@ -78,33 +111,37 @@ const MySideBar = () => {
               )}
             </div>
 
-            {/* orders Menu */}
+            {/* Perscription Menu */}
             <div>
               <button
-                onClick={toggleOrdersMenu}
+                onClick={togglePerscriptionMenu}
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
                   <FaBox className="mr-2" />
-                  {!isCollapsed && "Orders"}
+                  {!isCollapsed && "Perscription"}
                 </span>
                 {!isCollapsed &&
-                  (isOrdersMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+                  (isPerscriptionMenuOpen ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  ))}
               </button>
-              {!isCollapsed && isOrdersMenuOpen && (
+              {!isCollapsed && isPerscriptionMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
                   <NavLink
-                    to={"/orders"}
+                    to={"/all-persciption"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
-                    All Orders
+                    All Perscription
                   </NavLink>
-                  <NavLink
+                  {/* <NavLink
                     to={"/add-orders"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     Add Orders
-                  </NavLink>
+                  </NavLink> */}
                 </div>
               )}
             </div>
