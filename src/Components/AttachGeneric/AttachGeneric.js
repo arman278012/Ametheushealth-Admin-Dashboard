@@ -17,6 +17,7 @@ import {
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import toast from "react-hot-toast";
 
 const AttachGeneric = () => {
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
@@ -94,6 +95,7 @@ const AttachGeneric = () => {
             },
           }
         );
+        toast.success("Generic Attached");
         console.log("API response:", response.data);
       } catch (error) {
         console.error("Error posting data:", error);

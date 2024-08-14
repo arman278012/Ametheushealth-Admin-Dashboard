@@ -16,6 +16,7 @@ const MySideBar = () => {
   const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
   const [isManufacturersMenuOpen, setIsManufacturersMenuOpen] = useState(false);
   const [isGenericMenuOpen, setIsGenericMenuOpen] = useState(false);
+  const [isContactMenuOpen, setIsContactMenuOpen] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleUsersMenu = () => setIsUsersMenuOpen(!isUsersMenuOpen);
@@ -26,6 +27,7 @@ const MySideBar = () => {
   const toggleManufacturersMenu = () =>
     setIsManufacturersMenuOpen(!isManufacturersMenuOpen);
   const toggleGenericMenu = () => setIsGenericMenuOpen(!isGenericMenuOpen);
+  const toggleContactMenu = () => setIsContactMenuOpen(!isContactMenuOpen);
 
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
@@ -45,6 +47,37 @@ const MySideBar = () => {
             <FaBars className="ml-[16px]" />
           </button>
           <div className="flex flex-col space-y-2">
+            {/* contact Menu */}
+            <div>
+              <button
+                onClick={toggleContactMenu}
+                className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+              >
+                <span className="flex items-center">
+                  <FaBox className="mr-2" />
+                  {!isCollapsed && "Contacts"}
+                </span>
+                {!isCollapsed &&
+                  (isContactMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+              </button>
+              {!isCollapsed && isContactMenuOpen && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/all-contacts"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    All Contacts
+                  </NavLink>
+                  {/* <NavLink
+                    to={"/add-orders"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Orders
+                  </NavLink> */}
+                </div>
+              )}
+            </div>
+
             {/* orders Menu */}
             <div>
               <button
