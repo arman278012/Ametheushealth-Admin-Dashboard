@@ -105,23 +105,6 @@ const Orders = () => {
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
               />
             </div>
-
-            {/* <div className="flex justify-center items-center">
-              <button
-                onClick={() =>
-                  dispatch(
-                    fetchGetProductsData({
-                      page: currentPage,
-                      pageLimit,
-                      searchQuery,
-                    })
-                  )
-                }
-                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
-              >
-                Apply
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
@@ -155,18 +138,6 @@ const Orders = () => {
           </div>
         </div>
         <div className="flex sm:flex-row flex-col justify-end px-5 py-2">
-          {/* <div className="left flex gap-3 justify-center items-center sm:justify-normal">
-            <div className="all text-sm">All</div>{" "}
-            <span className="text-sm">|</span>
-            <div className="published text-blue-500 text-sm">
-              Published
-            </div>{" "}
-            <span className="text-sm">|</span>
-            <div className="Draft text-blue-500 text-sm">Drafts</div>{" "}
-            <span className="text-sm">|</span>
-            <div className="Sorting text-blue-500 text-sm">Sorting</div>
-          </div> */}
-
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <div>
               <input
@@ -176,23 +147,6 @@ const Orders = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px]"
               />
-            </div>
-
-            <div>
-              {/* <button
-                onClick={() =>
-                  dispatch(
-                    fetchGetProductsData({
-                      page: currentPage,
-                      pageLimit,
-                      searchQuery,
-                    })
-                  )
-                }
-                className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]"
-              >
-                Search Products
-              </button> */}
             </div>
           </div>
         </div>
@@ -239,61 +193,6 @@ const Orders = () => {
               </button>
             </div>
           </div>
-
-          {/* <div className="relative inline-block text-left">
-            <button
-              type="button"
-              className="w-[250px] px-3 py-1 h-[33px] inline-flex justify-center rounded-md border border-gray-300 shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-              onClick={toggleDropdown}
-            >
-              {selectedOption
-                ? selectedOption.name
-                : "Filter by registered mobile"}
-              <svg
-                className="-mr-1 ml-2 h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-            {isDropOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-[250px] bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="p-1">
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchOptionQuery}
-                    onChange={(e) => setSearchOptionQuery(e.target.value)}
-                    className="w-full px-3 py-1 border rounded-md border-gray-300"
-                  />
-                </div>
-                <div className="py-1">
-                  {searchLoading ? ( // Show loading indicator
-                    <p className="text-center py-2">Loading...</p>
-                  ) : filteredData.length === 0 ? (
-                    <p className="text-center py-2">No options found</p>
-                  ) : (
-                    filteredData.map((option) => (
-                      <div
-                        key={option._id}
-                        className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                        onClick={() => handleSelectOption(option)}
-                      >
-                        {option.name}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-          </div> */}
 
           <select
             id="fruits"
