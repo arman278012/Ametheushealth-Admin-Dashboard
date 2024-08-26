@@ -1102,8 +1102,8 @@ const AddProduct = () => {
                                           name={`variants[${index}].isStockAvailable`}
                                           className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
                                         >
-                                          <option value={false}>No</option>
                                           <option value={true}>Yes</option>
+                                          <option value={false}>No</option>
                                         </Field>
                                       </div>
                                     </div>
@@ -1269,7 +1269,7 @@ const AddProduct = () => {
                                       margin: "",
                                       minOrderQuantity: "1",
                                       maxOrderQuantity: "100",
-                                      isStockAvailable: false,
+                                      isStockAvailable: true,
                                       currency: "₹",
                                       weightUnit: "gm",
                                       widthUnit: "cm",

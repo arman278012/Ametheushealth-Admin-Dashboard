@@ -109,7 +109,9 @@ const OrderDetails = () => {
         <div className="w-[70%] border border-[gray] p-5 bg-white">
           <p className="border-[gray] text-xl">
             Order{" "}
-            <span className="font-bold text-[16px]">{orderDetails._id} </span>{" "}
+            <span className="font-bold text-[16px]">
+              {orderDetails.orderID}{" "}
+            </span>{" "}
             details
           </p>
           <p>
@@ -212,15 +214,37 @@ const OrderDetails = () => {
               </div>
             </div>
             <div className="shipping mt-5">
-              <p className="text-[18px] font-semibold">Shipping Address</p>
-              <p>{orderDetails.name}</p>
-              <p>
-                {orderDetails.streetAddress}, {orderDetails.city},{" "}
-                {orderDetails.pincode}
+              <p className="text-[18px] font-semibold">Shipping Details</p>
+              <p className="text-gray-500">Name: {orderDetails.name}</p>
+              <p className="text-gray-500">Email: {orderDetails.email}</p>
+              <p className="text-gray-500">Mobile: {orderDetails.mobile}</p>
+              <p className="text-gray-500">
+                Company Name: {orderDetails.companyName || "Not mentioned"}
               </p>
-              <p>
-                {orderDetails.state}, {orderDetails.country}
+              <p className="text-gray-500">Age: {orderDetails.age}</p>
+              <p className="text-gray-500">
+                Blood Pressure: {orderDetails.bloodPressure}
               </p>
+              <p className="text-gray-500">
+                Weight: {orderDetails.weight || "Not mentioned"}{" "}
+                {orderDetails.weightUnit}
+              </p>
+              <p className="text-gray-500">
+                Weight Unit: {orderDetails.weightUnit}
+              </p>
+              <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
+              <div className="mt-2">
+                <p className="text-gray-500">
+                  Street Address: {orderDetails.streetAddress}
+                </p>
+                <p className="text-gray-500">City: {orderDetails.city}</p>
+                <p className="text-gray-500">
+                  State:
+                  {orderDetails.state},
+                </p>
+                <p className="text-gray-500">Country: {orderDetails.country}</p>
+                <p className="text-gray-500">Pincode: {orderDetails.pincode}</p>
+              </div>
             </div>
           </div>
         </div>
