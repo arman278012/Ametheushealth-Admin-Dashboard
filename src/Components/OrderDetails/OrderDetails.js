@@ -111,11 +111,11 @@ const OrderDetails = () => {
           <p className="border-[gray] text-xl">
             Order{" "}
             <span className="font-bold text-[16px]">
-              {orderDetails.orderID}{" "}
+              {orderDetails?.orderID}{" "}
             </span>{" "}
             details
           </p>
-          <p>Payment Gateway: {orderDetails.payment.paymentGateway}</p>
+          <p>Payment Gateway: {orderDetails?.payment?.paymentGateway}</p>
           <p>
             Payment order Id:{" "}
             <span className="font-bold text-[16px]">
@@ -164,7 +164,7 @@ const OrderDetails = () => {
                     {orderDetails?.user?.avatar ? (
                       <div>
                         <img
-                          src={orderDetails.user.avatar}
+                          src={orderDetails?.user?.avatar}
                           alt="User Avatar"
                           className="w-full h-full object-cover"
                         />
@@ -172,9 +172,9 @@ const OrderDetails = () => {
                     ) : (
                       <span>
                         {orderDetails?.user?.name
-                          ? `${orderDetails.user.name.charAt(
+                          ? `${orderDetails?.user?.name.charAt(
                               0
-                            )}${orderDetails.user.name
+                            )}${orderDetails?.user?.name
                               .split(" ")
                               .slice(-1)[0]
                               .charAt(0)}`
@@ -207,7 +207,7 @@ const OrderDetails = () => {
                     <span className="text-gray-500 font-semibold"> DOB:</span>{" "}
                     <span className="text-gray-500 font-thin">
                       {orderDetails?.user?.dateOfBirth
-                        ? formatDateTime(orderDetails.user.dateOfBirth)
+                        ? formatDateTime(orderDetails?.user?.dateOfBirth)
                         : ""}
                     </span>
                   </p>
@@ -253,19 +253,19 @@ const OrderDetails = () => {
                 <span className="text-gray-500 font-semibold">Name:</span>{" "}
                 <span className="text-gray-500 font-thin">
                   {" "}
-                  {orderDetails.name}
+                  {orderDetails?.name}
                 </span>
               </p>
               <p>
                 <span className="text-gray-500 font-semibold">Email:</span>{" "}
                 <span className="text-gray-500 font-thin">
-                  {orderDetails.email}
+                  {orderDetails?.email}
                 </span>
               </p>
               <p>
                 <span className="text-gray-500 font-semibold">Mobile:</span>{" "}
                 <span className="text-gray-500 font-thin">
-                  {orderDetails.mobile}
+                  {orderDetails?.mobile}
                 </span>{" "}
               </p>
               <p>
@@ -275,13 +275,13 @@ const OrderDetails = () => {
                 </span>{" "}
                 <span className="text-gray-500 font-thin">
                   {" "}
-                  {orderDetails.companyName || "Not mentioned"}
+                  {orderDetails?.companyName || "Not mentioned"}
                 </span>
               </p>
               <p className="text-gray-500">
                 <span className="text-gray-500 font-semibold">Age:</span>{" "}
                 <span className="text-gray-500 font-thin">
-                  {orderDetails.age}
+                  {orderDetails?.age}
                 </span>{" "}
               </p>
               <p className="text-gray-500">
@@ -289,13 +289,13 @@ const OrderDetails = () => {
                   Blood Pressure:
                 </span>{" "}
                 <span className="text-gray-500 font-thin">
-                  {orderDetails.bloodPressure}
+                  {orderDetails?.bloodPressure}
                 </span>
               </p>
               <p className="text-gray-500">
                 <span className="text-gray-500 font-semibold"> Weight: </span>{" "}
                 <span className="text-gray-500 font-thin">
-                  {orderDetails.weight || "Not mentioned"}{" "}
+                  {orderDetails?.weight || "Not mentioned"}{" "}
                 </span>
               </p>
               <p className="text-gray-500">
@@ -303,7 +303,7 @@ const OrderDetails = () => {
                   Weight Unit:
                 </span>{" "}
                 <span className="text-gray-500 font-thin">
-                  {orderDetails.weightUnit}
+                  {orderDetails?.weightUnit}
                 </span>{" "}
               </p>
               <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
@@ -313,33 +313,33 @@ const OrderDetails = () => {
                     Street Address:
                   </span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {orderDetails.streetAddress}
+                    {orderDetails?.streetAddress}
                   </span>
                 </p>
                 <p className="text-gray-500">
                   <span className="text-gray-500 font-semibold">City:</span>{" "}
                   <span className="text-gray-500 font-thin">
                     {" "}
-                    {orderDetails.city}
+                    {orderDetails?.city}
                   </span>{" "}
                 </p>
                 <p className="text-gray-500">
                   <span className="text-gray-500 font-semibold"> State:</span>
                   <span className="text-gray-500 font-thin">
                     {" "}
-                    {orderDetails.state}
+                    {orderDetails?.state}
                   </span>
                 </p>
                 <p className="text-gray-500">
                   <span className="text-gray-500 font-semibold">Country:</span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {orderDetails.country}
+                    {orderDetails?.country}
                   </span>
                 </p>
                 <p className="text-gray-500">
                   <span className="text-gray-500 font-semibold">Pincode:</span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {orderDetails.pincode}
+                    {orderDetails?.pincode}
                   </span>
                 </p>
               </div>
@@ -350,7 +350,7 @@ const OrderDetails = () => {
                     Total Cart Price:
                   </span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {orderDetails.currency} {orderDetails.totalCartPrice}
+                    {orderDetails?.currency} {orderDetails?.totalCartPrice}
                   </span>{" "}
                 </p>
                 <p>
@@ -360,7 +360,7 @@ const OrderDetails = () => {
                     Total Price:
                   </span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {orderDetails.currency} {orderDetails.totalPrice}
+                    {orderDetails?.currency} {orderDetails?.totalPrice}
                   </span>
                 </p>
               </div>
@@ -483,47 +483,47 @@ const OrderDetails = () => {
                     Product Id:
                   </span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {product.productID}
+                    {product?.productID}
                   </span>
                 </p>
                 <p>
                   {" "}
                   <span className="text-gray-500 font-bold">Name:</span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {product.title}
+                    {product?.title}
                   </span>
                 </p>
                 <p>
                   <span className="text-gray-500 font-bold">Pack Size: </span>{" "}
                   <span className="text-gray-500 font-thin">
                     {" "}
-                    {product.packSize}
+                    {product?.packSize}
                   </span>
                 </p>
                 <p>
                   <span className="text-gray-500 font-bold"> Price: </span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {product.currency}
-                    {product.price}
+                    {product?.currency}
+                    {product?.price}
                   </span>
                 </p>
                 <p>
                   <span className="text-gray-500 font-bold">Sale Price:</span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {product.salePrice}
+                    {product?.salePrice}
                   </span>{" "}
                 </p>
 
                 <p>
                   <span className="text-gray-500 font-bold">Quantity:</span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {product.quantity}
+                    {product?.quantity}
                   </span>
                 </p>
                 <p>
                   <span className="text-gray-500 font-bold">Margin:</span>{" "}
                   <span className="text-gray-500 font-thin">
-                    {product.margin}
+                    {product?.margin}
                   </span>
                 </p>
               </div>
