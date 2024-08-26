@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const OrderDetails = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -114,6 +115,7 @@ const OrderDetails = () => {
             </span>{" "}
             details
           </p>
+          <p>Payment Gateway: {orderDetails.payment.paymentGateway}</p>
           <p>
             Payment order Id:{" "}
             <span className="font-bold text-[16px]">
@@ -181,69 +183,186 @@ const OrderDetails = () => {
                     )}
                   </div>
                   <p className="px-2 text-gray-500">
-                    Name: {orderDetails?.user?.name}
+                    <span className="text-gray-500 font-semibold"> Name:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?.name}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    Id: {orderDetails?.user?._id}
+                    <span className="text-gray-500 font-semibold"> Id: </span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?._id}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    Mobile: {orderDetails?.user?.mobile}
+                    <span className="text-gray-500 font-semibold">
+                      {" "}
+                      Mobile:{" "}
+                    </span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?.mobile}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    DOB:{" "}
-                    {orderDetails?.user?.dateOfBirth
-                      ? formatDateTime(orderDetails.user.dateOfBirth)
-                      : ""}
+                    <span className="text-gray-500 font-semibold"> DOB:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?.dateOfBirth
+                        ? formatDateTime(orderDetails.user.dateOfBirth)
+                        : ""}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    Email: {orderDetails?.user?.email}
+                    <span className="text-gray-500 font-semibold">Email:</span>{" "}
+                    <span className="text-gray-500 font-thin text-sm">
+                      {orderDetails?.user?.email}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    Gender: {orderDetails?.user?.gender}
+                    <span className="text-gray-500 font-semibold">Gender:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?.gender}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    UHID: {orderDetails?.user?.uhid}
+                    <span className="text-gray-500 font-semibold"> UHID:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?.uhid}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    Role: {orderDetails?.user?.role}
+                    <span className="text-gray-500 font-semibold">Role:</span>{" "}
+                    <span className="text-gray-500 font-thinx">
+                      {" "}
+                      {orderDetails?.user?.role}
+                    </span>
                   </p>
                   <p className="px-2 text-gray-500">
-                    Account Type: {orderDetails?.user?.authMethod}
+                    <span className="text-gray-500 font-semibold">
+                      Account Type:{" "}
+                    </span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {orderDetails?.user?.authMethod}
+                    </span>
                   </p>
                 </div>
               </div>
             </div>
             <div className="shipping mt-5">
               <p className="text-[18px] font-semibold">Shipping Details</p>
-              <p className="text-gray-500">Name: {orderDetails.name}</p>
-              <p className="text-gray-500">Email: {orderDetails.email}</p>
-              <p className="text-gray-500">Mobile: {orderDetails.mobile}</p>
-              <p className="text-gray-500">
-                Company Name: {orderDetails.companyName || "Not mentioned"}
+              <p className="">
+                <span className="text-gray-500 font-semibold">Name:</span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {" "}
+                  {orderDetails.name}
+                </span>
               </p>
-              <p className="text-gray-500">Age: {orderDetails.age}</p>
-              <p className="text-gray-500">
-                Blood Pressure: {orderDetails.bloodPressure}
+              <p>
+                <span className="text-gray-500 font-semibold">Email:</span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {orderDetails.email}
+                </span>
+              </p>
+              <p>
+                <span className="text-gray-500 font-semibold">Mobile:</span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {orderDetails.mobile}
+                </span>{" "}
+              </p>
+              <p>
+                <span className="text-gray-500 font-semibold">
+                  {" "}
+                  Company Name:{" "}
+                </span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {" "}
+                  {orderDetails.companyName || "Not mentioned"}
+                </span>
               </p>
               <p className="text-gray-500">
-                Weight: {orderDetails.weight || "Not mentioned"}{" "}
-                {orderDetails.weightUnit}
+                <span className="text-gray-500 font-semibold">Age:</span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {orderDetails.age}
+                </span>{" "}
               </p>
               <p className="text-gray-500">
-                Weight Unit: {orderDetails.weightUnit}
+                <span className="text-gray-500 font-semibold">
+                  Blood Pressure:
+                </span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {orderDetails.bloodPressure}
+                </span>
+              </p>
+              <p className="text-gray-500">
+                <span className="text-gray-500 font-semibold"> Weight: </span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {orderDetails.weight || "Not mentioned"}{" "}
+                </span>
+              </p>
+              <p className="text-gray-500">
+                <span className="text-gray-500 font-semibold">
+                  Weight Unit:
+                </span>{" "}
+                <span className="text-gray-500 font-thin">
+                  {orderDetails.weightUnit}
+                </span>{" "}
               </p>
               <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
               <div className="mt-2">
                 <p className="text-gray-500">
-                  Street Address: {orderDetails.streetAddress}
+                  <span className="text-gray-500 font-semibold">
+                    Street Address:
+                  </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails.streetAddress}
+                  </span>
                 </p>
-                <p className="text-gray-500">City: {orderDetails.city}</p>
                 <p className="text-gray-500">
-                  State:
-                  {orderDetails.state},
+                  <span className="text-gray-500 font-semibold">City:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {" "}
+                    {orderDetails.city}
+                  </span>{" "}
                 </p>
-                <p className="text-gray-500">Country: {orderDetails.country}</p>
-                <p className="text-gray-500">Pincode: {orderDetails.pincode}</p>
+                <p className="text-gray-500">
+                  <span className="text-gray-500 font-semibold"> State:</span>
+                  <span className="text-gray-500 font-thin">
+                    {" "}
+                    {orderDetails.state}
+                  </span>
+                </p>
+                <p className="text-gray-500">
+                  <span className="text-gray-500 font-semibold">Country:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails.country}
+                  </span>
+                </p>
+                <p className="text-gray-500">
+                  <span className="text-gray-500 font-semibold">Pincode:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails.pincode}
+                  </span>
+                </p>
+              </div>
+              <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
+              <div className="mt-2">
+                <p>
+                  <span className="text-gray-500 font-semibold">
+                    Total Cart Price:
+                  </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails.currency} {orderDetails.totalCartPrice}
+                  </span>{" "}
+                </p>
+                <p>
+                  {" "}
+                  <span className="text-gray-500 font-semibold">
+                    {" "}
+                    Total Price:
+                  </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails.currency} {orderDetails.totalPrice}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -347,6 +466,69 @@ const OrderDetails = () => {
               Fulfill order
             </button>
           </form>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto mt-5 border-2 p-5">
+        <div className="grid grid-cols-3 gap-5">
+          {orderDetails?.products?.map((product) => (
+            <div className="shadow-xl p-5">
+              <div className=" flex justify-center items-center">
+                <img src={product.images[0].url} className=" w-[100px]" />
+              </div>
+              <div>
+                <p>
+                  {" "}
+                  <span className="text-gray-500 font-bold">
+                    Product Id:
+                  </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product.productID}
+                  </span>
+                </p>
+                <p>
+                  {" "}
+                  <span className="text-gray-500 font-bold">Name:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product.title}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-gray-500 font-bold">Pack Size: </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {" "}
+                    {product.packSize}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-gray-500 font-bold"> Price: </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product.currency}
+                    {product.price}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-gray-500 font-bold">Sale Price:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product.salePrice}
+                  </span>{" "}
+                </p>
+
+                <p>
+                  <span className="text-gray-500 font-bold">Quantity:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product.quantity}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-gray-500 font-bold">Margin:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product.margin}
+                  </span>
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -62,6 +62,7 @@ const AddProduct = () => {
   const [genericQuery, setGenericQuery] = useState("");
   const [hierarchyQuery, setHierarchyQuery] = useState("");
   const [manufacturerQuery, setManufacturerQuery] = useState("");
+  const [sku, setSku] = useState("");
 
   const toggleManuId = () => {
     setManuIdOpen(!manuIdOpen);
@@ -292,17 +293,46 @@ const AddProduct = () => {
     }
   };
 
-  const handleCheckboxChange = (setFieldValue, e, values) => {
-    const { value, checked } = e.target;
+  const handleCheckboxChange = async (setFieldValue, event, values, index) => {
+    const { name, value, checked } = event.target;
+
+    // Update the formik state with the checkbox change
     if (checked) {
-      // Add the selected category ID to the array
-      setFieldValue("categoryID", [...values.categoryID, value]);
+      setFieldValue(name, [...values[name], value]);
     } else {
-      // Remove the unselected category ID from the array
       setFieldValue(
-        "categoryID",
-        values.categoryID.filter((id) => id !== value)
+        name,
+        values[name].filter((item) => item !== value)
       );
+    }
+
+    // Create the payload object with the necessary data
+    const payload = {
+      categoryID: value,
+      isChecked: checked,
+    };
+
+    // Call the API with the populated payload
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/product/sku`,
+        payload, // Send the payload here
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      const generatedSku = response.data.data.sku;
+
+      // Update the corresponding variant's SKU if the checkbox is checked
+      if (checked) {
+        setFieldValue(`variants[${index}].sku`, generatedSku);
+      }
+      console.log("API response:", generatedSku);
+    } catch (err) {
+      console.log("API error:", err);
     }
   };
 
@@ -1045,8 +1075,16 @@ const AddProduct = () => {
                                           type="text"
                                           placeholder="sku"
                                           className="h-[35px] border px-2"
+                                          value={sku} // Controlled by Formik
+                                          onChange={(e) =>
+                                            setFieldValue(
+                                              `variants[${index}].sku`,
+                                              e.target.value
+                                            )
+                                          } // Allows editing
                                         />
                                       </div>
+
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Packsize
