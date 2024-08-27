@@ -521,7 +521,7 @@ const OrderDetails = () => {
       <div className="overflow-x-auto mt-5 border-2 p-5">
         <div className="grid grid-cols-3 gap-5">
           {orderDetails?.products?.map((product) => (
-            <div className="shadow-xl p-5">
+            <div key={product._id} className="shadow-xl p-5">
               <div className=" flex justify-center items-center">
                 <img src={product.images[0].url} className=" w-[100px]" />
               </div>

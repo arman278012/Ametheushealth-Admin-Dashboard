@@ -385,7 +385,7 @@ const AttachGeneric = () => {
                 </Tr>
               </Thead>
               {allProductsData?.data?.map((product) => (
-                <Tbody>
+                <Tbody key={product._id}>
                   <Tr>
                     <Td className="p-3 border text-center">
                       <input

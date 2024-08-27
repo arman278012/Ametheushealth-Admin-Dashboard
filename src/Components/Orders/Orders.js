@@ -305,7 +305,7 @@ const Orders = () => {
 
             <Tbody>
               {allOrdersDetails?.orders?.map((order) => (
-                <Tr>
+                <Tr key={order._id}>
                   <Td className="py-2 px-4 border-b border-gray-300">
                     <input type="checkbox" className="form-checkbox" />
                   </Td>

@@ -221,8 +221,8 @@ const ManufacturerProducts = () => {
               ))
             : manufacturersProducts?.data?.products?.map((product) => (
                 <Tr
-                //   key={item._id}
-                //   onClick={() => dispatch(storeManufacturerId(item._id))}
+                  key={product._id}
+                  //   onClick={() => dispatch(storeManufacturerId(item._id))}
                 >
                   <Td className="py-2 px-4 border-b text-center">
                     <input type="checkbox" />
