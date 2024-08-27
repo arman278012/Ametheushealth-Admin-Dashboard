@@ -294,18 +294,17 @@ const AddProduct = () => {
   };
 
   // Function to handle checkbox change and SKU mapping
-  const handleCheckboxChange = async (setFieldValue, event, values, index) => {
+  const handleCheckboxChange = async (setFieldValue, event, values) => {
     const { name, value, checked } = event.target;
 
     // Update the formik state with the checkbox change
+    let updatedCategories = values.categoryID;
     if (checked) {
-      setFieldValue(name, [...values[name], value]);
+      updatedCategories = [...updatedCategories, value];
     } else {
-      setFieldValue(
-        name,
-        values[name].filter((item) => item !== value)
-      );
+      updatedCategories = updatedCategories.filter((item) => item !== value);
     }
+    setFieldValue(name, updatedCategories);
 
     // Create the payload object with the necessary data
     const payload = {
@@ -327,8 +326,8 @@ const AddProduct = () => {
       );
       const generatedSku = response.data.data.sku;
 
-      // Update the corresponding variant's SKU
-      setFieldValue(`variants[${index}].sku`, generatedSku);
+      // Update the SKU in the same input box, not creating new variants
+      setFieldValue(`variants[0].sku`, generatedSku); // Assuming you are only dealing with one SKU field
       console.log("API response:", generatedSku);
     } catch (err) {
       console.log("API error:", err);
@@ -1070,16 +1069,14 @@ const AddProduct = () => {
                                           SKU
                                         </label>
                                         <Field
-                                          name={`variants[${index}].sku`}
+                                          name={`variants[0].sku`} // Assuming only one SKU input box
                                           type="text"
                                           placeholder="sku"
                                           className="h-[35px] border px-2"
-                                          value={
-                                            values.variants[index]?.sku || ""
-                                          }
+                                          value={values.variants[0]?.sku || ""}
                                           onChange={(e) =>
                                             setFieldValue(
-                                              `variants[${index}].sku`,
+                                              `variants[0].sku`,
                                               e.target.value
                                             )
                                           }
@@ -1368,7 +1365,7 @@ const AddProduct = () => {
                       </div> */}
                       {/* // JSX rendering of the SKU input and hierarchical
                       checkboxes */}
-                      {hierarchyData?.map((item, index) => (
+                      {hierarchyData?.map((item) => (
                         <div className="border-2 p-5" key={item._id}>
                           <div className="flex items-center mb-2">
                             <input
@@ -1378,12 +1375,7 @@ const AddProduct = () => {
                               value={item._id}
                               className="mr-2"
                               onChange={(e) =>
-                                handleCheckboxChange(
-                                  setFieldValue,
-                                  e,
-                                  values,
-                                  index
-                                )
+                                handleCheckboxChange(setFieldValue, e, values)
                               }
                               checked={values.categoryID.includes(item._id)}
                             />
@@ -1391,7 +1383,6 @@ const AddProduct = () => {
                               {item.name}
                             </label>
                           </div>
-                          {/* Recursive mapping for children */}
                           {item.children &&
                             item.children.map((child) => (
                               <div key={child._id}>
@@ -1406,8 +1397,7 @@ const AddProduct = () => {
                                       handleCheckboxChange(
                                         setFieldValue,
                                         e,
-                                        values,
-                                        index
+                                        values
                                       )
                                     }
                                     checked={values.categoryID.includes(
