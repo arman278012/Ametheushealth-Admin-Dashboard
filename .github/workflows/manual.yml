@@ -35,5 +35,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           local-dir: build/
-          server-dir: /admin
-          delete: false
+          server-dir: /admin/
+          log-level: info # Optional: Adjusts the verbosity of logs
