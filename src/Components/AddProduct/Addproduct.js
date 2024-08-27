@@ -293,6 +293,7 @@ const AddProduct = () => {
     }
   };
 
+  // Function to handle checkbox change and SKU mapping
   const handleCheckboxChange = async (setFieldValue, event, values, index) => {
     const { name, value, checked } = event.target;
 
@@ -1073,13 +1074,15 @@ const AddProduct = () => {
                                           type="text"
                                           placeholder="sku"
                                           className="h-[35px] border px-2"
-                                          //  value={sku} 
+                                          value={
+                                            values.variants[index]?.sku || ""
+                                          }
                                           onChange={(e) =>
                                             setFieldValue(
                                               `variants[${index}].sku`,
                                               e.target.value
                                             )
-                                          } // Allow editing
+                                          }
                                         />
                                       </div>
                                       <div className="flex flex-col w-[165px]">
@@ -1363,7 +1366,9 @@ const AddProduct = () => {
                           onChange={(e) => setHierarchyQuery(e.target.value)}
                         />
                       </div> */}
-                      {hierarchyData?.map((item) => (
+                      {/* // JSX rendering of the SKU input and hierarchical
+                      checkboxes */}
+                      {hierarchyData?.map((item, index) => (
                         <div className="border-2 p-5" key={item._id}>
                           <div className="flex items-center mb-2">
                             <input
@@ -1373,7 +1378,12 @@ const AddProduct = () => {
                               value={item._id}
                               className="mr-2"
                               onChange={(e) =>
-                                handleCheckboxChange(setFieldValue, e, values)
+                                handleCheckboxChange(
+                                  setFieldValue,
+                                  e,
+                                  values,
+                                  index
+                                )
                               }
                               checked={values.categoryID.includes(item._id)}
                             />
@@ -1381,6 +1391,7 @@ const AddProduct = () => {
                               {item.name}
                             </label>
                           </div>
+                          {/* Recursive mapping for children */}
                           {item.children &&
                             item.children.map((child) => (
                               <div key={child._id}>
@@ -1395,7 +1406,8 @@ const AddProduct = () => {
                                       handleCheckboxChange(
                                         setFieldValue,
                                         e,
-                                        values
+                                        values,
+                                        index
                                       )
                                     }
                                     checked={values.categoryID.includes(
@@ -1406,89 +1418,7 @@ const AddProduct = () => {
                                     &nbsp; {child.name}
                                   </label>
                                 </div>
-                                {child.children &&
-                                  child.children.map((child2) => (
-                                    <div key={child2._id}>
-                                      <div className="flex items-center mb-2 ml-8">
-                                        <input
-                                          type="checkbox"
-                                          id={child2._id}
-                                          name="categoryID"
-                                          value={child2._id}
-                                          className="mr-2"
-                                          onChange={(e) =>
-                                            handleCheckboxChange(
-                                              setFieldValue,
-                                              e,
-                                              values
-                                            )
-                                          }
-                                          checked={values.categoryID.includes(
-                                            child2._id
-                                          )}
-                                        />
-                                        <label htmlFor={child2._id}>
-                                          &nbsp; &nbsp; {child2.name}
-                                        </label>
-                                      </div>
-                                      {child2.children &&
-                                        child2.children.map((child3) => (
-                                          <div key={child3._id}>
-                                            <div className="flex items-center mb-2 ml-12">
-                                              <input
-                                                type="checkbox"
-                                                id={child3._id}
-                                                name="categoryID"
-                                                value={child3._id}
-                                                className="mr-2"
-                                                onChange={(e) =>
-                                                  handleCheckboxChange(
-                                                    setFieldValue,
-                                                    e,
-                                                    values
-                                                  )
-                                                }
-                                                checked={values.categoryID.includes(
-                                                  child3._id
-                                                )}
-                                              />
-                                              <label htmlFor={child3._id}>
-                                                &nbsp; &nbsp; &nbsp;{" "}
-                                                {child3.name}
-                                              </label>
-                                            </div>
-                                            {child3.children &&
-                                              child3.children.map((child4) => (
-                                                <div key={child4._id}>
-                                                  <div className="flex items-center mb-2 ml-16">
-                                                    <input
-                                                      type="checkbox"
-                                                      id={child4._id}
-                                                      name="categoryID"
-                                                      value={child4._id}
-                                                      className="mr-2"
-                                                      onChange={(e) =>
-                                                        handleCheckboxChange(
-                                                          setFieldValue,
-                                                          e,
-                                                          values
-                                                        )
-                                                      }
-                                                      checked={values.categoryID.includes(
-                                                        child4._id
-                                                      )}
-                                                    />
-                                                    <label htmlFor={child4._id}>
-                                                      &nbsp; &nbsp; &nbsp;
-                                                      &nbsp; {child4.name}
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                              ))}
-                                          </div>
-                                        ))}
-                                    </div>
-                                  ))}
+                                {/* Further recursive mapping for deeper children */}
                               </div>
                             ))}
                         </div>
