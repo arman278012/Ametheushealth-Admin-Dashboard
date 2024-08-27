@@ -36,4 +36,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           local-dir: build/
           server-dir: /admin/
-          log-level: info # Optional: Adjusts the verbosity of logs
+          log-level: standard  # Use "minimal", "standard", or "verbose"
