@@ -14,7 +14,7 @@ const Orders = () => {
   const [pageLimit, setPageLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropOpen, setIsDropOpen] = useState(false);
-  // const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
   const [searchOptionQuery, setSearchOptionQuery] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
