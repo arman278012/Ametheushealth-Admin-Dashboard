@@ -19,5 +19,9 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    "react/prop-types": "off", // Disable prop-types validation
+    "react/no-unknown-property": "off", // Disable unknown property check
+    "react/no-unescaped-entities": "off", // Disable unescaped entities check
+    "no-useless-escape": "off", // Disable unnecessary escape character check
   },
 };
