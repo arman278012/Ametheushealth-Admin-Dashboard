@@ -316,7 +316,7 @@ const AddProduct = () => {
     try {
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/product/sku`,
-        payload, // Send the payload here
+        payload,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -326,10 +326,8 @@ const AddProduct = () => {
       );
       const generatedSku = response.data.data.sku;
 
-      // Update the corresponding variant's SKU if the checkbox is checked
-      if (checked) {
-        setFieldValue(`variants[${index}].sku`, generatedSku);
-      }
+      // Update the corresponding variant's SKU
+      setFieldValue(`variants[${index}].sku`, generatedSku);
       console.log("API response:", generatedSku);
     } catch (err) {
       console.log("API error:", err);
@@ -1075,16 +1073,15 @@ const AddProduct = () => {
                                           type="text"
                                           placeholder="sku"
                                           className="h-[35px] border px-2"
-                                          value={sku} // Controlled by Formik
+                                          //  value={sku} 
                                           onChange={(e) =>
                                             setFieldValue(
                                               `variants[${index}].sku`,
                                               e.target.value
                                             )
-                                          } // Allows editing
+                                          } // Allow editing
                                         />
                                       </div>
-
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Packsize

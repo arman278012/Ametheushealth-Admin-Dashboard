@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const OrderDetails = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -368,8 +367,8 @@ const OrderDetails = () => {
           </div>
         </div>
 
-        <div className="w-[30%] border border-[gray] p-5 bg-white h-[130px]">
-          <div>
+        <div className="w-[30%] ">
+          <div className="border border-[gray] p-5 bg-white h-[130px]">
             <div>
               <p className="">Shipment Tracking</p>
               <div className="bg-gray-300 h-[1px] mt-2"></div>
@@ -378,6 +377,56 @@ const OrderDetails = () => {
               <button className="text-white" onClick={toggleSidebar}>
                 Add Tracking Info
               </button>
+            </div>
+          </div>
+
+          <div className="prescription-passport space-y-6">
+            <div className="border p-4 rounded-md shadow-md">
+              <p className="text-lg font-semibold mb-2">Passport Image</p>
+              {orderDetails?.passportImage ? (
+                <div className="space-y-2">
+                  <div className="flex flex-col justify-center items-center">
+                    <img
+                      src={orderDetails.passportImage}
+                      alt="Passport"
+                      className="w-[200px] rounded-md shadow-sm"
+                    />
+                    <a
+                      href={orderDetails.passportImage}
+                      download="passport-image.jpg"
+                    >
+                      <button className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        Download Passport Image
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-gray-500">No Image Available</p>
+              )}
+            </div>
+
+            <div className="border p-4 rounded-md shadow-md">
+              <p className="text-lg font-semibold mb-2">Prescription Image</p>
+              {orderDetails?.prescriptionImage ? (
+                <div className="space-y-2 flex flex-col justify-center items-center">
+                  <img
+                    src={orderDetails.prescriptionImage}
+                    alt="Prescription"
+                    className="rounded-md shadow-sm"
+                  />
+                  <a
+                    href={orderDetails.prescriptionImage}
+                    download="prescription-image.jpg"
+                  >
+                    <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                      Download Prescription Image
+                    </button>
+                  </a>
+                </div>
+              ) : (
+                <p className="text-gray-500">No Prescription Image Available</p>
+              )}
             </div>
           </div>
         </div>
