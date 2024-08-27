@@ -1,0 +1,39 @@
+name: Deploy Ametheus Health Admin Dashboard to Hostinger domain
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set up environment variables
+        run: |
+          echo "REACT_APP_URL=${{ secrets.REACT_APP_URL }}" >> $GITHUB_ENV
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: 91.108.107.80
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          local-dir: build/
+          server-dir: /admin
+          delete: false
