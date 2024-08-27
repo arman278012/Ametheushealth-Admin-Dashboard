@@ -105,7 +105,7 @@ const SingleProductDetails = () => {
         </p>
       </div>
 
-      <div className="flex gap-5 w-full h-full lg:h-max p-4">
+      <div className="flex gap-5 w-full h-full lg:h-max p-4 single-product">
         <div className="flex items-center h-max p-2 lg:items-start lg:flex-col flex-col-reverse border">
           <div className="upper">
             {loading ? (
@@ -223,7 +223,7 @@ const SingleProductDetails = () => {
           </div>
           <hr />
         </div>
-        {product.genericID && (
+        {/* {product.genericID && (
           <div className="sm:w-[20vw] w-[100%] sm:ml-10 sm:mt-0 mt-10 sm:h-[80vh] sm:overflow-hidden  cursor-pointer">
             <h3 className="text-lg font-semibold mb-2  ">Similar Products</h3>
             <Slider {...settings}>
@@ -248,9 +248,9 @@ const SingleProductDetails = () => {
               ))}
             </Slider>
           </div>
-        )}
+        )} */}
       </div>
-      <div className="container mx-auto">
+      <div className=" tabsection">
         <TabSection
           description={product?.description}
           sideEffects={product?.sideEffects}

@@ -4,3 +4,18 @@
 .general h2 {
   width: auto !important;
 }
+
+.single-product h2,
+p {
+  width: auto !important;
+}
+
+.tabsection{
+  overflow-x: hidden;
+  width: 80vw !important;
+  display: flex;
+  justify-content: left;
+}
+.tabsection > div{
+    width: 80vw !important;
+}

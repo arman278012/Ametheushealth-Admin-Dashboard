@@ -44,7 +44,7 @@ const TabSection = ({
   const [activeTab, setActiveTab] = useState(tabs[0].title);
 
   return (
-    <div className="w-full p-4">
+    <div className="w-auto p-4">
       <div className="border-b-2 border-gray-300 mb-4">
         <ul className="flex flex-wrap md:flex-nowrap mb-4 md:mb-0">
           {tabs.map((tab) => (
