@@ -426,6 +426,8 @@ const EditProducts = () => {
           },
         }
       );
+      toast.success("Deleted Sucessfully...");
+      addImageToProduct();
     } catch (error) {
       console.log(error);
     }
