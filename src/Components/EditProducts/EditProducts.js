@@ -156,15 +156,19 @@ const EditProducts = () => {
     ],
   });
 
-  //remove the variant
   const handleRemoveVariant = (index) => {
-    setProductValues((prevValues) => {
+    let prevValues = productValues;
+    let data = fun(prevValues)
+    function fun(prevValues){
       const updatedVariants = prevValues.variants.filter((_, i) => i !== index);
-      return {
+      const newValues = {
         ...prevValues,
         variants: updatedVariants,
       };
-    });
+      console.log(newValues); // Log the updated values
+      return newValues;
+    };
+    setProductValues(data);
   };
 
   const handleMetaTagChange = (e) => {

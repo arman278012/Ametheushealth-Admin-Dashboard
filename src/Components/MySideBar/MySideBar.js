@@ -18,6 +18,7 @@ const MySideBar = () => {
   const [isGenericMenuOpen, setIsGenericMenuOpen] = useState(false);
   const [isContactMenuOpen, setIsContactMenuOpen] = useState(false);
   const [isPerscriptionMenuOpen, setIsPerscriptionMenuOpen] = useState(false);
+  const [isBlogsOpen, setIsBlogsOpen] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleUsersMenu = () => setIsUsersMenuOpen(!isUsersMenuOpen);
@@ -31,6 +32,7 @@ const MySideBar = () => {
   const toggleContactMenu = () => setIsContactMenuOpen(!isContactMenuOpen);
   const togglePerscriptionMenu = () =>
     setIsPerscriptionMenuOpen(!isPerscriptionMenuOpen);
+  const toggleBlogsMenu = () => setIsBlogsOpen(!isBlogsOpen);
 
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
@@ -318,6 +320,34 @@ const MySideBar = () => {
                   >
                     Attach Generic
                   </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* Blogs Menu */}
+            <div>
+              <button
+                onClick={toggleBlogsMenu}
+                className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+              >
+                <span className="flex items-center">
+                  <FaUsers className="mr-2" />
+                  {!isCollapsed && "Blogs"}
+                </span>
+                {!isCollapsed &&
+                  (isUsersMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+              </button>
+              {!isCollapsed && isBlogsOpen && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/add-blogs"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Blogs
+                  </NavLink>
+                  {/* <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                    Add User
+                  </a> */}
                 </div>
               )}
             </div>

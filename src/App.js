@@ -36,6 +36,7 @@ import ContactDetailsPage from "./Pages/ContactDetailsPage/ContactDetailsPage";
 import AllPerscription from "./Components/AllPerscription/AllPerscription";
 import AllPerscriptionPage from "./Pages/AllPerscriptionPage/AllPerscriptionPage";
 import PrescriptiondetailsPage from "./Pages/PrescriptiondetailsPage/PrescriptiondetailsPage";
+import AddBlogsPage from "./Pages/AddBlogsPage/AddBlogsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -166,6 +167,11 @@ function App() {
             <Route
               path="/precription-details/:id"
               element={<AdminRoute element={PrescriptiondetailsPage} />}
+            />
+
+            <Route
+              path="/add-blogs"
+              element={<AdminRoute element={AddBlogsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
