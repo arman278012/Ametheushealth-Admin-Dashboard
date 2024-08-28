@@ -59,6 +59,8 @@ const AddBlogs = () => {
     }));
   };
 
+  console.log("object")
+
   const handleTagsChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
