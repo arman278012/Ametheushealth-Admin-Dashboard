@@ -35,7 +35,7 @@ const initialValues = {
   purchaseNote: "",
   externalLink: "",
   position: "",
-  countryOrigin: "",
+  countryOrigin: "INDIA",
   metaTitle: "",
   metaDescription: "",
   metaTags: "",
