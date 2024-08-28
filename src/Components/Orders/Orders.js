@@ -318,7 +318,7 @@ const Orders = () => {
                       >
                         Edit
                       </button>{" "}
-                      <span className="text-[#2271b1]">|</span>
+                      {/* <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
                         // onClick={() => {
@@ -327,7 +327,7 @@ const Orders = () => {
                         // }}
                       >
                         Delete
-                      </button>
+                      </button> */}
                     </div>
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">

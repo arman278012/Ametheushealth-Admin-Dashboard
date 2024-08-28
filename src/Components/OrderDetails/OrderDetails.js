@@ -15,32 +15,53 @@ const OrderDetails = () => {
 
   const { id } = useParams();
 
-  const allOrders = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/order/admin/orders/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        }
-      );
-      setOrderDetails(response.data);
-
-      // Set the initial order date from the order details
-      if (response.data.createdAt) {
-        setOrderDate(response.data.createdAt.split("T")[0]); // Extract date part
-      }
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    allOrders();
-  }, []);
+    const fetchOrderDetails = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.assetorix.com:4100/ah/api/v1/order/admin/orders/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        const orderData = response.data;
+
+        setOrderDetails(orderData);
+        console.log(orderData.trackingLink);
+        setTrackingNumber(orderData?.trackingLink);
+
+        console.log(trackingNumber)
+
+        // Set initial status from order details
+        if (orderData.status) {
+          setStatus(orderData.status);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrderDetails();
+  }, [id]);
+
+  // Update deliveryPartner only when orderDetails first loads
+  useEffect(() => {
+    if (orderDetails?.deliveryPartner) {
+      setDeliveryPartner(orderDetails.deliveryPartner);
+    }
+  }, [orderDetails]);
+
+  const handleChange = (e) => {
+    setDeliveryPartner(e.target.value);
+    // Update orderDetails to reflect the change
+    setOrderDetails((prevDetails) => ({
+      ...prevDetails,
+      deliveryPartner: e.target.value,
+    }));
+  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -107,33 +128,69 @@ const OrderDetails = () => {
 
       <div className="flex p-5 bg-gray-300 gap-5">
         <div className="w-[70%] border border-[gray] p-5 bg-white">
-          <p className="border-[gray] text-xl">
-            Order{" "}
-            <span className="font-bold text-[16px]">
-              {orderDetails?.orderID}{" "}
-            </span>{" "}
-            details
-          </p>
-          <p>Payment Gateway: {orderDetails?.payment?.paymentGateway}</p>
-          <p>
-            Payment order Id:{" "}
-            <span className="font-bold text-[16px]">
-              {orderDetails?.payment?.orderId}
-            </span>
-          </p>
+          <div className="flex justify-between">
+            <div>
+              <p className="border-[gray] text-xl">
+                Order{" "}
+                <span className="font-bold text-[16px]">
+                  {orderDetails?.orderID}{" "}
+                </span>{" "}
+                details
+              </p>
+              <p>Payment Gateway: {orderDetails?.payment?.paymentGateway}</p>
+              <p>
+                Payment order Id:{" "}
+                <span className="font-bold text-[16px]">
+                  {orderDetails?.payment?.orderId}
+                </span>
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm">
+                Created At:{" "}
+                <span className="font-bold ">
+                  {new Date(orderDetails?.createdAt).toLocaleString("en-IN", {
+                    timeZone: "Asia/Kolkata",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                </span>
+              </p>
+              <p className="text-sm">
+                Updated At:{" "}
+                <span className="font-bold">
+                  {new Date(orderDetails?.updatedAt).toLocaleString("en-IN", {
+                    timeZone: "Asia/Kolkata",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                </span>
+              </p>
+            </div>
+          </div>
+
           <div className="flex justify-between">
             <div className="general mt-5">
               <div>
                 <div>
-                  <p className="text-[18px] font-semibold">General</p>
+                  <p className="text-[18px] font-semibold">Order Status</p>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <input
+                  {/* <input
                     type="date"
                     value={orderDate}
                     onChange={(e) => setOrderDate(e.target.value)}
                     className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white border"
-                  />
+                  /> */}
                   <select
                     id="status"
                     name="status"
@@ -244,6 +301,10 @@ const OrderDetails = () => {
                     </span>
                   </p>
                 </div>
+                <div className="border p-2 rounded-md shadow-md mt-2">
+                  <p className="text-sm">Order Notes</p>
+                  <p className="font-bold"> {orderDetails?.orderNotes}</p>
+                </div>
               </div>
             </div>
             <div className="shipping mt-5">
@@ -345,14 +406,6 @@ const OrderDetails = () => {
               <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
               <div className="mt-2">
                 <p>
-                  <span className="text-gray-500 font-semibold">
-                    Total Cart Price:
-                  </span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {orderDetails?.currency} {orderDetails?.totalCartPrice}
-                  </span>{" "}
-                </p>
-                <p>
                   {" "}
                   <span className="text-gray-500 font-semibold">
                     {" "}
@@ -361,6 +414,24 @@ const OrderDetails = () => {
                   <span className="text-gray-500 font-thin">
                     {orderDetails?.currency} {orderDetails?.totalPrice}
                   </span>
+                </p>
+                <p>
+                  {" "}
+                  <span className="text-gray-500 font-semibold">
+                    {" "}
+                    Delivery Charge:
+                  </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails?.currency} {orderDetails?.deliveryCharge}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-gray-500 font-semibold">
+                    Total Cart Price:
+                  </span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {orderDetails?.currency} {orderDetails?.totalCartPrice}
+                  </span>{" "}
                 </p>
               </div>
             </div>
@@ -458,21 +529,21 @@ const OrderDetails = () => {
                 id="trackingNumber"
                 placeholder="Tracking Number"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={trackingNumber}
+                value={trackingNumber || ""}
                 onChange={(e) => setTrackingNumber(e.target.value)}
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="status">Status:</label>
+              <label htmlFor="status">Order Status:</label>
               <select
                 id="status"
                 name="status"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                value={status} // Bind to the state variable
+                onChange={(e) => setStatus(e.target.value)} // Update state on change
               >
                 <option value="" disabled hidden>
-                  Change status
+                  status
                 </option>
                 <option value="Pending">Pending</option>
                 <option value="Shipped">Shipped</option>
@@ -489,7 +560,7 @@ const OrderDetails = () => {
                 name="deliveryPartner"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                 value={deliveryPartner}
-                onChange={(e) => setDeliveryPartner(e.target.value)}
+                onChange={handleChange}
               >
                 <option value="" disabled hidden>
                   Select shipping provider
