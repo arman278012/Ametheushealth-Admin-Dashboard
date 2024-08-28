@@ -158,8 +158,8 @@ const EditProducts = () => {
 
   const handleRemoveVariant = (index) => {
     let prevValues = productValues;
-    let data = fun(prevValues)
-    function fun(prevValues){
+    let data = fun(prevValues);
+    function fun(prevValues) {
       const updatedVariants = prevValues.variants.filter((_, i) => i !== index);
       const newValues = {
         ...prevValues,
@@ -167,7 +167,7 @@ const EditProducts = () => {
       };
       console.log(newValues); // Log the updated values
       return newValues;
-    };
+    }
     setProductValues(data);
   };
 
@@ -809,10 +809,6 @@ const EditProducts = () => {
                         }
                         required
                       />
-
-                      {/* {errors.description && touched.description && (
-                        <div className="text-red-500">{errors.description}</div>
-                      )} */}
                     </div>
                   </div>
                 )}
