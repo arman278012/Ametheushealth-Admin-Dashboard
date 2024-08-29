@@ -20,7 +20,6 @@ const AddBlogs = () => {
   const [hierarchyData, setHierarchyData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const topics = [
     "Dental Health",
@@ -187,27 +186,6 @@ const AddBlogs = () => {
       </div>
     );
   };
-  //   return (
-  //     <div key={item._id} className={`ml-${level * 4}`}>
-  //       <div className="flex items-center mb-2">
-  //         <input
-  //           type="checkbox"
-  //           id={item._id}
-  //           name="categoryID"
-  //           value={item._id}
-  //           className="mr-2"
-  //           onChange={handleCheckboxChange}
-  //           checked={selectedCategories.includes(item._id)}
-  //         />
-  //         <label htmlFor={item._id}>
-  //           {`${"\u00A0".repeat(level * 2)}${item.name}`}
-  //         </label>
-  //       </div>
-  //       {item.children &&
-  //         item.children.map((child) => renderCategory(child, level + 1))}
-  //     </div>
-  //   );
-  // };
 
   useEffect(() => {
     getHierarchy();

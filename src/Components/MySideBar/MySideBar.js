@@ -345,6 +345,12 @@ const MySideBar = () => {
                   >
                     Add Blogs
                   </NavLink>
+                  <NavLink
+                    to={"/show-blogs"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Show Blogs
+                  </NavLink>
                   {/* <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Add User
                   </a> */}
