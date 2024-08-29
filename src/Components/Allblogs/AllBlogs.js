@@ -45,7 +45,7 @@ const AllBlogs = () => {
   const handleSearchInputChange = (e) => {
     const query = e.target.value;
     setSearchInput(query);
-    debouncedSearch(query);
+    // debouncedSearch(query);
   };
 
   return (
@@ -115,7 +115,7 @@ const AllBlogs = () => {
             </button>
 
             <button
-              onClick={() => navigate("/add-category")}
+            //   onClick={() => navigate("/add-category")}
               className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
             >
               Add Category
@@ -130,13 +130,13 @@ const AllBlogs = () => {
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => handlePageChange(1)}
+            //   onClick={() => handlePageChange(1)}
             >
               <MdOutlineKeyboardDoubleArrowLeft />
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+            //   onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
             >
               <MdOutlineKeyboardArrowLeft />
             </div>
@@ -148,17 +148,17 @@ const AllBlogs = () => {
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() =>
-                handlePageChange(
-                  Math.min(currentPage + 1, allBlogs?.totalPages || 1)
-                )
-              }
+            //   onClick={() =>
+            //     handlePageChange(
+            //       Math.min(currentPage + 1, allBlogs?.totalPages || 1)
+            //     )
+            //   }
             >
               <MdKeyboardArrowRight />
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => handlePageChange(allBlogs?.totalPages || 1)}
+            //   onClick={() => handlePageChange(allBlogs?.totalPages || 1)}
             >
               <MdKeyboardDoubleArrowRight />
             </div>
@@ -223,7 +223,7 @@ const AllBlogs = () => {
                     </Td>
                     <Td className="py-2 px-4 border-b text-center">
                       <img
-                        src={item?.image ? item?.image : placeholderImage}
+                        src={item?.image} 
                         alt={item?.name}
                         className="h-12 w-12 object-cover rounded-full"
                       />
@@ -233,26 +233,26 @@ const AllBlogs = () => {
                       <div className="flex gap-2">
                         <button
                           className="text-[#2271b1]"
-                          onClick={() => setEditAllCategoriesForm(true)}
+                        //   onClick={() => setEditAllCategoriesForm(true)}
                         >
                           Edit
                         </button>{" "}
                         <span className="text-[#2271b1]">|</span>
                         <button
                           className="text-[#2271b1]"
-                          onClick={() =>
-                            navigate(`/all-categories/${item?._id}`)
-                          }
+                        //   onClick={() =>
+                        //     // navigate(`/all-categories/${item?._id}`)
+                        //   }
                         >
                           View
                         </button>{" "}
                         <span className="text-[#2271b1]">|</span>
                         <button
                           className="text-[#2271b1]"
-                          onClick={() => {
-                            setDeleteAlert(true);
-                            setSelectedId(item._id);
-                          }}
+                        //   onClick={() => {
+                        //     setDeleteAlert(true);
+                        //     setSelectedId(item._id);
+                        //   }}
                         >
                           Delete
                         </button>
