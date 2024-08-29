@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import JoditEditor from "jodit-react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddBlogs = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,8 @@ const AddBlogs = () => {
   const [hierarchyData, setHierarchyData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
 
   const topics = [
     "Dental Health",
@@ -127,7 +131,10 @@ const AddBlogs = () => {
         }
       );
       console.log(formData);
-      alert("Blog submitted successfully");
+      toast.success("Blog created Successfully...");
+      if (response.status == 200) {
+        navigate("/show-blogs");
+      }
     } catch (error) {
       console.error("Error submitting the blog:", error);
     }
@@ -318,7 +325,6 @@ const AddBlogs = () => {
                   }
                   placeholder="Meta Title"
                   className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
                 />
                 <input
                   type="text"
@@ -328,7 +334,6 @@ const AddBlogs = () => {
                   }
                   placeholder="Meta Description"
                   className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
                 />
                 <input
                   type="text"
@@ -338,7 +343,6 @@ const AddBlogs = () => {
                   }
                   placeholder="Meta Keywords"
                   className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
                 />
               </div>
             ))}
@@ -362,7 +366,6 @@ const AddBlogs = () => {
               onChange={handleTagsChange}
               placeholder="Enter tags separated by commas"
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
             />
           </div>
 

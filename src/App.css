@@ -10,12 +10,12 @@ p {
   width: auto !important;
 }
 
-.tabsection{
+.tabsection {
   overflow-x: hidden;
   width: 80vw !important;
   display: flex;
   justify-content: left;
 }
-.tabsection > div{
-    width: 80vw !important;
+.tabsection > div {
+  width: 80vw !important;
 }

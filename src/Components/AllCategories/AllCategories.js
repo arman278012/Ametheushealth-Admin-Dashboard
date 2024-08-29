@@ -210,7 +210,7 @@ const AllCategories = () => {
             </div>
           </div>
         </div>
-        <Table className="min-w-full bg-white border border-gray-300">
+        <Table className="min-w-full bg-white border border-gray-300 category-table">
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[5%]">
@@ -220,9 +220,9 @@ const AllCategories = () => {
                 Image
               </Th>
               <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Name</Th>
-              <Th className="py-2 px-4 border-b text-start sm:w-[25%]">
+              {/* <Th className="py-2 px-4 border-b text-start sm:w-[25%] ">
                 Description
-              </Th>
+              </Th> */}
               <Th className="py-2 px-4 border-b text-start sm:w-[15%]">Slug</Th>
               <Th className="py-2 px-4 border-b text-start sm:w-[20%]">Id</Th>
               <Th className="py-2 px-4 border-b text-start sm:w-[10%]">Date</Th>
@@ -301,7 +301,7 @@ const AllCategories = () => {
                         </button>
                       </div>
                     </Td>
-                    <Td className="py-2 px-4 border-b text-[14px]">
+                    {/* <Td className="py-2 px-4 border-b text-[14px]">
                       {item?.description ? (
                         expanded[index] ? (
                           <>{parse(`<p>${item?.description}</p>`)}</>
@@ -315,7 +315,7 @@ const AllCategories = () => {
                       ) : (
                         <span>No description available</span>
                       )}
-                    </Td>
+                    </Td> */}
                     <Td className="py-2 px-4 border-b text-[14px]">
                       <span className="text-green-600 font-semibold">
                         {item?.slug}
