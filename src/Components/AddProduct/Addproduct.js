@@ -63,6 +63,7 @@ const AddProduct = () => {
   const [hierarchyQuery, setHierarchyQuery] = useState("");
   const [manufacturerQuery, setManufacturerQuery] = useState("");
   const [sku, setSku] = useState("");
+  const [btnLoader, setBtnLoader] = useState(false);
 
   const toggleManuId = () => {
     setManuIdOpen(!manuIdOpen);
@@ -273,6 +274,7 @@ const AddProduct = () => {
   const postProductsData = async (values, e) => {
     try {
       // e.preventDefault();
+      setBtnLoader(true);
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/product`,
         values,
@@ -290,6 +292,8 @@ const AddProduct = () => {
       // window.location.reload();
     } catch (error) {
       console.log(error);
+    } finally {
+      setBtnLoader(false);
     }
   };
 
@@ -1595,7 +1599,33 @@ const AddProduct = () => {
                   type="submit"
                   className="bg-[#13a3bc] hover:bg-[#13b6d5] py-1 text-white font-bold px-4 rounded-md"
                 >
-                  Submit Total Data
+                  {btnLoader ? (
+                    <div className="flex items-center">
+                      <svg
+                        className="animate-spin h-5 w-5 mr-3 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8H4z"
+                        ></path>
+                      </svg>
+                      Saving Data...
+                    </div>
+                  ) : (
+                    "Submit Total Data"
+                  )}
                 </button>
               </div>
             </form>
