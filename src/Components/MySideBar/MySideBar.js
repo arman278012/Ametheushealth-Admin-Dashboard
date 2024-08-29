@@ -340,17 +340,18 @@ const MySideBar = () => {
               {!isCollapsed && isBlogsOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
                   <NavLink
-                    to={"/add-blogs"}
-                    className="hover:bg-gray-700 px-4 py-2"
-                  >
-                    Add Blogs
-                  </NavLink>
-                  <NavLink
                     to={"/show-blogs"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
                     All Blogs
                   </NavLink>
+                  <NavLink
+                    to={"/add-blogs"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Blogs
+                  </NavLink>
+
                   {/* <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Add User
                   </a> */}

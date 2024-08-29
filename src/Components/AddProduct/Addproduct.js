@@ -35,7 +35,7 @@ const initialValues = {
   purchaseNote: "",
   externalLink: "",
   position: "",
-  countryOrigin: "INDIA",
+  originCountry: "India",
   metaTitle: "",
   metaDescription: "",
   metaTags: "",
@@ -285,6 +285,7 @@ const AddProduct = () => {
           },
         }
       );
+      console.log("Product", response.data);
       toast.success("Product Created Successfully...");
       if (response.status === 201) {
         navigate(`/edit-products/${response.data.product._id}`);
@@ -362,7 +363,6 @@ const AddProduct = () => {
             handleSubmit,
             handleChange,
             setFieldValue,
-            handleBlur,
             values,
             errors,
             touched,
@@ -652,8 +652,8 @@ const AddProduct = () => {
                                 placeholder="Country Origin"
                                 className="h-[35px] border px-2 focus:outline-none"
                                 onChange={handleChange}
-                                value={values.countryOrigin}
-                                name="countryOrigin"
+                                value={values.originCountry}
+                                name="originCountry"
                               />
                             </div>
 

@@ -35,6 +35,7 @@ const EditProducts = () => {
   const [manufacturerNamesId, setManufacturerNamesId] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [updateLoaderBtn, setUpdateLoaderBtn] = useState(false);
+  const [searchManufacturerQuery, setSearchManufacturerQuery] = useState("");
 
   const navigate = useNavigate();
 
@@ -127,9 +128,8 @@ const EditProducts = () => {
     purchaseNote: "",
     externalLink: "",
     position: "",
-    countryOrigin: "",
-    metaTitle: "",
     originCountry: "",
+    metaTitle: "",
     metaDescription: "",
     metaTags: "",
     manufacturerID: "",
@@ -444,7 +444,7 @@ const EditProducts = () => {
   const getManufacturerNames = async () => {
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/manufacturer/names",
+        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${searchManufacturerQuery}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -461,7 +461,16 @@ const EditProducts = () => {
 
   useEffect(() => {
     getManufacturerNames();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      if (searchManufacturerQuery) {
+        getManufacturerNames(searchManufacturerQuery);
+      } else {
+        getManufacturerNames("");
+      }
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchManufacturerQuery]);
 
   const toggleManuId = (event) => {
     event.preventDefault();
@@ -685,7 +694,7 @@ const EditProducts = () => {
                       />
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex gap-2">
                       <div className="flex flex-col w-full">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Generic Name
@@ -712,19 +721,6 @@ const EditProducts = () => {
                           name="treatment"
                         />
                       </div>
-                    </div>
-                    <div className="flex flex-col w-full">
-                      <label className="font-semibold px-2 opacity-65 text-[12px]">
-                        Manufacturer Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="manufacturer"
-                        className="h-[35px] border px-2"
-                        onChange={handleChange}
-                        name="manufacturer"
-                        value={productValues.manufacturer}
-                      />
                     </div>
 
                     <div className="flex gap-5">
@@ -793,6 +789,19 @@ const EditProducts = () => {
                           name="position"
                         />
                       </div>
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <label className="font-semibold px-2 opacity-65 text-[12px]">
+                        Manufacturer Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="manufacturer"
+                        className="h-[35px] border px-2"
+                        onChange={handleChange}
+                        name="manufacturer"
+                        value={productValues.manufacturer}
+                      />
                     </div>
                   </div>
                 )}
@@ -1659,6 +1668,16 @@ const EditProducts = () => {
                   } transition-all duration-300`}
                 >
                   <div>
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1"
+                      placeholder="Search..."
+                      value={searchManufacturerQuery}
+                      onChange={(e) =>
+                        setSearchManufacturerQuery(e.target.value)
+                      }
+                    />
+
                     {manufacturerNamesId?.data?.map((manufacturer) => (
                       <div key={manufacturer?.id} className="flex gap-2">
                         <input

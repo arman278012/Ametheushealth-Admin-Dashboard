@@ -25,7 +25,7 @@ const AllBlogs = () => {
   const showAllBlogs = async (query) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/blog?search=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/blog/admin?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -75,9 +75,10 @@ const AllBlogs = () => {
         }
       );
       toast.success("Deleted Succesfully...");
-      showAllBlogs();
     } catch (err) {
       console.log(err);
+    } finally {
+      showAllBlogs();
     }
   };
 
@@ -267,16 +268,16 @@ const AllBlogs = () => {
                       <div className="flex gap-2">
                         <button
                           className="text-[#2271b1]"
-                          //   onClick={() => setEditAllCategoriesForm(true)}
+                          onClick={() => navigate(`/edit-blogs/${item?._id}`)}
                         >
                           Edit
                         </button>{" "}
                         <span className="text-[#2271b1]">|</span>
                         <button
                           className="text-[#2271b1]"
-                          //   onClick={() =>
-                          //     // navigate(`/all-categories/${item?._id}`)
-                          //   }
+                          // onClick={() =>
+                          //   navigate(`/all-categories/${item?._id}`)
+                          // }
                         >
                           View
                         </button>{" "}

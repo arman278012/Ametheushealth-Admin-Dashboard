@@ -132,9 +132,7 @@ const AddBlogs = () => {
       );
       console.log(formData);
       toast.success("Blog created Successfully...");
-      if (response.status == 200) {
         navigate("/show-blogs");
-      }
     } catch (error) {
       console.error("Error submitting the blog:", error);
     }
@@ -201,226 +199,224 @@ const AddBlogs = () => {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
-    <div className=" bg-gray-300 ">
-      <div className="p-8 bg-white shadow-lg rounded-md w-full max-w-lg transition-all duration-500 w-[800px]">
-        <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">
-          Create a Blog Post
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
+    <div className="p-8 bg-white shadow-lg rounded-md transition-all duration-500 max-w-4xl mx-auto">
+      <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">
+        Create a Blog Post
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Title (min 6 words)
+          </label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Enter the blog title"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Topic
+          </label>
+          <button
+            type="button"
+            onClick={() => setDropdownOpen((prev) => !prev)}
+            className="mt-1 p-3 block w-full border border-gray-300 rounded-md text-left transition-transform duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            {formData.topicCategory.length > 0
+              ? formData.topicCategory.join(", ")
+              : "Select topics"}
+          </button>
+          {dropdownOpen && (
+            <div className="border border-gray-300 rounded-md mt-1 p-2 bg-white shadow-md transition-opacity duration-300">
+              {topics.map((topic) => (
+                <label key={topic} className="block">
+                  <input
+                    type="checkbox"
+                    checked={formData.topicCategory.includes(topic)}
+                    onChange={() => handleCheckboxChange(topic)}
+                    className="mr-2 text-blue-600 focus:ring-blue-500"
+                  />
+                  {topic}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Image
+          </label>
+          <input
+            type="file"
+            onChange={handleImageChange}
+            className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        <div className="flex space-x-4">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Title (min 6 words)
+              Time to Read (minutes)
             </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
+            <select
+              name="timeToRead"
+              value={formData.timeToRead}
               onChange={handleInputChange}
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter the blog title"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Topic
-            </label>
-            <button
-              type="button"
-              onClick={() => setDropdownOpen((prev) => !prev)}
-              className="mt-1 p-3 block w-full border border-gray-300 rounded-md text-left transition-transform duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              {formData.topicCategory.length > 0
-                ? formData.topicCategory.join(", ")
-                : "Select topics"}
-            </button>
-            {dropdownOpen && (
-              <div className="border border-gray-300 rounded-md mt-1 p-2 bg-white shadow-md transition-opacity duration-300">
-                {topics.map((topic) => (
-                  <label key={topic} className="block">
-                    <input
-                      type="checkbox"
-                      checked={formData.topicCategory.includes(topic)}
-                      onChange={() => handleCheckboxChange(topic)}
-                      className="mr-2 text-blue-600 focus:ring-blue-500"
-                    />
-                    {topic}
-                  </label>
-                ))}
-              </div>
-            )}
+              {[
+                "1 Min",
+                "2 Min",
+                "3 Min",
+                "4 Min",
+                "5 Min",
+                "6 Min",
+                "7 Min",
+                "8 Min",
+                "9 Min",
+                "10 Min",
+              ].map((min) => (
+                <option key={min} value={min}>
+                  {min}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div>
+          <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Image
+              Published Status
             </label>
-            <input
-              type="file"
-              onChange={handleImageChange}
+            <select
+              name="published"
+              value={formData.published}
+              onChange={handleInputChange}
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Time to Read (minutes)
-              </label>
-              <select
-                name="timeToRead"
-                value={formData.timeToRead}
-                onChange={handleInputChange}
-                className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                {[
-                  "1 Min",
-                  "2 Min",
-                  "3 Min",
-                  "4 Min",
-                  "5 Min",
-                  "6 Min",
-                  "7 Min",
-                  "8 Min",
-                  "9 Min",
-                  "10 Min",
-                ].map((min) => (
-                  <option key={min} value={min}>
-                    {min}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Published Status
-              </label>
-              <select
-                name="published"
-                value={formData.published}
-                onChange={handleInputChange}
-                className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="false">Draft</option>
-                <option value="true">Published</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Meta Information
-            </label>
-            {formData.meta.map((metaItem, index) => (
-              <div key={index} className="space-y-2 mb-4">
-                <input
-                  type="text"
-                  value={metaItem.title}
-                  onChange={(e) =>
-                    handleMetaChange(index, "title", e.target.value)
-                  }
-                  placeholder="Meta Title"
-                  className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-                <input
-                  type="text"
-                  value={metaItem.description}
-                  onChange={(e) =>
-                    handleMetaChange(index, "description", e.target.value)
-                  }
-                  placeholder="Meta Description"
-                  className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-                <input
-                  type="text"
-                  value={metaItem.keywords}
-                  onChange={(e) =>
-                    handleMetaChange(index, "keywords", e.target.value)
-                  }
-                  placeholder="Meta Keywords"
-                  className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={handleAddMeta}
-              className="mt-2 text-blue-600 hover:underline"
             >
-              Add another Meta
-            </button>
+              <option value="false">Draft</option>
+              <option value="true">Published</option>
+            </select>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tags (comma separated)
-            </label>
-            <input
-              type="text"
-              name="tags"
-              value={formData.tags}
-              onChange={handleTagsChange}
-              placeholder="Enter tags separated by commas"
-              className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-
-          {/* product categories */}
-          <div className="product-categories border rounded-xl p-3 fixed-width-card">
-            <div className="flex justify-between items-center">
-              <label className="font-bold">All Categories</label>
-              <button
-                type="button"
-                onClick={toggleOpen}
-                className="focus:outline-none"
-              >
-                {isOpen ? (
-                  <FaChevronUp className="text-blue-500" />
-                ) : (
-                  <FaChevronDown className="text-blue-500" />
-                )}
-              </button>
-            </div>
-            <div
-              className={`category-list mt-3 ${
-                isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
-              } transition-all duration-300`}
-            >
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Meta Information
+          </label>
+          {formData.meta.map((metaItem, index) => (
+            <div key={index} className="space-y-2 mb-4">
               <input
                 type="text"
-                className="w-full px-2 py-1"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={metaItem.title}
+                onChange={(e) =>
+                  handleMetaChange(index, "title", e.target.value)
+                }
+                placeholder="Meta Title"
+                className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <div className="mt-2">
-                {filterCategories(hierarchyData).map((item) =>
-                  renderCategory(item)
-                )}
-              </div>
+              <input
+                type="text"
+                value={metaItem.description}
+                onChange={(e) =>
+                  handleMetaChange(index, "description", e.target.value)
+                }
+                placeholder="Meta Description"
+                className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <input
+                type="text"
+                value={metaItem.keywords}
+                onChange={(e) =>
+                  handleMetaChange(index, "keywords", e.target.value)
+                }
+                placeholder="Meta Keywords"
+                className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddMeta}
+            className="mt-2 text-blue-600 hover:underline"
+          >
+            Add another Meta
+          </button>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Tags (comma separated)
+          </label>
+          <input
+            type="text"
+            name="tags"
+            value={formData.tags}
+            onChange={handleTagsChange}
+            placeholder="Enter tags separated by commas"
+            className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        {/* product categories */}
+        <div className="product-categories border rounded-xl p-3 fixed-width-card">
+          <div className="flex justify-between items-center">
+            <label className="font-bold">All Categories</label>
+            <button
+              type="button"
+              onClick={toggleOpen}
+              className="focus:outline-none"
+            >
+              {isOpen ? (
+                <FaChevronUp className="text-blue-500" />
+              ) : (
+                <FaChevronDown className="text-blue-500" />
+              )}
+            </button>
+          </div>
+          <div
+            className={`category-list mt-3 ${
+              isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
+            } transition-all duration-300`}
+          >
+            <input
+              type="text"
+              className="w-full px-2 py-1"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="mt-2">
+              {filterCategories(hierarchyData).map((item) =>
+                renderCategory(item)
+              )}
             </div>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Content
-            </label>
-            <JoditEditor
-              value={formData.content}
-              onChange={handleDescriptionChange}
-              className="border border-gray-300 rounded-md"
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Content
+          </label>
+          <JoditEditor
+            value={formData.content}
+            onChange={handleDescriptionChange}
+            className="border border-gray-300 rounded-md"
+          />
+        </div>
 
-          <button
-            type="submit"
-            className="w-full mt-4 py-3 bg-blue-600 text-white rounded-md transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          className="w-full mt-4 py-3 bg-blue-600 text-white rounded-md transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        >
+          Submit
+        </button>
+      </form>
     </div>
   );
 };
