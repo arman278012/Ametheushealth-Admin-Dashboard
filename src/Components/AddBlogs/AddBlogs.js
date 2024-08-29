@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import JoditEditor from "jodit-react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const AddBlogs = () => {
   const [formData, setFormData] = useState({
     title: "",
     topicCategory: [],
+    category: "",
     image: null,
     timeToRead: "",
     meta: [{ title: "", description: "", keywords: "" }],
@@ -15,6 +17,10 @@ const AddBlogs = () => {
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [hierarchyData, setHierarchyData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const topics = [
     "Dental Health",
@@ -59,7 +65,7 @@ const AddBlogs = () => {
     }));
   };
 
-  console.log("object")
+  console.log("object");
 
   const handleTagsChange = (e) => {
     setFormData((prevData) => ({
@@ -127,6 +133,87 @@ const AddBlogs = () => {
       console.error("Error submitting the blog:", error);
     }
   };
+
+  const getHierarchy = async (query = "") => {
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${query}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setHierarchyData(response.data);
+      console.log(hierarchyData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterCategories = (data) => {
+    return data.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const handleCategoryChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      category: value,
+    }));
+  };
+
+  const renderCategory = (item) => {
+    return (
+      <div key={item._id} className="ml-4">
+        <label className="flex items-center">
+          <input
+            type="radio"
+            name="category"
+            value={item._id}
+            checked={formData.category === item._id}
+            onChange={() => handleCategoryChange(item._id)}
+            className="mr-2"
+          />
+          {item.name}
+        </label>
+        {item.children && item.children.length > 0 && (
+          <div className="ml-4">
+            {item.children.map((child) => renderCategory(child))}
+          </div>
+        )}
+      </div>
+    );
+  };
+  //   return (
+  //     <div key={item._id} className={`ml-${level * 4}`}>
+  //       <div className="flex items-center mb-2">
+  //         <input
+  //           type="checkbox"
+  //           id={item._id}
+  //           name="categoryID"
+  //           value={item._id}
+  //           className="mr-2"
+  //           onChange={handleCheckboxChange}
+  //           checked={selectedCategories.includes(item._id)}
+  //         />
+  //         <label htmlFor={item._id}>
+  //           {`${"\u00A0".repeat(level * 2)}${item.name}`}
+  //         </label>
+  //       </div>
+  //       {item.children &&
+  //         item.children.map((child) => renderCategory(child, level + 1))}
+  //     </div>
+  //   );
+  // };
+
+  useEffect(() => {
+    getHierarchy();
+  }, []);
+
+  const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-300 min-w-full">
@@ -299,6 +386,42 @@ const AddBlogs = () => {
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+          </div>
+
+          {/* product categories */}
+          <div className="product-categories border rounded-xl p-3 fixed-width-card">
+            <div className="flex justify-between items-center">
+              <label className="font-bold">All Categories</label>
+              <button
+                type="button"
+                onClick={toggleOpen}
+                className="focus:outline-none"
+              >
+                {isOpen ? (
+                  <FaChevronUp className="text-blue-500" />
+                ) : (
+                  <FaChevronDown className="text-blue-500" />
+                )}
+              </button>
+            </div>
+            <div
+              className={`category-list mt-3 ${
+                isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
+              } transition-all duration-300`}
+            >
+              <input
+                type="text"
+                className="w-full px-2 py-1"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <div className="mt-2">
+                {filterCategories(hierarchyData).map((item) =>
+                  renderCategory(item)
+                )}
+              </div>
+            </div>
           </div>
 
           <div>
