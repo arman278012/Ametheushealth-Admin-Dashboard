@@ -218,7 +218,6 @@ const AddBlogs = () => {
               onChange={handleInputChange}
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter the blog title"
-              required
             />
           </div>
 
@@ -260,7 +259,6 @@ const AddBlogs = () => {
               type="file"
               onChange={handleImageChange}
               className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
             />
           </div>
 
@@ -274,7 +272,6 @@ const AddBlogs = () => {
                 value={formData.timeToRead}
                 onChange={handleInputChange}
                 className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
               >
                 {[
                   "1 Min",
