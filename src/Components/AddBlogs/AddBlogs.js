@@ -201,8 +201,8 @@ const AddBlogs = () => {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-300 min-w-full">
-      <div className="p-8 bg-white shadow-lg rounded-md w-full max-w-lg transition-all duration-500">
+    <div className=" bg-gray-300 ">
+      <div className="p-8 bg-white shadow-lg rounded-md w-full max-w-lg transition-all duration-500 w-[800px]">
         <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">
           Create a Blog Post
         </h2>
