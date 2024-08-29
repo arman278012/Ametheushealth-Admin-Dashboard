@@ -34,6 +34,7 @@ const EditProducts = () => {
   const [manuIdOpen, setManuIdOpen] = useState(false);
   const [manufacturerNamesId, setManufacturerNamesId] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [updateLoaderBtn, setUpdateLoaderBtn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -350,6 +351,7 @@ const EditProducts = () => {
 
   const editProductCategory = async (e) => {
     e.preventDefault();
+    setUpdateLoaderBtn(true);
     console.log("Product ID:", id);
 
     // Ensure the selected categories are part of the productValues
@@ -375,6 +377,8 @@ const EditProducts = () => {
       navigate("/product-details");
     } catch (error) {
       console.error("Error updating product:", error);
+    } finally {
+      setUpdateLoaderBtn(false);
     }
   };
 
@@ -1678,8 +1682,35 @@ const EditProducts = () => {
             <button
               type="submit"
               className="bg-[#13a3bc] hover:bg-[#13b6d5] py-1 text-white font-bold px-4 rounded-md"
+              disabled={updateLoaderBtn}
             >
-              Update Data
+              {updateLoaderBtn ? (
+                <div className="flex items-center">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                  Updating Data...
+                </div>
+              ) : (
+                "update data"
+              )}
             </button>
           </div>
         </form>
