@@ -19,13 +19,14 @@ const AllBlogs = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
-  const showAllBlogs = async (query) => {
+  const showAllBlogs = async (query = "", page = 1, pageLimit = 10) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/blog/admin?search=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/blog/admin?search=${query}&page=${page}&limit=${pageLimit}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -79,6 +80,12 @@ const AllBlogs = () => {
       console.log(err);
     } finally {
       showAllBlogs();
+    }
+  };
+
+  const goToPage = (page) => {
+    if (page > 0 && page <= allBlogs.totalPages) {
+      setCurrentPage(page);
     }
   };
 
@@ -164,13 +171,13 @@ const AllBlogs = () => {
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              //   onClick={() => handlePageChange(1)}
+              onClick={() => goToPage(1)}
             >
               <MdOutlineKeyboardDoubleArrowLeft />
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              //   onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+              onClick={() => goToPage(Math.max(currentPage - 1, 1))}
             >
               <MdOutlineKeyboardArrowLeft />
             </div>
@@ -182,17 +189,15 @@ const AllBlogs = () => {
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              //   onClick={() =>
-              //     handlePageChange(
-              //       Math.min(currentPage + 1, allBlogs?.totalPages || 1)
-              //     )
-              //   }
+              onClick={() =>
+                goToPage(Math.min(currentPage + 1, allBlogs?.totalPages || 1))
+              }
             >
               <MdKeyboardArrowRight />
             </div>
             <div
               className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              //   onClick={() => handlePageChange(allBlogs?.totalPages || 1)}
+              onClick={() => goToPage(allBlogs?.totalPages || 1)}
             >
               <MdKeyboardDoubleArrowRight />
             </div>
