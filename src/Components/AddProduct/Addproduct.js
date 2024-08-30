@@ -1068,7 +1068,7 @@ const AddProduct = () => {
                                     className="w-[500px] flex flex-col gap-3"
                                   >
                                     <div className="flex gap-4">
-                                      <div className="flex flex-col w-[165px]">
+                                      <div className="flex flex-col w-[250px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           SKU
                                         </label>
@@ -1086,7 +1086,7 @@ const AddProduct = () => {
                                           }
                                         />
                                       </div>
-                                      <div className="flex flex-col w-[165px]">
+                                      <div className="flex flex-col w-[250px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Packsize
                                         </label>
@@ -1097,9 +1097,14 @@ const AddProduct = () => {
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
-                                      <div className="flex flex-col w-[165px]">
+                                    </div>
+                                    <div className="flex gap-4">
+                                      <div className="flex flex-col w-[100px]">
                                         <label className="font-semibold px-2 opacity-65">
-                                          Margin
+                                          <span className="text-[14px]">
+                                            {" "}
+                                            Margin
+                                          </span>
                                         </label>
                                         <Field
                                           name={`variants[${index}].margin`}
@@ -1108,7 +1113,52 @@ const AddProduct = () => {
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
+                                      <div className="flex flex-col w-[115px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          <span className="text-[14px]">
+                                            {" "}
+                                            M India
+                                          </span>
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].marginIndia`} // Assuming only one SKU input box
+                                          type="number"
+                                          placeholder="Margin India"
+                                          className="h-[35px] border px-2"
+                                          onChange={(e) =>
+                                            setFieldValue(
+                                              `variants[0].marginIndia`,
+                                              e.target.value
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[125px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          <span className="text-[14px]">
+                                            M Bangladesh
+                                          </span>
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].marginBangladesh`}
+                                          type="number"
+                                          placeholder="M Bangladesh"
+                                          className="h-[35px] border px-2 focus:outline-none"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col w-[130px]">
+                                        <label className="font-semibold px-2 opacity-65">
+                                          M Nepal
+                                        </label>
+                                        <Field
+                                          name={`variants[${index}].marginNepal`}
+                                          type="number"
+                                          placeholder="Margin Nepal"
+                                          className="h-[35px] border px-2 focus:outline-none"
+                                        />
+                                      </div>
                                     </div>
+
                                     <div className="flex gap-5">
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
@@ -1301,11 +1351,15 @@ const AddProduct = () => {
                                   type="button"
                                   onClick={() =>
                                     push({
+                                      _id: "",
                                       sku: "",
                                       packSize: "",
                                       price: 0,
                                       salePrice: 0,
                                       margin: "",
+                                      marginIndia: "",
+                                      marginBangladesh: "",
+                                      marginNepal: "",
                                       minOrderQuantity: "1",
                                       maxOrderQuantity: "100",
                                       isStockAvailable: true,

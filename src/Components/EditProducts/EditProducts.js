@@ -45,14 +45,18 @@ const EditProducts = () => {
       variants: [
         ...prevState.variants,
         {
+          _id: "",
           sku: "",
           packSize: "",
           price: 0,
           salePrice: 0,
           margin: 0,
+          marginIndia: "",
+          marginBangladesh: "",
+          marginNepal: "",
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
-          isStockAvailable: true,
+          isStockAvailable: false,
           currency: "₹",
           weightUnit: "gm",
           widthUnit: "cm",
@@ -128,22 +132,27 @@ const EditProducts = () => {
     purchaseNote: "",
     externalLink: "",
     position: "",
-    originCountry: "",
+    countryOrigin: "",
     metaTitle: "",
+    originCountry: "",
     metaDescription: "",
     metaTags: "",
     manufacturerID: "",
     manufacturer: "",
     variants: [
       {
+        _id: "",
         sku: "",
         packSize: "",
         price: 0,
         salePrice: 0,
         margin: 0,
+        marginIndia: "",
+        marginBangladesh: "",
+        marginNepal: "",
         minOrderQuantity: 1,
         maxOrderQuantity: 100,
-        isStockAvailable: true,
+        isStockAvailable: false,
         currency: "₹",
         weightUnit: "gm",
         widthUnit: "cm",
@@ -233,7 +242,11 @@ const EditProducts = () => {
         tags: productData.tags || "",
         genericID: productData.genericID || "",
         variants: productData.variants.map((variant) => ({
+          _id: variant._id || "",
           sku: variant.sku || "",
+          marginIndia: variant.marginIndia || 0,
+          marginBangladesh: variant.marginBangladesh || 0,
+          marginNepal: variant.marginNepal || 0,
           packSize: variant.packSize || "",
           price: variant.price || 0,
           salePrice: variant.salePrice || 0,
@@ -1147,32 +1160,52 @@ const EditProducts = () => {
                       <React.Fragment key={index}>
                         <div className="flex flex-col gap-5 mb-5">
                           <div className="flex gap-4 justify-around">
-                            <div className="flex flex-col w-[165px]">
-                              <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                SKU
-                              </label>
-                              <input
-                                value={variant.sku}
-                                name={`variants[${index}].sku`}
-                                onChange={handleVariantChange}
-                                type="text"
-                                placeholder="sku"
-                                className="h-[35px] border px-2"
-                              />
+                            <div className="flex gap-5">
+                              <div className="flex flex-col w-[165px]">
+                                <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                  SKU
+                                </label>
+                                <input
+                                  value={variant.sku}
+                                  name={`variants[${index}].sku`}
+                                  onChange={handleVariantChange}
+                                  type="text"
+                                  placeholder="sku"
+                                  className="h-[35px] border px-2"
+                                />
+                              </div>
+                              <div className="flex flex-col w-[100px]">
+                                <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                  Packsize
+                                </label>
+                                <input
+                                  value={variant.packSize}
+                                  name={`variants[${index}].packSize`}
+                                  onChange={handleVariantChange}
+                                  type="text"
+                                  placeholder="packSize"
+                                  className="h-[35px] border px-2"
+                                />
+                              </div>
+
+                              <div className="flex flex-col w-[165px]">
+                                <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                  ID
+                                </label>
+
+                                <input
+                                  value={variant?._id || ""}
+                                  name={`variants[${index}]._id`}
+                                  readOnly
+                                  type="text"
+                                  placeholder={!variant?._id ? "Enter ID" : ""}
+                                  className="h-[35px] text-black border px-2"
+                                />
+                              </div>
                             </div>
-                            <div className="flex flex-col w-[100px]">
-                              <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                Packsize
-                              </label>
-                              <input
-                                value={variant.packSize}
-                                name={`variants[${index}].packSize`}
-                                onChange={handleVariantChange}
-                                type="text"
-                                placeholder="packSize"
-                                className="h-[35px] border px-2"
-                              />
-                            </div>
+                          </div>
+
+                          <div className="flex gap-5 justify-around">
                             <div className="flex flex-col w-[100px]">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
                                 Margin
@@ -1186,7 +1219,47 @@ const EditProducts = () => {
                                 onChange={handleVariantChange}
                               />
                             </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Margin India
+                              </label>
+                              <input
+                                name={`variants[${index}].marginIndia`}
+                                value={variant.marginIndia}
+                                type="number"
+                                placeholder="Margin"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Bangladesh
+                              </label>
+                              <input
+                                name={`variants[${index}].marginBangladesh`}
+                                value={variant.marginBangladesh}
+                                type="number"
+                                placeholder="Margin"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
+                            <div className="flex flex-col w-[100px]">
+                              <label className="font-semibold px-2 opacity-65 text-[12px]">
+                                Margin Nepal
+                              </label>
+                              <input
+                                name={`variants[${index}].marginNepal`}
+                                value={variant.marginNepal}
+                                type="number"
+                                placeholder="Margin"
+                                className="h-[35px] border px-2 focus:outline-none"
+                                onChange={handleVariantChange}
+                              />
+                            </div>
                           </div>
+
                           <div className="flex gap-5 justify-around">
                             <div className="flex flex-col w-[105px]">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
