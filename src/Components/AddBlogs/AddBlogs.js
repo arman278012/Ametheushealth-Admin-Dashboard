@@ -61,12 +61,12 @@ const AddBlogs = () => {
     }));
   };
 
-  const handleAddMeta = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      meta: [...prevData.meta, { title: "", description: "", keywords: "" }],
-    }));
-  };
+  // const handleAddMeta = () => {
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     meta: [...prevData.meta, { title: "", description: "", keywords: "" }],
+  //   }));
+  // };
 
   console.log("object");
 
@@ -132,7 +132,7 @@ const AddBlogs = () => {
       );
       console.log(formData);
       toast.success("Blog created Successfully...");
-        navigate("/show-blogs");
+      navigate("/show-blogs");
     } catch (error) {
       console.error("Error submitting the blog:", error);
     }
@@ -340,13 +340,13 @@ const AddBlogs = () => {
               />
             </div>
           ))}
-          <button
+          {/* <button
             type="button"
             onClick={handleAddMeta}
             className="mt-2 text-blue-600 hover:underline"
           >
             Add another Meta
-          </button>
+          </button> */}
         </div>
 
         <div>

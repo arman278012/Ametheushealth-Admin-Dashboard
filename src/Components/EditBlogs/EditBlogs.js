@@ -61,12 +61,12 @@ const EditBlogs = ({ blogId }) => {
   };
 
   // Add another meta field
-  const handleAddMeta = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      meta: [...prevData.meta, { title: "", description: "", keywords: "" }],
-    }));
-  };
+  // const handleAddMeta = () => {
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     meta: [...prevData.meta, { title: "", description: "", keywords: "" }],
+  //   }));
+  // };
 
   // Handle tags change
   const handleTagsChange = (e) => {
@@ -388,13 +388,13 @@ const EditBlogs = ({ blogId }) => {
               </div>
             ))}
 
-          <button
+          {/* <button
             type="button"
             onClick={handleAddMeta}
             className="mt-3 p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300"
           >
             Add Meta
-          </button>
+          </button> */}
         </div>
 
         <div>

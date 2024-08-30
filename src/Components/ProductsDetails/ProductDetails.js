@@ -272,7 +272,7 @@ const ProductDetails = () => {
         </div>
         <div>
           <div className="all-filters px-5 py-2 flex sm:flex-row flex-col justify-center items-center sm:justify-normal gap-3">
-            <select
+            {/* <select
               id="fruits"
               name="fruits"
               className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
@@ -293,7 +293,7 @@ const ProductDetails = () => {
               <button className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[70px] h-[30px] text-white rounded-md">
                 Apply
               </button>
-            </div>
+            </div> */}
 
             {/* for mobile section */}
             <div className="sm:hidden md:hidden flex gap-3">

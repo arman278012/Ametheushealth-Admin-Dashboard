@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductDetailsPage from "./Pages/ProductDetailsPage/ProductDetailsPage";
@@ -33,12 +32,12 @@ import OrderDetailsPage from "./Pages/OrderDetailsPage/OrderDetailsPage";
 import SingleProductDetailsPage from "./Pages/SingleProductDetailsPage/SingleProductDetailsPage";
 import AllContactsPage from "./Pages/AllContactsPage/AllContactsPage";
 import ContactDetailsPage from "./Pages/ContactDetailsPage/ContactDetailsPage";
-import AllPerscription from "./Components/AllPerscription/AllPerscription";
 import AllPerscriptionPage from "./Pages/AllPerscriptionPage/AllPerscriptionPage";
 import PrescriptiondetailsPage from "./Pages/PrescriptiondetailsPage/PrescriptiondetailsPage";
 import AddBlogsPage from "./Pages/AddBlogsPage/AddBlogsPage";
 import AllBlogsPage from "./Pages/AllBlogsPage/AllBlogsPage";
 import EditBlogsPage from "./Pages/EditBlogsPage/EditBlogsPage";
+import CreateOrderPage from "./Pages/CreateOrderPage/CreateOrderPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -184,6 +183,11 @@ function App() {
             <Route
               path="/edit-blogs/:id"
               element={<AdminRoute element={EditBlogsPage} />}
+            />
+
+            <Route
+              path="/create-order"
+              element={<AdminRoute element={CreateOrderPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

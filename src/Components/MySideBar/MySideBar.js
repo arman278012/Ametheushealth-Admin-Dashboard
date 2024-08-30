@@ -73,12 +73,12 @@ const MySideBar = () => {
                   >
                     All Orders
                   </NavLink>
-                  {/* <NavLink
-                    to={"/add-orders"}
+                  <NavLink
+                    to={"/create-order"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
-                    Add Orders
-                  </NavLink> */}
+                    Create Order
+                  </NavLink>
                 </div>
               )}
             </div>
