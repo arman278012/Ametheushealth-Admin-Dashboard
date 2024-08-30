@@ -501,6 +501,9 @@ const EditProducts = () => {
   const selectedGeneric = genericsMap.find(
     (generic) => generic._id === productValues.genericID
   );
+  const selectedMAnufacturer = manufacturerNamesId?.data?.find(
+    (manufacturer) => manufacturer._id === productValues.manufacturerID
+  );
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -1740,6 +1743,11 @@ const EditProducts = () => {
                       : "h-0 overflow-hidden"
                   } transition-all duration-300`}
                 >
+                  {selectedMAnufacturer && (
+                    <div className="mb-2 font-semibold text-gray-700">
+                      {selectedMAnufacturer.name}
+                    </div>
+                  )}
                   <div>
                     <input
                       type="text"
