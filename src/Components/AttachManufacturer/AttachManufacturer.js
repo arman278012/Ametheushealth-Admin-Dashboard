@@ -109,6 +109,7 @@ const AttachManufacturer = () => {
         console.log("API response:", response.data);
         if (response.status === 200) {
           toast.success("Manufacturer Attached");
+          window.location.reload();
         }
       } catch (error) {
         console.error("Error posting data:", error);

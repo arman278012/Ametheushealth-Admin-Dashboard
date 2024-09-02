@@ -142,7 +142,10 @@ const AttachCategories = () => {
             },
           }
         );
-        toast.success("Products attached to Categories...");
+        if (response.status == 200) {
+          toast.success("Products attached to Categories...");
+          window.location.reload();
+        }
         console.log("API response:", response.data);
       } catch (error) {
         console.error("Error posting data:", error);

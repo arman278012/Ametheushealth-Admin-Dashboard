@@ -95,7 +95,11 @@ const AttachGeneric = () => {
             },
           }
         );
-        toast.success("Generic Attached");
+        if (response.status == 200) {
+          toast.success("Generic Attached");
+          window.location.reload();
+        }
+
         console.log("API response:", response.data);
       } catch (error) {
         console.error("Error posting data:", error);

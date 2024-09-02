@@ -45,7 +45,6 @@ const EditProducts = () => {
       variants: [
         ...prevState.variants,
         {
-          _id: "",
           sku: "",
           packSize: "",
           price: 0,
@@ -710,7 +709,7 @@ const EditProducts = () => {
                       />
                     </div>
 
-                    <div className="flex flex gap-2">
+                    <div className="flex gap-2">
                       <div className="flex flex-col w-full">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
                           Generic Name

@@ -288,33 +288,34 @@ const CreateOrder = () => {
     setIsSelectAllChecked(!isSelectAllChecked);
   };
 
-  const handleProductCheckboxChange = (product) => {
-    const updatedProductIDs = selectedProductIDs.includes(product._id)
-      ? selectedProductIDs.filter((id) => id !== product._id)
-      : [...selectedProductIDs, product._id];
-
-    setSelectedProductIDs(updatedProductIDs);
-
-    const updatedProductDetails = updatedProductIDs.map((id) =>
-      allProductsData.data.find((product) => product._id === id)
-    );
-
-    setSelectedProductDetails(updatedProductDetails);
+  const handleSearchChange = (event) => {
+    dispatch(setSearchQuery(event.target.value));
   };
 
-  const handleDeleteProduct = (productID) => {
-    const updatedProductIDs = selectedProductIDs.filter(
-      (id) => id !== productID
-    );
-    setSelectedProductIDs(updatedProductIDs);
+  const handleVariantClick = (productID, variantID, productName) => {
+    setSelectedProductDetails((prevDetails) => {
+      // Check if the product with the same variantID already exists
+      const variantExists = prevDetails.some(
+        (item) => item.variantID === variantID
+      );
 
-    const updatedProductDetails = updatedProductIDs.map((id) =>
-      allProductsData.data.find((product) => product._id === id)
-    );
-    setSelectedProductDetails(updatedProductDetails);
+      if (!variantExists) {
+        return [...prevDetails, { productID, variantID, productName }];
+      }
+
+      return prevDetails;
+    });
   };
 
-  const handleSubmit = () => {
+  const handleDeleteProduct = (variantID) => {
+    setSelectedProductDetails((prevDetails) =>
+      prevDetails.filter((item) => item.variantID !== variantID)
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(orderForm);
     console.log("Data Submitted");
   };
 
@@ -328,7 +329,7 @@ const CreateOrder = () => {
     <div className="p-5 bg-gray-300">
       <p className="font-bold">Create Order</p>
       <div className="  ">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="bg-white p-5 mt-5 max-w-4xl mx-auto">
             <div className="flex space-x-4">
               <div className="flex flex-col w-1/2">
@@ -381,7 +382,9 @@ const CreateOrder = () => {
                 <label className="block mb-1"> State *</label>
                 <input
                   type="text"
+                  name="state"
                   value={orderForm.state}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -596,6 +599,22 @@ const CreateOrder = () => {
             </div>
 
             <div className="flex px-5 py-2 gap-3 ">
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  name="name"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder="Search products here..."
+                  className="p-3 border rounded-xl h-[45px] w-[300px]"
+                />
+                {/* <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
+            >
+              Search
+            </button> */}
+              </div>
               <div>
                 <p>{allProductsData?.totalProducts || 0} results</p>
               </div>
@@ -637,107 +656,67 @@ const CreateOrder = () => {
               </div>
             </div>
             <div className="flex gap-10 p-5">
+              {/* Left Section: List of Products and Variants */}
               <div className="w-[50%]">
-                <Table className="min-w-full bg-white border border-gray-300]">
+                <Table className="min-w-full bg-white border border-gray-300">
                   <Thead>
-                    <Tr className=" bg-gray-200 w-[100%]">
-                      <Th className="py-2 px-4 border-b w-[10%] border-r">
-                        <input
-                          type="checkbox"
-                          checked={isSelectAllChecked}
-                          onChange={handleSelectAllChange}
-                        />
-                      </Th>
+                    <Tr className="bg-gray-200 w-[100%]">
                       <Th className="py-2 px-4 border-b w-[40%] text-start border-r">
                         Name
                       </Th>
-                      {/* <Th className="py-2 px-4 border-b text-start">Id</Th> */}
                       <Th className="py-2 px-4 border-b w-[50%] text-start border-r">
-                        Generic
+                        Variants
                       </Th>
                     </Tr>
                   </Thead>
                   {allProductsData?.data?.map((product) => (
-                    <Tbody key={product?._id}>
+                    <Tbody key={product._id}>
                       <Tr>
-                        <Td className="p-3 border text-center">
-                          <input
-                            type="checkbox"
-                            checked={selectedProductIDs.includes(product._id)}
-                            onChange={() =>
-                              handleProductCheckboxChange(product)
-                            }
-                          />
-                        </Td>
                         <Td className="py-2 px-4 border-b text-start text-[14px]">
                           {product.title}
                         </Td>
-                        {/* <Td className="py-2 px-4 border-b text-start text-[14px]">
-                      {product._id}
-                    </Td> */}
                         <Td className="py-2 px-4 border-b text-start text-[14px]">
-                          {product._id}
+                          <div className="flex flex-col gap-2">
+                            {product?.variants.map((variant) => (
+                              <div
+                                key={variant._id}
+                                onClick={() =>
+                                  handleVariantClick(
+                                    product._id,
+                                    variant._id,
+                                    product.title
+                                  )
+                                }
+                                className="cursor-pointer border p-3"
+                              >
+                                <p className="font-semibold">{variant._id}</p>
+                                <div className="flex justify-around">
+                                  <p>PackSize: {variant.packSize || "N/A"}</p>
+                                  <p>Price: {variant.price || "N/A"}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </Td>
                       </Tr>
                     </Tbody>
                   ))}
                 </Table>
                 <div className="flex px-5 py-2 gap-3 ">
-                  <div>
-                    <p>{allProductsData?.totalProducts || 0} results</p>
-                  </div>
-                  <div
-                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-                    onClick={() => handlePageChange(1)}
-                  >
-                    <MdOutlineKeyboardDoubleArrowLeft />
-                  </div>
-                  <div
-                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-                    onClick={() =>
-                      handlePageChange(Math.max(currentPage - 1, 1))
-                    }
-                  >
-                    <MdOutlineKeyboardArrowLeft />
-                  </div>
-                  <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
-                    <p>{currentPage}</p>
-                  </div>
-                  <div>
-                    <p>of {allProductsData?.totalPages}</p>
-                  </div>
-                  <div
-                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-                    onClick={() =>
-                      handlePageChange(
-                        Math.min(
-                          currentPage + 1,
-                          allProductsData?.totalPages || 1
-                        )
-                      )
-                    }
-                  >
-                    <MdKeyboardArrowRight />
-                  </div>
-                  <div
-                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-                    onClick={() =>
-                      handlePageChange(allProductsData?.totalPages || 1)
-                    }
-                  >
-                    <MdKeyboardDoubleArrowRight />
-                  </div>
+                  {/* Pagination and other controls */}
                 </div>
               </div>
+
+              {/* Right Section: Selected Variants */}
               <div className="w-[50%]">
-                <Table className="min-w-full bg-white border border-gray-300]">
+                <Table className="min-w-full bg-white border border-gray-300">
                   <Thead>
-                    <Tr className=" bg-gray-200 w-[100%]">
+                    <Tr className="bg-gray-200 w-[100%]">
                       <Th className="py-2 px-4 border-r text-start w-[45%]">
-                        Id
+                        Variant ID
                       </Th>
                       <Th className="py-2 px-4 border-r text-start w-[45%]">
-                        Name
+                        Product Name
                       </Th>
                       <Th className="py-2 px-4 border-r text-start w-[10%]">
                         Delete
@@ -747,17 +726,17 @@ const CreateOrder = () => {
 
                   <Tbody>
                     {selectedProductDetails.map((item) => (
-                      <Tr key={item._id}>
+                      <Tr key={item.variantID}>
                         <Td className="p-3 border text-start text-[14px]">
-                          {item._id}
+                          {item.variantID}
                         </Td>
                         <Td className="p-3 border text-start text-[14px]">
-                          {item.title}
+                          {item.productName}
                         </Td>
                         <Td className="p-3 border text-center text-red-700 text-xl text-[14px]">
                           <MdDeleteOutline
                             className="cursor-pointer"
-                            onClick={() => handleDeleteProduct(item._id)}
+                            onClick={() => handleDeleteProduct(item.variantID)}
                           />
                         </Td>
                       </Tr>
@@ -765,20 +744,22 @@ const CreateOrder = () => {
                   </Tbody>
                 </Table>
                 <div className="flex justify-center mt-10">
-                  {selectedProductDetails.length > 0 ? (
+                  {selectedProductDetails.length > 0 && (
                     <button
                       onClick={handleSubmit}
                       className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                     >
                       Attach Category
                     </button>
-                  ) : (
-                    <></>
                   )}
                 </div>
               </div>
             </div>
           </div>
+
+          <button type="submit" className="">
+            Submit
+          </button>
         </form>
       </div>
     </div>
