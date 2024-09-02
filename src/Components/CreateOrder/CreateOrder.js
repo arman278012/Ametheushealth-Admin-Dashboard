@@ -16,6 +16,9 @@ import {
   setSearchQuery,
   setPageLimit,
 } from "../../redux/slice/GetProductsSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
 
 const countryOptions = [
   { value: "AFGHANISTAN", label: "Afghanistan" },
@@ -223,12 +226,27 @@ const countryOptions = [
   { value: "ZIMBABWE", label: "Zimbabwe" },
 ];
 
+const currencyOptions = [
+  { value: "INR", label: "INR" },
+  { value: "USD", label: "USD" },
+  { value: "NPR", label: "NPR" },
+  { value: "BDT", label: "BDT" },
+  { value: "EUR", label: "EUR" },
+  { value: "GBP", label: "£ GBP" },
+  { value: "AED", label: "د.إ. AED" },
+];
+
 const CreateOrder = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCurrency, setSelectedCurrency] = useState("");
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [selectedProductDetails, setSelectedProductDetails] = useState([]);
   const [isSelectAllChecked, setIsSelectAllChecked] = useState(false);
   const [selectedProductIDs, setSelectedProductIDs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [allUser, setAllUser] = useState([]);
+  const [searchUserQuery, setSearchUserQuery] = useState("");
+  const [currentUserPage, setCurrentUserPage] = useState(1);
 
   const dispatch = useDispatch();
   const { allProductsData, currentPage, pageLimit, searchQuery } = useSelector(
@@ -237,7 +255,11 @@ const CreateOrder = () => {
 
   console.log(allProductsData);
 
+  const navigate = useNavigate();
+
   const [orderForm, setOrderForm] = useState({
+    userID: "",
+    currency: "INR",
     name: "",
     companyName: "",
     country: "",
@@ -250,11 +272,11 @@ const CreateOrder = () => {
     age: "",
     bloodPressure: "",
     weight: "",
-    weightUnit: "",
+    weightUnit: "KG",
     orderNotes: "",
     passportImage: "",
     prescriptionImage: "",
-    itemss: [{ productID: "", variantID: "", quantity: "" }],
+    itemss: [],
   });
 
   const toggleTopBar = () => {
@@ -262,7 +284,19 @@ const CreateOrder = () => {
   };
 
   const handleCountryChange = (selectedOption) => {
-    setSelectedCountry(selectedOption.value);
+    setSelectedCountry(selectedOption);
+    setOrderForm((prevForm) => ({
+      ...prevForm,
+      country: selectedOption.value,
+    }));
+  };
+
+  const handleCurrencyChange = (selectedOption) => {
+    setSelectedCurrency(selectedOption);
+    setOrderForm((prevForm) => ({
+      ...prevForm,
+      currency: selectedOption.value,
+    }));
   };
 
   const handleChange = (e) => {
@@ -292,31 +326,64 @@ const CreateOrder = () => {
     dispatch(setSearchQuery(event.target.value));
   };
 
-  const handleVariantClick = (productID, variantID, productName) => {
-    setSelectedProductDetails((prevDetails) => {
-      // Check if the product with the same variantID already exists
-      const variantExists = prevDetails.some(
-        (item) => item.variantID === variantID
+  const handleVariantClick = (productID, variantID, quantity = 1) => {
+    setOrderForm((prevState) => {
+      // Check if the variantID is already in the itemss array
+      const existingItem = prevState.itemss.find(
+        (item) => item.productID === productID && item.variantID === variantID
       );
 
-      if (!variantExists) {
-        return [...prevDetails, { productID, variantID, productName }];
+      if (!existingItem) {
+        return {
+          ...prevState,
+          itemss: [
+            ...prevState.itemss,
+            { productID, variantID, quantity }, // Store the quantity here
+          ],
+        };
       }
 
-      return prevDetails;
+      // If the variant is already in the array, update the quantity
+      return {
+        ...prevState,
+        itemss: prevState.itemss.map((item) =>
+          item.productID === productID && item.variantID === variantID
+            ? { ...item, quantity }
+            : item
+        ),
+      };
     });
   };
 
   const handleDeleteProduct = (variantID) => {
-    setSelectedProductDetails((prevDetails) =>
-      prevDetails.filter((item) => item.variantID !== variantID)
-    );
+    setOrderForm((prevState) => ({
+      ...prevState,
+      itemss: prevState.itemss.filter((item) => item.variantID !== variantID),
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(orderForm);
     console.log("Data Submitted");
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/order/admin/create-order`,
+        orderForm,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      if (response.status == 200) {
+        toast.success("Order Created...");
+        navigate("/orders");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -324,6 +391,47 @@ const CreateOrder = () => {
       fetchGetProductsData({ page: currentPage, pageLimit, searchQuery })
     );
   }, [dispatch, currentPage, pageLimit, searchQuery]);
+
+  const getAllUser = async (searchUserQuery = "", page = 1) => {
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com:4100/ah/api/v1/user/admin/all-user?search=${searchUserQuery}&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setAllUser(response.data);
+      console.log("All User Data", response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      // Optionally handle the error with a user-friendly message
+    }
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchUserQuery) {
+        getAllUser(searchUserQuery);
+      } else {
+        getAllUser("");
+      }
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchUserQuery]);
+
+  useEffect(() => {
+    getAllUser(searchUserQuery, currentUserPage);
+  }, [currentUserPage]);
+
+  const goToPage = (page) => {
+    if (page > 0 && page <= allUser.totalPages) {
+      setCurrentUserPage(page);
+    }
+  };
 
   return (
     <div className="p-5 bg-gray-300">
@@ -389,38 +497,37 @@ const CreateOrder = () => {
                 />
               </div>
               <div>
-                <div className=" w-[420px]">
+                <div className="w-[420px]">
                   <label className="block mb-1">Country *</label>
                   <Select
                     className="w-full focus:outline-none"
-                    value={orderForm.country}
+                    value={selectedCountry}
                     options={countryOptions}
                     onChange={handleCountryChange}
                     placeholder={
-                      selectedCountry ? selectedCountry : "Select your country"
+                      selectedCountry
+                        ? selectedCountry.label
+                        : "Select your country"
                     }
                     classNamePrefix="react-select"
-                    // className={`${
-                    //   errors.country
-                    //     ? "border-red-500"
-                    //     : "border-gray-300 w-[200px]  border  rounded"
-                    // }`}
                   />
-                  {/* {errors.country && (
-                <span className="text-red-500">Country is required</span>
-              )} */}
                 </div>
               </div>
             </div>
             <div className="flex space-x-4">
-              <div className="flex flex-col w-1/2">
-                <label className="block mb-1"> Postcode / ZIP *</label>
-                <input
-                  type="text"
-                  value={orderForm.pincode}
-                  name="pincode"
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+              <div className="w-[420px]">
+                <label className="block mb-1">Currency *</label>
+                <Select
+                  className="w-full focus:outline-none"
+                  value={selectedCurrency}
+                  options={currencyOptions}
+                  onChange={handleCurrencyChange}
+                  placeholder={
+                    selectedCurrency
+                      ? selectedCurrency.label
+                      : "Select your currency"
+                  }
+                  classNamePrefix="react-select"
                 />
               </div>
               <div className="flex flex-col w-1/2">
@@ -447,11 +554,11 @@ const CreateOrder = () => {
                 />
               </div>
               <div className="flex flex-col w-1/2">
-                <label className="block mb-1">Age *</label>
+                <label className="block mb-1"> Postcode / ZIP *</label>
                 <input
                   type="text"
-                  value={orderForm.age}
-                  name="age"
+                  value={orderForm.pincode}
+                  name="pincode"
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -497,6 +604,27 @@ const CreateOrder = () => {
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
+              <div className="flex flex-col w-1/2">
+                <label className="block mb-1">Age *</label>
+                <input
+                  type="text"
+                  value={orderForm.age}
+                  name="age"
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/2">
+                <label className="block mb-1">Order notes (optional)</label>
+                <textarea
+                  value={orderForm.orderNotes}
+                  name="orderNotes"
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                ></textarea>
+              </div>
               <div className="flex gap-4">
                 <div className="flex flex-col w-[300px]">
                   <label className="block mb-1">Weight (optional)</label>
@@ -514,22 +642,13 @@ const CreateOrder = () => {
                     value={orderForm.weightUnit}
                     name="weightUnit"
                     onChange={handleChange}
-                    // {...register("weightUnit")}
                     id=""
-                    defaultValue="KG"
                   >
                     <option value="KG">KG</option>
                     <option value="LB">LB</option>
                   </select>
                 </div>
               </div>
-            </div>
-            <div>
-              <label className="block mb-1">Order notes (optional)</label>
-              <textarea
-                // {...register("orderNotes")}
-                className="w-full p-2 border border-gray-300 rounded"
-              ></textarea>
             </div>
           </div>
 
@@ -561,23 +680,6 @@ const CreateOrder = () => {
                     className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
                   />
                 </div>
-
-                {/* <div className="flex justify-center items-center">
-              <button
-                onClick={() =>
-                  dispatch(
-                    fetchGetProductsData({
-                      page: currentPage,
-                      pageLimit,
-                      searchQuery,
-                    })
-                  )
-                }
-                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
-              >
-                Apply
-              </button>
-            </div> */}
               </div>
             </div>
             <div className="flex justify-end mr-5">
@@ -608,12 +710,6 @@ const CreateOrder = () => {
                   placeholder="Search products here..."
                   className="p-3 border rounded-xl h-[45px] w-[300px]"
                 />
-                {/* <button
-              type="submit"
-              className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
-            >
-              Search
-            </button> */}
               </div>
               <div>
                 <p>{allProductsData?.totalProducts || 0} results</p>
@@ -681,18 +777,37 @@ const CreateOrder = () => {
                               <div
                                 key={variant._id}
                                 onClick={() =>
-                                  handleVariantClick(
-                                    product._id,
-                                    variant._id,
-                                    product.title
-                                  )
-                                }
+                                  handleVariantClick(product._id, variant._id)
+                                } // Only call on click
                                 className="cursor-pointer border p-3"
                               >
                                 <p className="font-semibold">{variant._id}</p>
                                 <div className="flex justify-around">
-                                  <p>PackSize: {variant.packSize || "N/A"}</p>
+                                  <p>PackSize: {variant.packSize || "N/A"}</p>{" "}
+                                  {/* <span className="font-bold">|</span> */}
                                   <p>Price: {variant.price || "N/A"}</p>
+                                </div>
+                                <div className="flex justify-between items-center mt-2">
+                                  <label
+                                    htmlFor={`quantity-${variant._id}`}
+                                    className="mr-2"
+                                  >
+                                    Quantity:
+                                  </label>
+                                  <input
+                                    type="number"
+                                    id={`quantity-${variant._id}`}
+                                    className="border p-1 w-20"
+                                    min="1"
+                                    defaultValue="1"
+                                    onChange={(e) =>
+                                      handleVariantClick(
+                                        product._id,
+                                        variant._id,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
                                 </div>
                               </div>
                             ))}
@@ -716,7 +831,7 @@ const CreateOrder = () => {
                         Variant ID
                       </Th>
                       <Th className="py-2 px-4 border-r text-start w-[45%]">
-                        Product Name
+                        Quantity
                       </Th>
                       <Th className="py-2 px-4 border-r text-start w-[10%]">
                         Delete
@@ -725,13 +840,13 @@ const CreateOrder = () => {
                   </Thead>
 
                   <Tbody>
-                    {selectedProductDetails.map((item) => (
+                    {orderForm.itemss.map((item) => (
                       <Tr key={item.variantID}>
                         <Td className="p-3 border text-start text-[14px]">
                           {item.variantID}
                         </Td>
                         <Td className="p-3 border text-start text-[14px]">
-                          {item.productName}
+                          {item.quantity}
                         </Td>
                         <Td className="p-3 border text-center text-red-700 text-xl text-[14px]">
                           <MdDeleteOutline
@@ -743,23 +858,174 @@ const CreateOrder = () => {
                     ))}
                   </Tbody>
                 </Table>
-                <div className="flex justify-center mt-10">
-                  {selectedProductDetails.length > 0 && (
-                    <button
-                      onClick={handleSubmit}
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Attach Category
-                    </button>
-                  )}
-                </div>
               </div>
             </div>
-          </div>
+            <div className="main-content-div bg-gray-300 p-5">
+              <div className="flex justify-end relative -top-5">
+                <div className="bg-white h-[30px] px-3 py-1 flex justify-end">
+                  <p
+                    className={`cursor-pointer text-sm flex items-center`}
+                    onClick={toggleTopBar}
+                  >
+                    OPTIONS
+                    <span
+                      className={`ml-1 transition-transform duration-300 ${
+                        isTopBarOpen ? "rotate-180" : "rotate-0"
+                      }`}
+                    >
+                      ▼
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="mb-5 flex gap-2 justify-end">
+                <input
+                  type="text"
+                  className="py-2 rounded-xl px-3 w-[250px]"
+                  placeholder="Search Users..."
+                  value={searchUserQuery}
+                  onChange={(e) => setSearchUserQuery(e.target.value)}
+                />
+              </div>
+              <div className="flex sm:flex-row flex-col justify-between mb-5">
+                <div className="flex gap-5">
+                  {/* <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
+              Bulk Delete
+            </button> */}
 
-          <button type="submit" className="">
-            Submit
-          </button>
+                  <button
+                    onClick={() => navigate("/add-blogs")}
+                    className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
+                  >
+                    Add Users
+                  </button>
+                </div>
+
+                <div className="flex sm:px-5 py-2 gap-3 sm:justify-end justify-start">
+                  <div>
+                    <p className="font-bold">
+                      {allUser?.totalCount || 0} Total items
+                    </p>
+                  </div>
+                  <div
+                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                    onClick={() => goToPage(1)}
+                  >
+                    <MdOutlineKeyboardDoubleArrowLeft />
+                  </div>
+                  <div
+                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                    onClick={() => goToPage(Math.max(currentUserPage - 1, 1))}
+                  >
+                    <MdOutlineKeyboardArrowLeft />
+                  </div>
+                  <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
+                    <p>{currentUserPage || 0}</p>
+                  </div>
+                  <div>
+                    <p>of {allUser?.totalPages || 0}</p>
+                  </div>
+                  <div
+                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                    onClick={() =>
+                      goToPage(
+                        Math.min(currentUserPage + 1, allUser?.totalPages || 1)
+                      )
+                    }
+                  >
+                    <MdKeyboardArrowRight />
+                  </div>
+                  <div
+                    className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+                    onClick={() => goToPage(allUser?.totalPages || 1)}
+                  >
+                    <MdKeyboardDoubleArrowRight />
+                  </div>
+                </div>
+              </div>
+              <Table className="min-w-full bg-white border border-gray-300">
+                <Thead>
+                  <Tr className=" bg-gray-200 w-[100%]">
+                    <Th className="py-2 px-4 border-b w-[5%]"></Th>
+                    <Th className="py-2 px-4 border-b text-start sm:w-[30%]">
+                      Name
+                    </Th>
+                    <Th className="py-2 px-4 border-b text-start sm:w-[15%]">
+                      Email
+                    </Th>
+                    <Th className="py-2 px-4 border-b text-start sm:w-[15%]">
+                      Mobile
+                    </Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {isLoading
+                    ? Array.from({ length: 10 })?.map((_, index) => (
+                        <Tr key={index} className="border-t">
+                          <Td className="py-2 px-4 border-b text-center">
+                            <Skeleton circle={true} height={12} width={12} />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-center">
+                            <Skeleton circle={true} height={48} width={48} />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            <Skeleton width={`80%`} />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            <Skeleton width={`80%`} count={2} />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            <Skeleton width={`50%`} />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            <Skeleton width={`50%`} />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[13px]">
+                            <Skeleton width={`50%`} />
+                          </Td>
+                        </Tr>
+                      ))
+                    : allUser?.data?.map((item, index) => (
+                        <Tr key={index} className="border-t">
+                          <Td className="py-2 px-4 border-b text-center">
+                            <input
+                              type="radio"
+                              onChange={() =>
+                                setOrderForm((prevState) => ({
+                                  ...prevState,
+                                  userID: item._id, // Replace `yourUserID` with the actual user ID value
+                                }))
+                              }
+                              value={orderForm.userID}
+                              name="userID"
+                            />
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            <p className="text-[#2271b1]">{item?.name}</p>
+                            <div className="text-[12px]">{item?._id}</div>
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            {item?.email}
+                          </Td>
+                          <Td className="py-2 px-4 border-b text-[14px]">
+                            <span className="text-green-600 font-semibold">
+                              {item?.mobile}
+                            </span>
+                          </Td>
+                        </Tr>
+                      ))}
+                </Tbody>
+              </Table>
+            </div>
+            <div className="flex justify-center items-center p-2">
+              <button
+                type="submit"
+                className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

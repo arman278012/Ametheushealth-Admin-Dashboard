@@ -151,10 +151,6 @@ const AllBlogs = () => {
         </div>
         <div className="flex sm:flex-row flex-col justify-between mb-5">
           <div className="flex gap-5">
-            {/* <button className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl">
-              Bulk Delete
-            </button> */}
-
             <button
               onClick={() => navigate("/add-blogs")}
               className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
