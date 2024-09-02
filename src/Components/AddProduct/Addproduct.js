@@ -64,6 +64,7 @@ const AddProduct = () => {
   const [manufacturerQuery, setManufacturerQuery] = useState("");
   const [sku, setSku] = useState("");
   const [btnLoader, setBtnLoader] = useState(false);
+  const [errors, setErrors] = useState("");
 
   const toggleManuId = () => {
     setManuIdOpen(!manuIdOpen);
@@ -271,9 +272,8 @@ const AddProduct = () => {
   const navigate = useNavigate();
 
   //posting data to the backend
-  const postProductsData = async (values, e) => {
+  const postProductsData = async (values) => {
     try {
-      // e.preventDefault();
       setBtnLoader(true);
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/product`,
@@ -285,14 +285,25 @@ const AddProduct = () => {
           },
         }
       );
-      console.log("Product", response.data);
       toast.success("Product Created Successfully...");
       if (response.status === 201) {
         navigate(`/edit-products/${response.data.product._id}`);
       }
-      // window.location.reload();
     } catch (error) {
-      console.log(error);
+      setBtnLoader(false);
+      if (error.response && error.response.data) {
+        const backendErrors = error.response.data.errors;
+        const errorsObject = {};
+
+        backendErrors.forEach((err) => {
+          errorsObject[err.path] = err.msg;
+        });
+
+        setErrors(errorsObject); // Set all errors at once
+        toast.error("Failed to create product. Please check the errors.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     } finally {
       setBtnLoader(false);
     }

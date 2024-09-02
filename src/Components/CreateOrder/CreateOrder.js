@@ -274,8 +274,6 @@ const CreateOrder = () => {
     weight: "",
     weightUnit: "KG",
     orderNotes: "",
-    passportImage: "",
-    prescriptionImage: "",
     itemss: [],
   });
 
@@ -565,7 +563,7 @@ const CreateOrder = () => {
               </div>
             </div>
 
-            <div className="flex space-x-4">
+            {/* <div className="flex space-x-4">
               <div className="flex flex-col w-1/2">
                 <label className="block mb-1">
                   {" "}
@@ -591,7 +589,7 @@ const CreateOrder = () => {
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="flex space-x-4">
               <div className="flex flex-col w-1/2">
@@ -795,7 +793,7 @@ const CreateOrder = () => {
                                     Quantity:
                                   </label>
                                   <input
-                                    type="number"
+                                    type="text"
                                     id={`quantity-${variant._id}`}
                                     className="border p-1 w-20"
                                     min="1"
