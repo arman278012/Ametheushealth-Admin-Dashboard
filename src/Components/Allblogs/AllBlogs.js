@@ -24,6 +24,7 @@ const AllBlogs = () => {
   const navigate = useNavigate();
 
   const showAllBlogs = async (query = "", page = 1, pageLimit = 10) => {
+    query = encodeURIComponent(query);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/blog/admin?search=${query}&page=${page}&limit=${pageLimit}`,

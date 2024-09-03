@@ -94,6 +94,7 @@ const InstantGeneric = () => {
 
   const searchGeneric = async (query, page) => {
     setLoading(true);
+    query = encodeURIComponent(query);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&search=${query}&limit=${9}`,

@@ -40,6 +40,7 @@ const AllGeneric = () => {
   const allGenericData = async (query, page) => {
     setLoading(true);
     console.log("page", pageLimit);
+    query = encodeURIComponent(query);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&limit=${pageLimit}&search=${query}`,
