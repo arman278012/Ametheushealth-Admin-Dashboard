@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 const OrderDetails = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState({});
-  const [orderDate, setOrderDate] = useState("");
 
   // State variables for form fields
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -33,7 +32,7 @@ const OrderDetails = () => {
         console.log(orderData.trackingLink);
         setTrackingNumber(orderData?.trackingLink);
 
-        console.log(trackingNumber)
+        console.log(trackingNumber);
 
         // Set initial status from order details
         if (orderData.status) {
@@ -87,11 +86,9 @@ const OrderDetails = () => {
       .replace(/,/, "");
   }
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleFormSubmit = async (updatedStatus) => {
     const updateData = {
-      status,
+      status: updatedStatus, // use the passed status value
       trackingLink: trackingNumber,
       deliveryPartner,
     };
@@ -109,12 +106,10 @@ const OrderDetails = () => {
         }
       );
       console.log("Order updated successfully:", response.data);
-      // Handle success, maybe show a success message or redirect
       toast.success("Order updated successfully");
     } catch (error) {
       console.error("Error updating order:", error);
-      // Handle error, show error message to the user
-      alert("Error updating order");
+      toast.error("Error updating order");
     }
   };
 
@@ -185,18 +180,15 @@ const OrderDetails = () => {
                   <p className="text-[18px] font-semibold">Order Status</p>
                 </div>
                 <div className="flex flex-col gap-3">
-                  {/* <input
-                    type="date"
-                    value={orderDate}
-                    onChange={(e) => setOrderDate(e.target.value)}
-                    className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white border"
-                  /> */}
                   <select
                     id="status"
                     name="status"
                     className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white border"
                     value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                    onChange={(e) => {
+                      setStatus(e.target.value);
+                      handleFormSubmit(e.target.value);
+                    }}
                   >
                     <option
                       value=""
@@ -214,6 +206,7 @@ const OrderDetails = () => {
                     <option value="Delivered">Delivered</option>
                   </select>
                 </div>
+
                 <div className=" px-3 mt-2 py-1 sm:w-[300px] focus:outline-none rounded-md bg-white border w-[300px]">
                   <p className="font-semibold">User details</p>
                   <div className="relative left-[90px] mt-5 w-[70px] h-[70px] bg-gray-200 flex items-center justify-center text-xl font-bold rounded-full overflow-hidden">
