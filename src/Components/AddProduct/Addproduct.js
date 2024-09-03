@@ -41,7 +41,9 @@ const initialValues = {
   metaTags: "",
   manufacturerID: "",
   manufacturer: "",
-  variants: [{}],
+  variants: [
+    { marginIndia: -15, margin: 60, marginBangladesh: 20, marginNepal: 20 },
+  ],
 };
 
 const AddProduct = () => {
@@ -1121,7 +1123,6 @@ const AddProduct = () => {
                                           name={`variants[${index}].margin`}
                                           type="number"
                                           placeholder="Margin"
-                                          defaultValue={60}
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
@@ -1138,7 +1139,6 @@ const AddProduct = () => {
                                           type="number"
                                           placeholder="Margin India"
                                           className="h-[35px] border px-2"
-                                          defaultValue={-15}
                                           onChange={(e) =>
                                             setFieldValue(
                                               `variants[0].marginIndia`,
@@ -1157,7 +1157,6 @@ const AddProduct = () => {
                                           name={`variants[${index}].marginBangladesh`}
                                           type="number"
                                           placeholder="M Bangladesh"
-                                          defaultValue={20}
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
@@ -1170,7 +1169,6 @@ const AddProduct = () => {
                                           type="number"
                                           placeholder="Margin Nepal"
                                           className="h-[35px] border px-2 focus:outline-none"
-                                          defaultValue={20}
                                         />
                                       </div>
                                     </div>
@@ -1246,7 +1244,6 @@ const AddProduct = () => {
                                           className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
                                         >
                                           <option value="₹">₹</option>
-                                          <option value="Euro">Euro</option>
                                         </Field>
                                       </div>
                                     </div>

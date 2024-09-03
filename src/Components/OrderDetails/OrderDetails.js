@@ -533,7 +533,10 @@ const OrderDetails = () => {
                 name="status"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
                 value={status} // Bind to the state variable
-                onChange={(e) => setStatus(e.target.value)} // Update state on change
+                onChange={(e) => {
+                  setStatus(e.target.value);
+                  handleFormSubmit(e.target.value);
+                }}
               >
                 <option value="" disabled hidden>
                   status
