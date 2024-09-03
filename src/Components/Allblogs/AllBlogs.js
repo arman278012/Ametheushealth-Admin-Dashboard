@@ -42,7 +42,7 @@ const AllBlogs = () => {
       console.log(error);
     }
   };
-
+  
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {

@@ -398,8 +398,12 @@ const EditProducts = () => {
     const files = Array.from(e.target.files);
     setSelectedFiles(files);
 
+    // Create previews for the selected files
     const previews = files.map((file) => URL.createObjectURL(file));
     setPreviewImages(previews);
+
+    // Immediately upload the selected files
+    addImageToProduct(files);
   };
 
   const handleDeleteImage = (index) => {
@@ -411,11 +415,14 @@ const EditProducts = () => {
   };
 
   //Add image to a product
-  const addImageToProduct = async () => {
+  const addImageToProduct = async (files) => {
     const formData = new FormData();
-    selectedFiles.forEach((file) => {
+
+    // Append each file to the form data
+    files.forEach((file) => {
       formData.append("images", file);
     });
+
     try {
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/product/${id}/images`,
@@ -427,10 +434,12 @@ const EditProducts = () => {
           },
         }
       );
+
+      console.log("Images uploaded:", response.data);
     } catch (error) {
-      console.log(error);
+      console.error("Error uploading images:", error);
     } finally {
-      getDataForEdit();
+      getDataForEdit(); // Call to refresh or fetch updated data
     }
   };
 
@@ -1643,12 +1652,12 @@ const EditProducts = () => {
                         ))}
                       </div>
                     )}
-                    <button
+                    {/* <button
                       onClick={addImageToProduct}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md"
                     >
                       Upload Images
-                    </button>
+                    </button> */}
                   </div>
                   <div className="grid grid-cols-3 border-[1px] border-gray-300 rounded-xl p-2 gap-2 ">
                     {productValues?.images?.map((image) => (
