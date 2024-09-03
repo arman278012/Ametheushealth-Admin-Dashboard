@@ -4,6 +4,7 @@ import axios from "axios";
 export const getCategoryData = createAsyncThunk(
   "getCategoryData/fetchGetCategoryData",
   async ({ page, searchQuery, pageLimit }, { rejectWithValue }) => {
+    searchQuery = encodeURIComponent(searchQuery);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/category/?page=${page}&search=${searchQuery}&limit=${pageLimit}`,

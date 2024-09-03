@@ -29,6 +29,7 @@ const AllContacts = () => {
   };
 
   const getAllContacts = async (search = "", page = 1, pageLimit = 10) => {
+    search = encodeURIComponent(search);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/contact?search=${search}&page=${page}&limit=${pageLimit}`,

@@ -30,7 +30,8 @@ const AllPerscription = () => {
     }
   };
 
-  const getAllPerscription = async () => {
+  const getAllPerscription = async (searchUserQuery) => {
+    searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/prescription`,

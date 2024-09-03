@@ -38,6 +38,7 @@ const ProductDetails = () => {
   //Products details API fetching again to solve the searching problem
 
   const productDetailsAgain = async (page, pageLimit, query) => {
+    query = encodeURIComponent(query);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}`,

@@ -45,6 +45,7 @@ const Orders = () => {
   };
 
   const allOrders = async (page, pageLimit, query, filter) => {
+    query = encodeURIComponent(query);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}&status=${filter}`,

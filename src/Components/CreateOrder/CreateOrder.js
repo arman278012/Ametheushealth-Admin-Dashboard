@@ -391,6 +391,7 @@ const CreateOrder = () => {
   }, [dispatch, currentPage, pageLimit, searchQuery]);
 
   const getAllUser = async (searchUserQuery = "", page = 1) => {
+    searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/user/admin/all-user?search=${searchUserQuery}&page=${page}`,

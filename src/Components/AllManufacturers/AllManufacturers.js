@@ -34,6 +34,7 @@ const AllManufacturers = () => {
 
   const getManufacturersData = async (page = 1, search = "") => {
     setLoading(true);
+    search = encodeURIComponent(search);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,

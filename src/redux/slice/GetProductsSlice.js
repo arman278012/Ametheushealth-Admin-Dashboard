@@ -4,6 +4,7 @@ import axios from "axios";
 export const fetchGetProductsData = createAsyncThunk(
   "GetProducts/fetchGetProductsData",
   async ({ page, searchQuery, pageLimit }, { rejectWithValue }) => {
+    searchQuery = encodeURIComponent(searchQuery);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${searchQuery}`,
