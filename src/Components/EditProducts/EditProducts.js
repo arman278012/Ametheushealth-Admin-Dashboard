@@ -1635,7 +1635,7 @@ const EditProducts = () => {
                     />
                     {previewImages.length > 0 && (
                       <div className="flex flex-wrap gap-2">
-                        {previewImages.map((preview, index) => (
+                        {/* {previewImages.map((preview, index) => (
                           <div key={index} className="relative">
                             <img
                               src={preview}
@@ -1649,7 +1649,7 @@ const EditProducts = () => {
                               <FaTrash />
                             </button>
                           </div>
-                        ))}
+                        ))} */}
                       </div>
                     )}
                     {/* <button
