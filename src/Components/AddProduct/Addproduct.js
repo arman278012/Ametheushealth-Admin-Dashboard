@@ -1114,16 +1114,18 @@ const AddProduct = () => {
                                         <label className="font-semibold px-2 opacity-65">
                                           <span className="text-[14px]">
                                             {" "}
-                                            Margin
+                                            Margin{" "}
                                           </span>
                                         </label>
                                         <Field
                                           name={`variants[${index}].margin`}
                                           type="number"
                                           placeholder="Margin"
+                                          defaultValue={60}
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
+
                                       <div className="flex flex-col w-[115px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           <span className="text-[14px]">
@@ -1136,6 +1138,7 @@ const AddProduct = () => {
                                           type="number"
                                           placeholder="Margin India"
                                           className="h-[35px] border px-2"
+                                          defaultValue={-15}
                                           onChange={(e) =>
                                             setFieldValue(
                                               `variants[0].marginIndia`,
@@ -1154,6 +1157,7 @@ const AddProduct = () => {
                                           name={`variants[${index}].marginBangladesh`}
                                           type="number"
                                           placeholder="M Bangladesh"
+                                          defaultValue={20}
                                           className="h-[35px] border px-2 focus:outline-none"
                                         />
                                       </div>
@@ -1166,6 +1170,7 @@ const AddProduct = () => {
                                           type="number"
                                           placeholder="Margin Nepal"
                                           className="h-[35px] border px-2 focus:outline-none"
+                                          defaultValue={20}
                                         />
                                       </div>
                                     </div>
@@ -1367,10 +1372,10 @@ const AddProduct = () => {
                                       packSize: "",
                                       price: 0,
                                       salePrice: 0,
-                                      margin: "",
-                                      marginIndia: "",
-                                      marginBangladesh: "",
-                                      marginNepal: "",
+                                      margin: "60",
+                                      marginIndia: "-15",
+                                      marginBangladesh: "20",
+                                      marginNepal: "20",
                                       minOrderQuantity: "1",
                                       maxOrderQuantity: "100",
                                       isStockAvailable: true,
