@@ -487,16 +487,12 @@ const AttachGeneric = () => {
               </Tbody>
             </Table>
             <div className="flex justify-center mt-10">
-              {selectedProductDetails.length > 0 ? (
-                <button
-                  onClick={formik.handleSubmit}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                >
-                  Attach Category
-                </button>
-              ) : (
-                <></>
-              )}
+              <button
+                onClick={formik.handleSubmit}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              >
+                Attach Generic
+              </button>
             </div>
           </div>
         </div>

@@ -509,6 +509,7 @@ const EditProducts = () => {
   const selectedGeneric = genericsMap.find(
     (generic) => generic._id === productValues.genericID
   );
+
   const selectedMAnufacturer = manufacturerNamesId?.data?.find(
     (manufacturer) => manufacturer._id === productValues.manufacturerID
   );
