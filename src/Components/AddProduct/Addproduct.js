@@ -1351,16 +1351,16 @@ const AddProduct = () => {
                                         />
                                       </div>
                                     </div>
-                                    <button
+                                    {/* <button
                                       type="button"
                                       onClick={() => remove(index)}
                                       className="mt-2 bg-red-500 text-white px-4 py-2 rounded self-end"
                                     >
                                       Remove
-                                    </button>
+                                    </button> */}
                                   </div>
                                 ))}
-                                <button
+                                {/* <button
                                   type="button"
                                   onClick={() =>
                                     push({
@@ -1390,7 +1390,7 @@ const AddProduct = () => {
                                   className="mt-5 bg-blue-500 text-white px-4 py-2 rounded"
                                 >
                                   Add another variant
-                                </button>
+                                </button> */}
                               </>
                             )}
                           </FieldArray>
