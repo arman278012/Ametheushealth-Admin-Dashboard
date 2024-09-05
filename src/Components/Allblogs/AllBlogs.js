@@ -42,18 +42,14 @@ const AllBlogs = () => {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (searchQuery) {
-        showAllBlogs(searchQuery);
-      } else {
-        showAllBlogs("");
-      }
+      showAllBlogs(searchQuery, currentPage); // Call the API with the current page
     }, 100);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]); // Include currentPage as a dependency
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBaropen);
@@ -167,14 +163,20 @@ const AllBlogs = () => {
               </p>
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => goToPage(1)}
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={() => currentPage > 1 && goToPage(1)}
             >
               <MdOutlineKeyboardDoubleArrowLeft />
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => goToPage(Math.max(currentPage - 1, 1))}
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={() =>
+                currentPage > 1 && goToPage(Math.max(currentPage - 1, 1))
+              }
             >
               <MdOutlineKeyboardArrowLeft />
             </div>
@@ -185,16 +187,28 @@ const AllBlogs = () => {
               <p>of {allBlogs?.totalPages || 0}</p>
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === allBlogs?.totalPages
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
               onClick={() =>
+                currentPage < (allBlogs?.totalPages || 1) &&
                 goToPage(Math.min(currentPage + 1, allBlogs?.totalPages || 1))
               }
             >
               <MdKeyboardArrowRight />
             </div>
             <div
-              className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-              onClick={() => goToPage(allBlogs?.totalPages || 1)}
+              className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
+                currentPage === allBlogs?.totalPages
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              onClick={() =>
+                currentPage < (allBlogs?.totalPages || 1) &&
+                goToPage(allBlogs?.totalPages || 1)
+              }
             >
               <MdKeyboardDoubleArrowRight />
             </div>
