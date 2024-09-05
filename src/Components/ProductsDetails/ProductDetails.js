@@ -15,10 +15,13 @@ import {
   setSearchQuery,
 } from "../../redux/slice/GetProductsSlice";
 import axios, { all } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const ProductDetails = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropOpen, setIsDropOpen] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
@@ -34,6 +37,8 @@ const ProductDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState("10");
+
+  const searchParams = new URLSearchParams(location.search);
 
   //Products details API fetching again to solve the searching problem
 
@@ -57,7 +62,21 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    const page = parseInt(params.get("page")) || 1;
+
+    setSearchQuery(query);
+    setCurrentPage(page);
+    productDetailsAgain(page, pageLimit, query);
+  }, [location.search, pageLimit]);
+
+  useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      const newParams = new URLSearchParams();
+      newParams.set("search", searchQuery);
+      newParams.set("page", currentPage);
+      navigate({ search: newParams.toString() }); // Use navigate instead of history.push
       productDetailsAgain(currentPage, pageLimit, searchQuery);
     }, 300);
 
@@ -69,8 +88,6 @@ const ProductDetails = () => {
   };
 
   //-------------------------------------------------------------------
-
-  const navigate = useNavigate();
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBarOpen);
@@ -510,7 +527,10 @@ const ProductDetails = () => {
                           <button
                             className="text-[#2271b1]"
                             onClick={() =>
-                              navigate(`/edit-products/${singleItem._id}`)
+                              navigate(
+                                `/edit-products/${singleItem._id}/${currentPage}`,
+                                { state: { search: searchParams.toString() } }
+                              )
                             }
                           >
                             Edit

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { FaChevronUp, FaChevronDown, FaTrash } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { MdMore } from "react-icons/md";
@@ -15,7 +15,11 @@ import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 
 const EditProducts = () => {
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { id, page } = useParams();
+
+  console.log(page);
 
   const [activeSection, setActiveSection] = useState("name");
   const [externalLink, setExternalLink] = useState("");
@@ -36,8 +40,6 @@ const EditProducts = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [updateLoaderBtn, setUpdateLoaderBtn] = useState(false);
   const [searchManufacturerQuery, setSearchManufacturerQuery] = useState("");
-
-  const navigate = useNavigate();
 
   const addVariant = () => {
     setProductValues((prevState) => ({
@@ -364,15 +366,12 @@ const EditProducts = () => {
   const editProductCategory = async (e) => {
     e.preventDefault();
     setUpdateLoaderBtn(true);
-    console.log("Product ID:", id);
 
-    // Ensure the selected categories are part of the productValues
     const updatedProductValues = {
       ...productValues,
       categoryID: selectedCategories, // Assuming you store categories under this key
     };
 
-    console.log("Product Values:", updatedProductValues);
     try {
       const response = await axios.patch(
         `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
@@ -386,7 +385,10 @@ const EditProducts = () => {
       );
       console.log("Response:", response.data);
       toast.success("Updated successfully...");
-      navigate("/product-details");
+
+      // Retrieve the search and page from state (passed from product-details page)
+      const searchParams = location.state?.search || "";
+      navigate(`/product-details?${searchParams}`); // Navigate back with the same query parameters
     } catch (error) {
       console.error("Error updating product:", error);
     } finally {

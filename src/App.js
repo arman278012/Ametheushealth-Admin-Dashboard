@@ -94,7 +94,7 @@ function App() {
               element={<AdminRoute element={InstantGenericPage} />}
             />
             <Route
-              path="/edit-products/:id"
+              path="/edit-products/:id/:page"
               element={<AdminRoute element={EditProductsPage} />}
             />
             <Route
