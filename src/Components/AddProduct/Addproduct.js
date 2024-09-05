@@ -12,7 +12,8 @@ import { DiHtml53dEffects } from "react-icons/di";
 import { PiSelectionSlashFill } from "react-icons/pi";
 import toast from "react-hot-toast";
 import "./AddProduct.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
 
 const initialValues = {
   title: "",
@@ -350,6 +351,22 @@ const AddProduct = () => {
     } catch (err) {
       console.log("API error:", err);
     }
+  };
+
+  // Function to scroll to the top of the page
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Adds smooth scrolling animation
+    });
+  };
+
+  // Function to scroll to the bottom of the page
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth", // Adds smooth scrolling animation
+    });
   };
 
   if (loading) {
@@ -1698,6 +1715,26 @@ const AddProduct = () => {
             </form>
           )}
         </Formik>
+      </div>
+      <div className="">
+        {/* Scroll buttons */}
+        <div className="fixed right-10 bottom-10 flex flex-col justify-end items-end gap-2">
+          {/* Scroll to top button */}
+          <div
+            onClick={scrollToTop}
+            className="bg-green-400 h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer"
+          >
+            <BiArrowToTop className="text-[20px] font-bold" />
+          </div>
+
+          {/* Scroll to bottom button */}
+          <div
+            onClick={scrollToBottom}
+            className="bg-green-400 h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer"
+          >
+            <BiArrowFromTop className="text-[20px] font-bold" />
+          </div>
+        </div>
       </div>
     </div>
   );

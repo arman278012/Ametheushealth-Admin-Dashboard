@@ -13,6 +13,7 @@ import { Field } from "formik";
 import JoditEditor from "jodit-react";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
+import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
 
 const EditProducts = () => {
   const navigate = useNavigate();
@@ -515,6 +516,22 @@ const EditProducts = () => {
   const selectedMAnufacturer = manufacturerNamesId?.data?.find(
     (manufacturer) => manufacturer._id === productValues.manufacturerID
   );
+
+  // Function to scroll to the top of the page
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Adds smooth scrolling animation
+    });
+  };
+
+  // Function to scroll to the bottom of the page
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth", // Adds smooth scrolling animation
+    });
+  };
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -1825,6 +1842,26 @@ const EditProducts = () => {
             </button>
           </div>
         </form>
+      </div>
+      <div className="">
+        {/* Scroll buttons */}
+        <div className="fixed right-10 bottom-10 flex flex-col justify-end items-end gap-2">
+          {/* Scroll to top button */}
+          <div
+            onClick={scrollToTop}
+            className="bg-green-400 h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer"
+          >
+            <BiArrowToTop className="text-[20px] font-bold" />
+          </div>
+
+          {/* Scroll to bottom button */}
+          <div
+            onClick={scrollToBottom}
+            className="bg-green-400 h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer"
+          >
+            <BiArrowFromTop className="text-[20px] font-bold" />
+          </div>
+        </div>
       </div>
     </div>
   );
