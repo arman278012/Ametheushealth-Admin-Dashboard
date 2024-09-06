@@ -369,13 +369,13 @@ const AddProduct = () => {
     });
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-[100vh] w-[100vw]">
-        <span class="loader"></span>
-      </div>
-    );
-  }
+    // if (loading) {
+    //   return (
+    //     <div className="flex justify-center items-center h-[100vh] w-[100vw]">
+    //       <span class="loader"></span>
+    //     </div>
+    //   );
+    // }
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -1442,7 +1442,7 @@ const AddProduct = () => {
                           : "h-0 overflow-hidden"
                       } transition-all duration-300`}
                     >
-                      {/* <div>
+                      <div>
                         <input
                           type="text"
                           value={hierarchyQuery}
@@ -1450,7 +1450,7 @@ const AddProduct = () => {
                           placeholder="Search..."
                           onChange={(e) => setHierarchyQuery(e.target.value)}
                         />
-                      </div> */}
+                      </div>
                       {/* // JSX rendering of the SKU input and hierarchical
                       checkboxes */}
                       {hierarchyData?.map((item) => (

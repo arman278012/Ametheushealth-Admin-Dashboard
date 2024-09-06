@@ -89,7 +89,7 @@ const OrderDetails = () => {
   const handleFormSubmit = async (updatedStatus) => {
     const updateData = {
       status: updatedStatus, // use the passed status value
-      trackingLink: trackingNumber,
+      // trackingLink: trackingNumber,
       deliveryPartner,
     };
 
