@@ -169,6 +169,11 @@ const ProductDetails = () => {
     }
   };
 
+  const convertToIndianDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-IN");
+  };
+
   return (
     <div className="">
       {/* top section is here */}
@@ -576,7 +581,7 @@ const ProductDetails = () => {
                       {singleItem.tags}
                     </td> */}
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {singleItem.modifiedAt || "--"}
+                      {convertToIndianDate(singleItem.createdAt || "--")}
                     </td>
                   </tr>
                 ))}
