@@ -528,7 +528,7 @@ const ProductDetails = () => {
                             className="text-[#2271b1]"
                             onClick={() =>
                               navigate(
-                                `/edit-products/${singleItem._id}/${currentPage}`,
+                                `/edit-products/${singleItem._id}`,
                                 { state: { search: searchParams.toString() } }
                               )
                             }
