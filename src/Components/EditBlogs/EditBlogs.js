@@ -7,7 +7,8 @@ import { useParams } from "react-router-dom";
 const EditBlogs = ({ blogId }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [allBlogs, setAllBlogs] = useState([]);
+  const [hierarchyData, setHierarchyData] = useState([]);
+  const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const { id } = useParams();
 
@@ -50,7 +51,6 @@ const EditBlogs = ({ blogId }) => {
     }));
   };
 
-  // Handle meta field change
   const handleMetaChange = (index, field, value) => {
     const updatedMeta = [...formData.meta];
     updatedMeta[index][field] = value;
@@ -79,10 +79,10 @@ const EditBlogs = ({ blogId }) => {
   // Handle input field changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
   };
 
   // Handle content change
@@ -106,43 +106,44 @@ const EditBlogs = ({ blogId }) => {
     }));
   };
 
-  // Fetch all blogs or specific blog data
-  const showAllBlogs = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/blog/admin/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        }
-      );
-
-      const blogData = response.data.blog;
-
-      console.log("blogData", blogData);
-
-      // Set fetched data to form fields
-      setFormData({
-        title: blogData?.title || "",
-        topicCategory: blogData.topicCategory || [],
-        category: blogData.category || "",
-        image: blogData.image || null, // Assuming the backend returns the image URL
-        timeToRead: blogData.timeToRead || "",
-        meta: blogData?.meta || [{ title: "", description: "", keywords: "" }],
-        tags: blogData.tags || [],
-        published: blogData.published || false,
-        content: blogData.content || "",
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  // Fetch and set blog data on component load
   useEffect(() => {
+    const showAllBlogs = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.assetorix.com:4100/ah/api/v1/blog/admin/${id}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+
+        const blogData = response.data.blog;
+        console.log("blogData", blogData);
+
+        // Set fetched blog data to form fields
+        setFormData({
+          title: blogData?.title || "",
+          topicCategory: blogData?.topicCategory || [],
+          category: blogData?.category || "", // Set category
+          image: blogData?.image || null,
+          timeToRead: blogData?.timeToRead || "",
+          meta: blogData?.meta || [
+            { title: "", description: "", keywords: "" },
+          ],
+          tags: blogData?.tags || [],
+          published: blogData?.published || false,
+          content: blogData?.content || "",
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     showAllBlogs();
-  }, []);
+  }, [id]);
 
   const updatedBlog = async (e) => {
     e.preventDefault();
@@ -179,6 +180,56 @@ const EditBlogs = ({ blogId }) => {
     } catch (error) {
       console.error("Error updating blog:", error);
     }
+  };
+
+  // Fetch categories on component load
+  useEffect(() => {
+    const getHierarchy = async (query = "") => {
+      try {
+        const response = await axios.get(
+          `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${query}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("authorization")}`,
+              id: localStorage.getItem("id"),
+            },
+          }
+        );
+        setHierarchyData(response.data); // Store categories in hierarchyData
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getHierarchy();
+  }, []);
+
+  // Toggle category visibility
+  const toggleCategoryVisibility = () => {
+    setIsCategoryVisible(!isCategoryVisible);
+  };
+
+  // Recursive function to render radio buttons for categories and subcategories
+  const renderCategoryRadios = (categories) => {
+    return categories.map((category) => (
+      <div key={category._id} className="ml-4">
+        <label className="inline-flex items-center">
+          <input
+            type="radio"
+            name="category"
+            value={category._id} // Use category id as the value
+            checked={formData.category === category._id} // Check if the current category matches
+            onChange={handleInputChange}
+            className="form-radio"
+          />
+          <span className="ml-2">{category.name}</span>
+        </label>
+        {category.children && category.children.length > 0 && (
+          <div className="ml-4">{renderCategoryRadios(category.children)}</div>
+        )}
+      </div>
+    ));
   };
 
   return (
@@ -298,40 +349,29 @@ const EditBlogs = ({ blogId }) => {
             </select>
           </div>
         </div>
+        {/* <button
+          type="button"
+          onClick={toggleCategoryVisibility}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+        >
+          {isCategoryVisible ? "Hide Categories" : "Show Categories"}
+        </button> */}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+        {/* Category Section (Visible when isCategoryVisible is true) */}
+        {/* {isCategoryVisible && (
+          <div className="mt-4 h-[300px] overflow-y-scroll border border-gray-300 rounded-md p-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Category
+            </label>
+            <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
+          </div>
+        )} */}
+
+        <div className="mt-4 h-[300px] overflow-y-scroll border border-gray-300 rounded-md p-4">
+          <label className="block text-sm font-medium text-gray-700">
             Category
           </label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            {[
-              "Dental Health",
-              "Diabetes Management",
-              "Hair Health",
-              "Digestive Health",
-              "Best Hospital Services",
-              "General Health",
-              "Healthcare Essentials",
-              "Heart Conditions",
-              "Insurance",
-              "Mental Health",
-              "Neurology",
-              "Oral and Dental",
-              "Orthopedic Conditions",
-              "Respiratory Health",
-              "Sexual Wellness",
-              "Skin Care",
-            ].map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+          <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
         </div>
 
         <div>
