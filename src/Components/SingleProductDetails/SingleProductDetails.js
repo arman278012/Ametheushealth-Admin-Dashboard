@@ -47,21 +47,21 @@ const SingleProductDetails = () => {
     }
   }, [id]); // Add 'id' as a dependency to ensure it runs when 'id' changes
 
-  const fetchGenericData = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/${storeGenericID}`
-      );
-      setGenericData(response.data);
-      console.log(generic);
-    } catch (error) {
-      console.error("Error fetching generic data:", error);
-    }
-  };
+  // const fetchGenericData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://api.assetorix.com:4100/ah/api/v1/generic/${storeGenericID}`
+  //     );
+  //     setGenericData(response.data);
+  //     console.log(generic);
+  //   } catch (error) {
+  //     console.error("Error fetching generic data:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchGenericData();
-  }, []);
+  // useEffect(() => {
+  //   fetchGenericData();
+  // }, []);
 
   const settings = {
     dots: false,

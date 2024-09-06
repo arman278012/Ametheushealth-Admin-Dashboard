@@ -46,7 +46,7 @@ const ProductDetails = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=createdAt&order=desc`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -527,10 +527,9 @@ const ProductDetails = () => {
                           <button
                             className="text-[#2271b1]"
                             onClick={() =>
-                              navigate(
-                                `/edit-products/${singleItem._id}`,
-                                { state: { search: searchParams.toString() } }
-                              )
+                              navigate(`/edit-products/${singleItem._id}`, {
+                                state: { search: searchParams.toString() },
+                              })
                             }
                           >
                             Edit
