@@ -366,12 +366,28 @@ const EditBlogs = ({ blogId }) => {
             <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
           </div>
         )} */}
+        <div className="shadow-md p-3">
+          <div className="flex justify-between items-center">
+            <label className="font-bold">All Categories</label>
+            <button
+              type="button"
+              onClick={toggleOpen}
+              className="focus:outline-none"
+            >
+              {isOpen ? (
+                <FaChevronUp className="text-blue-500" />
+              ) : (
+                <FaChevronDown className="text-blue-500" />
+              )}
+            </button>
+          </div>
 
-        <div className="mt-4 h-[300px] overflow-y-scroll border border-gray-300 rounded-md p-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Category
-          </label>
-          <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
+          {/* Conditionally render the category list */}
+          {isOpen && (
+            <div className="mt-4 h-[300px] overflow-y-scroll border border-gray-300 rounded-md p-4">
+              <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
+            </div>
+          )}
         </div>
 
         <div>
