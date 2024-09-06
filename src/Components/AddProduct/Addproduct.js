@@ -99,7 +99,7 @@ const AddProduct = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${hierarchySearch}`,
+        `https://api.assetorix.com:4100/ah/api/v1/category/view?search=${hierarchySearch}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -369,13 +369,13 @@ const AddProduct = () => {
     });
   };
 
-    // if (loading) {
-    //   return (
-    //     <div className="flex justify-center items-center h-[100vh] w-[100vw]">
-    //       <span class="loader"></span>
-    //     </div>
-    //   );
-    // }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-[100vh] w-[100vw]">
+  //       <span class="loader"></span>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="main-div-parent p-5 bg-[#f0f0f1]">
@@ -1451,11 +1451,10 @@ const AddProduct = () => {
                           onChange={(e) => setHierarchyQuery(e.target.value)}
                         />
                       </div>
-                      {/* // JSX rendering of the SKU input and hierarchical
-                      checkboxes */}
+                      {/* // JSX rendering of the SKU input and hierarchical checkboxes */}
                       {hierarchyData?.map((item) => (
-                        <div className="border-2 p-5" key={item._id}>
-                          <div className="flex items-center mb-2">
+                        <div className="border px-2 p-1" key={item._id}>
+                          <div className="flex items-center">
                             <input
                               type="checkbox"
                               id={item._id}
@@ -1467,11 +1466,11 @@ const AddProduct = () => {
                               }
                               checked={values.categoryID.includes(item._id)}
                             />
-                            <label htmlFor={item._id} className="font-bold">
+                            <label htmlFor={item._id} className="font-normal">
                               {item.name}
                             </label>
                           </div>
-                          {item.children &&
+                          {/* {item.children &&
                             item.children.map((child) => (
                               <div key={child._id}>
                                 <div className="flex items-center mb-2 ml-4">
@@ -1496,9 +1495,8 @@ const AddProduct = () => {
                                     &nbsp; {child.name}
                                   </label>
                                 </div>
-                                {/* Further recursive mapping for deeper children */}
                               </div>
-                            ))}
+                            ))} */}
                         </div>
                       ))}
                     </div>
