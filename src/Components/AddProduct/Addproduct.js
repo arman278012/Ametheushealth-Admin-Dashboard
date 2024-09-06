@@ -1567,7 +1567,7 @@ const AddProduct = () => {
                   </div>
 
                   {/* generics mapping */}
-                  <div className="mt-5 product-tags border rounded-xl p-3 fixed-width-card">
+                  <div className="mt-5 border rounded-xl p-3 fixed-width-card">
                     <div className="flex justify-between items-center px-3">
                       <label className="font-bold">Generics Id</label>
                       <button
@@ -1593,13 +1593,13 @@ const AddProduct = () => {
                       <div>
                         <input
                           type="text"
-                          className="w-full px-2 py-1"
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
                           placeholder="Search..."
                           value={genericQuery}
                           onChange={(e) => setGenericQuery(e.target.value)}
                         />
                       </div>
-                      <div>
+                      <div className="mt-2">
                         {genericsMap?.map((generic) => (
                           <div key={generic?.id} className="flex gap-2">
                             <input
@@ -1646,7 +1646,7 @@ const AddProduct = () => {
                         <div>
                           <input
                             type="text"
-                            className="w-full px-2 py-1"
+                            className="w-full px-2 py-1 focus:outline-none"
                             placeholder="Search..."
                             value={manufacturerQuery}
                             onChange={(e) =>
