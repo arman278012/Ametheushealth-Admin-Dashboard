@@ -5,12 +5,15 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Allusers = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState("10");
   const [searchUserQuery, setSearchUserQuery] = useState("");
   const [currentUserPage, setCurrentUserPage] = useState(1);
+
+  const navigate = useNavigate();
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBarOpen);
   };
@@ -116,7 +119,7 @@ const Allusers = () => {
           </div>
           <div
             className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-            onClick={() => handlePageChange(1)}
+            // onClick={() => handlePageChange(1)}
           >
             <MdOutlineKeyboardDoubleArrowLeft />
           </div>
@@ -132,10 +135,7 @@ const Allusers = () => {
           <div>{/* <p>of {allProductsData?.totalPages}</p> */}</div>
           <div
             className="h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer"
-            onClick={() =>
-              handlePageChange()
-              // Math.min(currentPage + 1, allProductsData?.totalPages || 1)
-            }
+            
           >
             <MdKeyboardArrowRight />
           </div>
