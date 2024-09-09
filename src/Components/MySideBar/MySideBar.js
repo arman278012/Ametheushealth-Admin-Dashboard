@@ -374,9 +374,12 @@ const MySideBar = () => {
               </button>
               {!isCollapsed && isUsersMenuOpen && (
                 <div className="ml-6 mt-2 flex flex-col space-y-2">
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink
+                    to={"/all-users"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     All Users
-                  </a>
+                  </NavLink>
                   <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Add User
                   </a>

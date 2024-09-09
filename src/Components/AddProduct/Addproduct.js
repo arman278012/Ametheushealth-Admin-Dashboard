@@ -21,7 +21,9 @@ const initialValues = {
   treatment: "",
   shortDescription: "",
   description: "",
-  moreInformation: "",
+  moreInformation: `<h3 style="font-weight: normal !important; color: #000000;"> <b>Information Leaflet</b> </h3>
+<p style="color: #000000;">Always read the patient information leaflet before commencing treatment.</p>
+<p style="color: #000000;"><i><b>Important:</b></i> We advise you to always read the patient information leaflet inside the medication box, as the generic medication may not always entirely match the patient information leaflet listed. Please contact us if you have any questions.</p>`,
   faq: "",
   additionalInformation: "",
   sideEffects: "",
@@ -422,7 +424,7 @@ const AddProduct = () => {
                         </button>
                         <MdDriveFileRenameOutline className="mt-1 text-sm" />
                       </div>
-                      
+
                       <div className="w-full h-[1px] bg-gray-300"></div>
 
                       <div
