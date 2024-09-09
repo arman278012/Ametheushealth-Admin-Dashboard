@@ -368,9 +368,10 @@ const EditProducts = () => {
     e.preventDefault();
     setUpdateLoaderBtn(true);
 
+    // Create a new object with updated values
     const updatedProductValues = {
       ...productValues,
-      categoryID: selectedCategories, // Assuming you store categories under this key
+      categoryID: selectedCategories, // Update with selected categories
     };
 
     try {
@@ -384,20 +385,23 @@ const EditProducts = () => {
           },
         }
       );
+
       console.log("Response:", response.data);
-      toast.success("Updated successfully...");
+      toast.success("Updated successfully!");
 
       // Retrieve the search and page from state (passed from product-details page)
       const searchParams = location.state?.search || "";
       navigate(`/product-details?${searchParams}`); // Navigate back with the same query parameters
     } catch (error) {
       console.error("Error updating product:", error);
+      toast.error("Error updating product. Please try again."); // Notify user on error
     } finally {
-      setUpdateLoaderBtn(false);
+      setUpdateLoaderBtn(false); // Reset loading state
     }
   };
 
   const handleFileChange = (e) => {
+    e.preventDefault(); // Prevent the default form submission
     const files = Array.from(e.target.files);
     setSelectedFiles(files);
 
@@ -406,7 +410,7 @@ const EditProducts = () => {
     setPreviewImages(previews);
 
     // Immediately upload the selected files
-    addImageToProduct(files);
+    addImageToProduct(files, e);
   };
 
   const handleDeleteImage = (index) => {
@@ -418,7 +422,9 @@ const EditProducts = () => {
   };
 
   //Add image to a product
-  const addImageToProduct = async (files) => {
+  const addImageToProduct = async (files, e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
     const formData = new FormData();
 
     // Append each file to the form data
@@ -441,9 +447,10 @@ const EditProducts = () => {
       console.log("Images uploaded:", response.data);
     } catch (error) {
       console.error("Error uploading images:", error);
-    } finally {
-      getDataForEdit(); // Call to refresh or fetch updated data
     }
+    // finally {
+    //   await getDataForEdit();
+    // }
   };
 
   //delete single image
@@ -458,10 +465,13 @@ const EditProducts = () => {
           },
         }
       );
-      toast.success("Deleted Sucessfully...");
-      addImageToProduct();
+      toast.success("Deleted Successfully...");
+
+      // Call to refresh or fetch updated data instead of adding images
+      getDataForEdit();
     } catch (error) {
-      console.log(error);
+      console.error("Error deleting image:", error);
+      toast.error("Error deleting image.");
     }
   };
 
@@ -1654,44 +1664,20 @@ const EditProducts = () => {
                       onChange={handleFileChange}
                     />
                     {previewImages.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {/* {previewImages.map((preview, index) => (
-                          <div key={index} className="relative">
-                            <img
-                              src={preview}
-                              alt={`preview-${index}`}
-                              className="w-[100px] h-[100px] object-cover rounded-md"
-                            />
-                            <button
-                              onClick={() => handleDeleteImage(index)}
-                              className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-                            >
-                              <FaTrash />
-                            </button>
-                          </div>
-                        ))} */}
-                      </div>
+                      <div className="flex flex-wrap gap-2"></div>
                     )}
-                    {/* <button
-                      onClick={addImageToProduct}
-                      className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white py-1 px-2 rounded-md"
-                    >
-                      Upload Images
-                    </button> */}
                   </div>
                   <div className="grid grid-cols-3 border-[1px] border-gray-300 rounded-xl p-2 gap-2 ">
                     {productValues?.images?.map((image) => (
-                      <>
-                        <div className="flex gap-2">
-                          <div className="border-[1px] border-gray-300 rounded-xl p-2 relative group">
-                            <img src={image.url} alt="Image" />
-                            <RxCross2
-                              onClick={() => deleteSingleImage(image._id)}
-                              className="text-red-800 absolute top-[-6px] left-[60px] cursor-pointer hidden group-hover:block"
-                            />
-                          </div>
+                      <div key={image._id} className="flex gap-2">
+                        <div className="border-[1px] border-gray-300 rounded-xl p-2 relative group">
+                          <img src={image.url} alt="Image" />
+                          <RxCross2
+                            onClick={() => deleteSingleImage(image._id)}
+                            className="text-red-800 absolute top-[-6px] left-[60px] cursor-pointer hidden group-hover:block"
+                          />
                         </div>
-                      </>
+                      </div>
                     ))}
                   </div>
                 </div>
