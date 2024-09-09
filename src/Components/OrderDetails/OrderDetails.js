@@ -623,10 +623,17 @@ const OrderDetails = () => {
                     {product?.price}
                   </span>
                 </p>
-                <p>
+                {/* <p>
                   <span className="text-gray-500 font-bold">Sale Price:</span>{" "}
                   <span className="text-gray-500 font-thin">
                     {product?.salePrice}
+                  </span>{" "}
+                </p> */}
+
+                <p>
+                  <span className="text-gray-500 font-bold">SKU:</span>{" "}
+                  <span className="text-gray-500 font-thin">
+                    {product?.sku}
                   </span>{" "}
                 </p>
 
@@ -636,12 +643,12 @@ const OrderDetails = () => {
                     {product?.quantity}
                   </span>
                 </p>
-                <p>
+                {/* <p>
                   <span className="text-gray-500 font-bold">Margin:</span>{" "}
                   <span className="text-gray-500 font-thin">
                     {product?.margin}
                   </span>
-                </p>
+                </p> */}
               </div>
             </div>
           ))}

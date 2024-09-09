@@ -422,6 +422,7 @@ const AddProduct = () => {
                         </button>
                         <MdDriveFileRenameOutline className="mt-1 text-sm" />
                       </div>
+                      
                       <div className="w-full h-[1px] bg-gray-300"></div>
 
                       <div
