@@ -177,10 +177,13 @@ const Allusers = () => {
           <Table className="min-w-full bg-white border">
             <Thead>
               <Tr className=" bg-gray-200 w-[100%]">
-                <Th className="py-2 px-4 border-b text-start sm:w-[30%]">
+                <Th className="py-2 px-4 border-b text-start sm:w-[10%]">
+                  Image
+                </Th>
+                <Th className="py-2 px-4 border-b text-start sm:w-[25%]">
                   Name
                 </Th>
-                <Th className="py-2 px-4 border-b text-start sm:w-[30%]">
+                <Th className="py-2 px-4 border-b text-start sm:w-[25%]">
                   Email
                 </Th>
                 <Th className="py-2 px-4 border-b text-start sm:w-[15%]">
@@ -218,8 +221,17 @@ const Allusers = () => {
                       </Td>
                     </Tr>
                   ))
-                : allUser?.data?.map((item, index) => (
-                    <Tr key={index} className="border-t">
+                : allUser?.data?.map((item) => (
+                    <Tr key={item._id} className="border-t">
+                      <Td className="py-2 px-4 border-b text-[14px]">
+                        <img
+                          src={
+                            item?.avatar || "https://via.placeholder.com/150"
+                          } // Temporary image URL
+                          alt="User"
+                          className="w-12 h-12 object-cover"
+                        />
+                      </Td>
                       <Td className="py-2 px-4 border-b text-[14px]">
                         <p className="text-[#2271b1]">{item?.name}</p>
                         <div className="flex flex-col">
@@ -238,9 +250,9 @@ const Allusers = () => {
                             <span className="text-[#2271b1]">|</span>
                             <button
                               className="text-[#2271b1]"
-                              // onClick={() => {
-                              //   navigate(`/product-details/${singleItem._id}`);
-                              // }}
+                              onClick={() => {
+                                navigate(`/all-users/${item._id}`);
+                              }}
                             >
                               View
                             </button>{" "}
