@@ -39,6 +39,7 @@ import AllBlogsPage from "./Pages/AllBlogsPage/AllBlogsPage";
 import EditBlogsPage from "./Pages/EditBlogsPage/EditBlogsPage";
 import CreateOrderPage from "./Pages/CreateOrderPage/CreateOrderPage";
 import AllusersPage from "./Pages/AllUsersPage/AllusersPage";
+import UserDetailsPage from "./Pages/UserDetailsPage/UserDetailsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -191,11 +192,14 @@ function App() {
               element={<AdminRoute element={CreateOrderPage} />}
             />
 
-            {/* sdfkmskdmf */}
-
             <Route
               path="/all-users"
               element={<AdminRoute element={AllusersPage} />}
+            />
+
+            <Route
+              path="/user-details"
+              element={<AdminRoute element={UserDetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

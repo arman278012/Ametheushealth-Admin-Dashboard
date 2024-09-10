@@ -204,6 +204,7 @@ const OrderDetails = () => {
                     <option value="Rejected">Rejected</option>
                     <option value="Accepted">Accepted</option>
                     <option value="Delivered">Delivered</option>
+                    <option value="Refunded">Refunded</option>
                   </select>
                 </div>
 
@@ -547,6 +548,7 @@ const OrderDetails = () => {
                 <option value="Rejected">Rejected</option>
                 <option value="Accepted">Accepted</option>
                 <option value="Delivered">Delivered</option>
+                <option value="Refunded">Refunded</option>
               </select>
             </div>
             <div className="mb-4">

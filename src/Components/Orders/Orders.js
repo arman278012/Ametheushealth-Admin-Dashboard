@@ -188,7 +188,7 @@ const Orders = () => {
             </div>
 
             {/* for mobile section */}
-            <div className="sm:hidden md:hidden flex gap-3">
+            {/* <div className="sm:hidden md:hidden flex gap-3">
               <select
                 id="fruits"
                 name="fruits"
@@ -205,7 +205,7 @@ const Orders = () => {
                   Apply
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <select
               id="fruits"
@@ -229,6 +229,7 @@ const Orders = () => {
               <option value="Rejected">Rejected</option>
               <option value="Accepted">Accepted</option>
               <option value="Delivered">Delivered</option>
+              <option value="Refunded">Refunded</option>
             </select>
 
             <div className="flex justify-center items-center">
@@ -369,7 +370,7 @@ const Orders = () => {
                         </div>
                       ) : order.status === "Processing Order" ? (
                         <div className="bg-gray-400 px-2 py-1 font-semibold flex justify-center items-center">
-                          <p className="uppercase">Processing Order</p>
+                          <p className="uppercase">Order Processing</p>
                         </div>
                       ) : order.status === "Shipped" ? (
                         <div className="bg-green-300 px-2 py-1 font-semibold flex justify-center items-center">
@@ -378,6 +379,10 @@ const Orders = () => {
                       ) : order.status === "Delivered" ? (
                         <div className="bg-green-600 px-2 py-1 font-semibold flex justify-center items-center">
                           <p className="uppercase">Delivered</p>
+                        </div>
+                      ) : order.status === "Refunded" ? (
+                        <div className="bg-[#000000] text-white px-2 py-1 font-semibold flex justify-center items-center">
+                          <p className="uppercase">Refunded</p>
                         </div>
                       ) : (
                         <div>
