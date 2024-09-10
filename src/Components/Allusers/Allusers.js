@@ -6,6 +6,7 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
+import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
