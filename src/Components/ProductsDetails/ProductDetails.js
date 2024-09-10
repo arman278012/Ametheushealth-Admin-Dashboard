@@ -199,23 +199,6 @@ const ProductDetails = () => {
                 className="border-2 rounded-md w-[50px] h-[30px] px-3 text-sm py-2"
               />
             </div>
-
-            {/* <div className="flex justify-center items-center">
-              <button
-                onClick={() =>
-                  dispatch(
-                    fetchGetProductsData({
-                      page: currentPage,
-                      pageLimit,
-                      searchQuery,
-                    })
-                  )
-                }
-                className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[50px] h-[30px] text-white rounded-md text-[13px]"
-              >
-                Apply
-              </button>
-            </div> */}
           </div>
         </div>
         {/* <div className="sm:w-[100%] w-[320px] h-[1px] bg-gray-400"></div> */}
