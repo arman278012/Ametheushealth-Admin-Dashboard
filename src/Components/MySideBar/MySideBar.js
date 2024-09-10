@@ -37,6 +37,11 @@ const MySideBar = () => {
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
 
+  const logOut = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("authorization");
+  };
+
   return (
     <div className="sm:flex md:flex hidden sticky">
       <div
@@ -390,8 +395,11 @@ const MySideBar = () => {
             {/* Login */}
             {authorization && id ? (
               <div>
-                <NavLink to="/">
-                  <button className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700">
+                <NavLink to="/login">
+                  <button
+                    onClick={logOut}
+                    className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+                  >
                     <span className="flex items-center">
                       <FaUsers className="mr-2" />
                       {!isCollapsed && "Logout"}

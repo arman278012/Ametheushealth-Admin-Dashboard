@@ -63,7 +63,7 @@ const UserDetails = () => {
         <div className="flex justify-center mb-4">
           <img
             className="w-24 h-24 rounded-full object-cover"
-            src={user?.data?.avatar || "/default-avatar.png"}
+            src={user?.data?.avatar || "https://via.placeholder.com/150"}
             alt="User Avatar"
           />
         </div>
