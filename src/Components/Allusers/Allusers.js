@@ -97,7 +97,7 @@ const Allusers = () => {
             <div className="flex gap-3 p-5">
               <p className="text-xl font-semibold">Users</p>
               <button
-                onClick={() => navigate("/create-order")}
+                onClick={() => navigate("#")}
                 className="bg-[#13a3bc] text-white font-semibold text-sm p-2 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out"
               >
                 Add User
