@@ -41,6 +41,7 @@ import CreateOrderPage from "./Pages/CreateOrderPage/CreateOrderPage";
 import AllusersPage from "./Pages/AllUsersPage/AllusersPage";
 import UserDetailsPage from "./Pages/UserDetailsPage/UserDetailsPage";
 import AddCouponsPage from "./Pages/AddCouponsPage/AddCouponsPage";
+import AllCouponsPage from "./Pages/AllCouponsPage/AllCouponsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -206,6 +207,11 @@ function App() {
             <Route
               path="/add-coupons"
               element={<AdminRoute element={AddCouponsPage} />}
+            />
+
+            <Route
+              path="/all-coupons"
+              element={<AdminRoute element={AllCouponsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

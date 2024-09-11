@@ -69,7 +69,7 @@ const Orders = () => {
     // Call the allOrders function with the new filter
     allOrders(currentPage, pageLimit, searchQuery, selectedFilter);
   };
-
+  
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       allOrders(currentPage, pageLimit, searchQuery, filter);
@@ -186,26 +186,6 @@ const Orders = () => {
                 Apply
               </button>
             </div>
-
-            {/* for mobile section */}
-            {/* <div className="sm:hidden md:hidden flex gap-3">
-              <select
-                id="fruits"
-                name="fruits"
-                className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white"
-              >
-                <option value="apple">Apple</option>
-                <option value="banana">Banana</option>
-                <option value="cherry">Cherry</option>
-                <option value="date">Date</option>
-                <option value="elderberry">Elderberry</option>
-              </select>
-              <div className="flex justify-center items-center">
-                <button className="bg-[#13a3bc] w-[70px] h-[30px] text-white rounded-md">
-                  Apply
-                </button>
-              </div>
-            </div> */}
 
             <select
               id="fruits"

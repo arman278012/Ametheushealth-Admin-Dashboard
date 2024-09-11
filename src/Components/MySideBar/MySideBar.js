@@ -387,12 +387,12 @@ const MySideBar = () => {
                   >
                     Add Coupons
                   </NavLink>
-                  {/* <NavLink
-                    to={"/add-blogs"}
+                  <NavLink
+                    to={"/all-coupons"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
-                    Add Blogs
-                  </NavLink> */}
+                    All Coupons
+                  </NavLink>
 
                   {/* <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Add User
