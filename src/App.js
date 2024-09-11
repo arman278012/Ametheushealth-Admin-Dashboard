@@ -40,6 +40,7 @@ import EditBlogsPage from "./Pages/EditBlogsPage/EditBlogsPage";
 import CreateOrderPage from "./Pages/CreateOrderPage/CreateOrderPage";
 import AllusersPage from "./Pages/AllUsersPage/AllusersPage";
 import UserDetailsPage from "./Pages/UserDetailsPage/UserDetailsPage";
+import AddCouponsPage from "./Pages/AddCouponsPage/AddCouponsPage";
 
 function App() {
   const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
@@ -200,6 +201,11 @@ function App() {
             <Route
               path="/all-users/:id"
               element={<AdminRoute element={UserDetailsPage} />}
+            />
+
+            <Route
+              path="/add-coupons"
+              element={<AdminRoute element={AddCouponsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

@@ -18,9 +18,7 @@ import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
 const EditProducts = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id, page } = useParams();
-
-  console.log(page);
+  const { id } = useParams();
 
   const [activeSection, setActiveSection] = useState("name");
   const [externalLink, setExternalLink] = useState("");

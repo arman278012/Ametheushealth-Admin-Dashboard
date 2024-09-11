@@ -19,6 +19,7 @@ const MySideBar = () => {
   const [isContactMenuOpen, setIsContactMenuOpen] = useState(false);
   const [isPerscriptionMenuOpen, setIsPerscriptionMenuOpen] = useState(false);
   const [isBlogsOpen, setIsBlogsOpen] = useState(false);
+  const [isCouponsMenuOpen, setIsCouponsMenuOpen] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleUsersMenu = () => setIsUsersMenuOpen(!isUsersMenuOpen);
@@ -33,6 +34,7 @@ const MySideBar = () => {
   const togglePerscriptionMenu = () =>
     setIsPerscriptionMenuOpen(!isPerscriptionMenuOpen);
   const toggleBlogsMenu = () => setIsBlogsOpen(!isBlogsOpen);
+  const toggleCouponsMenu = () => setIsCouponsMenuOpen(!isCouponsMenuOpen);
 
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
@@ -356,6 +358,41 @@ const MySideBar = () => {
                   >
                     Add Blogs
                   </NavLink>
+
+                  {/* <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                    Add User
+                  </a> */}
+                </div>
+              )}
+            </div>
+
+            {/* coupons code Menu */}
+            <div>
+              <button
+                onClick={toggleCouponsMenu}
+                className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+              >
+                <span className="flex items-center">
+                  <FaUsers className="mr-2" />
+                  {!isCollapsed && "Coupons"}
+                </span>
+                {!isCollapsed &&
+                  (isCouponsMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+              </button>
+              {!isCollapsed && isCouponsMenuOpen && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/add-coupons"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Coupons
+                  </NavLink>
+                  {/* <NavLink
+                    to={"/add-blogs"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Blogs
+                  </NavLink> */}
 
                   {/* <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Add User
