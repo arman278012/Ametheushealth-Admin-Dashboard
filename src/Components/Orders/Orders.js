@@ -69,7 +69,7 @@ const Orders = () => {
     // Call the allOrders function with the new filter
     allOrders(currentPage, pageLimit, searchQuery, selectedFilter);
   };
-  
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       allOrders(currentPage, pageLimit, searchQuery, filter);

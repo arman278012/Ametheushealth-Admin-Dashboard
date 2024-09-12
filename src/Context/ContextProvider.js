@@ -6,6 +6,7 @@ const ContextProvider = ({ children }) => {
   const [editAllCattegoriesForm, setEditAllCategoriesForm] = useState(false);
   const [editGenericForm, setEditGenericForm] = useState(false);
   const [editManufacturerForm, setEditManufacturerForm] = useState(false);
+  const [editCouponForm, setEditCouponForm] = useState(false);
 
   return (
     <AppContext.Provider
@@ -16,6 +17,8 @@ const ContextProvider = ({ children }) => {
         setEditGenericForm,
         editManufacturerForm,
         setEditManufacturerForm,
+        editCouponForm,
+        setEditCouponForm,
       }}
     >
       {children}

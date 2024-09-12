@@ -4,9 +4,11 @@ import getCategoryDataReducer from "./slice/GetCategoryDataSlice";
 import idReducer from "./slice/GetIdSlice";
 import imageIdReducer from "./slice/getImageIdSlice";
 import genericIdReducer from "./slice/GetGenericIdSlice";
+import couponIdReducer from "./slice/GetCouponIdSlice"; // Correct the import here
 import getProductReducer from "./slice/GetProductsSlice";
 import manufacturerReducer from "./slice/ManufacturerIdSlice";
-import { thunk } from "redux-thunk"; // Correct import statement for redux-thunk
+
+import { thunk } from "redux-thunk"; // Fix the import
 
 export const store = configureStore({
   reducer: {
@@ -15,10 +17,11 @@ export const store = configureStore({
     idSlice: idReducer,
     imageIdSlice: imageIdReducer,
     genericIdSlice: genericIdReducer,
+    couponIdSlice: couponIdReducer, // Correct the reducer here
     getproductsSlice: getProductReducer,
     manufacturerIdSlice: manufacturerReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk), // Add thunk middleware
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
 export default store;

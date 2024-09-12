@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
@@ -8,6 +9,9 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import { AppContext } from "../../Context/ContextProvider";
+import { storeCouponId } from "../../redux/slice/GetCouponIdSlice";
+import { useDispatch } from "react-redux";
 
 const AllCoupons = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
@@ -16,17 +20,25 @@ const AllCoupons = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [discountFilter, setDiscountFilter] = useState("");
+  const [activeFilter, setActiveFilter] = useState("");
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
+  const { setEditCouponForm } = useContext(AppContext);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  console.log(deleteId);
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBarOpen);
   };
 
-  const getCoupons = async (searchQuery, filter) => {
+  const getCoupons = async (searchQuery, filter, actfilter) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/coupon?search=${searchQuery}&discountType=${filter}`,
+        `https://api.assetorix.com:4100/ah/api/v1/coupon?search=${searchQuery}&discountType=${filter}&isActive=${actfilter}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -43,16 +55,21 @@ const AllCoupons = () => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      getCoupons(searchQuery, discountFilter);
+      getCoupons(searchQuery, discountFilter, activeFilter);
     }, 300);
-
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, discountFilter]);
+  }, [searchQuery, discountFilter, activeFilter]);
 
   const handleDiscountFilterChange = (e) => {
     const filter = e.target.value;
     setDiscountFilter(filter);
     getCoupons(filter, searchQuery);
+  };
+
+  const handleActiveChange = (e) => {
+    const actfilter = e.target.value;
+    setActiveFilter(actfilter);
+    getCoupons(searchQuery, discountFilter, actfilter);
   };
 
   const options = {
@@ -77,6 +94,26 @@ const AllCoupons = () => {
   const goToPage = () => {
     console.log("Go to page function implemented");
     console.log("Something is going xdxv");
+  };
+
+  //delete coupons API
+  const deleteCoupon = async () => {
+    try {
+      const response = await axios.delete(
+        `https://api.assetorix.com:4100/ah/api/v1/coupon/${deleteId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      toast.success("Deleted Successfully...");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getCoupons(searchQuery, discountFilter, activeFilter);
+    }
   };
 
   return (
@@ -141,9 +178,11 @@ const AllCoupons = () => {
         </div>
         <div className="all-filters px-5 py-2 flex sm:flex-row flex-col justify-center items-center sm:justify-normal gap-3">
           <select
-            id="fruits"
-            name="fruits"
+            id=""
+            name=""
             className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
+            onChange={handleActiveChange}
+            value={activeFilter}
           >
             <option
               value=""
@@ -154,13 +193,14 @@ const AllCoupons = () => {
             >
               Is Active?
             </option>
-            <option value="apple">Yes</option>
-            <option value="banana">No</option>
+            <option>All</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
           </select>
 
           <select
-            id="fruits"
-            name="fruits"
+            id=""
+            name=""
             className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white"
             value={discountFilter}
             onChange={handleDiscountFilterChange}
@@ -259,18 +299,21 @@ const AllCoupons = () => {
 
             <Tbody>
               {getAllCoupons?.data?.map((order) => (
-                <Tr key={order._id}>
+                <Tr
+                  key={order._id}
+                  onClick={() => dispatch(storeCouponId(order._id))} // Use order._id if item is undefined
+                >
                   <Td className="py-2 px-4 border-b border-gray-300">
                     <input type="checkbox" className="form-checkbox" />
                   </Td>
-                  <Td className="py-2 px-4 border-b  text-[14px] border-gray-300">
+                  <Td className="py-2 px-4 border-b text-[14px] border-gray-300">
                     {order.code}
                     <div className="flex gap-2">
                       <button
                         className="text-[#2271b1]"
                         // onClick={() => {
                         //   setDeleteAlert(true);
-                        //   setDeleteId(singleItem._id);
+                        //   setDeleteId(order._id);
                         // }}
                       >
                         View
@@ -278,17 +321,17 @@ const AllCoupons = () => {
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
-                        onClick={() => navigate(`/orders-details/${order._id}`)}
+                        onClick={() => setEditCouponForm(true)}
                       >
                         Edit
                       </button>{" "}
                       <span className="text-[#2271b1]">|</span>
                       <button
                         className="text-[#2271b1]"
-                        // onClick={() => {
-                        //   setDeleteAlert(true);
-                        //   setDeleteId(singleItem._id);
-                        // }}
+                        onClick={() => {
+                          setDeleteAlert(true);
+                          setDeleteId(order._id);
+                        }}
                       >
                         Delete
                       </button>
@@ -303,47 +346,39 @@ const AllCoupons = () => {
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
                     {convertToIST(order.expiryDate)}
                   </Td>
-                  {/* <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                    {order.status === "Pending" ? (
-                      <div className="bg-yellow-200 px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Pending</p>
-                      </div>
-                    ) : order.status === "Accepted" ? (
-                      <div className="bg-green-400 px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Accepted</p>
-                      </div>
-                    ) : order.status === "Rejected" ? (
-                      <div className="bg-red-500 px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Rejected</p>
-                      </div>
-                    ) : order.status === "Processing Order" ? (
-                      <div className="bg-gray-400 px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Order Processing</p>
-                      </div>
-                    ) : order.status === "Shipped" ? (
-                      <div className="bg-green-300 px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Shipped</p>
-                      </div>
-                    ) : order.status === "Delivered" ? (
-                      <div className="bg-green-600 px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Delivered</p>
-                      </div>
-                    ) : order.status === "Refunded" ? (
-                      <div className="bg-[#000000] text-white px-2 py-1 font-semibold flex justify-center items-center">
-                        <p className="uppercase">Refunded</p>
-                      </div>
-                    ) : (
-                      <div>
-                        <p>No Status Found</p>
-                      </div>
-                    )}
-                  </Td> */}
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </div>
       </div>
+      {deleteAlert && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0"></div>
+          <div className="bg-white p-6 rounded-lg border-2 z-10">
+            <p className="text-lg mb-4">
+              Are you sure you want to delete this item?
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  deleteCoupon(deleteId);
+                  setDeleteAlert(false);
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setDeleteAlert(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

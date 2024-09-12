@@ -42,10 +42,15 @@ import AllusersPage from "./Pages/AllUsersPage/AllusersPage";
 import UserDetailsPage from "./Pages/UserDetailsPage/UserDetailsPage";
 import AddCouponsPage from "./Pages/AddCouponsPage/AddCouponsPage";
 import AllCouponsPage from "./Pages/AllCouponsPage/AllCouponsPage";
+import EditCoupons from "./Components/EditCoupons/EditCoupons";
 
 function App() {
-  const { editAllCattegoriesForm, editGenericForm, editManufacturerForm } =
-    useContext(AppContext);
+  const {
+    editAllCattegoriesForm,
+    editGenericForm,
+    editManufacturerForm,
+    editCouponForm,
+  } = useContext(AppContext);
 
   return (
     <div className="App flex">
@@ -217,6 +222,7 @@ function App() {
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
           {editGenericForm ? <EditGenericForm /> : <></>}
           {editManufacturerForm ? <EditManufacturers /> : <></>}
+          {editCouponForm ? <EditCoupons /> : <></>}
         </div>
       </BrowserRouter>
     </div>

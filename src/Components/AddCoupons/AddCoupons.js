@@ -1,14 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 const AddCoupons = () => {
   const [selectedDiscount, setSelectedDiscount] = useState();
   const [active, setActive] = useState();
+  const [selectedCategoryDiscount, setSelectedCategoryDiscount] = useState();
   const [coupanData, setCoupanData] = useState({
     code: "",
-    discountType: "",
+    discountType: "percentage",
+    discountCategory: "",
     discountValue: "",
     applicableProducts: [],
     usageLimit: "",
@@ -17,10 +20,14 @@ const AddCoupons = () => {
     isActive: true,
   });
 
-  const countryOptions = [
-    { value: "flat", label: "Flat Discount" },
-    { value: "free_delivery", label: "Free Delivery" },
-    { value: "percentage", label: "Percentage" },
+  const navigate = useNavigate();
+
+  const discountOptions = [{ value: "percentage", label: "Percentage" }];
+
+  const discountCategoryOptions = [
+    { value: "FMCG", label: "FMCG" },
+    { value: "FMHG", label: "FMHG" },
+    { value: "OTC", label: "OTC" },
   ];
 
   const handleDiscountChange = (selectedDiscount) => {
@@ -31,11 +38,19 @@ const AddCoupons = () => {
     }));
   };
 
+  const handleDiscountCategoryChange = (selectedCategoryDiscount) => {
+    setSelectedCategoryDiscount(selectedCategoryDiscount);
+    setCoupanData((prevData) => ({
+      ...prevData,
+      discountCategory: selectedCategoryDiscount.value,
+    }));
+  };
+
   const handleActiveChange = (active) => {
     setActive(active);
     setCoupanData((prevData) => ({
       ...prevData,
-      discountType: active.value,
+      isActive: active.value,
     }));
   };
 
@@ -47,7 +62,7 @@ const AddCoupons = () => {
     }));
   };
 
-  const options = [
+  const activeOptions = [
     { label: "Yes", value: true },
     { label: "No", value: false },
   ];
@@ -77,6 +92,7 @@ const AddCoupons = () => {
         }
       );
       toast.success("Coupon Code generated...");
+      navigate("/all-coupons");
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -92,102 +108,119 @@ const AddCoupons = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex space-x-4 max-w-4xl mx-auto">
-          {/* input field for code */}
-          <div className="flex flex-col w-1/2">
-            <label className="block mb-1">Code</label>
-            <input
-              type="text"
-              value={coupanData.code}
-              name="code"
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+        <div className="">
+          <div className="flex space-x-4 max-w-4xl mx-auto mb-5">
+            {/* input field for code */}
+            <div className="flex flex-col w-1/2">
+              <label className="block mb-1">Code</label>
+              <input
+                type="text"
+                value={coupanData.code}
+                name="code"
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="flex flex-col w-1/2">
+              <label className="block mb-1">Discount Value</label>
+              <input
+                type="text"
+                value={coupanData.discountValue}
+                name="discountValue"
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
           </div>
-          <div className="flex flex-col w-1/2">
-            <label className="block mb-1">Discount Value</label>
-            <input
-              type="text"
-              value={coupanData.discountValue}
-              name="discountValue"
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-          </div>
-        </div>
 
-        <div className="flex space-x-4 max-w-4xl mx-auto">
-          {/* input field for code */}
-          <div className="flex flex-col w-1/2">
-            <label className="block mb-1">Usage Limit</label>
-            <input
-              type="text"
-              value={coupanData.usageLimit}
-              name="usageLimit"
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+          <div className="flex space-x-4 max-w-4xl mx-auto mb-5">
+            {/* input field for code */}
+            <div className="flex flex-col w-1/2">
+              <label className="block mb-1">Usage Limit</label>
+              <input
+                type="text"
+                value={coupanData.usageLimit}
+                name="usageLimit"
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="flex flex-col w-1/2">
+              <label className="block mb-1">Usage Count</label>
+              <input
+                type="text"
+                value={coupanData.usageCount}
+                name="usageCount"
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
           </div>
-          <div className="flex flex-col w-1/2">
-            <label className="block mb-1">Usage Count</label>
-            <input
-              type="text"
-              value={coupanData.usageCount}
-              name="usageCount"
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-          </div>
-        </div>
 
-        <div className="flex space-x-4 max-w-4xl mx-auto">
-          {/* input field for code */}
-          <div className="w-[440px]">
-            <label className="block mb-1">Discount Type</label>
-            <Select
-              className="w-full focus:outline-none"
-              value={selectedDiscount}
-              options={countryOptions}
-              onChange={handleDiscountChange}
-              placeholder={
-                selectedDiscount ? selectedDiscount.label : "Select Discount"
-              }
-              classNamePrefix="react-select"
-            />
+          <div className="flex space-x-4 max-w-4xl mx-auto mb-5">
+            {/* input field for code */}
+            <div className="w-[440px]">
+              <label className="block mb-1">Discount Type</label>
+              <Select
+                className="w-full focus:outline-none"
+                value={selectedDiscount}
+                options={discountOptions}
+                onChange={handleDiscountChange}
+                placeholder={
+                  selectedDiscount ? selectedDiscount.label : "Select Discount"
+                }
+                classNamePrefix="react-select"
+              />
+            </div>
+            <div className="w-[440px]">
+              <label className="block mb-1">Active or Not</label>
+              <Select
+                className="w-full focus:outline-none"
+                value={active} // Find selected option
+                options={activeOptions}
+                onChange={handleActiveChange}
+                placeholder={active ? active.label : "Choose Active or not"}
+                classNamePrefix="react-select"
+              />
+            </div>
           </div>
-          <div className="w-[440px]">
-            <label className="block mb-1">Active or Not</label>
-            <Select
-              className="w-full focus:outline-none"
-              value={active} // Find selected option
-              options={options}
-              onChange={handleActiveChange}
-              placeholder={active ? active.label : "Choose Active or not"}
-              classNamePrefix="react-select"
-            />
-          </div>
-        </div>
 
-        <div className="flex space-x-4 max-w-4xl mx-auto">
-          {/* Input field for expiry date */}
-          <div className="flex flex-col w-1/2">
-            <label className="block mb-1">Expiry Date</label>
-            <input
-              type="date"
-              name="expiryDate" // Name should match the state field
-              value={coupanData.expiryDate} // Controlled input field
-              onChange={handleChange} // Handle input change
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+          <div className="flex space-x-4 max-w-4xl mx-auto">
+            {/* Input field for expiry date */}
+            <div className="flex flex-col w-1/2">
+              <label className="block mb-1">Expiry Date</label>
+              <input
+                type="date"
+                name="expiryDate" // Name should match the state field
+                value={coupanData.expiryDate} // Controlled input field
+                onChange={handleChange} // Handle input change
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="w-[440px]">
+              <label className="block mb-1">Discount Category</label>
+              <Select
+                className="w-full focus:outline-none"
+                value={coupanData.discountCategory}
+                options={discountCategoryOptions}
+                onChange={handleDiscountCategoryChange}
+                placeholder={
+                  selectedCategoryDiscount
+                    ? selectedCategoryDiscount.label
+                    : "Discount Category"
+                }
+                classNamePrefix="react-select"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center items-center p-2">
-          <button
-            type="submit"
-            className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
-          >
-            Submit
-          </button>
+          <div className="flex justify-center items-center p-2">
+            <button
+              type="submit"
+              className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white px-5 py-2 rounded-xl"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     </div>
