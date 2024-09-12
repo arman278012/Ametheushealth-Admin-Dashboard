@@ -74,6 +74,10 @@ const AllCoupons = () => {
     });
   };
 
+  const goToPage = () => {
+    console.log("Go to page function implemented");
+  };
+
   return (
     <div className="flex flex-col p-5">
       <div>
