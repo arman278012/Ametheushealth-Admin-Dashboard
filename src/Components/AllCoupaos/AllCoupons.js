@@ -76,6 +76,7 @@ const AllCoupons = () => {
 
   const goToPage = () => {
     console.log("Go to page function implemented");
+    console.log("Something is going");
   };
 
   return (
