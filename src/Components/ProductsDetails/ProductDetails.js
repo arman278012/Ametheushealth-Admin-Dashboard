@@ -302,7 +302,7 @@ const ProductDetails = () => {
             </div> */}
 
             {/* for mobile section */}
-              {/* <div className="sm:hidden md:hidden flex gap-3">
+            {/* <div className="sm:hidden md:hidden flex gap-3">
                 <select
                   id="fruits"
                   name="fruits"
@@ -419,8 +419,23 @@ const ProductDetails = () => {
             >
               <MdOutlineKeyboardArrowLeft />
             </div>
-            <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
-              <p>{currentPage}</p>
+            <div className="h-[25px] w-[60px] border-gray-400 border flex justify-center items-center">
+              <input
+                type="number"
+                value={currentPage}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10);
+                  if (!isNaN(value)) {
+                    setCurrentPage(value);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    productDetailsAgain(currentPage, pageLimit, searchQuery); // Fetch data for the input page
+                  }
+                }}
+                className="w-full text-center outline-none"
+              />
             </div>
             <div>
               <p>of {allProductsDetails?.totalPages || 1}</p>
@@ -591,9 +606,25 @@ const ProductDetails = () => {
             >
               <MdOutlineKeyboardArrowLeft />
             </div>
-            <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
-              <p>{currentPage}</p>
+            <div className="h-[25px] w-[60px] border-gray-400 border flex justify-center items-center">
+              <input
+                type="number"
+                value={currentPage}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10);
+                  if (!isNaN(value)) {
+                    setCurrentPage(value);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    productDetailsAgain(currentPage, pageLimit, searchQuery); // Fetch data for the input page
+                  }
+                }}
+                className="w-full text-center outline-none"
+              />
             </div>
+
             <div>
               <p>of {allProductsDetails?.totalPages || 1}</p>
             </div>
