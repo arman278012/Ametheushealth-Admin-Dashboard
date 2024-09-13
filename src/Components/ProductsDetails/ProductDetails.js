@@ -4,6 +4,7 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdKeyboardDoubleArrowRight,
   MdKeyboardArrowRight,
+  MdOutlinePublishedWithChanges,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Table } from "react-super-responsive-table";
@@ -37,6 +38,14 @@ const ProductDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState("10");
+  const [stockAlert, setStockAlert] = useState(false);
+  const [stockId, setStockId] = useState("");
+  const [stockValue, setStockValue] = useState("");
+  const [price, setPrice] = useState("");
+  const [updateValue, setUpdateValue] = useState({
+    status: stockValue,
+    // price,
+  });
 
   const searchParams = new URLSearchParams(location.search);
 
@@ -174,6 +183,28 @@ const ProductDetails = () => {
     return date.toLocaleDateString("en-IN");
   };
 
+  const updateStock = async () => {
+    const status = stockValue;
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/product/status/${stockId}`,
+        { status },
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      setStockValue("");
+      setStockAlert(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      productDetailsAgain();
+    }
+  };
+
   return (
     <div className="">
       {/* top section is here */}
@@ -201,7 +232,6 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-        {/* <div className="sm:w-[100%] w-[320px] h-[1px] bg-gray-400"></div> */}
       </div>
 
       {/* bottom section is here */}
@@ -235,18 +265,6 @@ const ProductDetails = () => {
         </div>
 
         <div className="flex sm:flex-row flex-col justify-end px-5 py-2">
-          {/* <div className="left flex gap-3 justify-center items-center sm:justify-normal">
-            <div className="all text-sm">All</div>{" "}
-            <span className="text-sm">|</span>
-            <div className="published text-blue-500 text-sm">
-              Published
-            </div>{" "}
-            <span className="text-sm">|</span>
-            <div className="Draft text-blue-500 text-sm">Drafts</div>{" "}
-            <span className="text-sm">|</span>
-            <div className="Sorting text-blue-500 text-sm">Sorting</div>
-          </div> */}
-
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <div>
               <input
@@ -258,69 +276,11 @@ const ProductDetails = () => {
               />
             </div>
 
-            <div>
-              {/* <button
-                onClick={() =>
-                  dispatch(
-                    fetchGetProductsData({
-                      page: currentPage,
-                      pageLimit,
-                      searchQuery,
-                    })
-                  )
-                }
-                className="bg-[#13a3bc] hover:bg-[#13b6d5] outline-none px-2 rounded-md text-white p-[5px]"
-              >
-                Search Products
-              </button> */}
-            </div>
+            <div></div>
           </div>
         </div>
         <div>
           <div className="all-filters px-5 py-2 flex sm:flex-row flex-col justify-center items-center sm:justify-normal gap-3">
-            {/* <select
-              id="fruits"
-              name="fruits"
-              className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
-            >
-              <option
-                value=""
-                selected
-                disabled
-                hidden
-                className="placeholder opacity-50"
-              >
-                Bulk Actions
-              </option>
-              <option value="apple">Edit</option>
-              <option value="banana">Move to Trash</option>
-            </select>
-            <div className="sm:flex md:flex hidden justify-center items-center">
-              <button className="bg-[#13a3bc] hover:bg-[#13b6d5] w-[70px] h-[30px] text-white rounded-md">
-                Apply
-              </button>
-            </div> */}
-
-            {/* for mobile section */}
-            {/* <div className="sm:hidden md:hidden flex gap-3">
-                <select
-                  id="fruits"
-                  name="fruits"
-                  className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white"
-                >
-                  <option value="apple">Apple</option>
-                  <option value="banana">Banana</option>
-                  <option value="cherry">Cherry</option>
-                  <option value="date">Date</option>
-                  <option value="elderberry">Elderberry</option>
-                </select>
-                <div className="flex justify-center items-center">
-                  <button className="bg-[#13a3bc] w-[70px] h-[30px] text-white rounded-md">
-                    Apply
-                  </button>
-                </div>
-              </div> */}
-
             <div className="relative inline-block text-left">
               <button
                 type="button"
@@ -391,12 +351,6 @@ const ProductDetails = () => {
               <option value="apple">In stock</option>
               <option value="banana">Out of stock</option>
             </select>
-
-            {/* <div className="flex justify-center items-center">
-              <button className="bg-[#13a3bc] hover:bg-[#13b6d5] sm:w-[70px] w-[230px] h-[30px] text-white rounded-md">
-                Filter
-              </button>
-            </div> */}
           </div>
 
           <div className="flex px-5 py-2 gap-3 justify-end">
@@ -490,12 +444,6 @@ const ProductDetails = () => {
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                     Price
                   </th>
-                  {/* <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
-                    Categories
-                  </th> */}
-                  {/* <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
-                    Tags
-                  </th> */}
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[15%]">
                     Date
                   </th>
@@ -563,21 +511,27 @@ const ProductDetails = () => {
                       {singleItem?.variants[0]?.sku}
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-green-700 font-bold text-[12px]">
-                      {console.log(singleItem?.isStockAvailable)}
-                      {singleItem?.variants[0]?.isStockAvailable
-                        ? `In Stock (${singleItem?.variants[0]?.length})`
-                        : `Out of Stock (${singleItem?.variants[0]?.length})`}
+                      {console.log(singleItem?.variants[0]?.isStockAvailable)}
+                      <div className="flex gap-4">
+                        {singleItem?.variants[0]?.isStockAvailable
+                          ? `In Stock `
+                          : `Out of Stock `}
+                        <MdOutlinePublishedWithChanges
+                          className="text-xl cursor-pointer"
+                          onClick={() => {
+                            setStockAlert(true);
+                            setStockId(singleItem._id);
+                            setStockValue(
+                              !singleItem?.variants[0]?.isStockAvailable
+                            );
+                          }}
+                        />
+                      </div>
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {singleItem?.variants[0]?.currency}{" "}
                       {singleItem?.variants[0]?.price}
                     </td>
-                    {/* <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {singleItem.categoryID}
-                    </td> */}
-                    {/* <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {singleItem.tags}
-                    </td> */}
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {convertToIndianDate(singleItem.createdAt || "--")}
                     </td>
@@ -676,6 +630,32 @@ const ProductDetails = () => {
               </button>
               <button
                 onClick={() => setDeleteAlert(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {stockAlert && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0"></div>
+          <div className="bg-white p-6 rounded-lg border-2 z-10">
+            <p className="text-lg mb-4">Are you sure to status of this Item?</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  updateStock();
+                  setDeleteAlert(false);
+                  setStockId("");
+                }}
+                className="bg-[#73d173] text-white px-4 py-2 rounded-md mr-2"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setStockAlert(false)}
                 className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
               >
                 Cancel
