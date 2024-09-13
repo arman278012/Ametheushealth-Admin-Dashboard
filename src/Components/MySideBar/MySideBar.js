@@ -311,9 +311,12 @@ const MySideBar = () => {
                   >
                     Instant Generic
                   </NavLink>
-                  <a href="all-generic" className="hover:bg-gray-700 px-4 py-2">
+                  <NavLink
+                    to={"all-generic"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     All Generic
-                  </a>
+                  </NavLink>
                   <NavLink
                     to={"/add-generic"}
                     className="hover:bg-gray-700 px-4 py-2"

@@ -8,15 +8,26 @@ const AddBlogsPage = () => {
   const authorization = localStorage.getItem("authorization");
   const id = localStorage.getItem("id");
   return (
-    <div className="flex">
-      <div>
-        <MySideBar />
-      </div>
+    <>
+      <div className="sm:flex hidden">
+        <div>
+          <MySideBar />
+        </div>
 
-      <div>
-        <AddBlogs className="w-[100%]" />
+        <div>
+          <AddBlogs className="w-[100%]" />
+        </div>
       </div>
-    </div>
+      <div className="sm:hidden block">
+        <div>
+          <MobileNavbar />
+        </div>
+
+        <div>
+          <AddBlogs className="w-[100%]" />
+        </div>
+      </div>
+    </>
   );
 };
 

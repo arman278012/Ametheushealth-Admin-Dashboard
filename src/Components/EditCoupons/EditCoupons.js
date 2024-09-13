@@ -49,8 +49,9 @@ const EditCoupons = () => {
         usageCount: coupon.usageCount,
         expiryDate: coupon.expiryDate,
         isActive: coupon.isActive,
-        discountCategory: coupon.discountCategory, // Fixed: Set the correct discountCategory from coupon data
+        discountCategory: coupon.discountCategory || "", // Add fallback if the field is missing
       });
+      console.log("Coupon Data:", coupanData); // Debugging log
       console.log(coupon);
     } catch (error) {
       console.log(error);
@@ -58,6 +59,7 @@ const EditCoupons = () => {
   };
 
   useEffect(() => {
+    console.log("couponId inside useEffect:", couponId);
     if (couponId) {
       getCoupons();
     }
@@ -210,20 +212,21 @@ const EditCoupons = () => {
                 <Select
                   className="w-full focus:outline-none"
                   value={{
-                    label: coupanData.discountCategory,
-                    value: coupanData.discountCategory,
+                    label: coupanData.discountCategory || "Select Category",
+                    value: coupanData.discountCategory || "",
                   }}
                   options={[
-                    { value: "FMCG", label: "AFMCG" },
+                    { value: "FMCG", label: "FMCG" },
                     { value: "FMHG", label: "FMHG" },
                     { value: "OTC", label: "OTC" },
                   ]}
-                  onChange={(option) =>
+                  onChange={(option) => {
                     setCoupanData({
                       ...coupanData,
                       discountCategory: option.value,
-                    })
-                  }
+                    });
+                    console.log("Updated discountCategory:", option.value); // Log for debugging
+                  }}
                   classNamePrefix="react-select"
                 />
               </div>

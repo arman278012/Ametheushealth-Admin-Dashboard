@@ -4,8 +4,8 @@ import AttachManufacturer from "../../Components/AttachManufacturer/AttachManufa
 
 const AttachManufacturerPage = () => {
   return (
-    <div>
-      <div className="flex">
+    <>
+      <div className="sm:flex hidden">
         <div>
           <MySideBar />
         </div>
@@ -13,7 +13,16 @@ const AttachManufacturerPage = () => {
           <AttachManufacturer />
         </div>
       </div>
-    </div>
+
+      <div className="sm:hidden block">
+        <div>
+          <MySideBar />
+        </div>
+        <div className="w-[100%]">
+          <AttachManufacturer />
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -92,7 +92,7 @@ const AddCoupons = () => {
         }
       );
       toast.success("Coupon Code generated...");
-      navigate("/all-coupons");
+      // navigate("/all-coupons");
       console.log(response);
     } catch (error) {
       console.log(error);
