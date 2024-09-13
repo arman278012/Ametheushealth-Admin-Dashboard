@@ -198,6 +198,7 @@ const ProductDetails = () => {
       );
       setStockValue("");
       setStockAlert(false);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {
