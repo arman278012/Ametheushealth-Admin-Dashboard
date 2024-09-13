@@ -15,7 +15,7 @@ const SingleProductDetailsPage = () => {
           <SingleProductDetails />
         </div>
       </div>
-      <div className="sm:hidden flex">
+      <div className="sm:hidden block">
         <div>
           <MobileNavbar />
         </div>
