@@ -302,24 +302,24 @@ const ProductDetails = () => {
             </div> */}
 
             {/* for mobile section */}
-            <div className="sm:hidden md:hidden flex gap-3">
-              <select
-                id="fruits"
-                name="fruits"
-                className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white"
-              >
-                <option value="apple">Apple</option>
-                <option value="banana">Banana</option>
-                <option value="cherry">Cherry</option>
-                <option value="date">Date</option>
-                <option value="elderberry">Elderberry</option>
-              </select>
-              <div className="flex justify-center items-center">
-                <button className="bg-[#13a3bc] w-[70px] h-[30px] text-white rounded-md">
-                  Apply
-                </button>
-              </div>
-            </div>
+              {/* <div className="sm:hidden md:hidden flex gap-3">
+                <select
+                  id="fruits"
+                  name="fruits"
+                  className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white"
+                >
+                  <option value="apple">Apple</option>
+                  <option value="banana">Banana</option>
+                  <option value="cherry">Cherry</option>
+                  <option value="date">Date</option>
+                  <option value="elderberry">Elderberry</option>
+                </select>
+                <div className="flex justify-center items-center">
+                  <button className="bg-[#13a3bc] w-[70px] h-[30px] text-white rounded-md">
+                    Apply
+                  </button>
+                </div>
+              </div> */}
 
             <div className="relative inline-block text-left">
               <button
@@ -392,11 +392,11 @@ const ProductDetails = () => {
               <option value="banana">Out of stock</option>
             </select>
 
-            <div className="flex justify-center items-center">
+            {/* <div className="flex justify-center items-center">
               <button className="bg-[#13a3bc] hover:bg-[#13b6d5] sm:w-[70px] w-[230px] h-[30px] text-white rounded-md">
                 Filter
               </button>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex px-5 py-2 gap-3 justify-end">
