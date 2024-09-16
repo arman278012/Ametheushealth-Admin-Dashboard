@@ -41,11 +41,10 @@ const ProductDetails = () => {
   const [stockAlert, setStockAlert] = useState(false);
   const [stockId, setStockId] = useState("");
   const [stockValue, setStockValue] = useState("");
-  const [price, setPrice] = useState("");
-  const [updateValue, setUpdateValue] = useState({
-    status: stockValue,
-    // price,
-  });
+  const [priceId, setPriceId] = useState("");
+  const [pricePopUp, setPricePopUp] = useState(false);
+  const [priceAlert, setPriceAlert] = useState(false);
+  const [priceValue, setPriceValue] = useState("");
 
   const searchParams = new URLSearchParams(location.search);
 
@@ -203,6 +202,20 @@ const ProductDetails = () => {
       console.log(error);
     } finally {
       productDetailsAgain();
+    }
+  };
+
+  const updatePrice = async () => {
+    const price = { price: priceValue }; // Send price as an object
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/product/price/${priceId}`,
+        price
+      );
+      window.location.reload();
+      console.log("Price updated successfully", response.data);
+    } catch (error) {
+      console.log("Error updating price", error);
     }
   };
 
@@ -530,9 +543,18 @@ const ProductDetails = () => {
                       </div>
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {singleItem?.variants[0]?.currency}{" "}
-                      {singleItem?.variants[0]?.price}
+                      <p
+                        onClick={() => {
+                          setPriceAlert(true); // Open price alert
+                          setPriceId(singleItem._id); // Set the priceId for the selected item
+                          setPriceValue(singleItem?.variants[0]?.price); // Set the initial price value
+                        }}
+                      >
+                        {singleItem?.variants[0]?.currency}{" "}
+                        {singleItem?.variants[0]?.price}
+                      </p>
                     </td>
+
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
                       {convertToIndianDate(singleItem.createdAt || "--")}
                     </td>
@@ -643,7 +665,9 @@ const ProductDetails = () => {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0"></div>
           <div className="bg-white p-6 rounded-lg border-2 z-10">
-            <p className="text-lg mb-4">Are you sure to status of this Item?</p>
+            <p className="text-lg mb-4">
+              Are you sure to change status of this Item?
+            </p>
             <div className="flex justify-end">
               <button
                 onClick={() => {
@@ -665,6 +689,44 @@ const ProductDetails = () => {
           </div>
         </div>
       )}
+      {priceAlert && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          {console.log(priceId)}
+          <div className="absolute inset-0"></div>
+          <div className="bg-white p-6 rounded-lg border-2 z-10">
+            <p className="text-lg mb-4">
+              Are you sure you want to change the price of this item?
+            </p>
+            <div>
+              <input
+                type="text"
+                value={priceValue}
+                onChange={(e) => setPriceValue(e.target.value)}
+                className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px]"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  updatePrice(); // Call updatePrice function
+                  setPriceAlert(false); // Close the alert
+                  setPriceId(""); // Clear the priceId
+                }}
+                className="bg-[#73d173] text-white px-4 py-2 rounded-md mr-2"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setPriceAlert(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {pricePopUp && <p>Update the price here </p>}
     </div>
   );
 };
