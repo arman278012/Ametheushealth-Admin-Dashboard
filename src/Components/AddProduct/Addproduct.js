@@ -374,20 +374,6 @@ const AddProduct = () => {
     });
   };
 
-  const discountCategoryOptions = [
-    { value: "FMCG", label: "FMCG" },
-    { value: "FMHG", label: "FMHG" },
-    { value: "OTC", label: "OTC" },
-  ];
-
-  const handleDiscountCategoryChange = (selectedCategoryDiscount) => {
-    setSelectedCategoryDiscount(selectedCategoryDiscount);
-    setCoupanData((prevData) => ({
-      ...prevData,
-      discountCategory: selectedCategoryDiscount.value,
-    }));
-  };
-
   // if (loading) {
   //   return (
   //     <div className="flex justify-center items-center h-[100vh] w-[100vw]">
