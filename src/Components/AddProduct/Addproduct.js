@@ -368,6 +368,7 @@ const AddProduct = () => {
 
   // Function to scroll to the bottom of the page
   const scrollToBottom = () => {
+    console.log("Arnab");
     window.scrollTo({
       top: document.documentElement.scrollHeight,
       behavior: "smooth", // Adds smooth scrolling animation
