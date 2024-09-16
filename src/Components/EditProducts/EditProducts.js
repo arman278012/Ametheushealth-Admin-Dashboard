@@ -139,6 +139,7 @@ const EditProducts = () => {
     metaTags: "",
     manufacturerID: "",
     manufacturer: "",
+    productType: "",
     variants: [
       {
         _id: "",
@@ -1110,27 +1111,56 @@ const EditProducts = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-col justify-start gap-2">
-                      <label className="px-3 font-bold">IsDiscontinued?</label>
-                      <div className="relative inline-block text-left">
-                        <select
-                          name="isDiscontinued"
-                          value={productValues.isDiscontinued}
-                          onChange={(event) => {
-                            const value = event.target.value === "true";
-                            setProductValues((prevValues) => ({
-                              ...prevValues,
-                              isDiscontinued: value,
-                            }));
-                          }}
-                          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
-                        >
-                          <option value="" disabled>
-                            Select an option
-                          </option>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
-                        </select>
+                    <div className="flex gap-10">
+                      <div className="flex flex-col gap-2">
+                        <label className="px-3 font-bold">
+                          IsDiscontinued?
+                        </label>
+                        <div className="relative inline-block text-left">
+                          <select
+                            name="isDiscontinued"
+                            value={productValues.isDiscontinued}
+                            onChange={(event) => {
+                              const value = event.target.value === "true";
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isDiscontinued: value,
+                              }));
+                            }}
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                          >
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col justify-start gap-2">
+                        <label className="px-3 font-bold">Product Type?</label>
+                        <div className="relative inline-block text-left">
+                          <select
+                            name="productType"
+                            value={productValues.productType}
+                            onChange={(event) => {
+                              const value = event.target.value;
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                productType: value,
+                              }));
+                            }}
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                          >
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="OTC">OTC</option>
+                            <option value="FMHG">FMHG</option>
+                            <option value="FMCG">FMCG</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>

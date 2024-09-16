@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import "./AddProduct.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
+import Select from "react-select";
 
 const initialValues = {
   title: "",
@@ -44,6 +45,7 @@ const initialValues = {
   metaTags: "",
   manufacturerID: "",
   manufacturer: "",
+  productType: "",
   variants: [
     { marginIndia: -15, margin: 60, marginBangladesh: 20, marginNepal: 20 },
   ],
@@ -70,6 +72,7 @@ const AddProduct = () => {
   const [sku, setSku] = useState("");
   const [btnLoader, setBtnLoader] = useState(false);
   const [errors, setErrors] = useState("");
+  const [selectedCategoryDiscount, setSelectedCategoryDiscount] = useState();
 
   const toggleManuId = () => {
     setManuIdOpen(!manuIdOpen);
@@ -369,6 +372,20 @@ const AddProduct = () => {
       top: document.documentElement.scrollHeight,
       behavior: "smooth", // Adds smooth scrolling animation
     });
+  };
+
+  const discountCategoryOptions = [
+    { value: "FMCG", label: "FMCG" },
+    { value: "FMHG", label: "FMHG" },
+    { value: "OTC", label: "OTC" },
+  ];
+
+  const handleDiscountCategoryChange = (selectedCategoryDiscount) => {
+    setSelectedCategoryDiscount(selectedCategoryDiscount);
+    setCoupanData((prevData) => ({
+      ...prevData,
+      discountCategory: selectedCategoryDiscount.value,
+    }));
   };
 
   // if (loading) {
@@ -998,25 +1015,52 @@ const AddProduct = () => {
                             </div>
                           </div>
 
-                          <div className="flex flex-col justify-start gap-2">
-                            <label className="px-3 font-bold">
-                              IsDiscontinued?
-                            </label>
-                            <div className="relative inline-block text-left">
-                              <Field
-                                as="select"
-                                name="isDiscontinued"
-                                value={values.isDiscontinued}
-                                onChange={(event) => {
-                                  const value = event.target.value === "true";
-                                  setFieldValue("isDiscontinued", value);
-                                }}
-                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
-                              >
-                                <option disabled>Select an option</option>
-                                <option value={true}>Yes</option>
-                                <option value={false}>No</option>
-                              </Field>
+                          <div className="flex gap-10">
+                            <div className="flex flex-col gap-2">
+                              <label className="px-3 font-bold">
+                                IsDiscontinued?
+                              </label>
+                              <div className="relative inline-block text-left">
+                                <Field
+                                  as="select"
+                                  name="isDiscontinued"
+                                  value={values.isDiscontinued}
+                                  onChange={(event) => {
+                                    const value = event.target.value === "true";
+                                    setFieldValue("isDiscontinued", value);
+                                  }}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                                >
+                                  <option disabled>Select an option</option>
+                                  <option value={true}>Yes</option>
+                                  <option value={false}>No</option>
+                                </Field>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col justify-start gap-2">
+                              <label className="px-3 font-bold">
+                                Product Type
+                              </label>
+                              <div className="relative inline-block text-left">
+                                <Field
+                                  as="select"
+                                  name="productType"
+                                  value={values.productType}
+                                  onChange={(event) => {
+                                    const value = event.target.value; // Getting the selected value as a string
+                                    setFieldValue("productType", value); // Setting the value directly
+                                  }}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                                >
+                                  <option disabled value="">
+                                    Select an option
+                                  </option>
+                                  <option value="OTC">OTC</option>
+                                  <option value="FMHG">FMHG</option>
+                                  <option value="FMCG">FMCG</option>
+                                </Field>
+                              </div>
                             </div>
                           </div>
                         </div>
