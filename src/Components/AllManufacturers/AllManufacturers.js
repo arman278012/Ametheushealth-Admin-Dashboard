@@ -54,7 +54,21 @@ const AllManufacturers = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    const page = parseInt(params.get("page")) || "1";
+    setSearchQuery(query);
+    setCurrentPage(page);
+    getManufacturersData(page, query);
+  }, [location.search]);
+
+  useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      const newParams = new URLSearchParams();
+      newParams.set("search", searchQuery);
+      newParams.set("page", currentPage);
+      navigate({ search: newParams.toString() });
+
       getManufacturersData(currentPage, searchQuery);
     }, 300);
 
