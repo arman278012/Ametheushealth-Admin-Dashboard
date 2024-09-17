@@ -59,13 +59,26 @@ const AllGeneric = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    const page = parseInt(params.get("page")) || 1;
+
+    setSearchQuery(query);
+    setCurrentPage(page);
+
+    allGenericData(query, page);
+  }, [location.search]);
+
+  useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (searchQuery) {
-        allGenericData(searchQuery, currentPage);
-      } else {
-        allGenericData("", currentPage);
-      }
-    }, 100);
+      const newParams = new URLSearchParams();
+      newParams.set("search", searchQuery);
+      newParams.set("page", currentPage);
+
+      navigate(`?${newParams.toString()}`);
+
+      allGenericData(searchQuery || "", currentPage);
+    }, 300); // Increased debounce time for better UX
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, currentPage, pageLimit]);
