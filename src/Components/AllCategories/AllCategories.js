@@ -47,31 +47,33 @@ const AllCategories = () => {
     const params = new URLSearchParams(location.search);
     const query = params.get("search") || "";
     const page = parseInt(params.get("page")) || 1;
+    const pageLimit = parseInt(params.get("pagelimit")) || ""; // Default to 10 if pageLimit is not provided
 
+    // Dispatch actions to set the state
     dispatch(setSearchQuery(query));
     dispatch(setPage(page));
+    setPageLimit(pageLimit);
 
-    // Fetch category data
+    // Fetch category data with updated values
     dispatch(getCategoryData({ page, searchQuery: query, pageLimit }));
-  }, [location.search, dispatch, pageLimit]);
+  }, [location.search, dispatch]);
 
-  // Whenever search query or page changes, update the URL and fetch data
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
+      newParams.set("pagelimit", pageLimit);
 
-      // Update the URL with new search query and page number
+      // Update the URL with the new query, page, and pageLimit values
       navigate({ search: newParams.toString() });
 
-      // Fetch data with updated search query and pagination
+      // Fetch category data with updated search and pagination parameters
       dispatch(getCategoryData({ page: currentPage, searchQuery, pageLimit }));
-    }, 300); // Debounce search query updates
+    }, 300); // Debounce delay for smoother search and pagination experience
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, currentPage, pageLimit, navigate, dispatch]);
-
 
   const handlePageChange = (newPage) => {
     dispatch(setPage(newPage));

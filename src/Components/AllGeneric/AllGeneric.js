@@ -25,7 +25,7 @@ const AllGeneric = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isTopBaropen, setIsTopBarOpen] = useState(false);
-  const [pageLimit, setPageLimit] = useState("10");
+  const [pageLimit, setPageLimit] = useState(" ");
 
   const toggleTopBar = () => {
     setIsTopBarOpen(!isTopBaropen);
@@ -62,11 +62,13 @@ const AllGeneric = () => {
     const params = new URLSearchParams(location.search);
     const query = params.get("search") || "";
     const page = parseInt(params.get("page")) || 1;
+    const limit = parseInt(params.get("pageLimit")) || 10; // Default pageLimit is 10
 
     setSearchQuery(query);
     setCurrentPage(page);
+    setPageLimit(limit);
 
-    allGenericData(query, page);
+    allGenericData(query, page, limit);
   }, [location.search]);
 
   useEffect(() => {
@@ -74,11 +76,12 @@ const AllGeneric = () => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
+      newParams.set("pageLimit", pageLimit);
 
       navigate(`?${newParams.toString()}`);
 
-      allGenericData(searchQuery || "", currentPage);
-    }, 300); // Increased debounce time for better UX
+      allGenericData(searchQuery || "", currentPage, pageLimit);
+    }, 300); // Debounce delay for smoother UX
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, currentPage, pageLimit]);
@@ -256,9 +259,9 @@ const AllGeneric = () => {
                 <input type="checkbox" />
               </Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
-              <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
+              <Th className="py-2 px-4 border-b w-[0%] text-start">Slug</Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Id</Th>
-              <Th className="py-2 px-4 border-b w-[40%] text-start">Uses</Th>
+              <Th className="py-2 px-4 border-b w-[30%] text-start">Uses</Th>
             </Tr>
           </Thead>
           <Tbody>

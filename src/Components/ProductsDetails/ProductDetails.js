@@ -73,20 +73,27 @@ const ProductDetails = () => {
     const params = new URLSearchParams(location.search);
     const query = params.get("search") || "";
     const page = parseInt(params.get("page")) || 1;
+    const pagelimit = parseInt(params.get("pagelimit")) || "";
 
     setSearchQuery(query);
     setCurrentPage(page);
-    productDetailsAgain(page, pageLimit, query);
-  }, [location.search, pageLimit]);
+    setPageLimit(pagelimit); // Use pagelimit parsed from URL
+
+    productDetailsAgain(page, pagelimit, query);
+  }, [location.search]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
-      navigate({ search: newParams.toString() }); // Use navigate instead of history.push
+      newParams.set("pagelimit", pageLimit); // Consistent use of pageLimit here
+
+      navigate({ search: newParams.toString() });
+
+      // Call productDetailsAgain with updated values
       productDetailsAgain(currentPage, pageLimit, searchQuery);
-    }, 300);
+    }, 300); // Debounce delay for better UX
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, currentPage, pageLimit]);

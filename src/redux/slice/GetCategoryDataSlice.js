@@ -29,6 +29,7 @@ const initialState = {
   error: "",
   currentPage: 1,
   searchQuery: "",
+  pageLimit: "10",
 };
 
 const getCategoryDataSlice = createSlice({

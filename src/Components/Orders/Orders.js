@@ -74,10 +74,12 @@ const Orders = () => {
     const params = new URLSearchParams(location.search);
     const query = params.get("search") || "";
     const page = parseInt(params.get("page")) || 1;
+    const pagelimit = parseInt(params.get("pagelimit")) || "";
 
     setSearchQuery(query);
     setCurrentPage(page);
-    allOrders(page, pageLimit, query, filter); // Fetch orders with initial values
+    setPageLimit(pageLimit);
+    allOrders(page, pageLimit, query, filter, pagelimit); // Fetch orders with initial values
   }, [location.search, pageLimit, filter]);
 
   useEffect(() => {
@@ -85,6 +87,7 @@ const Orders = () => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
+      newParams.set("pagelimit", pageLimit);
       navigate({ search: newParams.toString() }); // Update the URL
       allOrders(currentPage, pageLimit, searchQuery, filter); // Fetch orders when values change
     }, 300); // Debounce for smooth search experience

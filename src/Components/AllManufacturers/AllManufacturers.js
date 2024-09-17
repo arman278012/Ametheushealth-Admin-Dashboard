@@ -56,10 +56,14 @@ const AllManufacturers = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const query = params.get("search") || "";
-    const page = parseInt(params.get("page")) || "1";
+    const page = parseInt(params.get("page")) || 1; // Default to number 1
+    const pageLimit = parseInt(params.get("pagelimit")) || ""; // Default value for pageLimit
+
     setSearchQuery(query);
     setCurrentPage(page);
-    getManufacturersData(page, query);
+    setPageLimit(pageLimit);
+
+    getManufacturersData(page, query, pageLimit);
   }, [location.search]);
 
   useEffect(() => {
@@ -67,10 +71,13 @@ const AllManufacturers = () => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
+      newParams.set("pagelimit", pageLimit);
+
       navigate({ search: newParams.toString() });
 
-      getManufacturersData(currentPage, searchQuery);
-    }, 300);
+      // Fetch data with current values
+      getManufacturersData(currentPage, searchQuery, pageLimit);
+    }, 300); // Debounce time for smoother UX
 
     return () => clearTimeout(delayDebounceFn);
   }, [currentPage, searchQuery, pageLimit]);
