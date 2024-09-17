@@ -45,7 +45,7 @@ const Orders = () => {
   };
 
   const allOrders = async (page, pageLimit, query, filter) => {
-    query = encodeURIComponent(query);
+    query = encodeURIComponent(query); // Sanitize query string
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}&status=${filter}`,
@@ -71,12 +71,26 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      allOrders(currentPage, pageLimit, searchQuery, filter);
-    }, 300);
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    const page = parseInt(params.get("page")) || 1;
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, currentPage, pageLimit, filter]);
+    setSearchQuery(query);
+    setCurrentPage(page);
+    allOrders(page, pageLimit, query, filter); // Fetch orders with initial values
+  }, [location.search, pageLimit, filter]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      const newParams = new URLSearchParams();
+      newParams.set("search", searchQuery);
+      newParams.set("page", currentPage);
+      navigate({ search: newParams.toString() }); // Update the URL
+      allOrders(currentPage, pageLimit, searchQuery, filter); // Fetch orders when values change
+    }, 300); // Debounce for smooth search experience
+
+    return () => clearTimeout(delayDebounceFn); // Clear timeout on unmount or change
+  }, [searchQuery, currentPage, pageLimit, filter, navigate]);
 
   const options = {
     year: "numeric",

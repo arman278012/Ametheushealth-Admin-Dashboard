@@ -8,7 +8,7 @@ import {
 } from "../../redux/slice/GetCategoryDataSlice";
 import axios, { all } from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { AppContext } from "../../Context/ContextProvider";
@@ -33,6 +33,7 @@ const AllCategories = () => {
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [expanded, setExpanded] = useState({});
   const [deleteAlert, setDeleteAlert] = useState(false);
@@ -43,8 +44,34 @@ const AllCategories = () => {
   const [allData, setAllData] = useState([]);
 
   useEffect(() => {
-    dispatch(getCategoryData({ page: currentPage, searchQuery, pageLimit }));
-  }, [dispatch, currentPage, searchQuery, pageLimit]);
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    const page = parseInt(params.get("page")) || 1;
+
+    dispatch(setSearchQuery(query));
+    dispatch(setPage(page));
+
+    // Fetch category data
+    dispatch(getCategoryData({ page, searchQuery: query, pageLimit }));
+  }, [location.search, dispatch, pageLimit]);
+
+  // Whenever search query or page changes, update the URL and fetch data
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      const newParams = new URLSearchParams();
+      newParams.set("search", searchQuery);
+      newParams.set("page", currentPage);
+
+      // Update the URL with new search query and page number
+      navigate({ search: newParams.toString() });
+
+      // Fetch data with updated search query and pagination
+      dispatch(getCategoryData({ page: currentPage, searchQuery, pageLimit }));
+    }, 300); // Debounce search query updates
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, currentPage, pageLimit, navigate, dispatch]);
+
 
   const handlePageChange = (newPage) => {
     dispatch(setPage(newPage));
