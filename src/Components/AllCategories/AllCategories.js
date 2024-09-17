@@ -28,7 +28,7 @@ const AllCategories = () => {
     (state) => state.getCategoryData
   );
 
-  console.log("allCategoryData", allCategoryData);
+  console.log("allCategoryDatas", allCategoryData);
 
   const { setEditAllCategoriesForm } = useContext(AppContext);
   const dispatch = useDispatch();
