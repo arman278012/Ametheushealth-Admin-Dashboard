@@ -45,7 +45,8 @@ const initialValues = {
   metaTags: "",
   manufacturerID: "",
   manufacturer: "",
-  productType: "",
+  productType: "OTC",
+  isPrescriptionMandatory: false,
   variants: [
     { marginIndia: -15, margin: 60, marginBangladesh: 20, marginNepal: 20 },
   ],
@@ -299,19 +300,19 @@ const AddProduct = () => {
       }
     } catch (error) {
       setBtnLoader(false);
-      if (error.response && error.response.data) {
-        const backendErrors = error.response.data.errors;
-        const errorsObject = {};
+      // if (error.response && error.response.data) {
+      //   const backendErrors = error.response.data.errors;
+      //   const errorsObject = {};
 
-        backendErrors.forEach((err) => {
-          errorsObject[err.path] = err.msg;
-        });
+      //   backendErrors?.forEach((err) => {
+      //     errorsObject[err.path] = err.msg;
+      //   });
 
-        setErrors(errorsObject); // Set all errors at once
-        toast.error("Failed to create product. Please check the errors.");
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
+      //   setErrors(errorsObject); // Set all errors at once
+      //   toast.error("Failed to create product. Please check the errors.");
+      // } else {
+      //   toast.error("Something went wrong. Please try again.");
+      // }
     } finally {
       setBtnLoader(false);
     }
@@ -932,7 +933,7 @@ const AddProduct = () => {
 
                             <div className="flex flex-col gap-2">
                               <label className="px-3 font-bold">
-                                IsPrescriptionRequired?
+                                RX medicine
                               </label>
                               <div className="relative inline-block text-left">
                                 <Field
@@ -1048,6 +1049,31 @@ const AddProduct = () => {
                                   <option value="FMCG">FMCG</option>
                                 </Field>
                               </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-2">
+                            <label className="px-3 font-bold">
+                              Prescription Mandatory?
+                            </label>
+                            <div className="relative inline-block text-left">
+                              <Field
+                                as="select"
+                                name="isPrescriptionMandatory"
+                                value={values.isPrescriptionMandatory}
+                                onChange={(event) => {
+                                  const value = event.target.value === "true";
+                                  setFieldValue(
+                                    "isPrescriptionMandatory",
+                                    value
+                                  );
+                                }}
+                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                              >
+                                <option disabled>Select an option</option>
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Field>
                             </div>
                           </div>
                         </div>
