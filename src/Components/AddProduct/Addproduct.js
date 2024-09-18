@@ -1530,33 +1530,6 @@ const AddProduct = () => {
                               {item.name}
                             </label>
                           </div>
-                          {/* {item.children &&
-                            item.children.map((child) => (
-                              <div key={child._id}>
-                                <div className="flex items-center mb-2 ml-4">
-                                  <input
-                                    type="checkbox"
-                                    id={child._id}
-                                    name="categoryID"
-                                    value={child._id}
-                                    className="mr-2"
-                                    onChange={(e) =>
-                                      handleCheckboxChange(
-                                        setFieldValue,
-                                        e,
-                                        values
-                                      )
-                                    }
-                                    checked={values.categoryID.includes(
-                                      child._id
-                                    )}
-                                  />
-                                  <label htmlFor={child._id}>
-                                    &nbsp; {child.name}
-                                  </label>
-                                </div>
-                              </div>
-                            ))} */}
                         </div>
                       ))}
                     </div>

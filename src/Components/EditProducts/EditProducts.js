@@ -39,6 +39,64 @@ const EditProducts = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [updateLoaderBtn, setUpdateLoaderBtn] = useState(false);
   const [searchManufacturerQuery, setSearchManufacturerQuery] = useState("");
+  const [skuList, setSkuList] = useState("");
+
+  const [productValues, setProductValues] = useState({
+    title: "",
+    generic: "",
+    treatment: "",
+    shortDescription: "",
+    description: "",
+    moreInformation: "",
+    faq: "",
+    additionalInformation: "",
+    sideEffects: "",
+    categoryID: "",
+    tags: "",
+    genericID: "",
+    isReturnable: false,
+    isPrescriptionRequired: true,
+    isVisible: true,
+    isFeatured: false,
+    isDiscontinued: false,
+    purchaseNote: "",
+    externalLink: "",
+    position: "",
+    countryOrigin: "",
+    metaTitle: "",
+    originCountry: "",
+    metaDescription: "",
+    metaTags: "",
+    manufacturerID: "",
+    manufacturer: "",
+    productType: "",
+    isPrescriptionMandatory: "",
+    variants: [
+      {
+        _id: "",
+        sku: "",
+        packSize: "",
+        price: 0,
+        salePrice: 0,
+        margin: 0,
+        marginIndia: "",
+        marginBangladesh: "",
+        marginNepal: "",
+        minOrderQuantity: 1,
+        maxOrderQuantity: 100,
+        isStockAvailable: false,
+        currency: "₹",
+        weightUnit: "gm",
+        widthUnit: "cm",
+        lengthUnit: "cm",
+        heightUnit: "cm",
+        weight: "",
+        length: "",
+        height: "",
+        width: "",
+      },
+    ],
+  });
 
   const addVariant = () => {
     setProductValues((prevState) => ({
@@ -101,72 +159,62 @@ const EditProducts = () => {
     );
   };
 
-  const handleCheckboxChange = (event) => {
-    const { value, checked } = event.target;
-    setSelectedCategories(
-      (prevSelected) =>
-        checked
-          ? [...prevSelected, value] // Add the new value if checked
-          : prevSelected.filter((id) => id !== value) // Remove it if unchecked
-    );
-  };
+  // Your handleCheckboxChange function
+  const handleCheckboxChange = async (event) => {
+    const { name, value, checked } = event.target;
 
-  const [productValues, setProductValues] = useState({
-    title: "",
-    generic: "",
-    treatment: "",
-    shortDescription: "",
-    description: "",
-    moreInformation: "",
-    faq: "",
-    additionalInformation: "",
-    sideEffects: "",
-    categoryID: "",
-    tags: "",
-    genericID: "",
-    isReturnable: false,
-    isPrescriptionRequired: true,
-    isVisible: true,
-    isFeatured: false,
-    isDiscontinued: false,
-    purchaseNote: "",
-    externalLink: "",
-    position: "",
-    countryOrigin: "",
-    metaTitle: "",
-    originCountry: "",
-    metaDescription: "",
-    metaTags: "",
-    manufacturerID: "",
-    manufacturer: "",
-    productType: "",
-    isPrescriptionMandatory: "",
-    variants: [
-      {
-        _id: "",
-        sku: "",
-        packSize: "",
-        price: 0,
-        salePrice: 0,
-        margin: 0,
-        marginIndia: "",
-        marginBangladesh: "",
-        marginNepal: "",
-        minOrderQuantity: 1,
-        maxOrderQuantity: 100,
-        isStockAvailable: false,
-        currency: "₹",
-        weightUnit: "gm",
-        widthUnit: "cm",
-        lengthUnit: "cm",
-        heightUnit: "cm",
-        weight: "",
-        length: "",
-        height: "",
-        width: "",
-      },
-    ],
-  });
+    // Update the local state or formik state with the checkbox change
+    let updatedCategories = productValues.categoryID; // Assuming you're using productValues to manage state
+
+    if (checked) {
+      updatedCategories = [...updatedCategories, value];
+    } else {
+      updatedCategories = updatedCategories.filter((item) => item !== value);
+    }
+
+    // Update the state with updated categories (use setFieldValue if using Formik)
+    setProductValues((prevState) => ({
+      ...prevState,
+      categoryID: updatedCategories,
+    }));
+
+    // Create the payload object with the necessary data
+    const payload = {
+      categoryID: value,
+      isChecked: checked,
+    };
+
+    // Call the API to generate the SKU
+    try {
+      const response = await axios.post(
+        `https://api.assetorix.com:4100/ah/api/v1/product/sku`,
+        payload,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+
+      const generatedSku = response.data.data.sku;
+
+      // Assuming you're updating the SKU for the first variant
+      setProductValues((prevState) => ({
+        ...prevState,
+        variants: [
+          {
+            ...prevState.variants[0], // Keep other variant data intact
+            sku: generatedSku,
+          },
+        ],
+      }));
+
+      console.log("API response:", generatedSku);
+    } catch (err) {
+      console.error("API error:", err);
+    }
+  };
 
   const handleRemoveVariant = (index) => {
     let prevValues = productValues;
@@ -1612,9 +1660,27 @@ const EditProducts = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  {filterCategories(hierarchyData).map((item) =>
+                  {/* {filterCategories(hierarchyData).map((item) =>
                     renderCategory(item)
-                  )}
+                  )} */}
+                  {hierarchyData?.map((item) => (
+                    <div className="border px-2 p-1" key={item._id}>
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id={item._id}
+                          name="categoryID"
+                          value={item._id}
+                          className="mr-2"
+                          onChange={(e) => handleCheckboxChange(e)} // Pass the event directly
+                          checked={productValues.categoryID.includes(item._id)}
+                        />
+                        <label htmlFor={item._id} className="font-normal">
+                          {item.name}
+                        </label>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
