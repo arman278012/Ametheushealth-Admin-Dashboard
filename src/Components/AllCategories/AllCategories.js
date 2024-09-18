@@ -52,7 +52,6 @@ const AllCategories = () => {
     // Dispatch actions to set the state
     dispatch(setSearchQuery(query));
     dispatch(setPage(page));
-    setPageLimit(pageLimit);
 
     // Fetch category data with updated values
     dispatch(getCategoryData({ page, searchQuery: query, pageLimit }));
@@ -63,7 +62,6 @@ const AllCategories = () => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
-      newParams.set("pagelimit", pageLimit);
 
       // Update the URL with the new query, page, and pageLimit values
       navigate({ search: newParams.toString() });

@@ -448,6 +448,9 @@ const ProductDetails = () => {
               <thead>
                 <tr>
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[2%]">
+                    <p>*</p>
+                  </th>
+                  <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[2%]">
                     <input type="checkbox" className="form-checkbox" />
                   </th>
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
@@ -471,8 +474,11 @@ const ProductDetails = () => {
                 </tr>
               </thead>
               <tbody className="border-gray-300 border-2">
-                {allProductsDetails?.data?.map((singleItem) => (
+                {allProductsDetails?.data?.map((singleItem, index) => (
                   <tr className="bg-gray-100" key={singleItem._id}>
+                    <td className="py-2 px-4 border-b border-gray-200">
+                      <p>{singleItem.pageSize}</p>
+                    </td>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <input type="checkbox" className="form-checkbox" />
                     </td>
