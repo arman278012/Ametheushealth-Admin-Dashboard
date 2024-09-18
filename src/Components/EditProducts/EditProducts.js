@@ -281,7 +281,7 @@ const EditProducts = () => {
   const getHierarchy = async (query = "") => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${query}`,
+        `https://api.assetorix.com:4100/ah/api/v1/category/view?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

@@ -117,6 +117,25 @@ const AllGeneric = () => {
     setCurrentPage(page);
   };
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    // Only update currentPage if it's a number
+    if (value === "" || /^\d+$/.test(value)) {
+      setCurrentPage(value);
+    }
+  };
+
+  const handleBlur = () => {
+    const page = Number(currentPage);
+    // Ensure the entered page number is within valid range
+    if (page >= 1 && page <= (genericData?.totalPages || 1)) {
+      goToPage(page);
+    } else {
+      // Reset to the current page if the input is out of range
+      setCurrentPage(genericData?.page);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col gap-3 px-5 py-2">
@@ -223,9 +242,14 @@ const AllGeneric = () => {
               <MdOutlineKeyboardArrowLeft />
             </div>
             <div className="h-[25px] w-[35px] border-gray-400 border flex justify-center items-center">
-              <p>
-                {loading ? <Skeleton width={20} /> : genericData?.page || 0}
-              </p>
+              <input
+                type="text"
+                value={currentPage}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className="text-center border-none outline-none w-full"
+                disabled={loading}
+              />
             </div>
             <div>
               <p>
