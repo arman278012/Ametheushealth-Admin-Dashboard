@@ -54,7 +54,7 @@ const ProductDetails = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=createdAt&order=desc`,
+        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=title&order=asc`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
