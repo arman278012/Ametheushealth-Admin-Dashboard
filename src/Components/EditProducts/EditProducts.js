@@ -495,9 +495,10 @@ const EditProducts = () => {
       console.log("Images uploaded:", response.data);
     } catch (error) {
       console.error("Error uploading images:", error);
-    } finally {
-      await getDataForEdit();
-    }
+    } 
+    // finally {
+    //   await getDataForEdit();
+    // }
   };
 
   //delete single image
