@@ -477,7 +477,7 @@ const ProductDetails = () => {
                 {allProductsDetails?.data?.map((singleItem, index) => (
                   <tr className="bg-gray-100" key={singleItem._id}>
                     <td className="py-2 px-4 border-b border-gray-200">
-                      <p>{singleItem.pageSize}</p>
+                      <p>{}</p>
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <input type="checkbox" className="form-checkbox" />

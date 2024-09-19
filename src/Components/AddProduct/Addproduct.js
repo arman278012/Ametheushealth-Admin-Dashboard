@@ -47,6 +47,7 @@ const initialValues = {
   manufacturer: "",
   productType: "OTC",
   isPrescriptionMandatory: false,
+  compareWebsites: "",
   variants: [
     { marginIndia: -15, margin: 60, marginBangladesh: 20, marginNepal: 20 },
   ],
@@ -63,7 +64,7 @@ const AddProduct = () => {
   const [genericsopen, setGenericsOpen] = useState(false);
   const [genericsMap, setGenericMap] = useState([]);
   const [activeSection, setActiveSection] = useState("name");
-  const [externalLink, setExternalLink] = useState("");
+  const [compareWebsites, setCompareWebsites] = useState("");
   const [isUrlValid, setIsUrlValid] = useState(true);
   const [manufacturerNamesId, setManufacturerNamesId] = useState("");
   const [manuIdOpen, setManuIdOpen] = useState(false);
@@ -269,13 +270,13 @@ const AddProduct = () => {
     }
   };
 
-  useEffect(() => {
-    setIsUrlValid(isValidUrl(externalLink));
-  }, [externalLink]);
+  // useEffect(() => {
+  //   setIsUrlValid(isValidUrl(externalLink));
+  // }, [externalLink]);
 
   const handleExChange = (e) => {
     const { value } = e.target;
-    setExternalLink(value);
+    setCompareWebsites(value);
   };
 
   const navigate = useNavigate();
@@ -659,11 +660,11 @@ const AddProduct = () => {
 
                             <div className="flex flex-col w-1/2">
                               <label className="font-semibold px-2 opacity-65">
-                                External Link
+                              Compare Websites
                               </label>
                               <input
                                 type="text"
-                                placeholder="External Link"
+                                placeholder="compareWebsites"
                                 className={`h-[35px] border px-2 ${
                                   !isUrlValid ? "border-red-500" : ""
                                 }`}
@@ -671,8 +672,8 @@ const AddProduct = () => {
                                   handleExChange(e);
                                   handleChange(e);
                                 }}
-                                value={externalLink}
-                                name="externalLink"
+                                value={compareWebsites}
+                                name="compareWebsites"
                               />
                               {/* {!isUrlValid && (
                                 <div className="text-red-500">Invalid URL</div>
