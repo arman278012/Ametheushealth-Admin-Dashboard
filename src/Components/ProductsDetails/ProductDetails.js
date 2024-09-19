@@ -45,6 +45,7 @@ const ProductDetails = () => {
   const [pricePopUp, setPricePopUp] = useState(false);
   const [priceAlert, setPriceAlert] = useState(false);
   const [priceValue, setPriceValue] = useState("");
+  const [pageValue, setPageValue] = useState("");
 
   const searchParams = new URLSearchParams(location.search);
 
@@ -63,6 +64,7 @@ const ProductDetails = () => {
         }
       );
       setAllProductsDetails(response.data);
+      setPageValue(response.data.pageSize);
       console.log("AllProductsDetails", response.data);
     } catch (error) {
       console.log(error);
@@ -225,6 +227,8 @@ const ProductDetails = () => {
       console.log("Error updating price", error);
     }
   };
+
+  const startIndex = (currentPage - 1) * pageValue;
 
   return (
     <div className="">
@@ -477,7 +481,7 @@ const ProductDetails = () => {
                 {allProductsDetails?.data?.map((singleItem, index) => (
                   <tr className="bg-gray-100" key={singleItem._id}>
                     <td className="py-2 px-4 border-b border-gray-200">
-                      <p>{}</p>
+                      <p>{startIndex + index + 1}</p>
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <input type="checkbox" className="form-checkbox" />
