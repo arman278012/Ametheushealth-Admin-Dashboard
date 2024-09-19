@@ -37,7 +37,6 @@ const initialValues = {
   isFeatured: false,
   isDiscontinued: false,
   purchaseNote: "",
-  externalLink: "",
   position: "",
   originCountry: "India",
   metaTitle: "",

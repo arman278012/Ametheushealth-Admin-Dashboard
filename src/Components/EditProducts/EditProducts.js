@@ -21,7 +21,7 @@ const EditProducts = () => {
   const { id } = useParams();
 
   const [activeSection, setActiveSection] = useState("name");
-  const [externalLink, setExternalLink] = useState("");
+  const [compareWebsites, setCompareWebsites] = useState("");
   const [isUrlValid, setIsUrlValid] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
@@ -60,7 +60,7 @@ const EditProducts = () => {
     isFeatured: false,
     isDiscontinued: false,
     purchaseNote: "",
-    externalLink: "",
+    compareWebsites: "",
     position: "",
     countryOrigin: "",
     metaTitle: "",
@@ -403,13 +403,13 @@ const EditProducts = () => {
     }
   };
 
-  useEffect(() => {
-    setIsUrlValid(isValidUrl(externalLink));
-  }, [externalLink]);
+  // useEffect(() => {
+  //   setIsUrlValid(isValidUrl(externalLink));
+  // }, [externalLink]);
 
   const handleExChange = (e) => {
     const { value } = e.target;
-    setExternalLink(value);
+    setCompareWebsites(value);
   };
 
   const editProductCategory = async (e) => {
@@ -841,11 +841,11 @@ const EditProducts = () => {
 
                       <div className="flex flex-col w-1/2">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
-                          External Link
+                          Compare Websites
                         </label>
                         <input
                           type="text"
-                          placeholder="External Link"
+                          placeholder="compareWebsites"
                           className={`h-[35px] border px-2 ${
                             !isUrlValid ? "border-red-500" : ""
                           }`}
@@ -853,8 +853,8 @@ const EditProducts = () => {
                             handleExChange(e);
                             handleChange(e);
                           }}
-                          value={productValues.externalLink}
-                          name="externalLink"
+                          value={productValues.compareWebsites}
+                          name="compareWebsites"
                         />
                         {/* {!isUrlValid && (
                           <div className="text-red-500">Invalid URL</div>
