@@ -1,9 +1,10 @@
 import axios from "axios";
 import JoditEditor from "jodit-react";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditBlogs = ({ blogId }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -12,6 +13,8 @@ const EditBlogs = ({ blogId }) => {
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -177,7 +180,9 @@ const EditBlogs = ({ blogId }) => {
           },
         }
       );
+      toast.success("Blog updated successfully...");
       console.log("Blog updated successfully", response.data);
+      navigate("/show-blogs");
     } catch (error) {
       console.error("Error updating blog:", error);
     }
@@ -188,7 +193,7 @@ const EditBlogs = ({ blogId }) => {
     const getHierarchy = async (query = "") => {
       try {
         const response = await axios.get(
-          `https://api.assetorix.com:4100/ah/api/v1/category/hierarchy-names?search=${query}`,
+          `https://api.assetorix.com:4100/ah/api/v1/category/view?search=${query}`,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -300,28 +305,6 @@ const EditBlogs = ({ blogId }) => {
           )}
         </div>
 
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Image
-          </label>
-
-          {formData.image && (
-            <div className="mb-2">
-              <img
-                src={formData.image} // Display the image preview
-                alt="Blog"
-                className="w-[200px] h-auto rounded-md"
-              />
-            </div>
-          )}
-
-          <input
-            type="file"
-            onChange={handleImageChange}
-            className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div> */}
-
         <div className="flex space-x-4">
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -367,23 +350,6 @@ const EditBlogs = ({ blogId }) => {
             </select>
           </div>
         </div>
-        {/* <button
-          type="button"
-          onClick={toggleCategoryVisibility}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-        >
-          {isCategoryVisible ? "Hide Categories" : "Show Categories"}
-        </button> */}
-
-        {/* Category Section (Visible when isCategoryVisible is true) */}
-        {/* {isCategoryVisible && (
-          <div className="mt-4 h-[300px] overflow-y-scroll border border-gray-300 rounded-md p-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Category
-            </label>
-            <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
-          </div>
-        )} */}
         <div className="shadow-md p-3">
           <div className="flex justify-between items-center">
             <label className="font-bold">All Categories</label>
@@ -403,7 +369,34 @@ const EditBlogs = ({ blogId }) => {
           {/* Conditionally render the category list */}
           {isOpen && (
             <div className="mt-4 h-[300px] overflow-y-scroll border border-gray-300 rounded-md p-4">
-              <div className="mt-2">{renderCategoryRadios(hierarchyData)}</div>
+              <div className="mt-2">
+                <div>
+                  <input
+                    type="text"
+                    // value={hierarchyQuery}
+                    className="w-full px-2 py-1"
+                    placeholder="Search categories..."
+                    // onChange={(e) => setHierarchyQuery(e.target.value)}
+                  />
+                </div>
+                {hierarchyData?.map((item) => (
+                  <div className="border px-2 p-1" key={item._id}>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="category"
+                        value={item._id} // Use category id as the value
+                        checked={formData.category === item._id} // Check if the current category matches
+                        onChange={handleInputChange}
+                        className="form-radio"
+                      />
+                      <label htmlFor={item._id} className="font-normal">
+                        {item.name}
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
