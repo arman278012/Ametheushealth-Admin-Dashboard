@@ -36,8 +36,8 @@ const AllBlogs = () => {
         }
       );
 
-      setAllBlogs(response.data);
       console.log("allBlogs", allBlogs);
+      setAllBlogs(response.data);
     } catch (error) {
       console.log(error);
     }

@@ -1841,15 +1841,19 @@ const EditProducts = () => {
                       onChange={(e) => setSearchGenericQuery(e.target.value)}
                     />
                     {genericsMap?.map((generic) => (
-                      <div key={generic?._id} className="flex gap-2">
-                        <input
-                          type="radio"
-                          name="genericID"
-                          value={generic?._id}
-                          onChange={handleRadioChange}
-                          checked={productValues.genericID === generic._id}
-                        />
-                        <p>{generic?.name}</p>
+                      <div key={generic?._id} className="flex flex-col">
+                        <div className="flex gap-2">
+                          <input
+                            type="radio"
+                            name="genericID"
+                            value={generic?._id}
+                            onChange={handleRadioChange}
+                            checked={productValues.genericID === generic._id}
+                          />
+                          <p>{generic?.name}</p>
+                        </div>
+
+                        <div className="bg-black h-[1px] w-full"></div>
                       </div>
                     ))}
                   </div>
@@ -1906,8 +1910,6 @@ const EditProducts = () => {
                           />
                           <p>{manufacturer?.name}</p>
                         </div>
-
-                        <div className="bg-black h-[1px] w-full"></div>
                       </div>
                     ))}
                   </div>

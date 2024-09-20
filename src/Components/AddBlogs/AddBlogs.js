@@ -52,12 +52,13 @@ const AddBlogs = () => {
     }));
   };
 
-  const handleMetaChange = (index, field, value) => {
-    const updatedMeta = [...formData.meta];
-    updatedMeta[index][field] = value;
+  const handleMetaChange = (key, value) => {
     setFormData((prevData) => ({
       ...prevData,
-      meta: updatedMeta,
+      meta: {
+        ...prevData.meta,
+        [key]: value,
+      },
     }));
   };
 
@@ -67,8 +68,6 @@ const AddBlogs = () => {
   //     meta: [...prevData.meta, { title: "", description: "", keywords: "" }],
   //   }));
   // };
-
-  console.log("object");
 
   const handleTagsChange = (e) => {
     setFormData((prevData) => ({
@@ -309,37 +308,29 @@ const AddBlogs = () => {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Meta Information
           </label>
-          {formData.meta.map((metaItem, index) => (
-            <div key={index} className="space-y-2 mb-4">
-              <input
-                type="text"
-                value={metaItem.title}
-                onChange={(e) =>
-                  handleMetaChange(index, "title", e.target.value)
-                }
-                placeholder="Meta Title"
-                className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <input
-                type="text"
-                value={metaItem.description}
-                onChange={(e) =>
-                  handleMetaChange(index, "description", e.target.value)
-                }
-                placeholder="Meta Description"
-                className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <input
-                type="text"
-                value={metaItem.keywords}
-                onChange={(e) =>
-                  handleMetaChange(index, "keywords", e.target.value)
-                }
-                placeholder="Meta Keywords"
-                className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-          ))}
+          <div className="space-y-2 mb-4">
+            <input
+              type="text"
+              value={formData.meta.title}
+              onChange={(e) => handleMetaChange("title", e.target.value)}
+              placeholder="Meta Title"
+              className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              value={formData.meta.description}
+              onChange={(e) => handleMetaChange("description", e.target.value)}
+              placeholder="Meta Description"
+              className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              value={formData.meta.keywords}
+              onChange={(e) => handleMetaChange("keywords", e.target.value)}
+              placeholder="Meta Keywords"
+              className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
           {/* <button
             type="button"
             onClick={handleAddMeta}

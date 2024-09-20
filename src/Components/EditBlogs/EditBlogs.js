@@ -18,12 +18,12 @@ const EditBlogs = ({ blogId }) => {
 
   const [formData, setFormData] = useState({
     title: "",
-    topicCategory: [],
+    topicCategory: [], // Array to store topics
     category: "",
     image: null,
     timeToRead: "",
-    meta: [{ title: "", description: "", keywords: "" }],
-    tags: [],
+    meta: { title: "", description: "", keywords: "" }, // Object for meta
+    tags: "", // String for tags
     published: false,
     content: "",
   });
@@ -55,31 +55,21 @@ const EditBlogs = ({ blogId }) => {
     }));
   };
 
-  const handleMetaChange = (index, key, value) => {
-    setFormData((prevFormData) => {
-      const updatedMeta = prevFormData.meta.map((metaItem, metaIndex) =>
-        metaIndex === index ? { ...metaItem, [key]: value } : metaItem
-      );
-      return {
-        ...prevFormData,
-        meta: updatedMeta,
-      };
-    });
+  const handleMetaChange = (key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      meta: {
+        ...prev.meta,
+        [key]: value,
+      },
+    }));
   };
-
-  // Add another meta field
-  // const handleAddMeta = () => {
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     meta: [...prevData.meta, { title: "", description: "", keywords: "" }],
-  //   }));
-  // };
 
   // Handle tags change
   const handleTagsChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tags: e.target.value.split(",").map((tag) => tag.trim()),
+    setFormData((prev) => ({
+      ...prev,
+      tags: e.target.value, // Directly set tags string
     }));
   };
 
@@ -105,12 +95,12 @@ const EditBlogs = ({ blogId }) => {
 
   // Handle checkbox change for topics
   const handleCheckboxChange = (topic) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      topicCategory: prevData.topicCategory.includes(topic)
-        ? prevData.topicCategory.filter((item) => item !== topic)
-        : [...prevData.topicCategory, topic],
-    }));
+    setFormData((prev) => {
+      const newTopicCategory = prev.topicCategory.includes(topic)
+        ? prev.topicCategory.filter((item) => item !== topic) // Remove if already selected
+        : [...prev.topicCategory, topic]; // Add if not selected
+      return { ...prev, topicCategory: newTopicCategory };
+    });
   };
 
   // Fetch and set blog data on component load
@@ -130,17 +120,14 @@ const EditBlogs = ({ blogId }) => {
         const blogData = response.data.blog;
         console.log("blogData", blogData);
 
-        // Set fetched blog data to form fields
         setFormData({
           title: blogData?.title || "",
-          topicCategory: blogData?.topicCategory || "",
-          category: blogData?.category || "", // Set category
+          topicCategory: blogData?.topicCategory || [], // Array for topicCategory
+          category: blogData?.category || "",
           image: blogData?.image || null,
           timeToRead: blogData?.timeToRead || "",
-          meta: blogData?.meta || [
-            { title: "", description: "", keywords: "" },
-          ],
-          tags: blogData?.tags || "",
+          meta: blogData?.meta || { title: "", description: "", keywords: "" }, // Ensure it's an object
+          tags: blogData?.tags || "", // String for tags
           published: blogData?.published || false,
           content: blogData?.content || "",
         });
@@ -158,15 +145,18 @@ const EditBlogs = ({ blogId }) => {
 
     // Append the fields to the FormData object
     for (const key in formData) {
-      if (Array.isArray(formData[key])) {
-        // Handle array fields appropriately if needed
-        data.append(key, JSON.stringify(formData[key])); // Convert arrays to JSON strings
+      if (key === "meta") {
+        // Stringify the meta object
+        data.append(key, JSON.stringify(formData[key]));
+      } else if (Array.isArray(formData[key])) {
+        // Stringify arrays (like topicCategory and tags)
+        data.append(key, JSON.stringify(formData[key]));
       } else {
-        data.append(key, formData[key]);
+        data.append(key, formData[key] !== undefined ? formData[key] : "");
       }
     }
 
-    // Make sure to include the image if it exists
+    // Append image if it exists
     if (formData.image) {
       data.append("image", formData.image);
     }
@@ -177,7 +167,7 @@ const EditBlogs = ({ blogId }) => {
         data, // Send the FormData
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Set the content type
+            "Content-Type": "multipart/form-data",
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
             id: localStorage.getItem("id"),
           },
@@ -297,7 +287,7 @@ const EditBlogs = ({ blogId }) => {
                 <label key={topic} className="block">
                   <input
                     type="checkbox"
-                    value={formData.topicCategory}
+                    value={topic}
                     checked={formData.topicCategory.includes(topic)}
                     onChange={() => handleCheckboxChange(topic)}
                     className="mr-2 text-blue-600 focus:ring-blue-500"
@@ -412,7 +402,7 @@ const EditBlogs = ({ blogId }) => {
           <input
             type="text"
             name="tags"
-            value={formData?.tags}
+            value={formData.tags}
             onChange={handleTagsChange}
             className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter tags"
@@ -423,41 +413,32 @@ const EditBlogs = ({ blogId }) => {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Meta
           </label>
-          {Array.isArray(formData?.meta) &&
-            formData.meta.map((meta, index) => (
-              <div key={index} className="space-y-2">
-                <input
-                  type="text"
-                  name={`meta[${index}].title`}
-                  value={meta.title || ""}
-                  onChange={(e) =>
-                    handleMetaChange(index, "title", e.target.value)
-                  }
-                  className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="Meta Title"
-                />
-                <input
-                  type="text"
-                  name={`meta[${index}].description`}
-                  value={meta.description || ""}
-                  onChange={(e) =>
-                    handleMetaChange(index, "description", e.target.value)
-                  }
-                  className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="Meta Description"
-                />
-                <input
-                  type="text"
-                  name={`meta[${index}].keywords`}
-                  value={meta.keywords || ""}
-                  onChange={(e) =>
-                    handleMetaChange(index, "keywords", e.target.value)
-                  }
-                  className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="Meta Keywords"
-                />
-              </div>
-            ))}
+          <div className="space-y-2">
+            <input
+              type="text"
+              name="meta.title"
+              value={formData.meta.title}
+              onChange={(e) => handleMetaChange("title", e.target.value)}
+              className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Meta Title"
+            />
+            <input
+              type="text"
+              name="meta.description"
+              value={formData.meta.description}
+              onChange={(e) => handleMetaChange("description", e.target.value)}
+              className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Meta Description"
+            />
+            <input
+              type="text"
+              name="meta.keywords"
+              value={formData.meta.keywords}
+              onChange={(e) => handleMetaChange("keywords", e.target.value)}
+              className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Meta Keywords"
+            />
+          </div>
         </div>
 
         <div>
