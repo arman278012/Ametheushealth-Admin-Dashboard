@@ -12,8 +12,8 @@ const AddBlogs = () => {
     category: "",
     image: null,
     timeToRead: "",
-    meta: [{ title: "", description: "", keywords: "" }],
-    tags: [],
+    meta: { title: "", description: "", keywords: "" },
+    tags: {},
     published: false,
     content: "",
   });

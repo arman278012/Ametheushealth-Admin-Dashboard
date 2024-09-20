@@ -357,6 +357,7 @@ const EditProducts = () => {
   }, [searchQuery]);
 
   const fetchGenericsData = async (genericQuery = "") => {
+    genericQuery = encodeURIComponent(genericQuery);
     try {
       const response = await axios.get(
         `https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${genericQuery}`,
@@ -495,7 +496,7 @@ const EditProducts = () => {
       console.log("Images uploaded:", response.data);
     } catch (error) {
       console.error("Error uploading images:", error);
-    } 
+    }
     // finally {
     //   await getDataForEdit();
     // }
@@ -1892,17 +1893,21 @@ const EditProducts = () => {
                     />
 
                     {manufacturerNamesId?.data?.map((manufacturer) => (
-                      <div key={manufacturer?.id} className="flex gap-2">
-                        <input
-                          type="radio"
-                          name="manufacturerID"
-                          value={manufacturer?._id}
-                          onChange={handleManuIdChange}
-                          checked={
-                            productValues.manufacturerID === manufacturer._id
-                          }
-                        />
-                        <p>{manufacturer?.name}</p>
+                      <div key={manufacturer?.id} className="">
+                        <div className="flex gap-2">
+                          <input
+                            type="radio"
+                            name="manufacturerID"
+                            value={manufacturer?._id}
+                            onChange={handleManuIdChange}
+                            checked={
+                              productValues.manufacturerID === manufacturer._id
+                            }
+                          />
+                          <p>{manufacturer?.name}</p>
+                        </div>
+
+                        <div className="bg-black h-[1px] w-full"></div>
                       </div>
                     ))}
                   </div>

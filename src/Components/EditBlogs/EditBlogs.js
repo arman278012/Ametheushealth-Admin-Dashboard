@@ -55,13 +55,16 @@ const EditBlogs = ({ blogId }) => {
     }));
   };
 
-  const handleMetaChange = (index, field, value) => {
-    const updatedMeta = [...formData.meta];
-    updatedMeta[index][field] = value;
-    setFormData((prevData) => ({
-      ...prevData,
-      meta: updatedMeta,
-    }));
+  const handleMetaChange = (index, key, value) => {
+    setFormData((prevFormData) => {
+      const updatedMeta = prevFormData.meta.map((metaItem, metaIndex) =>
+        metaIndex === index ? { ...metaItem, [key]: value } : metaItem
+      );
+      return {
+        ...prevFormData,
+        meta: updatedMeta,
+      };
+    });
   };
 
   // Add another meta field
@@ -130,14 +133,14 @@ const EditBlogs = ({ blogId }) => {
         // Set fetched blog data to form fields
         setFormData({
           title: blogData?.title || "",
-          topicCategory: blogData?.topicCategory || [],
+          topicCategory: blogData?.topicCategory || "",
           category: blogData?.category || "", // Set category
           image: blogData?.image || null,
           timeToRead: blogData?.timeToRead || "",
           meta: blogData?.meta || [
             { title: "", description: "", keywords: "" },
           ],
-          tags: blogData?.tags || [],
+          tags: blogData?.tags || "",
           published: blogData?.published || false,
           content: blogData?.content || "",
         });
@@ -294,6 +297,7 @@ const EditBlogs = ({ blogId }) => {
                 <label key={topic} className="block">
                   <input
                     type="checkbox"
+                    value={formData.topicCategory}
                     checked={formData.topicCategory.includes(topic)}
                     onChange={() => handleCheckboxChange(topic)}
                     className="mr-2 text-blue-600 focus:ring-blue-500"
@@ -408,7 +412,7 @@ const EditBlogs = ({ blogId }) => {
           <input
             type="text"
             name="tags"
-            value={formData?.tags.join(", ")}
+            value={formData?.tags}
             onChange={handleTagsChange}
             className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter tags"
@@ -454,14 +458,6 @@ const EditBlogs = ({ blogId }) => {
                 />
               </div>
             ))}
-
-          {/* <button
-            type="button"
-            onClick={handleAddMeta}
-            className="mt-3 p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300"
-          >
-            Add Meta
-          </button> */}
         </div>
 
         <div>
