@@ -227,7 +227,7 @@ const Allusers = () => {
                         <img
                           src={
                             item?.avatar || "https://via.placeholder.com/150"
-                          } 
+                          }
                           alt="User"
                           className="w-12 h-12 object-cover"
                         />
