@@ -592,7 +592,7 @@ const OrderDetails = () => {
           {orderDetails?.products?.map((product) => (
             <div key={product._id} className="shadow-xl p-5">
               <div className=" flex justify-center items-center">
-                <img src={product.images[0].url} className=" w-[100px]" />
+                <img src={product.images[0]?.url} className=" w-[100px]" />
               </div>
               <div>
                 <p>

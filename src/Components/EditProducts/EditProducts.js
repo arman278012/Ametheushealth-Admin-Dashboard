@@ -275,6 +275,7 @@ const EditProducts = () => {
   const toggleGenericsOpen = () => setGenericsOpen(!genericsOpen);
   console.log(id);
 
+  //getting the data for edit
   const getDataForEdit = async () => {
     try {
       const response = await axios.get(
