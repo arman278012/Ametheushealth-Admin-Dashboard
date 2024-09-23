@@ -160,31 +160,32 @@ const EditProducts = () => {
   };
 
   // Your handleCheckboxChange function
-  const handleCheckboxChange = async (event) => {
-    const { name, value, checked } = event.target;
+  const handleCheckboxChange = async (event, categoryID) => {
+    const { checked } = event.target;
 
-    // Update the local state or formik state with the checkbox change
-    let updatedCategories = productValues.categoryID; // Assuming you're using productValues to manage state
+    // Clone the existing categoryID array
+    let updatedCategories = [...productValues.categoryID];
 
+    // If checked, add the category ID, otherwise remove it
     if (checked) {
-      updatedCategories = [...updatedCategories, value];
+      updatedCategories.push(categoryID);
     } else {
-      updatedCategories = updatedCategories.filter((item) => item !== value);
+      updatedCategories = updatedCategories.filter((id) => id !== categoryID);
     }
 
-    // Update the state with updated categories (use setFieldValue if using Formik)
+    // Update the productValues state with the new categoryID array
     setProductValues((prevState) => ({
       ...prevState,
       categoryID: updatedCategories,
     }));
 
-    // Create the payload object with the necessary data
+    // Prepare payload for SKU generation
     const payload = {
-      categoryID: value,
+      categoryID: categoryID,
       isChecked: checked,
     };
 
-    // Call the API to generate the SKU
+    // Call the API to generate SKU
     try {
       const response = await axios.post(
         `https://api.assetorix.com:4100/ah/api/v1/product/sku`,
@@ -197,9 +198,10 @@ const EditProducts = () => {
         }
       );
 
+      // Extract generated SKU from response
       const generatedSku = response.data.data.sku;
 
-      // Assuming you're updating the SKU for the first variant
+      // Update the SKU in the first variant of the productValues
       setProductValues((prevState) => ({
         ...prevState,
         variants: [
@@ -210,9 +212,9 @@ const EditProducts = () => {
         ],
       }));
 
-      console.log("API response:", generatedSku);
+      console.log("Generated SKU:", generatedSku);
     } catch (err) {
-      console.error("API error:", err);
+      console.error("Error generating SKU:", err);
     }
   };
 
@@ -417,16 +419,16 @@ const EditProducts = () => {
     e.preventDefault();
     setUpdateLoaderBtn(true);
 
-    // Create a new object with updated values
+    // Ensure that categoryID is updated with selectedCategories
     const updatedProductValues = {
-      ...productValues,
-      categoryID: selectedCategories, // Update with selected categories
+      ...productValues, // Existing product values
+      categoryID: productValues.categoryID, // Updated categoryID
     };
 
     try {
       const response = await axios.patch(
         `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
-        updatedProductValues,
+        updatedProductValues, // Send the updated product data including categoryID
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -436,16 +438,16 @@ const EditProducts = () => {
       );
 
       console.log("Response:", response.data);
-      toast.success("Updated successfully!");
+      toast.success("Product updated successfully!");
 
-      // Retrieve the search and page from state (passed from product-details page)
+      // Navigate back to product details page with search params (if any)
       const searchParams = location.state?.search || "";
-      navigate(`/product-details?${searchParams}`); // Navigate back with the same query parameters
+      navigate(`/product-details?${searchParams}`);
     } catch (error) {
       console.error("Error updating product:", error);
-      toast.error("Error updating product. Please try again."); // Notify user on error
+      toast.error("Error updating product. Please try again.");
     } finally {
-      setUpdateLoaderBtn(false); // Reset loading state
+      setUpdateLoaderBtn(false);
     }
   };
 
@@ -1662,9 +1664,6 @@ const EditProducts = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  {/* {filterCategories(hierarchyData).map((item) =>
-                    renderCategory(item)
-                  )} */}
                   {hierarchyData?.map((item) => (
                     <div className="border px-2 p-1" key={item._id}>
                       <div className="flex items-center">
@@ -1674,8 +1673,8 @@ const EditProducts = () => {
                           name="categoryID"
                           value={item._id}
                           className="mr-2"
-                          onChange={(e) => handleCheckboxChange(e)} // Pass the event directly
-                          checked={productValues.categoryID.includes(item._id)}
+                          onChange={(e) => handleCheckboxChange(e, item._id)} // Pass category ID explicitly
+                          checked={productValues.categoryID.includes(item._id)} // Keep track of checked status
                         />
                         <label htmlFor={item._id} className="font-normal">
                           {item.name}
