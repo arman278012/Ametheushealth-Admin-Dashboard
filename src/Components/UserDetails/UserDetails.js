@@ -201,8 +201,11 @@ const UserDetails = () => {
 
         {activeSection === "addresses" && (
           <div className="flex flex-col gap-5 w-[90%] mx-auto">
-            {user?.userOrders?.map((order) => (
-              <div className="border px-5 flex flex-col gap-3 shadow-md">
+            {user?.userOrders?.map((order, index) => (
+              <div
+                key={index}
+                className="border px-5 flex flex-col gap-3 shadow-md"
+              >
                 <div className="mr-5 font-bold mt-5 justify-between flex">
                   <button
                     className="bg-[#54d4ce] px-2"
@@ -243,7 +246,7 @@ const UserDetails = () => {
                       Address:
                       <span className="text-green-500">
                         {" "}
-                        {order?.companyName} {order?.city}, {order?.country},
+                        {order?.companyName}, {order?.city}, {order?.country},
                         {order?.state}
                       </span>
                     </p>
@@ -260,8 +263,8 @@ const UserDetails = () => {
                 </div>
                 <div className="h-[1px] w-full bg-black opacity-10"></div>
                 <div className="grid grid-cols-3 gap-5">
-                  {order?.products.map((product) => (
-                    <div className="border p-5 mb-5">
+                  {order?.products.map((product, index) => (
+                    <div key={index} className="border p-5 mb-5">
                       <div>
                         <img
                           src={product?.images[0]?.url}
