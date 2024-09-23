@@ -39,7 +39,6 @@ const EditProducts = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [updateLoaderBtn, setUpdateLoaderBtn] = useState(false);
   const [searchManufacturerQuery, setSearchManufacturerQuery] = useState("");
-  const [skuList, setSkuList] = useState("");
 
   const [productValues, setProductValues] = useState({
     title: "",
@@ -305,7 +304,7 @@ const EditProducts = () => {
           margin: variant.margin || 0,
           minOrderQuantity: variant.minOrderQuantity || 1,
           maxOrderQuantity: variant.maxOrderQuantity || 100,
-          isStockAvailable: variant.isStockAvailable || true,
+          isStockAvailable: variant.isStockAvailable,
           currency: variant.currency || "",
           weightUnit: variant.weightUnit || "",
           widthUnit: variant.widthUnit || "",
@@ -405,10 +404,6 @@ const EditProducts = () => {
       return false;
     }
   };
-
-  // useEffect(() => {
-  //   setIsUrlValid(isValidUrl(externalLink));
-  // }, [externalLink]);
 
   const handleExChange = (e) => {
     const { value } = e.target;
