@@ -180,6 +180,7 @@ const ProductDetails = () => {
       if (response.status === 200) {
         toast.success("Deleted Successfully...");
         productDetailsAgain();
+        setSearchQuery("");
       }
     } catch (error) {
       console.log(error);
