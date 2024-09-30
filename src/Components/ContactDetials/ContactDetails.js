@@ -10,7 +10,7 @@ const ContactDetails = () => {
   const getContactDetails = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/contact/${id}`,
+        `https://api.assetorix.com/ah/api/v1/contact/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

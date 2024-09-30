@@ -108,7 +108,7 @@ const EditBlogs = ({ blogId }) => {
     const showAllBlogs = async () => {
       try {
         const response = await axios.get(
-          `https://api.assetorix.com:4100/ah/api/v1/blog/admin/${id}`,
+          `https://api.assetorix.com/ah/api/v1/blog/admin/${id}`,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -163,7 +163,7 @@ const EditBlogs = ({ blogId }) => {
 
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com:4100/ah/api/v1/blog/${id}`,
+        `https://api.assetorix.com/ah/api/v1/blog/${id}`,
         data, // Send the FormData
         {
           headers: {
@@ -186,7 +186,7 @@ const EditBlogs = ({ blogId }) => {
     const getHierarchy = async (query = "") => {
       try {
         const response = await axios.get(
-          `https://api.assetorix.com:4100/ah/api/v1/category/view?search=${query}`,
+          `https://api.assetorix.com/ah/api/v1/category/view?search=${query}`,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem("authorization")}`,

@@ -32,7 +32,7 @@ const AllContacts = () => {
     search = encodeURIComponent(search);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/contact?search=${search}&page=${page}&limit=${pageLimit}`,
+        `https://api.assetorix.com/ah/api/v1/contact?search=${search}&page=${page}&limit=${pageLimit}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -49,7 +49,7 @@ const AllContacts = () => {
   const deleteContact = async () => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/contact/${deleteId}`,
+        `https://api.assetorix.com/ah/api/v1/contact/${deleteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

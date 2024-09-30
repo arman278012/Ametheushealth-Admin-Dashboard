@@ -45,7 +45,7 @@ const EditCategoryForm = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
+        `https://api.assetorix.com/ah/api/v1/category/${storedId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -117,7 +117,7 @@ const EditCategoryForm = () => {
         formValues.parent = formValues.parent === "" ? null : formValues.parent;
         // Update Data API
         const response = await axios.patch(
-          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}`,
+          `https://api.assetorix.com/ah/api/v1/category/${storedId}`,
           formValues,
           {
             headers: {
@@ -136,7 +136,7 @@ const EditCategoryForm = () => {
         formData.append("image", formValues.image);
 
         await axios.patch(
-          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/image`,
+          `https://api.assetorix.com/ah/api/v1/category/${storedId}/image`,
           formData,
           {
             headers: {
@@ -155,7 +155,7 @@ const EditCategoryForm = () => {
         formData.append("file", formValues.file);
 
         await axios.patch(
-          `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/docFile`,
+          `https://api.assetorix.com/ah/api/v1/category/${storedId}/docFile`,
           formData,
           {
             headers: {
@@ -181,7 +181,7 @@ const EditCategoryForm = () => {
   const handleDeleteImage = async () => {
     try {
       await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/image`,
+        `https://api.assetorix.com/ah/api/v1/category/${storedId}/image`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -203,7 +203,7 @@ const EditCategoryForm = () => {
   const handleDeleteDocFile = async () => {
     try {
       await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/category/${storedId}/docFile`,
+        `https://api.assetorix.com/ah/api/v1/category/${storedId}/docFile`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

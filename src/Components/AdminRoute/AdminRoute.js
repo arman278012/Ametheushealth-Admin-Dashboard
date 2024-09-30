@@ -11,7 +11,7 @@ const AdminRoute = ({ element: Component, ...rest }) => {
     }
     try {
       const response = await axios.get(
-        "https://api.assetorix.com:4100/ah/api/v1/user/admin",
+        "https://api.assetorix.com/ah/api/v1/user/admin",
         {
           headers: {
             Authorization: `Bearer ${token}`,

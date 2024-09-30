@@ -86,7 +86,7 @@ const AttachGeneric = () => {
 
       try {
         const response = await axios.post(
-          "https://api.assetorix.com:4100/ah/api/v1/generic/rmid",
+          "https://api.assetorix.com/ah/api/v1/generic/rmid",
           data,
           {
             headers: {
@@ -139,7 +139,7 @@ const AttachGeneric = () => {
   const genericsData = async (searchGeneric) => {
     try {
       const response = await axios.get(
-        ` https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${searchGeneric}`,
+        ` https://api.assetorix.com/ah/api/v1/generic/names?search=${searchGeneric}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

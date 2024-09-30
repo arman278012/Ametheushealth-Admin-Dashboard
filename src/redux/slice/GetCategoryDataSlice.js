@@ -7,7 +7,7 @@ export const getCategoryData = createAsyncThunk(
     searchQuery = encodeURIComponent(searchQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/?page=${page}&search=${searchQuery}&limit=${pageLimit}`,
+        `https://api.assetorix.com/ah/api/v1/category/?page=${page}&search=${searchQuery}&limit=${pageLimit}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

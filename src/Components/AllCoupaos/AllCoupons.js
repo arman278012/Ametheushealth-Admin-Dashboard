@@ -38,7 +38,7 @@ const AllCoupons = () => {
   const getCoupons = async (searchQuery, filter, actfilter) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/coupon?search=${searchQuery}&discountType=${filter}&isActive=${actfilter}`,
+        `https://api.assetorix.com/ah/api/v1/coupon?search=${searchQuery}&discountType=${filter}&isActive=${actfilter}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -100,7 +100,7 @@ const AllCoupons = () => {
   const deleteCoupon = async () => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/coupon/${deleteId}`,
+        `https://api.assetorix.com/ah/api/v1/coupon/${deleteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

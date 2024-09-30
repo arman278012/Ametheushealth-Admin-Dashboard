@@ -16,7 +16,7 @@ const UserDetails = () => {
     // searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/user/admin/user/${id}`,
+        `https://api.assetorix.com/ah/api/v1/user/admin/user/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

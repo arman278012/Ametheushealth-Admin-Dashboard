@@ -105,7 +105,7 @@ const AddProduct = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/view?search=${hierarchySearch}`,
+        `https://api.assetorix.com/ah/api/v1/category/view?search=${hierarchySearch}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -141,7 +141,7 @@ const AddProduct = () => {
   const genericsData = async (search = "") => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${search}`,
+        `https://api.assetorix.com/ah/api/v1/generic/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -178,7 +178,7 @@ const AddProduct = () => {
   const getManufacturerNames = async (search) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${search}`,
+        `https://api.assetorix.com/ah/api/v1/manufacturer/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -285,7 +285,7 @@ const AddProduct = () => {
     try {
       setBtnLoader(true);
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/product`,
+        `https://api.assetorix.com/ah/api/v1/product`,
         values,
         {
           headers: {
@@ -340,7 +340,7 @@ const AddProduct = () => {
     // Call the API with the populated payload
     try {
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/product/sku`,
+        `https://api.assetorix.com/ah/api/v1/product/sku`,
         payload,
         {
           headers: {

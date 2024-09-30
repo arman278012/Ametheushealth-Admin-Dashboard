@@ -27,7 +27,7 @@ const AllBlogs = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/blog/admin?search=${query}&page=${page}&limit=${pageLimit}`,
+        `https://api.assetorix.com/ah/api/v1/blog/admin?search=${query}&page=${page}&limit=${pageLimit}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -64,7 +64,7 @@ const AllBlogs = () => {
   const deleteBlog = async (id) => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/blog/${id}`,
+        `https://api.assetorix.com/ah/api/v1/blog/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

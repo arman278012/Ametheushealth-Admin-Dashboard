@@ -21,7 +21,7 @@ const AddManufacturer = () => {
   const postManufacturerData = async (values) => {
     try {
       const response = await axios.post(
-        "https://api.assetorix.com:4100/ah/api/v1/manufacturer",
+        "https://api.assetorix.com/ah/api/v1/manufacturer",
         values,
         {
           headers: {

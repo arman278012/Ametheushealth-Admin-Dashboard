@@ -7,7 +7,7 @@ export const fetchGetProductsData = createAsyncThunk(
     searchQuery = encodeURIComponent(searchQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${searchQuery}`,
+        `https://api.assetorix.com/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${searchQuery}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

@@ -53,7 +53,7 @@ const InstantManufacturer = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
+        `https://api.assetorix.com/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -92,7 +92,7 @@ const InstantManufacturer = () => {
   const postManufacturerData = async (values) => {
     try {
       const response = await axios.post(
-        "https://api.assetorix.com:4100/ah/api/v1/manufacturer",
+        "https://api.assetorix.com/ah/api/v1/manufacturer",
         formData,
         {
           headers: {
@@ -120,7 +120,7 @@ const InstantManufacturer = () => {
   const deleteManufacturer = async (id) => {
     try {
       await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/${id}`,
+        `https://api.assetorix.com/ah/api/v1/manufacturer/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

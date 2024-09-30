@@ -35,7 +35,7 @@ const GenericDetails = () => {
     setLoading(true);
     try {
       const response = await axios(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/admin/${genericId}?page=${page}&limit=${pageLimit}&search=${query}`,
+        `https://api.assetorix.com/ah/api/v1/generic/admin/${genericId}?page=${page}&limit=${pageLimit}&search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

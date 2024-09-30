@@ -21,7 +21,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/user/login`,
+        `https://api.assetorix.com/ah/api/v1/user/login`,
         values
       );
       if (response.status === 200) {

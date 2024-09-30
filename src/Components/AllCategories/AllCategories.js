@@ -94,7 +94,7 @@ const AllCategories = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/category/${id}`,
+        `https://api.assetorix.com/ah/api/v1/category/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

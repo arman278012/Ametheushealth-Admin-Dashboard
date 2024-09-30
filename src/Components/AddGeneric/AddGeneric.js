@@ -22,7 +22,7 @@ const AddGeneric = () => {
   const postGenericData = async (values) => {
     try {
       const response = await axios.post(
-        "https://api.assetorix.com:4100/ah/api/v1/generic",
+        "https://api.assetorix.com/ah/api/v1/generic",
         values,
         {
           headers: {

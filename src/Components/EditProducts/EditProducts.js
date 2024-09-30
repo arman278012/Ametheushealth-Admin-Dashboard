@@ -187,7 +187,7 @@ const EditProducts = () => {
     // Call the API to generate SKU
     try {
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/product/sku`,
+        `https://api.assetorix.com/ah/api/v1/product/sku`,
         payload,
         {
           headers: {
@@ -279,7 +279,7 @@ const EditProducts = () => {
   const getDataForEdit = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/admin/${id}`,
+        `https://api.assetorix.com/ah/api/v1/product/admin/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -331,7 +331,7 @@ const EditProducts = () => {
   const getHierarchy = async (query = "") => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/view?search=${query}`,
+        `https://api.assetorix.com/ah/api/v1/category/view?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -362,7 +362,7 @@ const EditProducts = () => {
     genericQuery = encodeURIComponent(genericQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/names?search=${genericQuery}`,
+        `https://api.assetorix.com/ah/api/v1/generic/names?search=${genericQuery}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -423,7 +423,7 @@ const EditProducts = () => {
 
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
+        `https://api.assetorix.com/ah/api/v1/product/${id}`,
         updatedProductValues, // Send the updated product data including categoryID
         {
           headers: {
@@ -481,7 +481,7 @@ const EditProducts = () => {
 
     try {
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/product/${id}/images`,
+        `https://api.assetorix.com/ah/api/v1/product/${id}/images`,
         formData,
         {
           headers: {
@@ -504,7 +504,7 @@ const EditProducts = () => {
   const deleteSingleImage = async (imgId) => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/product/${id}/single-image/${imgId}`,
+        `https://api.assetorix.com/ah/api/v1/product/${id}/single-image/${imgId}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -525,7 +525,7 @@ const EditProducts = () => {
   const getManufacturerNames = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/manufacturer/names?search=${searchManufacturerQuery}`,
+        `https://api.assetorix.com/ah/api/v1/manufacturer/names?search=${searchManufacturerQuery}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

@@ -51,7 +51,7 @@ const InstantGeneric = () => {
   const postGenericData = async () => {
     try {
       const response = await axios.post(
-        "https://api.assetorix.com:4100/ah/api/v1/generic",
+        "https://api.assetorix.com/ah/api/v1/generic",
         formData,
         {
           headers: {
@@ -97,7 +97,7 @@ const InstantGeneric = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/?page=${page}&search=${query}&limit=${9}`,
+        `https://api.assetorix.com/ah/api/v1/generic/?page=${page}&search=${query}&limit=${9}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -133,7 +133,7 @@ const InstantGeneric = () => {
   const deleteGenericData = async (id) => {
     try {
       await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/generic/${id}`,
+        `https://api.assetorix.com/ah/api/v1/generic/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

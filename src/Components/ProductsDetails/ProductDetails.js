@@ -55,7 +55,7 @@ const ProductDetails = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=title&order=asc`,
+        `https://api.assetorix.com/ah/api/v1/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=title&order=asc`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -131,7 +131,7 @@ const ProductDetails = () => {
     try {
       setSearchLoading(true);
       const response = await axios.get(
-        `https://api.assetorix.com:4100/ah/api/v1/category/view/?search=${query}`,
+        `https://api.assetorix.com/ah/api/v1/category/view/?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -169,7 +169,7 @@ const ProductDetails = () => {
   const deleteProduct = async (id) => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com:4100/ah/api/v1/product/${id}`,
+        `https://api.assetorix.com/ah/api/v1/product/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -196,7 +196,7 @@ const ProductDetails = () => {
     const status = stockValue;
     try {
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/product/status/${stockId}`,
+        `https://api.assetorix.com/ah/api/v1/product/status/${stockId}`,
         { status },
         {
           headers: {
@@ -219,7 +219,7 @@ const ProductDetails = () => {
     const price = { price: priceValue }; // Send price as an object
     try {
       const response = await axios.post(
-        `https://api.assetorix.com:4100/ah/api/v1/product/price/${priceId}`,
+        `https://api.assetorix.com/ah/api/v1/product/price/${priceId}`,
         price
       );
       window.location.reload();
