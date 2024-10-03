@@ -51,7 +51,7 @@ function App() {
     editManufacturerForm,
     editCouponForm,
   } = useContext(AppContext);
-
+  
   return (
     <div className="App flex">
       <BrowserRouter>
