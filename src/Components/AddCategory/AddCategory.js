@@ -194,7 +194,7 @@ const AddCategory = () => {
                       onChange={handleChange}
                       type="text"
                       placeholder="Enter name here"
-                      className="p-3 border rounded-xl h-[45px]"
+                      className="p-3 focus:outline-none rounded-xl h-[45px] AddCategoryinput"
                     />
                     {errors.name && touched.name && (
                       <div className="text-red-500">{errors.name}</div>
@@ -233,7 +233,7 @@ const AddCategory = () => {
                         name="parent"
                         value={values.parent}
                         onChange={handleChange}
-                        className="px-3 py-1 h-[45px] focus:outline-none rounded-xl bg-white"
+                        className="px-3 py-1 h-[45px] focus:outline-none rounded-xl bg-white AddCategoryinput"
                       >
                         <option
                           value=""
@@ -303,7 +303,7 @@ const AddCategory = () => {
                           value={values.metaTitle}
                           onChange={handleChange}
                           placeholder="Enter meta title here"
-                          className="p-3 border rounded-xl h-[45px]"
+                          className="p-3 border rounded-xl h-[45px] focus:outline-none"
                         />
                         {/* {errors.metaTitle && touched.metaTitle && (
                           <div className="text-red-500">{errors.metaTitle}</div>
@@ -320,7 +320,7 @@ const AddCategory = () => {
                         value={values.metaDescription}
                         onChange={handleChange}
                         placeholder="Enter meta description here"
-                        className="p-3 border rounded-xl outline-none"
+                        className="p-3 border rounded-xl outline-none focus:outline-none AddCategoryinput"
                       />
                       {/* {errors.metaDescription && touched.metaDescription && (
                         <div className="text-red-500">
@@ -338,7 +338,7 @@ const AddCategory = () => {
                         value={values.metaTags}
                         onChange={handleChange}
                         placeholder="Enter meta tags here"
-                        className="p-3 border rounded-xl outline-none"
+                        className="p-3 border rounded-xl outline-none AddCategoryinput"
                       />
                       {/* {errors.metaTags && touched.metaTags && (
                         <div className="text-red-500">{errors.metaTags}</div>

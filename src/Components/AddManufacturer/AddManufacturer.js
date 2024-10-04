@@ -58,7 +58,7 @@ const AddManufacturer = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="Enter name here"
-                  className="p-3 border rounded-xl h-[45px]"
+                  className="p-3 border rounded-xl h-[45px] focus:outline-none"
                 />
                 {errors.name && touched.name && (
                   <div className="text-red-500">{errors.name}</div>
@@ -73,7 +73,7 @@ const AddManufacturer = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="Enter address here"
-                  className="p-3 border rounded-xl h-[45px]"
+                  className="p-3 border rounded-xl h-[45px] focus:outline-none"
                 />
               </div>
 

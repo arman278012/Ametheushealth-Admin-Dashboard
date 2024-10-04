@@ -125,7 +125,7 @@ const Allusers = () => {
           <div className="mb-5 flex mr-3 justify-end">
             <input
               type="text"
-              className="py-2 rounded-xl px-3 w-[250px]"
+              className="py-2 rounded-xl px-3 w-[250px] focus:outline-none"
               placeholder="Search Users..."
               value={searchUserQuery}
               onChange={(e) => setSearchUserQuery(e.target.value)}

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const OrderDetails = () => {
@@ -179,7 +179,7 @@ const OrderDetails = () => {
                 <div>
                   <p className="text-[18px] font-semibold">Order Status</p>
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3" style={{marginTop:"10px"}}>
                   <select
                     id="status"
                     name="status"
@@ -208,7 +208,8 @@ const OrderDetails = () => {
                   </select>
                 </div>
 
-                <div className=" px-3 mt-2 py-1 sm:w-[300px] focus:outline-none rounded-md bg-white border w-[300px]">
+                <div className="px-3 mt-[35px] py-1 sm:w-[300px] focus:outline-none rounded-md bg-white border w-[300px] border-[1px]">
+
                   <p className="font-semibold">User details</p>
                   <div className="relative left-[90px] mt-5 w-[70px] h-[70px] bg-gray-200 flex items-center justify-center text-xl font-bold rounded-full overflow-hidden">
                     {orderDetails?.user?.avatar ? (
@@ -295,7 +296,7 @@ const OrderDetails = () => {
                     </span>
                   </p>
                 </div>
-                <div className="border p-2 rounded-md shadow-md mt-2">
+                <div className="border p-2 rounded-md shadow-md  w-[300px] mt-[35px]">
                   <p className="text-sm">Order Notes</p>
                   <p className="font-bold"> {orderDetails?.orderNotes}</p>
                 </div>
@@ -362,14 +363,17 @@ const OrderDetails = () => {
               </p>
               <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
               <div className="mt-2">
-                <p className="text-gray-500">
-                  <span className="text-gray-500 font-semibold">
-                    Street Address:
-                  </span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {orderDetails?.streetAddress}
-                  </span>
-                </p>
+              <div className="flex flex-col items-start w-full">
+  <p className="text-gray-500 w-full">
+    <span className="text-gray-500 font-semibold block">
+      Street Address:
+    </span>
+    <span className="text-gray-500 font-thin block">
+      {orderDetails?.streetAddress}
+    </span>
+  </p>
+</div>
+
                 <p className="text-gray-500">
                   <span className="text-gray-500 font-semibold">City:</span>{" "}
                   <span className="text-gray-500 font-thin">
@@ -533,6 +537,8 @@ const OrderDetails = () => {
                 id="status"
                 name="status"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
+                
+              
                 value={status} // Bind to the state variable
                 onChange={(e) => {
                   setStatus(e.target.value);
@@ -588,8 +594,10 @@ const OrderDetails = () => {
       </div>
 
       <div className="overflow-x-auto mt-5 border-2 p-5">
+       
         <div className="grid grid-cols-3 gap-5">
           {orderDetails?.products?.map((product) => (
+             <Link to={`/product-details/${product.productID}`}>
             <div key={product._id} className="shadow-xl p-5">
               <div className=" flex justify-center items-center">
                 <img src={product.images[0]?.url} className=" w-[100px]" />
@@ -653,8 +661,10 @@ const OrderDetails = () => {
                 </p> */}
               </div>
             </div>
+             </Link>
           ))}
         </div>
+       
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ import JoditEditor from "jodit-react";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
-
+import './EditProducts.css'
 const EditProducts = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -600,11 +600,10 @@ const EditProducts = () => {
               <div className="w-[30%]">
                 <div className="flex flex-col gap-3 p-3">
                   <div
-                    className={`${
-                      activeSection === "name"
+                    className={`${activeSection === "name"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -617,11 +616,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "description"
+                    className={`${activeSection === "description"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : "flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -635,11 +633,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "shortDescription"
+                    className={`${activeSection === "shortDescription"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -653,11 +650,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "moreInformation"
+                    className={`${activeSection === "moreInformation"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -671,11 +667,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "faq"
+                    className={`${activeSection === "faq"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -689,11 +684,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "additionalInformation"
+                    className={`${activeSection === "additionalInformation"
                         ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
                         : " flex gap-2 text-sm"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -706,11 +700,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "sideEffects"
+                    className={`${activeSection === "sideEffects"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -724,11 +717,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "yes-no"
+                    className={`${activeSection === "yes-no"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -742,11 +734,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "meta"
+                    className={`${activeSection === "meta"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -760,11 +751,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "variants"
+                    className={`${activeSection === "variants"
                         ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
                         : " flex gap-2"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -781,18 +771,20 @@ const EditProducts = () => {
               <div className="flex flex-col left border w-[70%] mt-5">
                 {activeSection === "name" && (
                   <div className="flex flex-col gap-2 p-5">
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full edit" id="Editinput">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Product Name
                       </label>
                       <input
                         type="text"
                         placeholder="Product name"
-                        className="h-[35px] border px-2"
+                        className="h-[35px] border px-2 focus:outline-none"
                         onChange={handleChange}
                         name="title"
                         value={productValues.title}
                       />
+
+
                     </div>
 
                     <div className="flex gap-2">
@@ -805,7 +797,7 @@ const EditProducts = () => {
                           placeholder="Generic name"
                           name="generic"
                           value={productValues.generic}
-                          className="h-[35px] border px-2"
+                          className="h-[35px] border px-2 border px-2 focus:outline-none"
                           onChange={handleChange}
                         />
                       </div>
@@ -816,7 +808,7 @@ const EditProducts = () => {
                         <input
                           type="text"
                           placeholder="Treatment"
-                          className="h-[35px] border px-2"
+                          className="h-[35px] border px-2 border px-2 focus:outline-none"
                           onChange={handleChange}
                           value={productValues.treatment}
                           name="treatment"
@@ -832,7 +824,7 @@ const EditProducts = () => {
                         <input
                           type="text"
                           placeholder="Purchase Note"
-                          className="h-[35px] border px-2"
+                          className="h-[35px] border px-2 border px-2 focus:outline-none"
                           onChange={handleChange}
                           value={productValues.purchaseNote}
                           name="purchaseNote"
@@ -846,9 +838,8 @@ const EditProducts = () => {
                         <input
                           type="text"
                           placeholder="compareWebsites"
-                          className={`h-[35px] border px-2 ${
-                            !isUrlValid ? "border-red-500" : ""
-                          }`}
+                          className={`border px-2 focus:outline-none h-[35px] border px-2 ${!isUrlValid ? "border-red-500" : ""
+                            }`}
                           onChange={(e) => {
                             handleExChange(e);
                             handleChange(e);
@@ -898,7 +889,7 @@ const EditProducts = () => {
                       <input
                         type="text"
                         placeholder="manufacturer"
-                        className="h-[35px] border px-2"
+                        className="h-[35px] border px-2 border px-2 focus:outline-none"
                         onChange={handleChange}
                         name="manufacturer"
                         value={productValues.manufacturer}
@@ -1635,11 +1626,12 @@ const EditProducts = () => {
               {/* product categories */}
               <div className="product-categories border rounded-xl p-3 fixed-width-card">
                 <div className="flex justify-between items-center">
-                  <label className="font-bold">All Categories</label>
+                  <label className="font-bold ml-[15px]" >All Categories</label>
                   <button
                     type="button"
                     onClick={toggleOpen}
-                    className="focus:outline-none"
+                    className="focus:outline-none mr-[10px]"
+
                   >
                     {isOpen ? (
                       <FaChevronUp className="text-blue-500" />
@@ -1649,9 +1641,8 @@ const EditProducts = () => {
                   </button>
                 </div>
                 <div
-                  className={`category-list mt-3 ${
-                    isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                  className={`category-list mt-3 ${isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
                 >
                   <input
                     type="text"
@@ -1699,11 +1690,10 @@ const EditProducts = () => {
                     </button>
                   </div>
                   <div
-                    className={`tag-list mt-3 ${
-                      productTags
+                    className={`tag-list mt-3 ${productTags
                         ? "h-auto overflow-y-auto"
                         : "h-0 overflow-hidden"
-                    } transition-all duration-300`}
+                      } transition-all duration-300`}
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex justify-around">
@@ -1764,11 +1754,10 @@ const EditProducts = () => {
                   </button>
                 </div>
                 <div
-                  className={`upload-image mt-3 ${
-                    isImageOpen
+                  className={`upload-image mt-3 ${isImageOpen
                       ? "h-auto overflow-y-auto"
                       : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                    } transition-all duration-300`}
                 >
                   <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
                     <input
@@ -1815,11 +1804,10 @@ const EditProducts = () => {
                 </div>
 
                 <div
-                  className={`generic-map mt-3 ${
-                    genericsOpen
+                  className={`generic-map mt-3 ${genericsOpen
                       ? "h-[250px] overflow-y-auto"
                       : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                    } transition-all duration-300`}
                 >
                   {/* Display selected generic name */}
                   {selectedGeneric && (
@@ -1869,11 +1857,10 @@ const EditProducts = () => {
                 </div>
 
                 <div
-                  className={`generic-map mt-3 ${
-                    manuIdOpen
+                  className={`generic-map mt-3 ${manuIdOpen
                       ? "h-[300px] overflow-y-auto"
                       : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                    } transition-all duration-300`}
                 >
                   {selectedMAnufacturer && (
                     <div className="mb-2 font-semibold text-gray-700">
@@ -1916,7 +1903,9 @@ const EditProducts = () => {
             <button
               type="submit"
               className="bg-[#13a3bc] hover:bg-[#13b6d5] py-1 text-white font-bold px-4 rounded-md"
+              style={{ padding: "12px" }}
               disabled={updateLoaderBtn}
+
             >
               {updateLoaderBtn ? (
                 <div className="flex items-center">

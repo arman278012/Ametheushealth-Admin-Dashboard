@@ -151,6 +151,24 @@ const InstantGeneric = () => {
     }
   };
 
+  //for checks
+
+  const [checkedItems, setCheckedItems] = useState({}); // Track checked items
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id], // Toggle the checked status for the specific item
+    }));
+  };
+
+  const handleSelectAll = (isChecked) => {
+    const updatedCheckedItems = {};
+    allGenericData.data.forEach((item) => {
+      updatedCheckedItems[item._id] = isChecked; // Set all checkboxes to the same value
+    });
+    setCheckedItems(updatedCheckedItems);
+  };
   return (
     <>
       <div className="w-full mx-auto flex justify-center items-center py-1 gap-5">
@@ -288,7 +306,7 @@ const InstantGeneric = () => {
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[10%]">
-                <input type="checkbox" />
+                <input type="checkbox" checked={Object.values(checkedItems).every(Boolean)} onChange={(e) => handleSelectAll(e.target.checked)} />
               </Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
               <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
@@ -323,7 +341,7 @@ const InstantGeneric = () => {
                     onClick={() => dispatch(storeGenericId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
-                      <input type="checkbox" />
+                      <input type="checkbox"  checked={checkedItems[item._id] || false} onChange={() => handleCheckboxChange(item._id)} />
                     </Td>
                     <Td className="py-2 px-4 border-b text-[14px]">
                       {item?.name}

@@ -120,6 +120,35 @@ const AllCategories = () => {
     setIsTopBarOpen(!isTopBaropen);
   };
 
+ 
+
+  //for checked
+
+  const [checkedItems, setCheckedItems] = useState({});
+  const [editAllCategoriesForm, SetEditAllCategoriesForm] = useState(false);
+  // const [deleteAlert, setDeleteAlert] = useState(false);
+  // const [selectedId, setSelectedId] = useState(null);
+  
+  // Function to handle select all checkboxes
+  const handleSelectAll = (e) => {
+    const checked = e.target.checked; // Get the checked state
+    const newCheckedItems = {};
+
+    allCategoryData.data.forEach(item => {
+      newCheckedItems[item._id] = checked; // Set all items to checked/unchecked
+    });
+
+    setCheckedItems(newCheckedItems); // Update state
+  };
+
+  // Function to handle individual checkbox change
+  const handleCheckboxChange = (itemId) => {
+    setCheckedItems((prevCheckedItems) => ({
+      ...prevCheckedItems,
+      [itemId]: !prevCheckedItems[itemId], // Toggle the specific checkbox
+    }));
+  };
+
   return (
     <div className="overflow-x-auto p-5 ">
       <p className="font-bold text-xl">All Categories</p>
@@ -241,7 +270,7 @@ const AllCategories = () => {
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[5%]">
-                <input type="checkbox" />
+                <input type="checkbox" checked={Object.values(checkedItems).every(Boolean)}  onChange={handleSelectAll} />
               </Th>
               <Th className="py-2 px-4 border-b text-start sm:w-[10%]">
                 Image
@@ -289,7 +318,8 @@ const AllCategories = () => {
                     onClick={() => dispatch(storeMyId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
-                      <input type="checkbox" />
+                      <input type="checkbox"  checked={checkedItems[item._id] || false} 
+                    onChange={() => handleCheckboxChange(item._id)} />
                     </Td>
                     <Td className="py-2 px-4 border-b text-center">
                       <img

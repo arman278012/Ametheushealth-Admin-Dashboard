@@ -1,0 +1,6 @@
+.admin-inputTag{
+   
+}
+.admin-inputTag:focus{
+    border: 2px solid rgb(19,163,188) !important;
+}

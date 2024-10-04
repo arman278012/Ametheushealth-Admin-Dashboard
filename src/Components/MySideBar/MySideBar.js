@@ -7,7 +7,16 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-
+import { IoMdContact } from "react-icons/io";
+import { MdDescription } from "react-icons/md";
+import { AiFillProduct } from "react-icons/ai";
+import { FcGenericSortingAsc } from "react-icons/fc";
+import { TbLogs } from "react-icons/tb";
+import { RiCoupon2Fill } from "react-icons/ri";
+import { IoIosLogOut } from "react-icons/io";
+import { MdPrecisionManufacturing } from "react-icons/md";
+import { MdCategory } from "react-icons/md";
+import { MdGeneratingTokens } from "react-icons/md";
 const MySideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
@@ -45,7 +54,7 @@ const MySideBar = () => {
   };
 
   return (
-    <div className="sm:flex md:flex hidden sticky">
+    <div className="sm:flex md:flex hidden sticky top-0">
       <div
         className={`bg-gray-800 text-white min-h-screen ${
           isCollapsed ? "w-16" : "w-64"
@@ -96,7 +105,8 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaBox className="mr-2" />
+                  {/* <FaBox className="mr-2" /> */}
+                  <IoMdContact className="mr-2" />
                   {!isCollapsed && "Contacts"}
                 </span>
                 {!isCollapsed &&
@@ -127,7 +137,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaBox className="mr-2" />
+                  <MdDescription className="mr-2" />
                   {!isCollapsed && "Perscription"}
                 </span>
                 {!isCollapsed &&
@@ -162,7 +172,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaBox className="mr-2" />
+                  <AiFillProduct className="mr-2" />
                   {!isCollapsed && "Products"}
                 </span>
                 {!isCollapsed &&
@@ -207,7 +217,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaUsers className="mr-2" />
+                  <MdCategory className="mr-2" />
                   {!isCollapsed && "Categories"}
                 </span>
                 {!isCollapsed &&
@@ -250,7 +260,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaUsers className="mr-2" />
+                  <MdPrecisionManufacturing className="mr-2" />
                   {!isCollapsed && "Manufacturers"}
                 </span>
                 {!isCollapsed &&
@@ -297,7 +307,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaUsers className="mr-2" />
+                  <MdGeneratingTokens className="mr-2" />
                   {!isCollapsed && "Generic"}
                 </span>
                 {!isCollapsed &&
@@ -341,7 +351,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaUsers className="mr-2" />
+                  <TbLogs className="mr-2" />
                   {!isCollapsed && "Blogs"}
                 </span>
                 {!isCollapsed &&
@@ -376,7 +386,7 @@ const MySideBar = () => {
                 className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
               >
                 <span className="flex items-center">
-                  <FaUsers className="mr-2" />
+                  <RiCoupon2Fill className="mr-2" />
                   {!isCollapsed && "Coupons"}
                 </span>
                 {!isCollapsed &&
@@ -441,7 +451,7 @@ const MySideBar = () => {
                     className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
                   >
                     <span className="flex items-center">
-                      <FaUsers className="mr-2" />
+                      <IoIosLogOut className="mr-2" />
                       {!isCollapsed && "Logout"}
                     </span>
                   </button>

@@ -176,6 +176,7 @@ const CategoryDataDetails = () => {
               src={individualData?.image || placeholderImage}
               className="w-[300px] "
               alt="Category"
+              
             />
             {individualData?.docFileURL ? (
               <div className="mt-4">
@@ -227,7 +228,7 @@ const CategoryDataDetails = () => {
                 <img
                   src={child.image || placeholderImage}
                   alt="Child"
-                  className=""
+                  className="object-cover h-80 w-120 full"
                 />
               </div>
               <p className="text-center font-bold text-xl text-[#13a3bc]">

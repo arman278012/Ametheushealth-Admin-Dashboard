@@ -86,6 +86,27 @@ const AllBlogs = () => {
     }
   };
 
+  const [checkedItems, setCheckedItems] = useState([]); // State to track checked rows
+  const [selectAll, setSelectAll] = useState(false); // State for select all checkbox
+
+  // Function to handle "select all" checkbox
+  const handleSelectAll = (isChecked) => {
+    setSelectAll(isChecked);
+    if (isChecked) {
+      const allIds = allBlogs.data.map((item) => item._id); // Collect all IDs
+      setCheckedItems(allIds); // Select all items
+    } else {
+      setCheckedItems([]); // Deselect all items
+    }
+  };
+
+  // Function to handle individual checkbox toggle
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
   return (
     <div className="overflow-x-auto p-5">
       <p className="font-bold text-xl">All Blogs</p>
@@ -140,7 +161,7 @@ const AllBlogs = () => {
         <div className="mb-5 flex gap-2 justify-end">
           <input
             type="text"
-            className="py-2 rounded-xl px-3 w-[250px]"
+            className="py-2 rounded-xl px-3 w-[250px] focus:outline-none"
             placeholder="Search Blogs..."
             value={searchQuery}
             onChange={handleSearchInputChange}
@@ -218,7 +239,7 @@ const AllBlogs = () => {
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[5%]">
-                <input type="checkbox" />
+                <input type="checkbox" checked={selectAll} onChange={(e) => handleSelectAll(e.target.checked)} />
               </Th>
               <Th className="py-2 px-4 border-b text-start sm:w-[20%]">
                 Image
@@ -269,7 +290,7 @@ const AllBlogs = () => {
                     // onClick={() => dispatch(storeMyId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
-                      <input type="checkbox" />
+                      <input type="checkbox" checked={checkedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)}  />
                     </Td>
                     <Td className="py-2 px-4 border-b text-center">
                       <img
