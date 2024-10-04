@@ -135,6 +135,25 @@ const InstantManufacturer = () => {
     }
   };
 
+  //for checks
+
+  const [checkedItems, setCheckedItems] = useState({}); // Track checked items
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id], // Toggle the checked status for the specific item
+    }));
+  };
+
+  const handleSelectAll = (isChecked) => {
+    const updatedCheckedItems = {};
+    allManufacturerData.data.forEach((item) => {
+      updatedCheckedItems[item._id] = isChecked; // Set all checkboxes to the same value
+    });
+    setCheckedItems(updatedCheckedItems);
+  };
+
   return (
     <>
       <div className="w-full mx-auto flex justify-center items-center p-1 gap-5">
@@ -145,15 +164,17 @@ const InstantManufacturer = () => {
             </p>
           </div>
           <div className="flex flex-col justify-center items-center">
+            
             <form onSubmit={handleSubmit}>
               <div className="flex gap-4">
+                
                 <input
                   type="text"
                   name="searchQuery"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search data here..."
-                  className="p-3 border rounded-xl h-[45px] w-[300px]"
+                  className="p-3 border rounded-xl h-[45px] w-[300px] focus:outline-none"
                 />
                 <button
                   type="submit"
@@ -165,17 +186,20 @@ const InstantManufacturer = () => {
             </form>
           </div>
         </div>
-
+      
         <div className="w-[50%] border-2 flex flex-col justify-center items-center p-5">
+         
           <form onSubmit={handleAddSubmit}>
+
             <div className="flex gap-4">
+          
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter data here..."
-                className="p-3 border rounded-xl h-[45px] w-[300px]"
+                className="p-3 border rounded-xl h-[45px] w-[300px] focus:outline-none"
               />
               <button
                 type="submit"
@@ -273,7 +297,7 @@ const InstantManufacturer = () => {
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[10%]">
-                <input type="checkbox" />
+                <input type="checkbox"  checked={Object.values(checkedItems).every(Boolean)} onChange={(e) => handleSelectAll(e.target.checked)} />
               </Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
               <Th className="py-2 px-4 border-b w-[10%] text-start">Slug</Th>
@@ -310,7 +334,7 @@ const InstantManufacturer = () => {
                     onClick={() => dispatch(storeGenericId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
-                      <input type="checkbox" />
+                      <input type="checkbox" checked={checkedItems[item._id] || false} onChange={() => handleCheckboxChange(item._id)} />
                     </Td>
                     <Td className="py-2 px-4 border-b text-[14px]">
                       {item?.name}

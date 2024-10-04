@@ -31,3 +31,6 @@
     background-color: #4338ca;
   }
   
+  .AddCategoryinput:focus{
+    border: 2px solid rgb(19,163,188);
+  }

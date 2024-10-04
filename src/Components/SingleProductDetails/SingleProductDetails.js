@@ -122,7 +122,7 @@ const SingleProductDetails = () => {
             )}
           </div>
           <div className="flex justify-between w-[-webkit-fill-available] sm:mt-10 lg:mt-0 lg:ml-10 sm:mx-0 mx-5 mt-2">
-            <div>
+            <div  className="w-full mr-[30px] mt-8" >
               {loading ? (
                 <div className="flex justify-center items-center min-h-screen">
                   <div className="loader"></div>
@@ -191,6 +191,7 @@ const SingleProductDetails = () => {
               <div className="flex flex-wrap my-5 items-center ">
                 {product.variants.map((variant) => (
                   <button
+                  
                     key={variant._id}
                     className={`border shadow-sm h-min border-gray-200 pb-1 rounded-md py-1 text-sm px-4 mr-5 ${
                       product.selectedVariant?._id === variant._id

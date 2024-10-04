@@ -33,6 +33,7 @@ const Orders = () => {
     setIsDropOpen(!isDropOpen);
   };
 
+
   const handleSelectOption = (option) => {
     setStoreOptionId(option._id);
     setSelectedOption(option);
@@ -114,6 +115,31 @@ const Orders = () => {
     });
   };
 
+  //for checked
+
+  const [checkedItems, setCheckedItems] = useState({});
+
+  // Function to toggle all checkboxes
+  const handleSelectAll = (e) => {
+    const checked = e.target.checked;
+    const newCheckedItems = {};
+
+    allOrdersDetails.orders.forEach(order => {
+      newCheckedItems[order._id] = checked; // Set each order's checkbox state
+    });
+
+    setCheckedItems(newCheckedItems);
+  };
+
+  // Function to handle individual checkbox change
+  const handleCheckboxChange = (orderId) => {
+    setCheckedItems((prevCheckedItems) => ({
+      ...prevCheckedItems,
+      [orderId]: !prevCheckedItems[orderId], // Toggle the specific checkbox
+    }));
+  };
+
+
   return (
     <div>
       {/* top section is here */}
@@ -184,7 +210,7 @@ const Orders = () => {
             <select
               id="fruits"
               name="fruits"
-              className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
+              className="px-3 py-1 w-[150px] textArea rounded-md bg-white sm:block md:block hidden border"
             >
               <option
                 value=""
@@ -207,7 +233,7 @@ const Orders = () => {
             <select
               id="fruits"
               name="fruits"
-              className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white"
+              className="px-3 py-1 sm:w-[170px] w-[230px] textArea rounded-md bg-white"
               value={filter}
               onChange={handleFilterChange}
             >
@@ -294,7 +320,7 @@ const Orders = () => {
               <Thead>
                 <Tr>
                   <Th className="py-2 px-4 border-b border-gray-300 text-left w-[2%]">
-                    <input type="checkbox" className="form-checkbox" />
+                    <input type="checkbox" className="form-checkbox"   checked={Object.values(checkedItems).every(Boolean)} onChange={handleSelectAll} />
                   </Th>
                   <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[10%]">
                     Order
@@ -318,7 +344,7 @@ const Orders = () => {
                 {allOrdersDetails?.orders?.map((order) => (
                   <Tr key={order._id}>
                     <Td className="py-2 px-4 border-b border-gray-300">
-                      <input type="checkbox" className="form-checkbox" />
+                      <input type="checkbox" className="form-checkbox" checked={checkedItems[order._id] || false}  onChange={() => handleCheckboxChange(order._id)} />
                     </Td>
                     <Td className="py-2 px-4 border-b  text-[14px] border-gray-300">
                       {order.name}

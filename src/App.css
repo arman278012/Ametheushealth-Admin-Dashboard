@@ -19,3 +19,7 @@ p {
 .tabsection > div {
   width: 80vw !important;
 }
+
+input:focus {
+  border: 2px solid rgb(19,163,188) !important;
+}

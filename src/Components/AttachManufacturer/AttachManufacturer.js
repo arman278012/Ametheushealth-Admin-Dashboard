@@ -257,7 +257,7 @@ const AttachManufacturer = () => {
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder="Search products here..."
-              className="p-3 border rounded-xl h-[45px] w-[300px]"
+              className="p-3 border rounded-xl h-[45px] w-[300px] focus:outline-none"
             />
             {/* <button
               type="submit"

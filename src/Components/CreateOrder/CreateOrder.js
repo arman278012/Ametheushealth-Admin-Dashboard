@@ -19,7 +19,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
-
+import './CreateOrder.css'
 const countryOptions = [
   { value: "AFGHANISTAN", label: "Afghanistan" },
   { value: "ALBANIA", label: "Albania" },
@@ -446,7 +446,7 @@ const CreateOrder = () => {
                   name="name"
                   value={orderForm.name}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
               <div className="flex flex-col w-1/2">
@@ -456,7 +456,7 @@ const CreateOrder = () => {
                   name="companyName"
                   onChange={handleChange}
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
             </div>
@@ -469,7 +469,7 @@ const CreateOrder = () => {
                   value={orderForm.streetAddress}
                   name="streetAddress"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
               <div className="flex flex-col w-1/2">
@@ -479,7 +479,7 @@ const CreateOrder = () => {
                   value={orderForm.city}
                   name="city"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
             </div>
@@ -492,7 +492,7 @@ const CreateOrder = () => {
                   name="state"
                   value={orderForm.state}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
               <div>
@@ -536,7 +536,7 @@ const CreateOrder = () => {
                   value={orderForm.mobile}
                   name="mobile"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
             </div>
@@ -549,17 +549,17 @@ const CreateOrder = () => {
                   name="email"
                   value={orderForm.email}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
               <div className="flex flex-col w-1/2">
-                <label className="block mb-1"> Postcode / ZIP *</label>
+                <label className="block mb-1 "> Postcode / ZIP *</label>
                 <input
                   type="text"
                   value={orderForm.pincode}
                   name="pincode"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
             </div>
@@ -600,7 +600,7 @@ const CreateOrder = () => {
                   value={orderForm.bloodPressure}
                   name="bloodPressure"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
               <div className="flex flex-col w-1/2">
@@ -610,7 +610,7 @@ const CreateOrder = () => {
                   value={orderForm.age}
                   name="age"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                 />
               </div>
             </div>
@@ -621,7 +621,8 @@ const CreateOrder = () => {
                   value={orderForm.orderNotes}
                   name="orderNotes"
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border rounded focus:outline-none textArea"
+                  
                 ></textarea>
               </div>
               <div className="flex gap-4">
@@ -629,7 +630,7 @@ const CreateOrder = () => {
                   <label className="block mb-1">Weight (optional)</label>
                   <input
                     type="text"
-                    className="w-full p-2 border border-gray-300 rounded"
+                    className="w-full p-2 border border-gray-300 rounded border px-2 focus:outline-none"
                     value={orderForm.weight}
                     name="weight"
                     onChange={handleChange}
@@ -707,7 +708,7 @@ const CreateOrder = () => {
                   value={searchQuery}
                   onChange={handleSearchChange}
                   placeholder="Search products here..."
-                  className="p-3 border rounded-xl h-[45px] w-[300px]"
+                  className="p-3 border rounded-xl h-[45px] w-[300px]  focus:outline-none"
                 />
               </div>
               <div>
@@ -882,7 +883,7 @@ const CreateOrder = () => {
               <div className="mb-5 flex gap-2 justify-end">
                 <input
                   type="text"
-                  className="py-2 rounded-xl px-3 w-[250px]"
+                  className="py-2 rounded-xl px-3 w-[250px] focus:outline-none"
                   placeholder="Search Users..."
                   value={searchUserQuery}
                   onChange={(e) => setSearchUserQuery(e.target.value)}

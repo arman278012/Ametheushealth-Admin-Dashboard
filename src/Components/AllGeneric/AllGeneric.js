@@ -136,6 +136,29 @@ const AllGeneric = () => {
     }
   };
 
+
+  //for checks
+
+  const [checkedItems, setCheckedItems] = useState([]); // State to track checked rows
+  const [selectAll, setSelectAll] = useState(false); // State for select all checkbox
+
+  // Function to handle "select all" checkbox
+  const handleSelectAll = (isChecked) => {
+    setSelectAll(isChecked);
+    if (isChecked) {
+      const allIds = genericData.data.map((item) => item._id); // Collect all IDs
+      setCheckedItems(allIds); // Select all items
+    } else {
+      setCheckedItems([]); // Deselect all items
+    }
+  };
+
+  // Function to handle individual checkbox toggle
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
   return (
     <>
       <div className="flex flex-col gap-3 px-5 py-2">
@@ -280,7 +303,7 @@ const AllGeneric = () => {
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[10%]">
-                <input type="checkbox" />
+                <input type="checkbox" checked={selectAll}  onChange={(e) => handleSelectAll(e.target.checked)} />
               </Th>
               <Th className="py-2 px-4 border-b w-[20%] text-start">Name</Th>
               <Th className="py-2 px-4 border-b w-[0%] text-start">Slug</Th>
@@ -314,7 +337,7 @@ const AllGeneric = () => {
                     onClick={() => dispatch(storeGenericId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
-                      <input type="checkbox" />
+                      <input type="checkbox"   checked={checkedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)} />
                     </Td>
                     <Td className="py-2 px-4 border-b text-[14px]">
                       {item?.name}

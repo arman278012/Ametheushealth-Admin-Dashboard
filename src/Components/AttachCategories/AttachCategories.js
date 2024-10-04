@@ -265,7 +265,7 @@ const AttachCategories = () => {
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder="Search products here..."
-              className="p-3 border rounded-xl h-[45px] w-[300px]"
+              className="p-3 border rounded-xl h-[45px] w-[300px] focus:outline-none"
             />
             {/* <button
               type="submit"
@@ -317,7 +317,7 @@ const AttachCategories = () => {
                       // checked={formik.values.categoryID === item._id}
                     />
                   </div>
-                  <div className="px-2 py-1 border-b last:border-0">
+                  <div className="px-2 py-1 border-b last:border-0 ml-4" >
                     <input
                       type="checkbox"
                       name="categoryID"
@@ -335,7 +335,7 @@ const AttachCategories = () => {
                       className="px-2 py-1 border-b last:border-0"
                       key={item._id}
                     >
-                      <div className="flex items-center mb-2">
+                      <div className="flex items-center mb-2 ml-4">
                         <input
                           type="checkbox"
                           id={item._id}

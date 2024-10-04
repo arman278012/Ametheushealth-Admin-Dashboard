@@ -77,6 +77,26 @@ const AllContacts = () => {
     }
   };
 
+  const [checkedItems, setCheckedItems] = useState([]); // State to track checked rows
+  const [selectAll, setSelectAll] = useState(false); // State for select all checkbox
+
+  // Function to handle "select all" checkbox
+  const handleSelectAll = (isChecked) => {
+    setSelectAll(isChecked);
+    if (isChecked) {
+      const allIds = allContactDetails.data.map((contact) => contact._id); // Collect all IDs
+      setCheckedItems(allIds); // Select all items
+    } else {
+      setCheckedItems([]); // Deselect all items
+    }
+  };
+
+  // Function to handle individual checkbox toggle
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
   return (
     <div>
       <div className="flex flex-col p-5">
@@ -188,7 +208,7 @@ const AllContacts = () => {
             <Thead>
               <Tr>
                 <Th className="py-2 px-4 border-b border-gray-300 text-left w-[2%]">
-                  <input type="checkbox" className="form-checkbox" />
+                  <input type="checkbox" className="form-checkbox"  checked={selectAll} onChange={(e) => handleSelectAll(e.target.checked)} />
                 </Th>
                 <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[10%]">
                   Name
@@ -209,7 +229,7 @@ const AllContacts = () => {
               {allContactDetails?.data?.map((contact) => (
                 <Tr key={contact._id}>
                   <Td className="py-2 px-4 border-b border-gray-300">
-                    <input type="checkbox" className="form-checkbox" />
+                    <input type="checkbox" className="form-checkbox" checked={checkedItems.includes(contact._id)} onChange={() => handleCheckboxChange(contact._id)}  />
                   </Td>
                   <Td className="py-2 px-4 border-b  text-[14px] border-gray-300">
                     <div>

@@ -118,7 +118,7 @@ const AddCoupons = () => {
                 value={coupanData.code}
                 name="code"
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
             <div className="flex flex-col w-1/2">
@@ -128,7 +128,7 @@ const AddCoupons = () => {
                 value={coupanData.discountValue}
                 name="discountValue"
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
           </div>
@@ -142,7 +142,7 @@ const AddCoupons = () => {
                 value={coupanData.usageLimit}
                 name="usageLimit"
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
             <div className="flex flex-col w-1/2">
@@ -152,7 +152,7 @@ const AddCoupons = () => {
                 value={coupanData.usageCount}
                 name="usageCount"
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
           </div>
@@ -194,7 +194,7 @@ const AddCoupons = () => {
                 name="expiryDate" // Name should match the state field
                 value={coupanData.expiryDate} // Controlled input field
                 onChange={handleChange} // Handle input change
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
             <div className="w-[440px]">
