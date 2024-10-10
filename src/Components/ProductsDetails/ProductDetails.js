@@ -18,7 +18,7 @@ import {
 import axios, { all } from "axios";
 import { useLocation, useNavigate, useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
-import './ProductsDetails.css'
+import "./ProductsDetails.css";
 const ProductDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,22 +51,20 @@ const ProductDetails = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleSelectAll=()=>{
-    setSelectAll(!selectAll)
-    if(!selectAll){
-      const allIds = allProductsDetails?.data.map(item => item._id);
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      const allIds = allProductsDetails?.data.map((item) => item._id);
       setSelectedItems(allIds);
-    }else{
-      
-        // Deselect all products
-        setSelectedItems([]);
-      
+    } else {
+      // Deselect all products
+      setSelectedItems([]);
     }
-  }
+  };
 
   const handleSelectItem = (id) => {
     if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter(itemId => itemId !== id));
+      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
     } else {
       setSelectedItems([...selectedItems, id]);
     }
@@ -291,7 +289,7 @@ const ProductDetails = () => {
             <button
               onClick={() => navigate("/add-product")}
               className="bg-[#13a3bc] text-white font-semibold text-sm p-3 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out ml-3"
-              style={{height:"45px",width:"90px"}}
+              style={{ height: "45px", width: "90px" }}
             >
               Add New
             </button>
@@ -323,7 +321,6 @@ const ProductDetails = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px] p-2 admin-inputTag"
-                
               />
             </div>
 
@@ -337,7 +334,6 @@ const ProductDetails = () => {
                 type="button"
                 className="w-[200px] px-3 py-1 h-[33px] inline-flex justify-center rounded-md border border-gray-300 shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none admin-inputTag"
                 onClick={toggleDropdown}
-                
               >
                 {selectedOption ? selectedOption.name : "Filter by category"}
                 <svg
@@ -362,7 +358,7 @@ const ProductDetails = () => {
                       placeholder="Search..."
                       value={searchOptionQuery}
                       onChange={(e) => setSearchOptionQuery(e.target.value)}
-                      className="w-full px-3 py-1 border rounded-md border-gray-300 admin-inputTag border px-2 focus:outline-none"
+                      className="w-full px-3 py-1 border rounded-md border-gray-300 admin-inputTag focus:outline-none"
                     />
                   </div>
                   <div className="py-1 max-h-[250px] overflow-y-auto">
@@ -390,7 +386,6 @@ const ProductDetails = () => {
               id="fruits"
               name="fruits"
               className="px-3 py-1 sm:w-[200px] w-[230px] focus:outline-none rounded-md bg-white admin-inputTag"
-              
             >
               <option
                 value=""
@@ -398,8 +393,6 @@ const ProductDetails = () => {
                 disabled
                 hidden
                 className="placeholder opacity-50 foutline-none"
-                
-                
               >
                 Filter by stock status
               </option>
@@ -485,8 +478,12 @@ const ProductDetails = () => {
                     <p>*</p>
                   </th>
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[2%]">
-                    <input type="checkbox" className="form-checkbox" onChange={handleSelectAll}
-                checked={selectAll} />
+                    <input
+                      type="checkbox"
+                      className="form-checkbox"
+                      onChange={handleSelectAll}
+                      checked={selectAll}
+                    />
                   </th>
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[10%]">
                     Image
@@ -504,7 +501,7 @@ const ProductDetails = () => {
                     Price
                   </th>
                   <th className="py-2 px-4 border-b-2 border-gray-300 text-left w-[15%]">
-                    Date
+                    Last Updated
                   </th>
                 </tr>
               </thead>
@@ -515,8 +512,12 @@ const ProductDetails = () => {
                       <p>{startIndex + index + 1}</p>
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200">
-                      <input type="checkbox" className="form-checkbox"   onChange={() => handleSelectItem(singleItem._id)}
-                      checked={selectedItems.includes(singleItem._id)} />
+                      <input
+                        type="checkbox"
+                        className="form-checkbox"
+                        onChange={() => handleSelectItem(singleItem._id)}
+                        checked={selectedItems.includes(singleItem._id)}
+                      />
                     </td>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <img
@@ -606,7 +607,7 @@ const ProductDetails = () => {
                     </td>
 
                     <td className="py-2 px-4 border-b border-gray-200 text-[12px]">
-                      {convertToIndianDate(singleItem.createdAt || "--")}
+                      {convertToIndianDate(singleItem.updatedAt || "--")}
                     </td>
                   </tr>
                 ))}

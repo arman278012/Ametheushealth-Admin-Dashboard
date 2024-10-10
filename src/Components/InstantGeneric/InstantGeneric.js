@@ -169,6 +169,7 @@ const InstantGeneric = () => {
     });
     setCheckedItems(updatedCheckedItems);
   };
+  
   return (
     <>
       <div className="w-full mx-auto flex justify-center items-center py-1 gap-5">
@@ -188,12 +189,12 @@ const InstantGeneric = () => {
                   placeholder="search data here..."
                   className="p-3 border rounded-xl h-[45px] w-[300px]"
                 />
-                <button
+                {/* <button
                   type="submit"
                   className="bg-green-500 hover:bg-green-600 flex justify-center items-center p-3 border rounded-xl h-[45px] text-white font-bold"
                 >
                   Search
-                </button>
+                </button> */}
               </div>
             </form>
           </div>

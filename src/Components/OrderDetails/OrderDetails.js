@@ -597,7 +597,7 @@ const OrderDetails = () => {
        
         <div className="grid grid-cols-3 gap-5">
           {orderDetails?.products?.map((product) => (
-             <Link to={`/product-details/${product.productID}`}>
+             <Link key={product._id} to={`/product-details/${product.productID}`}>
             <div key={product._id} className="shadow-xl p-5">
               <div className=" flex justify-center items-center">
                 <img src={product.images[0]?.url} className=" w-[100px]" />

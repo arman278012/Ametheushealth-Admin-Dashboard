@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
@@ -114,6 +114,7 @@ const AddCategory = () => {
       console.log(error);
     }
   };
+
   const handleNext = async (values) => {
     setIsSubmitting(true);
     if (currentStep === 1) {
@@ -148,6 +149,33 @@ const AddCategory = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const editor = useRef(null);
+
+  const config = {
+    uploader: {
+      insertImageAsBase64URI: true, // Allow base64 encoding of the image for direct insertion
+      url: "your-upload-url", // Optional: Backend URL for image upload
+      isSuccess: function (resp) {
+        return !resp.error;
+      },
+      process: function (resp) {
+        return {
+          files: resp.files || [],
+          path: resp.path,
+          baseurl: resp.baseurl,
+          error: resp.error,
+        };
+      },
+      defaultHandlerSuccess: function (data) {
+        console.log("Upload successful:", data);
+      },
+      error: function (e) {
+        console.error("Upload error:", e);
+      },
+    },
+    buttons: ["bold", "italic", "underline", "link", "image", "upload"], // Add image button to toolbar
   };
 
   return (
@@ -207,7 +235,11 @@ const AddCategory = () => {
                       <Field name="description">
                         {({ field }) => (
                           <JoditEditor
+                            ref={editor}
+                            tabIndex={1} // tabIndex of textarea
+                            config={config}
                             value={values.description}
+                            onBlur={(newContent) => console.log(newContent)}
                             onChange={(value) =>
                               handleChange({
                                 target: {

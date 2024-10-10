@@ -33,7 +33,6 @@ const Orders = () => {
     setIsDropOpen(!isDropOpen);
   };
 
-
   const handleSelectOption = (option) => {
     setStoreOptionId(option._id);
     setSelectedOption(option);
@@ -124,7 +123,7 @@ const Orders = () => {
     const checked = e.target.checked;
     const newCheckedItems = {};
 
-    allOrdersDetails.orders.forEach(order => {
+    allOrdersDetails.orders.forEach((order) => {
       newCheckedItems[order._id] = checked; // Set each order's checkbox state
     });
 
@@ -138,7 +137,6 @@ const Orders = () => {
       [orderId]: !prevCheckedItems[orderId], // Toggle the specific checkbox
     }));
   };
-
 
   return (
     <div>
@@ -320,10 +318,18 @@ const Orders = () => {
               <Thead>
                 <Tr>
                   <Th className="py-2 px-4 border-b border-gray-300 text-left w-[2%]">
-                    <input type="checkbox" className="form-checkbox"   checked={Object.values(checkedItems).every(Boolean)} onChange={handleSelectAll} />
+                    <input
+                      type="checkbox"
+                      className="form-checkbox"
+                      checked={
+                        Object.keys(checkedItems).length > 0 &&
+                        Object.values(checkedItems).every(Boolean)
+                      }
+                      onChange={handleSelectAll}
+                    />
                   </Th>
                   <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[10%]">
-                    Order
+                    Name
                   </Th>
                   <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
                     Order Id
@@ -344,7 +350,12 @@ const Orders = () => {
                 {allOrdersDetails?.orders?.map((order) => (
                   <Tr key={order._id}>
                     <Td className="py-2 px-4 border-b border-gray-300">
-                      <input type="checkbox" className="form-checkbox" checked={checkedItems[order._id] || false}  onChange={() => handleCheckboxChange(order._id)} />
+                      <input
+                        type="checkbox"
+                        className="form-checkbox"
+                        checked={checkedItems[order._id] || false}
+                        onChange={() => handleCheckboxChange(order._id)}
+                      />
                     </Td>
                     <Td className="py-2 px-4 border-b  text-[14px] border-gray-300">
                       {order.name}
@@ -423,5 +434,5 @@ const Orders = () => {
     </div>
   );
 };
-
+  
 export default Orders;
