@@ -48,8 +48,9 @@ const ProductDetails = () => {
   const [pageValue, setPageValue] = useState("");
 
   const searchParams = new URLSearchParams(location.search);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+ 
+  const [selectAll,setSelectAll]=useState(false)
+  const [selectedItems,setSelectedItems]=useState([])
 
   const handleSelectAll=()=>{
     setSelectAll(!selectAll)
@@ -63,6 +64,7 @@ const ProductDetails = () => {
       
     }
   }
+
 
   const handleSelectItem = (id) => {
     if (selectedItems.includes(id)) {
