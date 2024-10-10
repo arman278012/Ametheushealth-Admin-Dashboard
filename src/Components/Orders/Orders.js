@@ -320,7 +320,7 @@ const Orders = () => {
               <Thead>
                 <Tr>
                   <Th className="py-2 px-4 border-b border-gray-300 text-left w-[2%]">
-                    <input type="checkbox" className="form-checkbox"   checked={Object.values(checkedItems).every(Boolean)} onChange={handleSelectAll} />
+                    <input type="checkbox" className="form-checkbox"    checked={Object.keys(checkedItems).length > 0 && Object.values(checkedItems).every(Boolean)} onChange={handleSelectAll} />
                   </Th>
                   <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[10%]">
                     Order
