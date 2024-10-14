@@ -48,8 +48,50 @@ const ProductDetails = () => {
   const [pageValue, setPageValue] = useState("");
 
   const searchParams = new URLSearchParams(location.search);
+
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [recognition, setRecognition] = useState(null);
+
+  //speech recognition property
+  // useEffect(() => {
+  //   const SpeechRecognition =
+  //     window.SpeechRecognition || window.webkitSpeechRecognition;
+  //   if (SpeechRecognition) {
+  //     const recognitionInstance = new SpeechRecognition();
+  //     recognitionInstance.lang = "en-US";
+  //     recognitionInstance.interimResults = true; // Enable interim results
+  //     recognitionInstance.maxAlternatives = 1;
+
+  //     recognitionInstance.onresult = (event) => {
+  //       const transcript = Array.from(event.results)
+  //         .map((result) => result[0].transcript)
+  //         .join("");
+  //       setSearchQuery(transcript); // Dynamically update search query while speaking
+  //     };
+
+  //     recognitionInstance.onerror = (event) => {
+  //       console.error("Speech recognition error: ", event.error);
+  //     };
+
+  //     recognitionInstance.onend = () => {
+  //       console.log("Speech recognition ended.");
+  //       // No need to call productDetailsAgain directly; useEffect will handle it
+  //     };
+
+  //     setRecognition(recognitionInstance);
+  //   } else {
+  //     alert("Your browser does not support speech recognition.");
+  //   }
+  // }, []);
+
+  // Function to start voice recognition
+  const startVoiceRecognition = () => {
+    if (recognition) {
+      recognition.start();
+      console.log("Voice recognition started.");
+    }
+  };
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -70,8 +112,7 @@ const ProductDetails = () => {
     }
   };
 
-  //Products details API fetching again to solve the searching problem
-
+  // API call for searching products
   const productDetailsAgain = async (page, pageLimit, query) => {
     query = encodeURIComponent(query);
     try {
@@ -85,7 +126,6 @@ const ProductDetails = () => {
         }
       );
       setAllProductsDetails(response.data);
-      setPageValue(response.data.pageSize);
       console.log("AllProductsDetails", response.data);
     } catch (error) {
       console.log(error);
@@ -110,16 +150,17 @@ const ProductDetails = () => {
       const newParams = new URLSearchParams();
       newParams.set("search", searchQuery);
       newParams.set("page", currentPage);
-      newParams.set("pagelimit", pageLimit); // Consistent use of pageLimit here
+      newParams.set("pagelimit", pageLimit);
 
+      // Update URL
       navigate({ search: newParams.toString() });
 
-      // Call productDetailsAgain with updated values
+      // Trigger the API call after the debounce
       productDetailsAgain(currentPage, pageLimit, searchQuery);
     }, 300); // Debounce delay for better UX
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, currentPage, pageLimit]);
+  }, [searchQuery, currentPage, pageLimit, navigate]);
 
   const goToPage = (page) => {
     setCurrentPage(page);
@@ -322,6 +363,12 @@ const ProductDetails = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="border border-black outline-none px-2 py-1 rounded-md sm:w-full w-[150px] p-2 admin-inputTag"
               />
+              {/* <button
+                onClick={startVoiceRecognition}
+                className="p-2 rounded-full bg-blue-500 text-white"
+              >
+                🎤
+              </button> */}
             </div>
 
             <div></div>

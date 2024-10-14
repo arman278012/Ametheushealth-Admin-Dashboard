@@ -179,7 +179,7 @@ const OrderDetails = () => {
                 <div>
                   <p className="text-[18px] font-semibold">Order Status</p>
                 </div>
-                <div className="flex flex-col gap-3" style={{marginTop:"10px"}}>
+                <div className="flex flex-col gap-3" style={{ marginTop: "10px" }}>
                   <select
                     id="status"
                     name="status"
@@ -208,7 +208,7 @@ const OrderDetails = () => {
                   </select>
                 </div>
 
-                <div className="px-3 mt-[35px] py-1 sm:w-[300px] focus:outline-none rounded-md bg-white border w-[300px] border-[1px]">
+                <div className="px-3 mt-[35px] py-1 sm:w-[300px] focus:outline-none rounded-md bg-white w-[300px] border-[1px]">
 
                   <p className="font-semibold">User details</p>
                   <div className="relative left-[90px] mt-5 w-[70px] h-[70px] bg-gray-200 flex items-center justify-center text-xl font-bold rounded-full overflow-hidden">
@@ -224,11 +224,11 @@ const OrderDetails = () => {
                       <span>
                         {orderDetails?.user?.name
                           ? `${orderDetails?.user?.name.charAt(
-                              0
-                            )}${orderDetails?.user?.name
-                              .split(" ")
-                              .slice(-1)[0]
-                              .charAt(0)}`
+                            0
+                          )}${orderDetails?.user?.name
+                            .split(" ")
+                            .slice(-1)[0]
+                            .charAt(0)}`
                           : ""}
                       </span>
                     )}
@@ -363,16 +363,16 @@ const OrderDetails = () => {
               </p>
               <div className="bg-gray-300 h-[1px] w-full mt-2"></div>
               <div className="mt-2">
-              <div className="flex flex-col items-start w-full">
-  <p className="text-gray-500 w-full">
-    <span className="text-gray-500 font-semibold block">
-      Street Address:
-    </span>
-    <span className="text-gray-500 font-thin block">
-      {orderDetails?.streetAddress}
-    </span>
-  </p>
-</div>
+                <div className="flex flex-col items-start w-full">
+                  <p className="text-gray-500 w-full">
+                    <span className="text-gray-500 font-semibold block">
+                      Street Address:
+                    </span>
+                    <span className="text-gray-500 font-thin block">
+                      {orderDetails?.streetAddress}
+                    </span>
+                  </p>
+                </div>
 
                 <p className="text-gray-500">
                   <span className="text-gray-500 font-semibold">City:</span>{" "}
@@ -504,9 +504,8 @@ const OrderDetails = () => {
       {/* Sidebar */}
       <div
         className={`fixed top-0 right-0 w-[400px] h-full bg-white shadow-lg border-l border-gray-200 z-50 p-5 
-            transform transition-transform duration-300 ${
-              isSidebarOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+            transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Tracking Information</h2>
@@ -537,8 +536,8 @@ const OrderDetails = () => {
                 id="status"
                 name="status"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
-                
-              
+
+
                 value={status} // Bind to the state variable
                 onChange={(e) => {
                   setStatus(e.target.value);
@@ -594,7 +593,7 @@ const OrderDetails = () => {
       </div>
 
       <div className="overflow-x-auto mt-5 border-2 p-5">
-       
+
         <div className="grid grid-cols-3 gap-5">
           {orderDetails?.products?.map((product) => (
              <Link key={product._id} to={`/product-details/${product.productID}`}>
@@ -640,31 +639,31 @@ const OrderDetails = () => {
                   </span>{" "}
                 </p> */}
 
-                <p>
-                  <span className="text-gray-500 font-bold">SKU:</span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.sku}
-                  </span>{" "}
-                </p>
+                  <p>
+                    <span className="text-gray-500 font-bold">SKU:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {product?.sku}
+                    </span>{" "}
+                  </p>
 
-                <p>
-                  <span className="text-gray-500 font-bold">Quantity:</span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.quantity}
-                  </span>
-                </p>
-                {/* <p>
+                  <p>
+                    <span className="text-gray-500 font-bold">Quantity:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {product?.quantity}
+                    </span>
+                  </p>
+                  {/* <p>
                   <span className="text-gray-500 font-bold">Margin:</span>{" "}
                   <span className="text-gray-500 font-thin">
                     {product?.margin}
                   </span>
                 </p> */}
+                </div>
               </div>
-            </div>
-             </Link>
+            </Link>
           ))}
         </div>
-       
+
       </div>
     </div>
   );

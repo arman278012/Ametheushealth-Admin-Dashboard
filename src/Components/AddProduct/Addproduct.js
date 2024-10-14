@@ -659,7 +659,7 @@ const AddProduct = () => {
 
                             <div className="flex flex-col w-1/2">
                               <label className="font-semibold px-2 opacity-65">
-                              Compare Websites
+                                Compare Websites
                               </label>
                               <input
                                 type="text"
@@ -1644,7 +1644,10 @@ const AddProduct = () => {
                               }
                               checked={values.genericID === generic._id}
                             />
-                            <p>{generic?.name}</p>
+                            <div className="flex flex-col">
+                              <p>{generic?.name}</p>
+                              <div className="bg-black h-[1px] w-full"></div>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -1700,7 +1703,10 @@ const AddProduct = () => {
                                 values.manufacturerID === manufacturer._id
                               }
                             />
-                            <p>{manufacturer?.name}</p>
+                            <div className="flex flex-col">
+                              <p>{manufacturer?.name}</p>
+                              <div className="bg-black h-[1px] w-full"></div>
+                            </div>
                           </div>
                         ))}
                       </div>
