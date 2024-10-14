@@ -126,6 +126,8 @@ const ProductDetails = () => {
         }
       );
       setAllProductsDetails(response.data);
+      setPageValue(response.data.pageSize);
+      console.log(response.data.pageSize);
       console.log("AllProductsDetails", response.data);
     } catch (error) {
       console.log(error);
@@ -292,6 +294,8 @@ const ProductDetails = () => {
   };
 
   const startIndex = (currentPage - 1) * pageValue;
+
+  console.log("wefer", pageValue);
 
   return (
     <div className="">
