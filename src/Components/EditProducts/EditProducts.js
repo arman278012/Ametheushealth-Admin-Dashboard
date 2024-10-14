@@ -380,7 +380,7 @@ const EditProducts = () => {
 
   useEffect(() => {
     // Fetch all data initially
-    fetchGenericsData();
+    // fetchGenericsData();
 
     // Add debounce logic for search query
     const delayDebounceFn = setTimeout(() => {
