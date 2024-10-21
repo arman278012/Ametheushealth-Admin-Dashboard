@@ -17,6 +17,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { MdPrecisionManufacturing } from "react-icons/md";
 import { MdCategory } from "react-icons/md";
 import { MdGeneratingTokens } from "react-icons/md";
+import { FaUserDoctor } from "react-icons/fa6";
 const MySideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
@@ -29,6 +30,7 @@ const MySideBar = () => {
   const [isPerscriptionMenuOpen, setIsPerscriptionMenuOpen] = useState(false);
   const [isBlogsOpen, setIsBlogsOpen] = useState(false);
   const [isCouponsMenuOpen, setIsCouponsMenuOpen] = useState(false);
+  const [isDoctorMenu, setisDoctorMenu] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleUsersMenu = () => setIsUsersMenuOpen(!isUsersMenuOpen);
@@ -44,6 +46,7 @@ const MySideBar = () => {
     setIsPerscriptionMenuOpen(!isPerscriptionMenuOpen);
   const toggleBlogsMenu = () => setIsBlogsOpen(!isBlogsOpen);
   const toggleCouponsMenu = () => setIsCouponsMenuOpen(!isCouponsMenuOpen);
+  const toggleDoctorsMenu = () => setisDoctorMenu(!isDoctorMenu);
 
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
@@ -437,6 +440,34 @@ const MySideBar = () => {
                   </NavLink>
                   <a href="#" className="hover:bg-gray-700 px-4 py-2">
                     Add User
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* orders menu */}
+            <div>
+              <button
+                onClick={toggleDoctorsMenu}
+                className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+              >
+                <span className="flex items-center">
+                  <FaUserDoctor className="mr-2" />
+                  {!isCollapsed && "Doctors"}
+                </span>
+                {!isCollapsed &&
+                  (isUsersMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
+              </button>
+              {!isCollapsed && isDoctorMenu && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/add-doctor-category"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Add Doctor's category
+                  </NavLink>
+                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                    All Doctors
                   </a>
                 </div>
               )}

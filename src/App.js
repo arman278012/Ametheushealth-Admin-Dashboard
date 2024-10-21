@@ -43,6 +43,9 @@ import UserDetailsPage from "./Pages/UserDetailsPage/UserDetailsPage";
 import AddCouponsPage from "./Pages/AddCouponsPage/AddCouponsPage";
 import AllCouponsPage from "./Pages/AllCouponsPage/AllCouponsPage";
 import EditCoupons from "./Components/EditCoupons/EditCoupons";
+import AddDoctorCategoryPage from "./Pages/AddDoctorCategoryPage/AddDoctorCategoryPage";
+import AllDoctorCategoryPage from "./Pages/AllDoctorCategoryPage/AllDoctorCategoryPage";
+import DoctorCategoryDetailsPage from "./Pages/DoctorCategoryDetailsPage/DoctorCategoryDetailsPage";
 
 function App() {
   const {
@@ -51,7 +54,7 @@ function App() {
     editManufacturerForm,
     editCouponForm,
   } = useContext(AppContext);
-  
+
   return (
     <div className="App flex">
       <BrowserRouter>
@@ -217,6 +220,18 @@ function App() {
             <Route
               path="/all-coupons"
               element={<AdminRoute element={AllCouponsPage} />}
+            />
+            <Route
+              path="/add-doctor-category"
+              element={<AdminRoute element={AddDoctorCategoryPage} />}
+            />
+            <Route
+              path="/all-doctor-category"
+              element={<AdminRoute element={AllDoctorCategoryPage} />}
+            />
+            <Route
+              path="/all-doctor-category/:id"
+              element={<AdminRoute element={DoctorCategoryDetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
