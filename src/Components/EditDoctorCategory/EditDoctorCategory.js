@@ -1,14 +1,13 @@
-import React, { useState, useRef } from "react";
-import JoditEditor from "jodit-react";
 import axios from "axios";
+import JoditEditor from "jodit-react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddDoctorCategory = () => {
+const EditDoctorCategory = () => {
   const [doctorData, setDoctorData] = useState({
-    specialtyName: "",
+    categoryName: "",
     image: null,
-    banner: null,
     FAQ: [
       {
         title: "",
@@ -18,36 +17,9 @@ const AddDoctorCategory = () => {
     sortDescription: "",
     longDescription: "",
   });
-
   const editor = useRef(null);
-
   const navigate = useNavigate();
-
-  // Handle input changes for text fields
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDoctorData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Handle image upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setDoctorData((prev) => ({
-      ...prev,
-      image: file,
-    }));
-  };
-
-  const handleBannerChange = (e) => {
-    const file = e.target.files[0];
-    setDoctorData((prev) => ({
-      ...prev,
-      banner: file,
-    }));
-  };
+  const { id } = useParams();
 
   // Add a new FAQ entry
   const addFAQ = () => {
@@ -66,6 +38,14 @@ const AddDoctorCategory = () => {
     }));
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDoctorData({
+      ...doctorData,
+      [name]: value,
+    });
+  };
+
   // Handle FAQ change
   const handleFAQChange = (index, e) => {
     const { name, value } = e.target;
@@ -78,13 +58,68 @@ const AddDoctorCategory = () => {
     }));
   };
 
-  // Submit form data to the API
+  // Handle image upload
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setDoctorData((prev) => ({
+      ...prev,
+      image: file,
+    }));
+  };
+
+  // Remove existing image
+  const handleRemoveImage = () => {
+    setDoctorData((prev) => ({
+      ...prev,
+      image: null,
+    }));
+  };
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.assetorix.com/ah/api/v1/dc/user/category/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            id: localStorage.getItem("id"),
+          },
+        }
+      );
+      console.log("All category details", response.data.data);
+      const doctor = response.data.data;
+      setDoctorData({
+        specialtyName: doctor.specialtyName,
+        image: doctor.image, // Assume this is a URL
+        FAQ: doctor.FAQ,
+        sortDescription: doctor.sortDescription,
+        longDescription: doctor.longDescription,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://api.assetorix.com/ah/api/v1/dc/admin/category",
-        doctorData,
+      const formData = new FormData();
+      formData.append("categoryName", doctorData.categoryName);
+      formData.append("sortDescription", doctorData.sortDescription);
+      formData.append("longDescription", doctorData.longDescription);
+      formData.append("image", doctorData.image); // Append the image file
+      doctorData.FAQ.forEach((faq, index) => {
+        formData.append(`FAQ[${index}][title]`, faq.title);
+        formData.append(`FAQ[${index}][value]`, faq.value);
+      });
+
+      const response = await axios.patch(
+        `https://api.assetorix.com/ah/api/v1/dc/admin/category/${id}`,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -93,15 +128,10 @@ const AddDoctorCategory = () => {
           },
         }
       );
-
-      if (response.status === 200) {
-        toast.success("Doctor category added successfully!");
-        navigate("/all-doctor-category");
-        // Reset form after successful submission if needed
-      }
+      toast.success("Updated Successfully");
+      navigate("/all-doctor-category");
     } catch (error) {
-      console.error("Error uploading data:", error);
-      toast.error("Error uploading data, please try again.");
+      console.log(error);
     }
   };
 
@@ -110,7 +140,7 @@ const AddDoctorCategory = () => {
       <div className="p-5 sm:w-[60vw] w-[100%] mx-auto">
         <div className="flex flex-col gap-5">
           <p className="font-bold text-center text-2xl">
-            Add Doctor's category
+            Edit Doctor's category
           </p>
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {/* Speciality Name */}
@@ -119,8 +149,8 @@ const AddDoctorCategory = () => {
                 Speciality Name
               </label>
               <input
-                name="specialtyName"
-                value={doctorData.specialtyName}
+                name="categoryName"
+                value={doctorData.categoryName}
                 onChange={handleChange}
                 type="text"
                 placeholder="Enter name here"
@@ -148,25 +178,29 @@ const AddDoctorCategory = () => {
               <label className="px-3 font-semibold text-gray-400">
                 Upload Image
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="p-3 border rounded-xl focus:outline-none"
-              />
-            </div>
-
-            {/* banner Upload */}
-            <div className="flex flex-col gap-2">
-              <label className="px-3 font-semibold text-gray-400">
-                Upload Banner
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleBannerChange}
-                className="p-3 border rounded-xl focus:outline-none"
-              />
+              {typeof doctorData.image === "string" ? (
+                <div className="flex flex-col gap-3">
+                  <img
+                    src={doctorData.image} // Use the image URL directly
+                    alt="Uploaded"
+                    className="w-24 h-24 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="bg-[#da5151] hover:bg-[#dd3e3e] text-white px-3 py-1 rounded"
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              ) : (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="p-3 border rounded-xl focus:outline-none"
+                />
+              )}
             </div>
 
             {/* FAQ Section */}
@@ -244,4 +278,4 @@ const AddDoctorCategory = () => {
   );
 };
 
-export default AddDoctorCategory;
+export default EditDoctorCategory;

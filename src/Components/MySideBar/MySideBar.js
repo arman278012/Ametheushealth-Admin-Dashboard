@@ -466,7 +466,10 @@ const MySideBar = () => {
                   >
                     Add Doctor's category
                   </NavLink>
-                  <a href="#" className="hover:bg-gray-700 px-4 py-2">
+                  <a
+                    href="/all-doctor"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
                     All Doctors
                   </a>
                 </div>

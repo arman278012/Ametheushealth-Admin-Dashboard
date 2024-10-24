@@ -1,13 +1,13 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "./Context/ContextProvider";
 import ProductDetailsPage from "./Pages/ProductDetailsPage/ProductDetailsPage";
 import AddProductsPage from "./Pages/AddProductsPage/AddProductsPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import AddCategoryPage from "./Pages/AddCategoryPage/AddCategoryPage";
 import AllCategoriesPage from "./Pages/AllCategoriesPage/AllCategoriesPage";
 import CategoryDataDetailsPage from "./Pages/CategoryDataDetailsPage/CategoryDataDetailsPage";
-import { useContext } from "react";
-import { AppContext } from "./Context/ContextProvider";
 import EditCategoryForm from "./Components/EditCategoryForm/EditCategoryForm";
 import CategorySubDetailsPage from "./Pages/CategorySubDetailsPage/CategorySubDetailsPage";
 import AddGenericPage from "./Pages/AddGenericPage/AddGenericPage";
@@ -46,6 +46,9 @@ import EditCoupons from "./Components/EditCoupons/EditCoupons";
 import AddDoctorCategoryPage from "./Pages/AddDoctorCategoryPage/AddDoctorCategoryPage";
 import AllDoctorCategoryPage from "./Pages/AllDoctorCategoryPage/AllDoctorCategoryPage";
 import DoctorCategoryDetailsPage from "./Pages/DoctorCategoryDetailsPage/DoctorCategoryDetailsPage";
+import EditDoctorCategoryPage from "./Pages/EditDoctorCategoryPage/EditDoctorCategoryPage";
+import GetAllDoctorsPage from "./Pages/GetAllDoctorsPage/GetAllDoctorsPage";
+import DoctorDetailsPage from "./Pages/DoctorDetailsPage/DoctorDetailsPage";
 
 function App() {
   const {
@@ -232,6 +235,18 @@ function App() {
             <Route
               path="/all-doctor-category/:id"
               element={<AdminRoute element={DoctorCategoryDetailsPage} />}
+            />
+            <Route
+              path="/all-doctor-category/edit/:id"
+              element={<AdminRoute element={EditDoctorCategoryPage} />}
+            />
+            <Route
+              path="/all-doctor"
+              element={<AdminRoute element={GetAllDoctorsPage} />}
+            />
+            <Route
+              path="/all-doctor/:id"
+              element={<AdminRoute element={DoctorDetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import {
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowRight,
@@ -9,101 +8,108 @@ import {
 } from "react-icons/md";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import { FaUserDoctor } from "react-icons/fa6";
 
-const AllDoctorCategory = () => {
+const GetAllDoctors = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState([]);
-  const [sortBy, setSortBy] = useState("createdAt");
-  const [sortOrder, setSortOrder] = useState("DESC");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterByGender, setFilterByGender] = useState("");
+  const [filterByVisitingMode, setFilterByVisitingMode] = useState("");
+  const [filterBySpeciality, setFilterBySpeciality] = useState("");
+  const [specialtyData, setSpecialtyData] = useState([]); // State for specialties
+  const [filterByLanguage, setFilterByLanguage] = useState("");
 
-  // Getting the searchQuery from URL query params
   const searchQuery = searchParams.get("search") || "";
 
-  // Get pagination and filter settings from URL if they exist
-  useEffect(() => {
-    const page = searchParams.get("page");
-    const limit = searchParams.get("limit");
-    const sortByParam = searchParams.get("sortBy");
-    const sortOrderParam = searchParams.get("sortOrder");
+  const navigate = useNavigate();
 
-    if (page) setCurrentPage(Number(page));
-    if (limit) setPageLimit(Number(limit));
-    if (sortByParam) setSortBy(sortByParam);
-    if (sortOrderParam) setSortOrder(sortOrderParam);
-  }, [searchParams]);
-
-  const toggleTopBar = () => {
-    setIsTopBarOpen(!isTopBarOpen);
-  };
-
-  const deleteDoctorCategory = async () => {
+  const getDoctorsData = async () => {
     try {
-      const response = await axios.delete(
-        `https://api.assetorix.com/ah/api/v1/dc/admin/category/delete/${deleteId}`,
+      const params = {};
+      // Add filters and pagination to the params object
+      if (filterByGender) params.gender = filterByGender;
+      if (filterByVisitingMode) params.visitingMode = filterByVisitingMode;
+      if (filterByLanguage) params.language = filterByLanguage;
+      if (filterBySpeciality) params.speciality = filterBySpeciality;
+      if (searchQuery) params.name = searchQuery;
+
+      // Pagination parameters
+      params.page = currentPage; // current page
+      params.limit = pageLimit || 10; // limit of results per page (default 10)
+
+      const response = await axios.get(
+        "https://api.assetorix.com/ah/api/v1/dc/admin/getdoctors",
         {
+          params, // Pass the dynamically built params object
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+            authorization: `Bearer ${localStorage.getItem("authorization")}`,
             id: localStorage.getItem("id"),
           },
         }
       );
-      toast.success("Deleted Successfully");
-      allDoctorCategories();
+      console.log(response.data);
+      setCategories(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const allDoctorCategories = async () => {
+  // Fetch specialties from API
+  const getSpeciality = async () => {
     try {
       const response = await axios.get(
         `https://api.assetorix.com/ah/api/v1/dc/user/category`,
         {
-          params: {
-            specialtyName: searchQuery,
-            sortBy,
-            sortOrder,
-            page: currentPage,
-            limit: pageLimit, // Add the limit parameter for pagination
-          },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
             id: localStorage.getItem("id"),
           },
         }
       );
-      setCategories(response.data);
-      console.log("Doctor Categories", response.data);
+      setSpecialtyData(response.data); // Assuming response.data contains the specialties
+      console.log(response.data);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
-  useEffect(() => {
-    allDoctorCategories();
-  }, [searchQuery, sortBy, sortOrder, currentPage, pageLimit]);
+  //delete doctor
+  const deleteDoctor = async () => {
+    try {
+      const response = await axios.delete(
+        `https://api.assetorix.com/ah/api/v1/dc/user/doctors/${deleteId}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() => {
-    setSearchParams({
-      search: searchQuery,
-      sortBy,
-      sortOrder,
-      page: currentPage,
-      limit: pageLimit,
-    });
-  }, [searchQuery, sortBy, sortOrder, currentPage, pageLimit]);
-
-  // Function to handle the search query
   const handleSearch = (e) => {
     const value = e.target.value;
     // Update the search query in the URL
     setSearchParams({ search: value });
+  };
+
+  useEffect(() => {
+    getDoctorsData();
+    getSpeciality();
+  }, [
+    filterByGender,
+    filterByLanguage,
+    filterBySpeciality,
+    filterByVisitingMode,
+    searchQuery,
+    pageLimit,
+    currentPage,
+  ]);
+
+  const toggleTopBar = () => {
+    setIsTopBarOpen(!isTopBarOpen);
   };
 
   const options = {
@@ -123,6 +129,13 @@ const AllDoctorCategory = () => {
       ...options,
     });
   };
+
+  console.log(
+    filterByGender,
+    filterBySpeciality,
+    filterByVisitingMode,
+    filterByLanguage
+  );
 
   return (
     <div className="flex flex-col p-5">
@@ -148,6 +161,7 @@ const AllDoctorCategory = () => {
           </div>
         </div>
       </div>
+
       <div className="bg-gray-200 sm:w-[100%] md:w-[100%] w-[100%]">
         <div className="flex justify-between mr-5">
           <div className="flex gap-3 p-5">
@@ -155,7 +169,7 @@ const AllDoctorCategory = () => {
               onClick={() => navigate("/add-coupons")}
               className="bg-[#13a3bc] text-white font-semibold text-sm p-2 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out"
             >
-              Add Category
+              Add Doctor
             </button>
           </div>
 
@@ -178,7 +192,7 @@ const AllDoctorCategory = () => {
         <div className="flex sm:flex-row flex-col justify-end px-5 py-2">
           <div className="right flex gap-2 sm:mt-0 mt-5">
             <input
-              placeholder="search categories"
+              placeholder="search doctors"
               type="text"
               value={searchQuery}
               onChange={handleSearch}
@@ -186,26 +200,61 @@ const AllDoctorCategory = () => {
             />
           </div>
         </div>
+
+        {/* filterations */}
+
         <div className="all-filters px-5 py-2 flex sm:flex-row flex-col justify-center items-center sm:justify-normal gap-3">
           <select
             className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            value={filterByGender}
+            onChange={(e) => setFilterByGender(e.target.value)}
           >
-            <option value="createdAt">Sort by Date</option>
-            <option value="specialtyName">Sort by Name</option>
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="others">Others</option>
+          </select>
+
+          <select
+            className="px-3 py-1 w-[150px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
+            value={filterByVisitingMode}
+            onChange={(e) => setFilterByVisitingMode(e.target.value)}
+          >
+            <option value="">Visiting Mode</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+            <option value="both">Both</option>
           </select>
 
           <select
             className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white"
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
+            value={filterByLanguage}
+            onChange={(e) => setFilterByLanguage(e.target.value)}
           >
-            <option value="ASC">Ascending</option>
-            <option value="DESC">Descending</option>
+            <option value="">Language</option>
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Russian">French</option>
+            <option value="French">French</option>
+          </select>
+
+          <select
+            className="px-3 py-1 w-[200px] focus:outline-none rounded-md bg-white sm:block md:block hidden"
+            value={filterBySpeciality} // Bind selected value to state
+            onChange={(e) => setFilterBySpeciality(e.target.value)} // Handle change
+          >
+            <option value="">Select Specialty</option>
+            {specialtyData?.data?.map((specialty) => (
+              <option key={specialty.id} value={specialty.name}>
+                {specialty.specialtyName}
+              </option>
+            ))}
           </select>
         </div>
 
+        {/* Pagination section */}
         <div className="flex px-5 py-2 gap-3 justify-end">
           <div>
             <p>{categories?.totalCount || 0} results</p>
@@ -262,19 +311,22 @@ const AllDoctorCategory = () => {
           <Table>
             <Thead>
               <Tr>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[2%]">
+                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[5%]">
                   <input type="checkbox" className="form-checkbox" />
                 </Th>
-                <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[10%]">
-                  Id
+                <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[15%]">
+                  Avatar
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
-                  Specialty Name
+                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[25%]">
+                  Name
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[20%]">
-                  Sort Description
+                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[10%]">
+                  Gender
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
+                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[30%]">
+                  Hospital Name
+                </Th>
+                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[15%]">
                   Created At
                 </Th>
               </Tr>
@@ -285,7 +337,20 @@ const AllDoctorCategory = () => {
                   <Td className="py-2 px-4 border-b border-gray-300">
                     <input type="checkbox" className="form-checkbox" />
                   </Td>
+                  <Td className="py-2 px-4 border-b border-gray-300 l">
+                    {order.avatar ? (
+                      <img
+                        src={order.avatar}
+                        className="h-[60px] w-[60px] rounded-full"
+                      />
+                    ) : (
+                      <div className="">
+                        <FaUserDoctor className="h-[50px] w-[50px] rounded-full" />
+                      </div>
+                    )}
+                  </Td>
                   <Td className="py-2 px-4 border-b text-[14px] border-gray-300">
+                    <p className="font-bold capitalize">{order.name}</p>
                     {order._id}
                     <div className="flex gap-2">
                       <button
@@ -314,10 +379,10 @@ const AllDoctorCategory = () => {
                     </div>
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                    {order.specialtyName}
+                    {order.gender}
                   </Td>
-                  <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                    {order.sortDescription}
+                  <Td className="py-2 px-4 border-b border-gray-300 text-[14px] text-center">
+                    {order.hospitalName}
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
                     {convertToIST(order.createdAt)}
@@ -338,7 +403,7 @@ const AllDoctorCategory = () => {
             <div className="flex justify-end">
               <button
                 onClick={() => {
-                  deleteDoctorCategory(deleteId);
+                  deleteDoctor(deleteId);
                   setDeleteAlert(false);
                 }}
                 className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
@@ -359,4 +424,4 @@ const AllDoctorCategory = () => {
   );
 };
 
-export default AllDoctorCategory;
+export default GetAllDoctors;

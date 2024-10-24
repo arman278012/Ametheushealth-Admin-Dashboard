@@ -1401,8 +1401,8 @@ const EditProducts = () => {
                             </div>
                           </div>
 
-                          <div className="flex gap-5 justify-around">
-                            <div className="flex flex-col w-[105px]">
+                          <div className="flex justify-between">
+                            <div className="flex flex-col ">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
                                 Price
                               </label>
@@ -1411,11 +1411,11 @@ const EditProducts = () => {
                                 value={variant.price}
                                 type="number"
                                 placeholder="price"
-                                className="h-[35px] border px-2 focus:outline-none"
+                                className="h-[35px] w-[180px] border px-2 focus:outline-none"
                                 onChange={handleVariantChange}
                               />
                             </div>
-                            <div className="flex flex-col w-[105px]">
+                            {/* <div className="flex flex-col w-[105px]">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
                                 Sale price
                               </label>
@@ -1427,8 +1427,8 @@ const EditProducts = () => {
                                 className="h-[35px] border px-2 focus:outline-none"
                                 onChange={handleVariantChange}
                               />
-                            </div>
-                            <div className="flex flex-col w-[165px]">
+                            </div> */}
+                            <div className="flex flex-col ">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
                                 Stock Available
                               </label>
@@ -1436,7 +1436,7 @@ const EditProducts = () => {
                                 value={variant.isStockAvailable}
                                 onChange={handleVariantChange}
                                 name={`variants[${index}].isStockAvailable`}
-                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
+                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[200px]"
                               >
                                 <option value={false}>No</option>
                                 <option value={true}>Yes</option>

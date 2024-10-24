@@ -1250,8 +1250,8 @@ const AddProduct = () => {
                                       </div>
                                     </div>
 
-                                    <div className="flex gap-5">
-                                      <div className="flex flex-col w-[165px]">
+                                    <div className="flex gap-10">
+                                      <div className="flex flex-col ">
                                         <label className="font-semibold px-2 opacity-65">
                                           Price
                                         </label>
@@ -1259,10 +1259,10 @@ const AddProduct = () => {
                                           name={`variants[${index}].price`}
                                           type="number"
                                           placeholder="price"
-                                          className="h-[35px] border px-2 focus:outline-none"
+                                          className="h-[35px] border px-2 focus:outline-none w-[220px]"
                                         />
                                       </div>
-                                      <div className="flex flex-col w-[165px]">
+                                      {/* <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Sale price
                                         </label>
@@ -1272,7 +1272,7 @@ const AddProduct = () => {
                                           placeholder="Sale price"
                                           className="h-[35px] border px-2 focus:outline-none "
                                         />
-                                      </div>
+                                      </div> */}
                                       <div className="flex flex-col w-[165px]">
                                         <label className="font-semibold px-2 opacity-65">
                                           Stock Available
@@ -1280,7 +1280,7 @@ const AddProduct = () => {
                                         <Field
                                           as="select"
                                           name={`variants[${index}].isStockAvailable`}
-                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[155px]"
+                                          className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[220px]"
                                         >
                                           <option value={true}>Yes</option>
                                           <option value={false}>No</option>
