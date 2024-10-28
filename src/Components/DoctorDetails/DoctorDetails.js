@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { GrFormPrevious } from "react-icons/gr";
 import { MdNavigateNext, MdOutlineAvTimer } from "react-icons/md";
+import { FcRating } from "react-icons/fc";
 
 const DoctorDetails = () => {
   const [doctorsData, setDoctorsData] = useState([]);
@@ -24,6 +25,7 @@ const DoctorDetails = () => {
   const totalSlots = selectedDate?.offlineSlots?.length;
   const [currentOnlineIndex, setCurrentOnlineIndex] = useState(0);
   const [currentDateIndex, setCurrentDateIndex] = useState(0); // Track the current slide index
+  const [showAllRatings, setShowAllRatings] = useState(false);
   const datesToShow = 3;
   const onlineSlotsPerView = 3; // Number of slots to show in one view
   const totalOnlineSlots = selectedDate?.onlineSlots?.length;
@@ -106,6 +108,16 @@ const DoctorDetails = () => {
     }
   };
 
+  // Function to toggle showing all ratings
+  const handleToggleRatings = () => {
+    setShowAllRatings((prevState) => !prevState);
+  };
+
+  // Limit to 5 ratings if showAllRatings is false
+  const displayedRatings = showAllRatings
+    ? doctorsData?.ratings
+    : doctorsData?.ratings?.slice(0, 5);
+
   return (
     <div className="p-10">
       <div className="flex gap-10">
@@ -126,7 +138,9 @@ const DoctorDetails = () => {
               <p className="font-light -translate-y-2">
                 {doctorsData?.userData?.email}
               </p>
-              <p className="font-semibold">2+ years experience</p>
+              <p className="font-semibold">
+                {doctorsData?.experience}+ years experience
+              </p>
               <div className="flex items-center gap-2">
                 <GiGraduateCap />
                 {doctorsData?.qualifications?.map((qualification, index) =>
@@ -433,25 +447,29 @@ const DoctorDetails = () => {
         {doctorsData?.years_of_experience?.map((experience, index) => (
           <div key={index} className="">
             <div>
-              <p className="font-semibold text-xl text-red-600">
+              <p className="font-semibold text-xl">
                 {experience?.organizationName},<span> </span>
                 {experience?.organizationLocation}
               </p>
             </div>
-            <div className="flex gap-10">
-              <p className="font-semibold">{experience?.jobTitle}</p>
-              <p className="font-semibold">{experience?.employmentType}</p>
+            <div className="flex gap-5">
+              <p className="text-sm font-semibold">{experience?.jobTitle}</p>
+              <p>-</p>
+              <p className="text-sm font-semibold">
+                {experience?.employmentType}
+              </p>
             </div>
 
             <div className="start-end">
-              <div className="flex gap-10">
-                <p className="font-semibold">
+              <div className="flex gap-5">
+                <p className="text-sm font-semibold">
                   {experience?.startDate?.month} {experience?.startDate?.year}
                 </p>
+                <p>-</p>
                 {experience?.isPresent ? (
-                  <p className="font-semibold">Present</p>
+                  <p className="text-sm font-semibold">Present</p>
                 ) : (
-                  <p className="font-semibold">
+                  <p className="text-sm font-semibold">
                     {experience?.endDate?.month} {experience?.endDate?.year}
                   </p>
                 )}
@@ -490,6 +508,35 @@ const DoctorDetails = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Ratings */}
+      <div className="years-of-experience-and-workexperience mt-5 flex flex-col gap-2">
+        <div className="flex justify-start items-center gap-2">
+          <FcRating className="text-2xl" />
+          <p className="font-bold text-2xl">Ratings</p>
+        </div>
+
+        {displayedRatings?.map((rating, index) => (
+          <div key={index} className="flex gap-5">
+            <div className="bg-green-500 px-2 py-1">
+              <FaStar className="text-white" />
+            </div>
+            <div>
+              <p className="font-light">{rating?.feedback}</p>
+            </div>
+          </div>
+        ))}
+
+        {/* Show the toggle button only if there are more than 5 ratings */}
+        {doctorsData?.ratings?.length > 5 && (
+          <button
+            onClick={handleToggleRatings}
+            className="text-blue-500 mt-3 self-start"
+          >
+            {showAllRatings ? "Show Less" : "Show All Ratings"}
+          </button>
+        )}
       </div>
     </div>
   );

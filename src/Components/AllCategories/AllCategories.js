@@ -35,13 +35,11 @@ const AllCategories = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [expanded, setExpanded] = useState({});
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [isTopBaropen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState("10");
-  const [allData, setAllData] = useState([]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -93,15 +91,12 @@ const AllCategories = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `https://api.assetorix.com/ah/api/v1/category/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authorization")}`,
-            id: localStorage.getItem("id"),
-          },
-        }
-      );
+      await axios.delete(`https://api.assetorix.com/ah/api/v1/category/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+          id: localStorage.getItem("id"),
+        },
+      });
       allCategoryData();
       dispatch(
         getCategoryData({ page: currentPage, searchQuery, allCategoryData })
@@ -120,21 +115,19 @@ const AllCategories = () => {
     setIsTopBarOpen(!isTopBaropen);
   };
 
- 
-
   //for checked
 
   const [checkedItems, setCheckedItems] = useState({});
   const [editAllCategoriesForm, SetEditAllCategoriesForm] = useState(false);
   // const [deleteAlert, setDeleteAlert] = useState(false);
   // const [selectedId, setSelectedId] = useState(null);
-  
+
   // Function to handle select all checkboxes
   const handleSelectAll = (e) => {
     const checked = e.target.checked; // Get the checked state
     const newCheckedItems = {};
 
-    allCategoryData.data.forEach(item => {
+    allCategoryData.data.forEach((item) => {
       newCheckedItems[item._id] = checked; // Set all items to checked/unchecked
     });
 
@@ -270,7 +263,11 @@ const AllCategories = () => {
           <Thead>
             <Tr className=" bg-gray-200 w-[100%]">
               <Th className="py-2 px-4 border-b w-[5%]">
-                <input type="checkbox" checked={Object.values(checkedItems).every(Boolean)}  onChange={handleSelectAll} />
+                <input
+                  type="checkbox"
+                  checked={Object.values(checkedItems).every(Boolean)}
+                  onChange={handleSelectAll}
+                />
               </Th>
               <Th className="py-2 px-4 border-b text-start sm:w-[10%]">
                 Image
@@ -318,8 +315,11 @@ const AllCategories = () => {
                     onClick={() => dispatch(storeMyId(item._id))}
                   >
                     <Td className="py-2 px-4 border-b text-center">
-                      <input type="checkbox"  checked={checkedItems[item._id] || false} 
-                    onChange={() => handleCheckboxChange(item._id)} />
+                      <input
+                        type="checkbox"
+                        checked={checkedItems[item._id] || false}
+                        onChange={() => handleCheckboxChange(item._id)}
+                      />
                     </Td>
                     <Td className="py-2 px-4 border-b text-center">
                       <img

@@ -1,14 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 
 const DoctorCategoryDetails = () => {
   const [myData, setMyData] = useState();
   const [openFaq, setOpenFaq] = useState(null);
   const { id } = useParams();
   console.log(id);
+
+  const navigate = useNavigate();
 
   const allData = async () => {
     try {
@@ -60,7 +63,7 @@ const DoctorCategoryDetails = () => {
       {/* Image */}
       <div className="flex justify-center mb-6">
         <img
-          src={myData?.image}
+          src={myData?.image ? myData.image : "https://via.placeholder.com/150"} // Dummy placeholder image
           alt="Doctor's Category Image"
           className="w-48 h-48 rounded-full object-cover shadow-lg"
         />
@@ -124,6 +127,47 @@ const DoctorCategoryDetails = () => {
       <div className="mb-4">
         <h3 className="text-xl font-semibold text-gray-800">Updated At</h3>
         <p className="text-gray-600">{convertToIST(myData?.updatedAt)}</p>
+      </div>
+
+      {/* Docotor's Data */}
+      <div>
+        <Table className="min-w-full bg-white border border-gray-300 category-table">
+          <Thead>
+            <Tr className=" bg-gray-200 w-[100%]">
+              <Th className="w-[10%]">Index</Th>
+              <Th className="w-[40%]">Id</Th>
+              <Th className="w-[20%]">Name</Th>
+              <Th className="w-[30%]">Hospital</Th>
+            </Tr>
+          </Thead>
+
+          <Tbody>
+            {myData?.doctors?.map((doctor, index) => (
+              <Tr className="border-t" key={index}>
+                <Td className="py-2 px-4 border-b text-center">1</Td>
+                <Td className="py-2 px-4 border-b text-center">
+                  {doctor?.doctorId}
+                  <div className="flex gap-2 justify-center">
+                    <button
+                      className="text-[#2271b1]"
+                      onClick={() =>
+                        navigate(`/all-doctor/${doctor?.doctorId}`)
+                      }
+                    >
+                      View
+                    </button>
+                  </div>
+                </Td>
+                <Td className="py-2 px-4 border-b text-center">
+                  {doctor?.name}
+                </Td>
+                <Td className="py-2 px-4 border-b text-center">
+                  {doctor?.hospitalName}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
       </div>
     </div>
   );

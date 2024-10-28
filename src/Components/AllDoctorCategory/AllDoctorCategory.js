@@ -84,6 +84,7 @@ const AllDoctorCategory = () => {
       console.log(error.message);
     }
   };
+  
 
   useEffect(() => {
     allDoctorCategories();

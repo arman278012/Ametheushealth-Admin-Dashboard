@@ -49,6 +49,7 @@ import DoctorCategoryDetailsPage from "./Pages/DoctorCategoryDetailsPage/DoctorC
 import EditDoctorCategoryPage from "./Pages/EditDoctorCategoryPage/EditDoctorCategoryPage";
 import GetAllDoctorsPage from "./Pages/GetAllDoctorsPage/GetAllDoctorsPage";
 import DoctorDetailsPage from "./Pages/DoctorDetailsPage/DoctorDetailsPage";
+import OnboardingDoctorsPage from "./Pages/OnboarinngDoctorsPage/OnboarinngDoctorsPage";
 
 function App() {
   const {
@@ -247,6 +248,10 @@ function App() {
             <Route
               path="/all-doctor/:id"
               element={<AdminRoute element={DoctorDetailsPage} />}
+            />
+            <Route
+              path="/all-onboarding-doctors"
+              element={<AdminRoute element={OnboardingDoctorsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

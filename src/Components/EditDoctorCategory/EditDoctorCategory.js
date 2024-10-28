@@ -89,7 +89,7 @@ const EditDoctorCategory = () => {
       console.log("All category details", response.data.data);
       const doctor = response.data.data;
       setDoctorData({
-        specialtyName: doctor.specialtyName,
+        categoryName: doctor.categoryName,
         image: doctor.image, // Assume this is a URL
         FAQ: doctor.FAQ,
         sortDescription: doctor.sortDescription,

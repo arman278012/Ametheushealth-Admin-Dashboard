@@ -10,7 +10,6 @@ import { NavLink } from "react-router-dom";
 import { IoMdContact } from "react-icons/io";
 import { MdDescription } from "react-icons/md";
 import { AiFillProduct } from "react-icons/ai";
-import { FcGenericSortingAsc } from "react-icons/fc";
 import { TbLogs } from "react-icons/tb";
 import { RiCoupon2Fill } from "react-icons/ri";
 import { IoIosLogOut } from "react-icons/io";
@@ -466,11 +465,14 @@ const MySideBar = () => {
                   >
                     Add Doctor's category
                   </NavLink>
+                  <a href="/all-doctor" className="hover:bg-gray-700 px-4 py-2">
+                    All Doctors
+                  </a>
                   <a
-                    href="/all-doctor"
+                    href="/all-doctor-category"
                     className="hover:bg-gray-700 px-4 py-2"
                   >
-                    All Doctors
+                    All Categories
                   </a>
                 </div>
               )}
