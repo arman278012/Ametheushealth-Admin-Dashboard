@@ -231,13 +231,27 @@ const GetAllDoctors = () => {
             value={filterByLanguage}
             onChange={(e) => setFilterByLanguage(e.target.value)}
           >
-            <option value="">Language</option>
-            <option value="English">English</option>
-            <option value="Hindi">Hindi</option>
-            <option value="Arabic">Arabic</option>
-            <option value="Chinese">Chinese</option>
-            <option value="Russian">French</option>
-            <option value="French">French</option>
+            <option key="default" value="">
+              Language
+            </option>
+            <option key="english" value="English">
+              English
+            </option>
+            <option key="hindi" value="Hindi">
+              Hindi
+            </option>
+            <option key="arabic" value="Arabic">
+              Arabic
+            </option>
+            <option key="chinese" value="Chinese">
+              Chinese
+            </option>
+            <option key="russian" value="Russian">
+              Russian
+            </option>
+            <option key="french" value="French">
+              French
+            </option>
           </select>
 
           <select

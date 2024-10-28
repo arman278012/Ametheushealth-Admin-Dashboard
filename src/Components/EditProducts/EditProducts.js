@@ -828,15 +828,15 @@ const EditProducts = () => {
                     <div className="flex gap-5">
                       <div className="flex flex-col w-1/2">
                         <label className="font-semibold px-2 opacity-65 text-[12px]">
-                          Purchase Note
+                          Origin Country
                         </label>
                         <input
                           type="text"
-                          placeholder="Purchase Note"
-                          className="h-[35px] border px-2 border px-2 focus:outline-none"
+                          placeholder="Origin Country"
+                          className="h-[35px] border px-2 focus:outline-none"
                           onChange={handleChange}
-                          value={productValues.purchaseNote}
-                          name="purchaseNote"
+                          value={productValues.originCountry}
+                          name="originCountry"
                         />
                       </div>
 
@@ -863,35 +863,7 @@ const EditProducts = () => {
                       </div>
                     </div>
 
-                    <div className="flex gap-5">
-                      <div className="flex flex-col w-1/2">
-                        <label className="font-semibold px-2 opacity-65 text-[12px]">
-                          Origin Country
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Origin Country"
-                          className="h-[35px] border px-2 focus:outline-none"
-                          onChange={handleChange}
-                          value={productValues.originCountry}
-                          name="originCountry"
-                        />
-                      </div>
-
-                      <div className="flex flex-col w-1/2">
-                        <label className="font-semibold px-2 opacity-65 text-[12px]">
-                          Position
-                        </label>
-                        <input
-                          type="number"
-                          placeholder="Position"
-                          className="h-[35px] border px-2 focus:outline-none"
-                          onChange={handleChange}
-                          value={productValues.position}
-                          name="position"
-                        />
-                      </div>
-                    </div>
+                    <div className="flex gap-5"></div>
                     <div className="flex flex-col w-full">
                       <label className="font-semibold px-2 opacity-65 text-[12px]">
                         Manufacturer Name
@@ -899,11 +871,149 @@ const EditProducts = () => {
                       <input
                         type="text"
                         placeholder="manufacturer"
-                        className="h-[35px] border px-2 border px-2 focus:outline-none"
+                        className="h-[35px] border px-2 focus:outline-none"
                         onChange={handleChange}
                         name="manufacturer"
                         value={productValues.manufacturer}
                       />
+                    </div>
+
+                    {productValues.variants.map((variant, index) => (
+                      <div key={index} className="grid grid-cols-4">
+                        <div className="flex flex-col ">
+                          <label className="font-semibold px-2 opacity-65 text-[12px]">
+                            Price
+                          </label>
+                          <input
+                            name={`variants[${index}].price`}
+                            value={variant.price}
+                            type="number"
+                            placeholder="price"
+                            className="h-[35px] w-[80px] border px-2 focus:outline-none"
+                            onChange={handleVariantChange}
+                          />
+                        </div>
+                        <div className="flex flex-col ">
+                          <label className="font-semibold px-2 opacity-65 text-[12px]">
+                            Stock?
+                          </label>
+                          <select
+                            value={variant.isStockAvailable}
+                            onChange={handleVariantChange}
+                            name={`variants[${index}].isStockAvailable`}
+                            className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[100px]"
+                          >
+                            <option value={false}>No</option>
+                            <option value={true}>Yes</option>
+                          </select>
+                        </div>
+
+                        <div className="flex flex-col w-[100px]">
+                          <label className="font-semibold px-2 opacity-65 text-[12px]">
+                            Packsize
+                          </label>
+                          <input
+                            value={variant.packSize}
+                            name={`variants[${index}].packSize`}
+                            onChange={handleVariantChange}
+                            type="text"
+                            placeholder="packSize"
+                            className="h-[35px] border px-2"
+                          />
+                        </div>
+                        <div className="flex flex-col w-[100px]">
+                          <label className="font-semibold px-2 opacity-65 text-[12px]">
+                            Margin India
+                          </label>
+                          <input
+                            name={`variants[${index}].marginIndia`}
+                            value={variant.marginIndia}
+                            type="number"
+                            placeholder="Margin"
+                            className="h-[35px] border px-2 focus:outline-none"
+                            onChange={handleVariantChange}
+                          />
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="grid grid-cols-2 space-y-2">
+                      <div className="flex flex-col gap-2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          RX medicine
+                        </label>
+                        <div className="relative inline-block text-left">
+                          <select
+                            name="isPrescriptionRequired"
+                            value={productValues.isPrescriptionRequired}
+                            onChange={(event) => {
+                              const value = event.target.value === "true";
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isPrescriptionRequired: value,
+                              }));
+                            }}
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                          >
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-start gap-2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          Product Type?
+                        </label>
+                        <div className="relative inline-block text-left">
+                          <select
+                            name="productType"
+                            value={productValues.productType}
+                            onChange={(event) => {
+                              const value = event.target.value;
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                productType: value,
+                              }));
+                            }}
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                          >
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="OTC">OTC</option>
+                            <option value="FMHG">FMHG</option>
+                            <option value="FMCG">FMCG</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="font-semibold px-2 opacity-65 text-[12px]">
+                          Is Prescription Mandatory?
+                        </label>
+                        <div className="relative inline-block text-left">
+                          <select
+                            name="isVisible"
+                            value={productValues.isPrescriptionMandatory}
+                            onChange={(event) => {
+                              const value = event.target.value === "true";
+                              setProductValues((prevValues) => ({
+                                ...prevValues,
+                                isPrescriptionMandatory: value,
+                              }));
+                            }}
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
+                          >
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1083,18 +1193,19 @@ const EditProducts = () => {
                           </select>
                         </div>
                       </div>
-
                       <div className="flex flex-col gap-2">
-                        <label className="px-3 font-bold">RX medicine</label>
+                        <label className="px-3 font-bold">
+                          IsDiscontinued?
+                        </label>
                         <div className="relative inline-block text-left">
                           <select
-                            name="isPrescriptionRequired"
-                            value={productValues.isPrescriptionRequired}
+                            name="isDiscontinued"
+                            value={productValues.isDiscontinued}
                             onChange={(event) => {
                               const value = event.target.value === "true";
                               setProductValues((prevValues) => ({
                                 ...prevValues,
-                                isPrescriptionRequired: value,
+                                isDiscontinued: value,
                               }));
                             }}
                             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
@@ -1156,84 +1267,6 @@ const EditProducts = () => {
                             <option value="false">No</option>
                           </select>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-10">
-                      <div className="flex flex-col gap-2">
-                        <label className="px-3 font-bold">
-                          IsDiscontinued?
-                        </label>
-                        <div className="relative inline-block text-left">
-                          <select
-                            name="isDiscontinued"
-                            value={productValues.isDiscontinued}
-                            onChange={(event) => {
-                              const value = event.target.value === "true";
-                              setProductValues((prevValues) => ({
-                                ...prevValues,
-                                isDiscontinued: value,
-                              }));
-                            }}
-                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
-                          >
-                            <option value="" disabled>
-                              Select an option
-                            </option>
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col justify-start gap-2">
-                        <label className="px-3 font-bold">Product Type?</label>
-                        <div className="relative inline-block text-left">
-                          <select
-                            name="productType"
-                            value={productValues.productType}
-                            onChange={(event) => {
-                              const value = event.target.value;
-                              setProductValues((prevValues) => ({
-                                ...prevValues,
-                                productType: value,
-                              }));
-                            }}
-                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
-                          >
-                            <option value="" disabled>
-                              Select an option
-                            </option>
-                            <option value="OTC">OTC</option>
-                            <option value="FMHG">FMHG</option>
-                            <option value="FMCG">FMCG</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="px-3 font-bold">
-                        Is Prescription Mandatory?
-                      </label>
-                      <div className="relative inline-block text-left">
-                        <select
-                          name="isVisible"
-                          value={productValues.isPrescriptionMandatory}
-                          onChange={(event) => {
-                            const value = event.target.value === "true";
-                            setProductValues((prevValues) => ({
-                              ...prevValues,
-                              isPrescriptionMandatory: value,
-                            }));
-                          }}
-                          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm"
-                        >
-                          <option value="" disabled>
-                            Select an option
-                          </option>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
-                        </select>
                       </div>
                     </div>
                   </div>
@@ -1302,7 +1335,7 @@ const EditProducts = () => {
                         <div className="flex flex-col gap-5 mb-5">
                           <div className="flex gap-4 justify-around">
                             <div className="flex gap-5">
-                              <div className="flex flex-col w-[165px]">
+                              <div className="flex flex-col">
                                 <label className="font-semibold px-2 opacity-65 text-[12px]">
                                   SKU
                                 </label>
@@ -1315,21 +1348,8 @@ const EditProducts = () => {
                                   className="h-[35px] border px-2"
                                 />
                               </div>
-                              <div className="flex flex-col w-[100px]">
-                                <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                  Packsize
-                                </label>
-                                <input
-                                  value={variant.packSize}
-                                  name={`variants[${index}].packSize`}
-                                  onChange={handleVariantChange}
-                                  type="text"
-                                  placeholder="packSize"
-                                  className="h-[35px] border px-2"
-                                />
-                              </div>
 
-                              <div className="flex flex-col w-[165px]">
+                              <div className="flex flex-col">
                                 <label className="font-semibold px-2 opacity-65 text-[12px]">
                                   ID
                                 </label>
@@ -1354,19 +1374,6 @@ const EditProducts = () => {
                               <input
                                 name={`variants[${index}].margin`}
                                 value={variant.margin}
-                                type="number"
-                                placeholder="Margin"
-                                className="h-[35px] border px-2 focus:outline-none"
-                                onChange={handleVariantChange}
-                              />
-                            </div>
-                            <div className="flex flex-col w-[100px]">
-                              <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                Margin India
-                              </label>
-                              <input
-                                name={`variants[${index}].marginIndia`}
-                                value={variant.marginIndia}
                                 type="number"
                                 placeholder="Margin"
                                 className="h-[35px] border px-2 focus:outline-none"
@@ -1401,48 +1408,35 @@ const EditProducts = () => {
                             </div>
                           </div>
 
-                          <div className="flex justify-between">
-                            <div className="flex flex-col ">
+                          <div className="flex justify-around gap-5">
+                            <div className="flex flex-col">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                Price
+                                Purchase Note
                               </label>
                               <input
-                                name={`variants[${index}].price`}
-                                value={variant.price}
-                                type="number"
-                                placeholder="price"
-                                className="h-[35px] w-[180px] border px-2 focus:outline-none"
-                                onChange={handleVariantChange}
+                                type="text"
+                                placeholder="Purchase Note"
+                                className="h-[35px] border px-2 border focus:outline-none"
+                                onChange={handleChange}
+                                value={productValues.purchaseNote}
+                                name="purchaseNote"
                               />
                             </div>
-                            {/* <div className="flex flex-col w-[105px]">
+                            <div className="flex flex-col">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                Sale price
+                                Position
                               </label>
                               <input
-                                name={`variants[${index}].salePrice`}
-                                value={variant.salePrice}
                                 type="number"
-                                placeholder="Sale price"
+                                placeholder="Position"
                                 className="h-[35px] border px-2 focus:outline-none"
-                                onChange={handleVariantChange}
+                                onChange={handleChange}
+                                value={productValues.position}
+                                name="position"
                               />
-                            </div> */}
-                            <div className="flex flex-col ">
-                              <label className="font-semibold px-2 opacity-65 text-[12px]">
-                                Stock Available
-                              </label>
-                              <select
-                                value={variant.isStockAvailable}
-                                onChange={handleVariantChange}
-                                name={`variants[${index}].isStockAvailable`}
-                                className="bg-white text-gray-700 px-4 py-1 rounded-md shadow-sm h-[35px] w-[200px]"
-                              >
-                                <option value={false}>No</option>
-                                <option value={true}>Yes</option>
-                              </select>
                             </div>
                           </div>
+
                           <div className="flex gap-5 justify-around">
                             <div className="flex flex-col w-[125px]">
                               <label className="font-semibold px-2 opacity-65 text-[12px]">
