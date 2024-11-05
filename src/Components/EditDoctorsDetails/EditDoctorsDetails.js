@@ -123,6 +123,24 @@ const EditDoctorsDetails = () => {
                 <MdAssignmentAdd className="mt-1 text-sm" />
               </div>
               <div className="w-full h-[1px] bg-gray-300"></div>
+
+              {/* Experience */}
+              <div
+                className={`${
+                  activeSection === "experience"
+                    ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
+                    : " flex gap-2 text-sm"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActiveSection("experience")}
+                >
+                  Experience
+                </button>
+                <MdAssignmentAdd className="mt-1 text-sm" />
+              </div>
+              <div className="w-full h-[1px] bg-gray-300"></div>
             </div>
           </div>
         </div>
@@ -393,6 +411,128 @@ const EditDoctorsDetails = () => {
                   className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
                 />
               </div>
+            </div>
+          </div>
+        )}
+
+        {activeSection === "services" && (
+          <div className="w-full">
+            <div className="dr-name w-full">
+              <label className="px-3 font-semibold text-gray-400">
+                Services
+              </label>
+              <input
+                type="text"
+                // value={coupanData.usageLimit}
+                name="usageLimit"
+                // onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none mt-2"
+              />
+            </div>
+          </div>
+        )}
+
+        {activeSection === "experience" && (
+          <div className="flex flex-col gap-2 w-[85%]">
+            {/* Doctor name and hospital name */}
+            <div className="dr-hospital-name flex gap-5 w-full">
+              <div className="dr-name w-[50%]">
+                <label className="px-3 font-semibold text-gray-400">
+                  Job Title
+                </label>
+                <input
+                  type="text"
+                  // value={coupanData.usageLimit}
+                  name="usageLimit"
+                  // onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                />
+              </div>
+              <div className="dr-name w-[50%]">
+                <label className="px-3 font-semibold text-gray-400">
+                  Organization Name
+                </label>
+                <input
+                  type="text"
+                  // value={coupanData.usageLimit}
+                  name="usageLimit"
+                  // onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/*Registration no and council name */}
+            <div className="dr-hospital-name flex gap-5 w-full">
+              <div className="dr-name w-[50%]">
+                <label className="px-3 font-semibold text-gray-400">
+                  Organization Location
+                </label>
+                <input
+                  type="text"
+                  // value={coupanData.usageLimit}
+                  name="usageLimit"
+                  // onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                />
+              </div>
+              <div className="dr-name w-[50%]">
+                <label className="px-3 font-semibold text-gray-400">
+                  Sequence Number
+                </label>
+                <input
+                  type="text"
+                  // value={coupanData.usageLimit}
+                  name="usageLimit"
+                  // onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* doctor status and doctor type */}
+            <div className="all-filters flex sm:flex-row flex-col justify-center items-center sm:justify-normal gap-3">
+              <div className="w-[50%]">
+                <p className="px-3 font-semibold text-gray-400">
+                  Doctor Status
+                </p>
+                <select
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                  // value={filterByGender}
+                  // onChange={(e) => setFilterByGender(e.target.value)}
+                >
+                  <option value="">Status</option>
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+              </div>
+
+              <div className="w-[50%]">
+                <p className="px-3 font-semibold text-gray-400">Doctor type</p>
+                <select
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                  // value={filterByGender}
+                  // onChange={(e) => setFilterByGender(e.target.value)}
+                >
+                  <option value="">Dr Type</option>
+                  <option value="normal">Normal</option>
+                  <option value="special">Special</option>
+                </select>
+              </div>
+            </div>
+
+            {/* aboutDoctor */}
+            <div className="dr-name">
+              <label className="px-3 font-semibold text-gray-400">
+                About Doctor
+              </label>
+              <input
+                type="text"
+                // value={coupanData.usageLimit}
+                name="usageLimit"
+                // onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+              />
             </div>
           </div>
         )}

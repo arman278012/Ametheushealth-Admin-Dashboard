@@ -86,14 +86,17 @@ const OrderDetails = () => {
       .replace(/,/, "");
   }
 
-  const handleFormSubmit = async (updatedStatus) => {
+  const handleFormSubmit = async (e, updatedStatus) => {
     const updateData = {
-      status: updatedStatus, // use the passed status value
-      // trackingLink: trackingNumber,
+      status, // use the passed status value
+      trackingLink: trackingNumber,
       deliveryPartner,
     };
 
+    console.log("status", status);
+
     try {
+      e.preventDefault();
       const response = await axios.patch(
         `https://api.assetorix.com/ah/api/v1/order/update-order/${id}`,
         updateData,
@@ -179,7 +182,10 @@ const OrderDetails = () => {
                 <div>
                   <p className="text-[18px] font-semibold">Order Status</p>
                 </div>
-                <div className="flex flex-col gap-3" style={{ marginTop: "10px" }}>
+                <div
+                  className="flex flex-col gap-3"
+                  style={{ marginTop: "10px" }}
+                >
                   <select
                     id="status"
                     name="status"
@@ -209,7 +215,6 @@ const OrderDetails = () => {
                 </div>
 
                 <div className="px-3 mt-[35px] py-1 sm:w-[300px] focus:outline-none rounded-md bg-white w-[300px] border-[1px]">
-
                   <p className="font-semibold">User details</p>
                   <div className="relative left-[90px] mt-5 w-[70px] h-[70px] bg-gray-200 flex items-center justify-center text-xl font-bold rounded-full overflow-hidden">
                     {orderDetails?.user?.avatar ? (
@@ -224,11 +229,11 @@ const OrderDetails = () => {
                       <span>
                         {orderDetails?.user?.name
                           ? `${orderDetails?.user?.name.charAt(
-                            0
-                          )}${orderDetails?.user?.name
-                            .split(" ")
-                            .slice(-1)[0]
-                            .charAt(0)}`
+                              0
+                            )}${orderDetails?.user?.name
+                              .split(" ")
+                              .slice(-1)[0]
+                              .charAt(0)}`
                           : ""}
                       </span>
                     )}
@@ -504,8 +509,9 @@ const OrderDetails = () => {
       {/* Sidebar */}
       <div
         className={`fixed top-0 right-0 w-[400px] h-full bg-white shadow-lg border-l border-gray-200 z-50 p-5 
-            transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+            transform transition-transform duration-300 ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full"
+            }`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Tracking Information</h2>
@@ -518,7 +524,7 @@ const OrderDetails = () => {
         </div>
         <div>
           {/* Add more fields or forms as needed */}
-          <form onSubmit={handleFormSubmit} className="mt-5">
+          <form onSubmit={(e) => handleFormSubmit(e)} className="mt-5">
             <div className="mb-4">
               <label htmlFor="trackingNumber">Tracking number:</label>
               <input
@@ -536,8 +542,6 @@ const OrderDetails = () => {
                 id="status"
                 name="status"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
-
-
                 value={status} // Bind to the state variable
                 onChange={(e) => {
                   setStatus(e.target.value);
@@ -593,46 +597,48 @@ const OrderDetails = () => {
       </div>
 
       <div className="overflow-x-auto mt-5 border-2 p-5">
-
         <div className="grid grid-cols-3 gap-5">
           {orderDetails?.products?.map((product) => (
-             <Link key={product._id} to={`/product-details/${product.productID}`}>
-            <div key={product._id} className="shadow-xl p-5">
-              <div className=" flex justify-center items-center">
-                <img src={product.images[0]?.url} className=" w-[100px]" />
-              </div>
-              <div>
-                <p>
-                  {" "}
-                  <span className="text-gray-500 font-bold">
-                    Product Id:
-                  </span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.productID}
-                  </span>
-                </p>
-                <p>
-                  {" "}
-                  <span className="text-gray-500 font-bold">Name:</span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.title}
-                  </span>
-                </p>
-                <p>
-                  <span className="text-gray-500 font-bold">Pack Size: </span>{" "}
-                  <span className="text-gray-500 font-thin">
+            <Link
+              key={product._id}
+              to={`/product-details/${product.productID}`}
+            >
+              <div key={product._id} className="shadow-xl p-5">
+                <div className=" flex justify-center items-center">
+                  <img src={product.images[0]?.url} className=" w-[100px]" />
+                </div>
+                <div>
+                  <p>
                     {" "}
-                    {product?.packSize}
-                  </span>
-                </p>
-                <p>
-                  <span className="text-gray-500 font-bold"> Price: </span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.currency}
-                    {product?.price}
-                  </span>
-                </p>
-                {/* <p>
+                    <span className="text-gray-500 font-bold">
+                      Product Id:
+                    </span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {product?.productID}
+                    </span>
+                  </p>
+                  <p>
+                    {" "}
+                    <span className="text-gray-500 font-bold">Name:</span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {product?.title}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="text-gray-500 font-bold">Pack Size: </span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {" "}
+                      {product?.packSize}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="text-gray-500 font-bold"> Price: </span>{" "}
+                    <span className="text-gray-500 font-thin">
+                      {product?.currency}
+                      {product?.price}
+                    </span>
+                  </p>
+                  {/* <p>
                   <span className="text-gray-500 font-bold">Sale Price:</span>{" "}
                   <span className="text-gray-500 font-thin">
                     {product?.salePrice}
@@ -663,7 +669,6 @@ const OrderDetails = () => {
             </Link>
           ))}
         </div>
-
       </div>
     </div>
   );
