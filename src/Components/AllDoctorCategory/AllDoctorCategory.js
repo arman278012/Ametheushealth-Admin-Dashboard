@@ -152,13 +152,13 @@ const AllDoctorCategory = () => {
         <div className="flex justify-between mr-5">
           <div className="flex gap-3 p-5">
             <button
-              onClick={() => navigate("/add-coupons")}
+              onClick={() => navigate("/add-doctor-category")}
               className="bg-[#13a3bc] text-white font-semibold text-sm p-2 rounded-md shadow-lg hover:bg-[#13b6d5] focus:outline-none focus:ring-opacity-75 transition duration-300 ease-in-out"
             >
               Add Category
             </button>
           </div>
-
+        
           <div className="bg-white h-[30px] px-3 py-1">
             <p
               className={`cursor-pointer text-sm flex items-center`}

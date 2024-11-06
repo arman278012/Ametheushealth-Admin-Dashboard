@@ -93,6 +93,9 @@ const AddDoctorCategory = () => {
           },
         }
       );
+      if (response.status == 201) {
+        navigate("/all-doctor-category");
+      }
 
       if (response.status === 200) {
         toast.success("Doctor category added successfully!");
