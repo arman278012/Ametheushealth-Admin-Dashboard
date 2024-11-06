@@ -72,7 +72,7 @@ const DoctorCategoryDetails = () => {
       {/* Specialty Name */}
       <div className="mb-4">
         <h2 className="text-2xl font-semibold text-gray-800">Specialty Name</h2>
-        <p className="text-gray-600">{myData?.specialtyName}</p>
+        <p className="text-gray-600">{myData?.categoryName}</p>
       </div>
 
       {/* Short Description */}
