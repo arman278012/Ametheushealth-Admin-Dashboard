@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 const OrderDetails = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState({});
+  const [bntloading, setBtnLoading] = useState(false);
 
   // State variables for form fields
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -94,6 +95,7 @@ const OrderDetails = () => {
     };
 
     console.log("status", status);
+    setBtnLoading(true);
 
     try {
       e.preventDefault();
@@ -113,6 +115,8 @@ const OrderDetails = () => {
     } catch (error) {
       console.error("Error updating order:", error);
       toast.error("Error updating order");
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -590,7 +594,7 @@ const OrderDetails = () => {
               type="submit"
               className="bg-blue-500 text-white w-full py-2 rounded"
             >
-              Fulfill order
+              {bntloading ? "Loading..." : "Fulfill order"}
             </button>
           </form>
         </div>

@@ -108,7 +108,7 @@ const EditDoctorCategory = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("categoryName", doctorData.categoryName);
+      formData.append("specialtyName", doctorData.categoryName);
       formData.append("sortDescription", doctorData.sortDescription);
       formData.append("longDescription", doctorData.longDescription);
       formData.append("image", doctorData.image); // Append the image file
