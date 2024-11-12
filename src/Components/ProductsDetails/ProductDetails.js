@@ -828,7 +828,7 @@ const ProductDetails = () => {
           </div>
         </div>
       )}
-      {pricePopUp && <p>Update the price here </p>}
+      {/* {pricePopUp && <p>Update the price here </p>} */}
     </div>
   );
 };

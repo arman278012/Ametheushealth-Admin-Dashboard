@@ -9,6 +9,7 @@ import {
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import EditUser from "../EditUser/EditUser";
 
 const Allusers = () => {
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
@@ -17,6 +18,8 @@ const Allusers = () => {
   const [searchUserQuery, setSearchUserQuery] = useState("");
   const [currentUserPage, setCurrentUserPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [editId, setEditId] = useState("");
 
   const navigate = useNavigate();
   const toggleTopBar = () => {
@@ -68,6 +71,8 @@ const Allusers = () => {
   useEffect(() => {
     getAllUser(searchUserQuery, currentUserPage, pageLimit);
   }, [currentUserPage, pageLimit]);
+
+  console.log("Edit", editId);
 
   return (
     <div>
@@ -239,11 +244,10 @@ const Allusers = () => {
                           <div className="flex gap-2">
                             <button
                               className="text-[#2271b1]"
-                              // onClick={() =>
-                              //   navigate(`/edit-products/${singleItem._id}`, {
-                              //     state: { search: searchParams.toString() },
-                              //   })
-                              // }
+                              onClick={() => {
+                                setEditUser(true);
+                                setEditId(item?._id);
+                              }}
                             >
                               Edit
                             </button>{" "}
@@ -285,6 +289,7 @@ const Allusers = () => {
             </Tbody>
           </Table>
         </div>
+        {editUser && <EditUser setEditUser={setEditUser} editId={editId} />}
       </div>
     </div>
   );
