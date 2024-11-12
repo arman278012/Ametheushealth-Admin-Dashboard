@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
-const EditUser = ({ setEditUser, editId }) => {
+const EditUser = ({ setEditUser, editId, getAllUser }) => {
   const [user, setUser] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -67,6 +67,7 @@ const EditUser = ({ setEditUser, editId }) => {
       console.log(error);
     } finally {
       setEditUser(false);
+      getAllUser();
     }
   };
 
@@ -133,7 +134,7 @@ const EditUser = ({ setEditUser, editId }) => {
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
-                className="mt-1 px-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1495AB]"
+                className="mt-1 px-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-[#1495AB]"
               />
             </div>
             <div className="w-full">

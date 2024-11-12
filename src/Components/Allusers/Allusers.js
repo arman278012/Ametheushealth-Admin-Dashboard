@@ -289,7 +289,13 @@ const Allusers = () => {
             </Tbody>
           </Table>
         </div>
-        {editUser && <EditUser setEditUser={setEditUser} editId={editId} />}
+        {editUser && (
+          <EditUser
+            setEditUser={setEditUser}
+            editId={editId}
+            getAllUser={getAllUser}
+          />
+        )}
       </div>
     </div>
   );
