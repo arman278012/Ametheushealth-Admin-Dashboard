@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { MdCancel } from "react-icons/md";
 
 const EditUser = ({ setEditUser, editId, getAllUser }) => {
@@ -63,6 +64,7 @@ const EditUser = ({ setEditUser, editId, getAllUser }) => {
           },
         }
       );
+      toast.success("Updated successfully");
     } catch (error) {
       console.log(error);
     } finally {

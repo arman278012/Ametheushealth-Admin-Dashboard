@@ -138,7 +138,7 @@ const UserDetails = () => {
               />
               <ProfileField label="Role" value={user?.data?.role} />
               <ProfileField label="UHID" value={user?.data?.uhid} />
-              <ProfileField label="ID" value={user?.data?.id} />
+              <ProfileField label="ID" value={user?.data?._id} />
             </div>
           </div>
         )}
