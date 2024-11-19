@@ -87,18 +87,17 @@ const OrderDetails = () => {
       .replace(/,/, "");
   }
 
-  const handleFormSubmit = async (e, updatedStatus) => {
+  const handleFormSubmit = async (updatedStatus) => {
     const updateData = {
-      status, // use the passed status value
+      status: updatedStatus, // Use the updated status passed to the function
       trackingLink: trackingNumber,
       deliveryPartner,
     };
 
-    console.log("status", status);
+    console.log("Updated Status:", updatedStatus);
     setBtnLoading(true);
 
     try {
-      e.preventDefault();
       const response = await axios.patch(
         `https://api.assetorix.com/ah/api/v1/order/update-order/${id}`,
         updateData,
@@ -196,8 +195,9 @@ const OrderDetails = () => {
                     className="px-3 py-1 sm:w-[170px] w-[230px] focus:outline-none rounded-md bg-white border"
                     value={status}
                     onChange={(e) => {
-                      setStatus(e.target.value);
-                      handleFormSubmit(e.target.value);
+                      const updatedStatus = e.target.value;
+                      setStatus(updatedStatus);
+                      handleFormSubmit(updatedStatus); // Pass only the updated status
                     }}
                   >
                     <option
@@ -642,12 +642,6 @@ const OrderDetails = () => {
                       {product?.price}
                     </span>
                   </p>
-                  {/* <p>
-                  <span className="text-gray-500 font-bold">Sale Price:</span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.salePrice}
-                  </span>{" "}
-                </p> */}
 
                   <p>
                     <span className="text-gray-500 font-bold">SKU:</span>{" "}
@@ -662,12 +656,6 @@ const OrderDetails = () => {
                       {product?.quantity}
                     </span>
                   </p>
-                  {/* <p>
-                  <span className="text-gray-500 font-bold">Margin:</span>{" "}
-                  <span className="text-gray-500 font-thin">
-                    {product?.margin}
-                  </span>
-                </p> */}
                 </div>
               </div>
             </Link>
