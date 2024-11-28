@@ -43,7 +43,7 @@ const GetAllDoctors = () => {
       params.limit = pageLimit || 10; // limit of results per page (default 10)
 
       const response = await axios.get(
-        "https://api.assetorix.com/ah/api/v1/dc/admin/getdoctors",
+        "https://api.assetorix.com/ah/api/v1/dc/admin/doctors",
         {
           params, // Pass the dynamically built params object
           headers: {
@@ -73,17 +73,6 @@ const GetAllDoctors = () => {
       );
       setSpecialtyData(response.data); // Assuming response.data contains the specialties
       console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //delete doctor
-  const deleteDoctor = async () => {
-    try {
-      const response = await axios.delete(
-        `https://api.assetorix.com/ah/api/v1/dc/user/doctors/${deleteId}`
-      );
     } catch (error) {
       console.log(error);
     }
@@ -352,9 +341,9 @@ const GetAllDoctors = () => {
                     <input type="checkbox" className="form-checkbox" />
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 l">
-                    {order.avatar ? (
+                    {order?.userData?.avatar ? (
                       <img
-                        src={order.avatar}
+                        src={order.userData.avatar}
                         className="h-[60px] w-[60px] rounded-full"
                       />
                     ) : (
@@ -364,7 +353,9 @@ const GetAllDoctors = () => {
                     )}
                   </Td>
                   <Td className="py-2 px-4 border-b text-[14px] border-gray-300">
-                    <p className="font-bold capitalize">{order.name}</p>
+                    <p className="font-bold capitalize">
+                      {order?.userData?.name}
+                    </p>
                     {order._id}
                     <div className="flex gap-2">
                       <button
@@ -380,20 +371,10 @@ const GetAllDoctors = () => {
                       >
                         Edit
                       </button>
-                      <span className="text-[#2271b1]">|</span>
-                      <button
-                        className="text-[#2271b1]"
-                        onClick={() => {
-                          setDeleteAlert(true);
-                          setDeleteId(order._id);
-                        }}
-                      >
-                        Delete
-                      </button>
                     </div>
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                    {order.gender}
+                    {order?.userData?.gender}
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-[14px] text-center">
                     {order.hospitalName}

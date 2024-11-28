@@ -72,7 +72,7 @@ const DoctorDetails = () => {
   const getDoctorsDetails = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/dc/admin/getdoctors/${id}`,
+        `https://api.assetorix.com/ah/api/v1/dc/admin/doctors/${id}`,
         {
           headers: {
             "Content-Type": "multipart/form-data",
