@@ -1,4 +1,5 @@
 import "./App.css";
+import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "./Context/ContextProvider";
@@ -52,6 +53,10 @@ import DoctorDetailsPage from "./Pages/DoctorDetailsPage/DoctorDetailsPage";
 import OnboardingDoctorsPage from "./Pages/OnboarinngDoctorsPage/OnboarinngDoctorsPage";
 import EditDoctorsDetailsPage from "./Pages/EditDoctorsDetailsPage/EditDoctorsDetailsPage";
 import ApproveDoctor from "./Pages/ApproveDoctor/ApproveDoctor";
+import EditDoctor from "./Components/EditDoctor/EditDoctor";
+import OnboardingDrList from "./Components/onBoardingDrlist/OnboardingDrList";
+import OnboardingDrListPage from "./Pages/OnboardingDrListPage/OnboardingDrListPage";
+import EditDoctorPage from "./Pages/EditDoctorPage/EditDoctorPage";
 
 function App() {
   const {
@@ -259,9 +264,14 @@ function App() {
               path="/all-doctor/edit/:id"
               element={<AdminRoute element={EditDoctorsDetailsPage} />}
             />
-             <Route
+            <Route
               path="/all-doctor/approve"
               element={<AdminRoute element={ApproveDoctor} />}
+            />
+            <Route path="/edit-doctor/:Sid" element={<EditDoctorPage />} />
+            <Route
+              path="/onboarding-doctor"
+              element={<OnboardingDrListPage />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

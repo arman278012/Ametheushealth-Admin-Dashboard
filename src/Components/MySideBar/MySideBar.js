@@ -474,6 +474,13 @@ const MySideBar = () => {
                   >
                     All Categories
                   </a>
+
+                  <a
+                    href="/onboarding-doctor"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    onBoarding Doctor
+                  </a>
                 </div>
               )}
             </div>
