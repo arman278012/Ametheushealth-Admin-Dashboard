@@ -127,8 +127,9 @@ const ApproveDoctor = () => {
                                             }
                                         >
                                             <option value="">Select Status</option>
+                                            <option value="accept">Accept</option>
                                             <option value="pending">Pending</option>
-                                            <option value="accept">In Process</option>
+                                            <option value="in process">In Process</option>
                                             <option value="reject">Rejected</option>
                                         </select>
                                         {statusDetails[doctor._id]?.status && (
