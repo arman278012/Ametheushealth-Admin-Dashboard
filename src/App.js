@@ -207,22 +207,18 @@ function App() {
               path="/create-order"
               element={<AdminRoute element={CreateOrderPage} />}
             />
-
             <Route
               path="/all-users"
               element={<AdminRoute element={AllusersPage} />}
             />
-
             <Route
               path="/all-users/:id"
               element={<AdminRoute element={UserDetailsPage} />}
             />
-
             <Route
               path="/add-coupons"
               element={<AdminRoute element={AddCouponsPage} />}
             />
-
             <Route
               path="/all-coupons"
               element={<AdminRoute element={AllCouponsPage} />}
@@ -259,7 +255,7 @@ function App() {
               path="/all-doctor/edit/:id"
               element={<AdminRoute element={EditDoctorsDetailsPage} />}
             />
-             <Route
+            <Route
               path="/all-doctor/approve"
               element={<AdminRoute element={ApproveDoctor} />}
             />
