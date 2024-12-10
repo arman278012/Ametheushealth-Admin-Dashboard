@@ -368,6 +368,7 @@ const EditDoctorsDetails = () => {
         <p className="font-bold text-xl flex items-center mb-5">
           Edit Doctors Details
         </p>
+      
       </div>
       <div className="flex gap-10 p-5">
         <div className="left-section-sidebar w-[25%]">

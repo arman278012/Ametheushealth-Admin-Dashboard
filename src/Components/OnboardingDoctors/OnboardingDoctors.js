@@ -12,6 +12,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 
 const OnboardingDoctors = () => {
   const [onboardingDoctor, setOnboardingDoctor] = useState([]);
+  const [approveAlert, setApproveAlert] = useState(false);
   const [isTopBarOpen, setIsTopBarOpen] = useState(false);
   const [pageLimit, setPageLimit] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -164,8 +165,9 @@ const OnboardingDoctors = () => {
             onChange={handleFilterChange}
           >
             <option value="">Status</option>
-            <option value="pending">Pending</option>
-            <option value="reject">Reject</option>
+            <div>
+          <button>Change Status</button>
+        </div>
           </select>
         </div>
 
@@ -225,19 +227,25 @@ const OnboardingDoctors = () => {
                 <Th className="py-2 px-4 border-b border-gray-300 text-left w-[5%]">
                   <input type="checkbox" className="form-checkbox" />
                 </Th>
-                <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[15%]">
+                {/* <Th className="py-2 px-4 border-b  border-gray-300 text-left w-[15%]">
                   Id
-                </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[25%]">
+                </Th> */}
+                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[20%]">
                   Name
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[10%]">
+                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[15%]">
                   Gender
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[30%]">
-                  Hospital Name
+                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[15%]">
+                  Status
                 </Th>
-                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[15%]">
+                {/* <Th className="py-2 px-4 border-b border-gray-300 text-center w-[10%]">
+                  Approval
+                </Th> */}
+                <Th className="py-2 px-4 border-b border-gray-300 text-center w-[15%]">
+                  Doctor Type
+                </Th>
+                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[20%]">
                   Created At
                 </Th>
               </Tr>
@@ -248,17 +256,46 @@ const OnboardingDoctors = () => {
                   <Td className="py-2 px-4 border-b border-gray-300">
                     <input type="checkbox" className="form-checkbox" />
                   </Td>
-                  <Td className="py-2 px-4 border-b border-gray-300">
+                  {/* <Td className="py-2 px-4 border-b border-gray-300">
                     {order._id}
-                  </Td>
+                  </Td> */}
                   <Td className="py-2 px-4 border-b border-gray-300">
-                    {order.userDetails.name}
+                    <span className="flex flex-col">
+                      <span className="font-semibold">
+                        {order.userDetails.name}
+                      </span>
+                      <span className="text-[13px]">{order._id}</span>
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        className="text-[#2271b1]"
+                        // onClick={() =>
+                        //   navigate(`/edit-products/${singleItem._id}`, {
+                        //     state: { search: searchParams.toString() },
+                        //   })
+                        // }
+                      >
+                        Edit
+                      </button>{" "}
+                      <span className="text-[#2271b1]">|</span>
+                      <button
+                        className="text-[#2271b1]"
+                        onClick={() => {
+                          navigate(`/onboarding-doctors/${order._id}`);
+                        }}
+                      >
+                        View
+                      </button>{" "}
+                    </div>
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-center">
-                    {order.gender}
+                    {order?.userDetails?.gender}
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300 text-center">
-                    {order.hospitalName}
+                    {order?.status}
+                  </Td>
+                  <Td className="py-2 px-4 border-b border-gray-300 text-center">
+                    {order?.doctorType}
                   </Td>
                   <Td className="py-2 px-4 border-b border-gray-300">
                     {convertToIST(order.RequestcreatedAt)}
@@ -269,6 +306,30 @@ const OnboardingDoctors = () => {
           </Table>
         </div>
       </div>
+      {approveAlert && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm p-3 sm:p-0 lg:p-2">
+          <div className="absolute inset-0"></div>
+          <div className="bg-white p-6 rounded-lg border-2 z-10">
+            <p className="text-lg mb-4">Do you want to approve this docotor?</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  setApproveAlert(false);
+                }}
+                className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => setApproveAlert(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

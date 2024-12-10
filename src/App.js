@@ -52,6 +52,7 @@ import DoctorDetailsPage from "./Pages/DoctorDetailsPage/DoctorDetailsPage";
 import OnboardingDoctorsPage from "./Pages/OnboarinngDoctorsPage/OnboarinngDoctorsPage";
 import EditDoctorsDetailsPage from "./Pages/EditDoctorsDetailsPage/EditDoctorsDetailsPage";
 import ApproveDoctor from "./Pages/ApproveDoctor/ApproveDoctor";
+import OnBoardingDoctorsDetailsPage from "./Pages/OnBoardingDoctorsDetailsPage/OnBoardingDoctorsDetailsPage";
 
 function App() {
   const {
@@ -258,6 +259,10 @@ function App() {
             <Route
               path="/all-doctor/approve"
               element={<AdminRoute element={ApproveDoctor} />}
+            />
+            <Route
+              path="/onboarding-doctors/:id"
+              element={<AdminRoute element={OnBoardingDoctorsDetailsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}
