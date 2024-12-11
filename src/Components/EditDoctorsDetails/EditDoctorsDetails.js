@@ -368,18 +368,17 @@ const EditDoctorsDetails = () => {
         <p className="font-bold text-xl flex items-center mb-5">
           Edit Doctors Details
         </p>
-      
+
       </div>
       <div className="flex gap-10 p-5">
         <div className="left-section-sidebar w-[25%]">
           <div className="">
             <div className="flex flex-col gap-3 p-3">
               <div
-                className={`${
-                  activeSection === "doctor-details"
-                    ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                    : "flex gap-2"
-                }`}
+                className={`${activeSection === "doctor-details"
+                  ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                  : "flex gap-2"
+                  }`}
               >
                 <button
                   type="button"
@@ -393,11 +392,10 @@ const EditDoctorsDetails = () => {
               <div className="w-full h-[1px] bg-gray-300"></div>
 
               <div
-                className={`${
-                  activeSection === "hospital-address"
-                    ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                    : "flex gap-2"
-                }`}
+                className={`${activeSection === "hospital-address"
+                  ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                  : "flex gap-2"
+                  }`}
               >
                 <button
                   type="button"
@@ -411,11 +409,10 @@ const EditDoctorsDetails = () => {
               <div className="w-full h-[1px] bg-gray-300"></div>
 
               <div
-                className={`${
-                  activeSection === "language"
-                    ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                    : " flex gap-2"
-                }`}
+                className={`${activeSection === "language"
+                  ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                  : " flex gap-2"
+                  }`}
               >
                 <button
                   type="button"
@@ -429,11 +426,10 @@ const EditDoctorsDetails = () => {
               <div className="w-full h-[1px] bg-gray-300"></div>
 
               <div
-                className={`${
-                  activeSection === "qualifications"
-                    ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                    : " flex gap-2"
-                }`}
+                className={`${activeSection === "qualifications"
+                  ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                  : " flex gap-2"
+                  }`}
               >
                 <button
                   type="button"
@@ -447,11 +443,10 @@ const EditDoctorsDetails = () => {
               <div className="w-full h-[1px] bg-gray-300"></div>
 
               <div
-                className={`${
-                  activeSection === "faq"
-                    ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                    : " flex gap-2"
-                }`}
+                className={`${activeSection === "faq"
+                  ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                  : " flex gap-2"
+                  }`}
               >
                 <button
                   type="button"
@@ -465,11 +460,10 @@ const EditDoctorsDetails = () => {
               <div className="w-full h-[1px] bg-gray-300"></div>
 
               <div
-                className={`${
-                  activeSection === "services"
-                    ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
-                    : " flex gap-2 text-sm"
-                }`}
+                className={`${activeSection === "services"
+                  ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
+                  : " flex gap-2 text-sm"
+                  }`}
               >
                 <button
                   type="button"
@@ -483,11 +477,10 @@ const EditDoctorsDetails = () => {
 
               {/* Experience */}
               <div
-                className={`${
-                  activeSection === "experience"
-                    ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
-                    : " flex gap-2 text-sm"
-                }`}
+                className={`${activeSection === "experience"
+                  ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
+                  : " flex gap-2 text-sm"
+                  }`}
               >
                 <button
                   type="button"
@@ -854,7 +847,7 @@ const EditDoctorsDetails = () => {
                         <select
                           value={
                             months.indexOf(qualification.startDate?.month) +
-                              1 || ""
+                            1 || ""
                           }
                           name="startDateMonth"
                           onChange={(e) =>

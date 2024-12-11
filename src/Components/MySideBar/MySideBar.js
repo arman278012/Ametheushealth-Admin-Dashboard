@@ -58,9 +58,8 @@ const MySideBar = () => {
   return (
     <div className="sm:flex md:flex hidden sticky top-0">
       <div
-        className={`bg-gray-800 text-white min-h-screen ${
-          isCollapsed ? "w-16" : "w-64"
-        } transition-all duration-300`}
+        className={`bg-gray-800 text-white min-h-screen ${isCollapsed ? "w-16" : "w-64"
+          } transition-all duration-300`}
       >
         <div className="flex flex-col p-4">
           <button
@@ -475,10 +474,10 @@ const MySideBar = () => {
                     All Categories
                   </a>
                   <a
-                    href="/all-doctor/approve"
+                    href="/all-onboarding-doctors"
                     className="hover:bg-gray-700 px-4 py-2"
                   >
-                    Approve Doctors
+                    Onboarding Doctors
                   </a>
                 </div>
               )}
