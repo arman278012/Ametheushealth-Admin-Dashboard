@@ -108,40 +108,40 @@ const OnBoardingDoctorsDetails = () => {
         status: myData?.status || "",
         statusDetail: myData?.statusDetail || "",
         qualifications:
-          myData.qualifications?.map((qualification) => ({
-            sequenceNumber: qualification.sequenceNumber || 0,
-            instituteName: qualification.instituteName || "",
-            degree: qualification.degree || "",
-            fieldOfStudy: qualification.fieldOfStudy || "",
+          myData?.qualifications?.map((qualification) => ({
+            sequenceNumber: qualification?.sequenceNumber || 0,
+            instituteName: qualification?.instituteName || "",
+            degree: qualification?.degree || "",
+            fieldOfStudy: qualification?.fieldOfStudy || "",
             startDate: {
-              month: qualification.startDate?.month || "",
-              year: qualification.startDate?.year || "",
+              month: qualification?.startDate?.month || "",
+              year: qualification?.startDate?.year || "",
             },
             endDate: {
-              month: qualification.endDate?.month || "",
-              year: qualification.endDate?.year || "",
+              month: qualification?.endDate?.month || "",
+              year: qualification?.endDate?.year || "",
             },
-            description: qualification.description || "",
-            skills: qualification.skills || [],
+            description: qualification?.description || "",
+            skills: qualification?.skills || [],
           })) || [],
         years_of_experience:
-          myData.years_of_experience?.map((experience) => ({
-            sequenceNumber: experience.sequenceNumber || 0,
-            jobTitle: experience.jobTitle || "",
-            employmentType: experience.employmentType || "",
-            organizationName: experience.organizationName || "",
-            organizationLocation: experience.organizationLocation || "",
+          myData?.years_of_experience?.map((experience) => ({
+            sequenceNumber: experience?.sequenceNumber || 0,
+            jobTitle: experience?.jobTitle || "",
+            employmentType: experience?.employmentType || "",
+            organizationName: experience?.organizationName || "",
+            organizationLocation: experience?.organizationLocation || "",
             startDate: {
-              month: experience.startDate?.month || "",
-              year: experience.startDate?.year || "",
+              month: experience?.startDate?.month || "",
+              year: experience?.startDate?.year || "",
             },
             endDate: {
-              month: experience.endDate?.month || "",
-              year: experience.endDate?.year || "",
+              month: experience?.endDate?.month || "",
+              year: experience?.endDate?.year || "",
             },
-            isPresent: experience.isPresent || false,
-            description: experience.description || "",
-            skills: experience.skills || [],
+            isPresent: experience?.isPresent || false,
+            description: experience?.description || "",
+            skills: experience?.skills || [],
           })) || [],
       }));
       setOnBoardingData(response.data); // Storing additional onboarding data if needed
