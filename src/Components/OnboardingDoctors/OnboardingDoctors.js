@@ -80,7 +80,7 @@ const OnboardingDoctors = () => {
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
-  };
+  }; 
 
   const convertToIST = (utcDate) => {
     const date = new Date(utcDate);
