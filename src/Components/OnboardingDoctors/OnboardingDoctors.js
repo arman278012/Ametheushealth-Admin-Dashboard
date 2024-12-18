@@ -167,7 +167,7 @@ const OnboardingDoctors = () => {
                 >
                   <option value="">All</option>
                   <option value="pending">Pending</option>
-                  <option value="processing">Processing</option>
+                  <option value="in process">Process</option>
                   <option value="reject">Reject</option>
                   <option value="accept">Accept</option>
                   <div>

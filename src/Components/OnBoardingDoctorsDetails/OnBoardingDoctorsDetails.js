@@ -299,7 +299,7 @@ const OnBoardingDoctorsDetails = () => {
     e.preventDefault()
     try {
       const response = await axios.post(`https://api.assetorix.com/ah/api/v1/dc/admin/promoted/add/${id}`,
-        { status, statusDetails },
+        { status, statusDetail :  statusDetails },
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -342,7 +342,7 @@ const OnBoardingDoctorsDetails = () => {
                   <option value="" className="text-gray-600">
                     Change Status
                   </option>
-                  <option value="processing" className="text-gray-600">
+                  <option value="in process" className="text-gray-600">
                     Processing
                   </option>
                   <option value="reject" className="text-gray-600">
@@ -369,8 +369,8 @@ const OnBoardingDoctorsDetails = () => {
                       </label>
                       <input
                         type="text"
-                        id="statusDetails"
-                        name="statusDetails"
+                        id="statusDetail"
+                        name="statusDetail"
                         value={statusDetails}
                         onChange={(e) => setStatusDetails(e.target.value)}
                         className="w-full bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -379,7 +379,7 @@ const OnBoardingDoctorsDetails = () => {
                     </div>
                     <div className="mt-[30px]">
                       <button type="submit" className="bg-green-500 text-white px-2 py-1 rounded-md">
-                        Approve
+                        Submit
                       </button>
                     </div>
                   </div>
@@ -414,24 +414,6 @@ const OnBoardingDoctorsDetails = () => {
                 <MdOutlineDescription className="mt-1 text-sm" />
               </div>
               <div className="w-full h-[1px] bg-gray-300"></div>
-
-              <div
-                className={`${activeSection === "hospital-address"
-                  ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                  : "flex gap-2"
-                  }`}
-              >
-                <button
-                  type="button"
-                  className="text-sm"
-                  onClick={() => setActiveSection("hospital-address")}
-                >
-                  Hospital-Address
-                </button>
-                <MdOutlineDescription className="mt-1 text-sm" />
-              </div>
-              <div className="w-full h-[1px] bg-gray-300"></div>
-
               <div
                 className={`${activeSection === "language"
                   ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"

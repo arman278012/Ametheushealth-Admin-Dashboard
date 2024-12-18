@@ -6,11 +6,15 @@ import { BiArrowFromTop, BiArrowToTop } from "react-icons/bi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 
-const EditBlogs = ({ blogId }) => {
+const EditBlogs = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hierarchyData, setHierarchyData] = useState([]);
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+
+  // Handle image selection
+ 
 
   const { id } = useParams();
 
@@ -23,10 +27,17 @@ const EditBlogs = ({ blogId }) => {
     image: null,
     timeToRead: "",
     meta: { title: "", description: "", keywords: "" }, // Object for meta
-    tags: "", // String for tags
+    tags: [], // String for tags
     published: false,
     content: "",
   });
+  const handleImageChange = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    setFormData((prev) => ({
+      ...prev, // Spread the previous state
+      image: file, // Update the image property
+    }));
+  };
 
   const topics = [
     "Dental Health",
@@ -47,13 +58,7 @@ const EditBlogs = ({ blogId }) => {
     "Skin Care",
   ];
 
-  // Handle image change
-  const handleImageChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      image: e.target.files[0],
-    }));
-  };
+  
 
   const handleMetaChange = (key, value) => {
     setFormData((prev) => ({
@@ -67,9 +72,14 @@ const EditBlogs = ({ blogId }) => {
 
   // Handle tags change
   const handleTagsChange = (e) => {
+    const tagsArray = e.target.value
+      .split(",") // Split the input string by commas
+      .map((tag) => tag.trim()) // Trim whitespace around each tag
+      .filter((tag) => tag !== ""); // Remove empty tags
+  
     setFormData((prev) => ({
       ...prev,
-      tags: e.target.value, // Directly set tags string
+      tags: tagsArray, // Set the tags as an array of strings
     }));
   };
 
@@ -142,29 +152,15 @@ const EditBlogs = ({ blogId }) => {
   const updatedBlog = async (e) => {
     e.preventDefault();
     const data = new FormData();
-
-    // Append the fields to the FormData object
-    for (const key in formData) {
-      if (key === "meta") {
-        // Stringify the meta object
-        data.append(key, JSON.stringify(formData[key]));
-      } else if (Array.isArray(formData[key])) {
-        // Stringify arrays (like topicCategory and tags)
-        data.append(key, JSON.stringify(formData[key]));
-      } else {
-        data.append(key, formData[key] !== undefined ? formData[key] : "");
-      }
-    }
-
     // Append image if it exists
     if (formData.image) {
-      data.append("image", formData.image);
+      data.append("blog", formData.image);
     }
 
     try {
       const response = await axios.patch(
         `https://api.assetorix.com/ah/api/v1/blog/${id}`,
-        data, // Send the FormData
+        data, // Send the FormData  
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -204,11 +200,7 @@ const EditBlogs = ({ blogId }) => {
     getHierarchy();
   }, []);
 
-  // Toggle category visibility
-  const toggleCategoryVisibility = () => {
-    setIsCategoryVisible(!isCategoryVisible);
-  };
-
+ 
   // Recursive function to render radio buttons for categories and subcategories
   const renderCategoryRadios = (categories) => {
     return categories.map((category) => (
@@ -265,6 +257,22 @@ const EditBlogs = ({ blogId }) => {
             onChange={handleInputChange}
             className="mt-1 p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter the blog title"
+          />
+        </div>
+
+        <div>
+          <img className="h-[38vh] w-full transition-all duration-300 rounded-lg " src={formData?.image} alt="" />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Change Blog Image
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            className="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+            onChange={handleImageChange}
           />
         </div>
 
@@ -370,7 +378,7 @@ const EditBlogs = ({ blogId }) => {
                     // value={hierarchyQuery}
                     className="w-full px-2 py-1"
                     placeholder="Search categories..."
-                    // onChange={(e) => setHierarchyQuery(e.target.value)}
+                  // onChange={(e) => setHierarchyQuery(e.target.value)}
                   />
                 </div>
                 {hierarchyData?.map((item) => (
