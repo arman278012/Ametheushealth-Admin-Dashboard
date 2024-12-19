@@ -13,7 +13,7 @@ const AddBlogs = () => {
     image: null,
     timeToRead: "",
     meta: { title: "", description: "", keywords: "" },
-    tags: {},
+    tags: [],
     published: false,
     content: "",
   });
@@ -110,9 +110,16 @@ const AddBlogs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const submissionData = new FormData();
+
     Object.keys(formData).forEach((key) => {
-      if (key === "meta" || key === "tags") {
-        submissionData.append(key, JSON.stringify(formData[key]));
+      if (key === "meta") {
+        Object.entries(formData.meta).forEach(([metaKey, metaValue]) => {
+          submissionData.append(`meta[${metaKey}]`, metaValue);
+        });
+      } else if (key === "tags") {
+        formData[key].forEach((tag) => {
+          submissionData.append("tags[]", tag);
+        });
       } else {
         submissionData.append(key, formData[key]);
       }
@@ -129,7 +136,6 @@ const AddBlogs = () => {
           },
         }
       );
-      console.log(formData);
       toast.success("Blog created Successfully...");
       navigate("/show-blogs");
     } catch (error) {
@@ -331,13 +337,6 @@ const AddBlogs = () => {
               className="p-3 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
-          {/* <button
-            type="button"
-            onClick={handleAddMeta}
-            className="mt-2 text-blue-600 hover:underline"
-          >
-            Add another Meta
-          </button> */}
         </div>
 
         <div>
@@ -371,9 +370,8 @@ const AddBlogs = () => {
             </button>
           </div>
           <div
-            className={`category-list mt-3 ${
-              isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
-            } transition-all duration-300`}
+            className={`category-list mt-3 ${isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
+              } transition-all duration-300`}
           >
             <input
               type="text"
