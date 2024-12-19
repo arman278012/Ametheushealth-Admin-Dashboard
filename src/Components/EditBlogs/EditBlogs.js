@@ -154,7 +154,7 @@ const EditBlogs = () => {
     const data = new FormData();
     // Append image if it exists
     if (formData.image) {
-      data.append("blog", formData.image);
+      data.append("image", formData.image);
     }
 
     try {
