@@ -132,9 +132,8 @@ const AllDoctorCategory = () => {
         </p>
       </div>
       <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isTopBarOpen ? "max-h-screen" : "max-h-0"
-        }`}
+        className={`overflow-hidden transition-all duration-300 ${isTopBarOpen ? "max-h-screen" : "max-h-0"
+          }`}
       >
         <div className="flex gap-3">
           <div className="flex gap-2">
@@ -158,7 +157,7 @@ const AllDoctorCategory = () => {
               Add Category
             </button>
           </div>
-        
+
           <div className="bg-white h-[30px] px-3 py-1">
             <p
               className={`cursor-pointer text-sm flex items-center`}
@@ -166,9 +165,8 @@ const AllDoctorCategory = () => {
             >
               OPTIONS
               <span
-                className={`ml-1 transition-transform duration-300 ${
-                  isTopBarOpen ? "rotate-180" : "rotate-0"
-                }`}
+                className={`ml-1 transition-transform duration-300 ${isTopBarOpen ? "rotate-180" : "rotate-0"
+                  }`}
               >
                 ▼
               </span>
@@ -211,17 +209,15 @@ const AllDoctorCategory = () => {
             <p>{categories?.totalCount || 0} results</p>
           </div>
           <div
-            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
-              currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-            }`}
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+              }`}
             onClick={() => currentPage > 1 && setCurrentPage(1)}
           >
             <MdOutlineKeyboardDoubleArrowLeft />
           </div>
           <div
-            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
-              currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-            }`}
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+              }`}
             onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
           >
             <MdOutlineKeyboardArrowLeft />
@@ -233,11 +229,10 @@ const AllDoctorCategory = () => {
             <p>of {categories?.totalPages || 1}</p>
           </div>
           <div
-            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
-              currentPage === categories?.totalPages
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${currentPage === categories?.totalPages
                 ? "cursor-not-allowed opacity-50"
                 : ""
-            }`}
+              }`}
             onClick={() => {
               if (currentPage < categories?.totalPages) {
                 setCurrentPage(currentPage + 1);
@@ -247,11 +242,10 @@ const AllDoctorCategory = () => {
             <MdKeyboardArrowRight />
           </div>
           <div
-            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${
-              currentPage === categories?.totalPages
+            className={`h-[25px] w-[25px] border-gray-400 border flex justify-center items-center cursor-pointer ${currentPage === categories?.totalPages
                 ? "cursor-not-allowed opacity-50"
                 : ""
-            }`}
+              }`}
             onClick={() => setCurrentPage(categories?.totalPages)}
           >
             <MdKeyboardDoubleArrowRight />

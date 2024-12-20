@@ -6,7 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const EditDoctorCategory = () => {
   const [doctorData, setDoctorData] = useState({
-    categoryName: "",
+    banner: null,
+    specialtyName: "",
     image: null,
     FAQ: [
       {
@@ -57,7 +58,7 @@ const EditDoctorCategory = () => {
       FAQ: updatedFAQ,
     }));
   };
-
+ 
   // Handle image upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -67,11 +68,27 @@ const EditDoctorCategory = () => {
     }));
   };
 
+  const handleBannerChange = (e) => {
+    const file = e.target.files[0]
+    setDoctorData((prev) => ({
+      ...prev,
+      banner: file
+    }))
+  }
+
   // Remove existing image
   const handleRemoveImage = () => {
     setDoctorData((prev) => ({
       ...prev,
       image: null,
+    }));
+  };
+
+  // Remove existing image
+  const handleRemoveBanner = () => {
+    setDoctorData((prev) => ({
+      ...prev,
+      banner: null,
     }));
   };
 
@@ -89,7 +106,8 @@ const EditDoctorCategory = () => {
       console.log("All category details", response.data.data);
       const doctor = response.data.data;
       setDoctorData({
-        categoryName: doctor.categoryName,
+        banner: doctor.banner,
+        specialtyName: doctor.specialtyName,
         image: doctor.image, // Assume this is a URL
         FAQ: doctor.FAQ,
         sortDescription: doctor.sortDescription,
@@ -108,10 +126,11 @@ const EditDoctorCategory = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("specialtyName", doctorData.categoryName);
+      formData.append("specialtyName", doctorData.specialtyName);
       formData.append("sortDescription", doctorData.sortDescription);
       formData.append("longDescription", doctorData.longDescription);
       formData.append("image", doctorData.image); // Append the image file
+      formData.append("banner", doctorData?.banner)
       doctorData.FAQ.forEach((faq, index) => {
         formData.append(`FAQ[${index}][title]`, faq.title);
         formData.append(`FAQ[${index}][value]`, faq.value);
@@ -149,8 +168,8 @@ const EditDoctorCategory = () => {
                 Speciality Name
               </label>
               <input
-                name="categoryName"
-                value={doctorData.categoryName}
+                name="specialtyName"
+                value={doctorData.specialtyName}
                 onChange={handleChange}
                 type="text"
                 placeholder="Enter name here"
@@ -198,6 +217,37 @@ const EditDoctorCategory = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
+                  className="p-3 border rounded-xl focus:outline-none"
+                />
+              )}
+            </div>
+
+
+            {/* banner Upload */}
+            <div className="flex flex-col gap-2">
+              <label className="px-3 font-semibold text-gray-400">
+                Upload Banner
+              </label>
+              {typeof doctorData.banner === "string" ? (
+                <div className="flex flex-col gap-3">
+                  <img
+                    src={doctorData.banner} // Use the image URL directly
+                    alt="Uploaded"
+                    className="w-24 h-24 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemoveBanner}
+                    className="bg-[#da5151] hover:bg-[#dd3e3e] text-white px-3 py-1 rounded"
+                  >
+                    Remove Banner
+                  </button>
+                </div>
+              ) : (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerChange}
                   className="p-3 border rounded-xl focus:outline-none"
                 />
               )}
