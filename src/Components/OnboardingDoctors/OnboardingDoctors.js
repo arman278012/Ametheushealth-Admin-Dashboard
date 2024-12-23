@@ -266,9 +266,9 @@ const OnboardingDoctors = () => {
                       </span>
                       <div className="flex gap-2">
 
-                        <span className="text-[#2271b1]">|</span>
+                        {/* <span className="text-[#2271b1]">|</span> */}
                         <button
-                          className="text-[#2271b1]"
+                          className="text-[#ffff] bg-red-500 px-2 py-1 rounded-md mt-1"
                           onClick={() => {
                             navigate(`/onboarding-doctors/${order._id}`);
                           }}
