@@ -39,7 +39,6 @@ const EditProducts = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [updateLoaderBtn, setUpdateLoaderBtn] = useState(false);
   const [searchManufacturerQuery, setSearchManufacturerQuery] = useState("");
-
   const [productValues, setProductValues] = useState({
     title: "",
     generic: "",
@@ -68,7 +67,7 @@ const EditProducts = () => {
     metaTags: "",
     manufacturerID: "",
     manufacturer: "",
-    productType: "",
+    productType: "OTC",
     isPrescriptionMandatory: "",
     variants: [
       {
@@ -601,11 +600,10 @@ const EditProducts = () => {
               <div className="w-[30%]">
                 <div className="flex flex-col gap-3 p-3">
                   <div
-                    className={`${
-                      activeSection === "name"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "name"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -618,11 +616,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "description"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : "flex gap-2"
-                    }`}
+                    className={`${activeSection === "description"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : "flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -636,11 +633,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "shortDescription"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "shortDescription"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -654,11 +650,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "moreInformation"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "moreInformation"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -672,11 +667,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "faq"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "faq"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -690,11 +684,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "additionalInformation"
-                        ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
-                        : " flex gap-2 text-sm"
-                    }`}
+                    className={`${activeSection === "additionalInformation"
+                      ? "bg-blue-500 text-white flex gap-2 py-1 px-2 text-[12px] font-bold"
+                      : " flex gap-2 text-sm"
+                      }`}
                   >
                     <button
                       type="button"
@@ -707,11 +700,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "sideEffects"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "sideEffects"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -725,11 +717,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "yes-no"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "yes-no"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -743,11 +734,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "meta"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "meta"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -761,11 +751,10 @@ const EditProducts = () => {
                   <div className="w-full h-[1px] bg-gray-300"></div>
 
                   <div
-                    className={`${
-                      activeSection === "variants"
-                        ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
-                        : " flex gap-2"
-                    }`}
+                    className={`${activeSection === "variants"
+                      ? "bg-blue-500 text-white text-sm flex gap-2 py-1 px-2 font-bold"
+                      : " flex gap-2"
+                      }`}
                   >
                     <button
                       type="button"
@@ -847,9 +836,8 @@ const EditProducts = () => {
                         <input
                           type="text"
                           placeholder="compareWebsites"
-                          className={`border px-2 focus:outline-none h-[35px] border px-2 ${
-                            !isUrlValid ? "border-red-500" : ""
-                          }`}
+                          className={`border px-2 focus:outline-none h-[35px] border px-2 ${!isUrlValid ? "border-red-500" : ""
+                            }`}
                           onChange={(e) => {
                             handleExChange(e);
                             handleChange(e);
@@ -1644,9 +1632,8 @@ const EditProducts = () => {
                   </button>
                 </div>
                 <div
-                  className={`category-list mt-3 ${
-                    isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                  className={`category-list mt-3 ${isOpen ? "h-[300px] overflow-y-auto" : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
                 >
                   <input
                     type="text"
@@ -1694,11 +1681,10 @@ const EditProducts = () => {
                     </button>
                   </div>
                   <div
-                    className={`tag-list mt-3 ${
-                      productTags
-                        ? "h-auto overflow-y-auto"
-                        : "h-0 overflow-hidden"
-                    } transition-all duration-300`}
+                    className={`tag-list mt-3 ${productTags
+                      ? "h-auto overflow-y-auto"
+                      : "h-0 overflow-hidden"
+                      } transition-all duration-300`}
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex justify-around">
@@ -1759,11 +1745,10 @@ const EditProducts = () => {
                   </button>
                 </div>
                 <div
-                  className={`upload-image mt-3 ${
-                    isImageOpen
-                      ? "h-auto overflow-y-auto"
-                      : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                  className={`upload-image mt-3 ${isImageOpen
+                    ? "h-auto overflow-y-auto"
+                    : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
                 >
                   <div className="p-5 w-[250px] flex justify-center items-center flex-col gap-3">
                     <input
@@ -1810,11 +1795,10 @@ const EditProducts = () => {
                 </div>
 
                 <div
-                  className={`generic-map mt-3 ${
-                    genericsOpen
-                      ? "h-[250px] overflow-y-auto"
-                      : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                  className={`generic-map mt-3 ${genericsOpen
+                    ? "h-[250px] overflow-y-auto"
+                    : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
                 >
                   {/* Display selected generic name */}
                   {selectedGeneric && (
@@ -1864,11 +1848,10 @@ const EditProducts = () => {
                 </div>
 
                 <div
-                  className={`generic-map mt-3 ${
-                    manuIdOpen
-                      ? "h-[300px] overflow-y-auto"
-                      : "h-0 overflow-hidden"
-                  } transition-all duration-300`}
+                  className={`generic-map mt-3 ${manuIdOpen
+                    ? "h-[300px] overflow-y-auto"
+                    : "h-0 overflow-hidden"
+                    } transition-all duration-300`}
                 >
                   {selectedMAnufacturer && (
                     <div className="mb-2 font-semibold text-gray-700">
