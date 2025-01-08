@@ -420,7 +420,7 @@ const AddCategory = () => {
                                 placeholder="Enter FAQ Title"
                               />
                             </div>
-                          
+
                             {/* FAQ Value */}
                             <div className="mb-2">
                               <label className="block text-sm font-bold mb-1 px-3 ">FAQ Value</label>

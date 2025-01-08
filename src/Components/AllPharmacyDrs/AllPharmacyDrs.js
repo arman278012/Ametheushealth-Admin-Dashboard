@@ -24,7 +24,7 @@ const AllPharmacyDrs = () => {
         const selectedFilter = event.target.value;
         setFilter(selectedFilter);
         // Call the allOrders function with the new filter
-        allOrders(currentPage, pageLimit, searchQuery, selectedFilter);
+        // allOrders(currentPage, pageLimit, searchQuery, selectedFilter);
     };
 
     const handleSelectAll = (e) => {
@@ -78,6 +78,14 @@ const AllPharmacyDrs = () => {
         second: "2-digit",
         hour12: true,
     };
+
+    const goToPage = () => {
+        console.log("This is goto page section")
+    }
+
+    const handleCheckboxChange = () => {
+        console.log("This is function")
+    }
 
     return (
         <div className='flex flex-col p-5'>
