@@ -53,6 +53,8 @@ import OnboardingDoctorsPage from "./Pages/OnboarinngDoctorsPage/OnboarinngDocto
 import EditDoctorsDetailsPage from "./Pages/EditDoctorsDetailsPage/EditDoctorsDetailsPage";
 import ApproveDoctor from "./Pages/ApproveDoctor/ApproveDoctor";
 import OnBoardingDoctorsDetailsPage from "./Pages/OnBoardingDoctorsDetailsPage/OnBoardingDoctorsDetailsPage";
+import OnBoardingPharmacyPage from "./Pages/PharmacyDoctorsPage/OnBoardingPharmacyPage";
+import AllPharmacyDrsPage from "./Pages/AllPharmacyDrsPage/AllPharmacyDrsPage";
 
 function App() {
   const {
@@ -261,8 +263,12 @@ function App() {
               element={<AdminRoute element={ApproveDoctor} />}
             />
             <Route
-              path="/onboarding-doctors/:id"
-              element={<AdminRoute element={OnBoardingDoctorsDetailsPage} />}
+              path="/onboarding-pharmacy-doctors"
+              element={<AdminRoute element={OnBoardingPharmacyPage} />}
+            />
+            <Route
+              path="/all-pharmacy-doctors"
+              element={<AdminRoute element={AllPharmacyDrsPage} />}
             />
           </Routes>
           {editAllCattegoriesForm ? <EditCategoryForm /> : <></>}

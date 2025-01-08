@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
-import { Field, Formik } from "formik";
+import { Field, FieldArray, Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,12 @@ const initialValues = {
   metaTitle: "",
   metaDescription: "",
   metaTags: "",
+  faq: [
+    {
+      title: "",
+      value: ""
+    }
+  ]
 };
 
 const validationSchema = Yup.object().shape({
@@ -41,6 +47,7 @@ const AddCategory = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [categoryId, setCategoryId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [faqs, setFaqs] = useState([{ title: "", value: "" }]);
 
   useEffect(() => {
     dispatch(fetchAddcategoryData());
@@ -178,6 +185,23 @@ const AddCategory = () => {
     buttons: ["bold", "italic", "underline", "link", "image", "upload"], // Add image button to toolbar
   };
 
+  // FAQ sections
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedFaqs = [...faqs];
+    updatedFaqs[index][name] = value;
+    setFaqs(updatedFaqs);
+  };
+
+  const handleAddFaq = () => {
+    setFaqs([...faqs, { title: "", value: "" }]);
+  };
+
+  const handleRemoveFaq = (index) => {
+    const updatedFaqs = faqs.filter((_, i) => i !== index);
+    setFaqs(updatedFaqs);
+  };
+
   return (
     <div className="bg-[#f0f0f1]">
       <div className="p-5 sm:w-[60vw] w-[100%] mx-auto">
@@ -189,9 +213,8 @@ const AddCategory = () => {
           {[1, 2, 3].map((step) => (
             <div
               key={step}
-              className={`stepper-item ${
-                currentStep >= step ? "completed" : ""
-              }`}
+              className={`stepper-item ${currentStep >= step ? "completed" : ""
+                }`}
             >
               <div className="step">{step}</div>
             </div>
@@ -378,6 +401,61 @@ const AddCategory = () => {
                     </div>
                   </div>
 
+                  {/* FAQ Section */}
+                  <FieldArray name="faq">
+                    {({ insert, remove }) => (
+                      <div className="flex flex-col mt-5">
+                        {/* <h3 className="text-lg font-bold mb-4">FAQs</h3> */}
+                        {values.faq.map((faq, index) => (
+                          <div key={index} className="mb-4 border rounded">
+                            {/* FAQ Title */}
+                            <div className="mb-2">
+                              <label className="block text-sm font-bold mb-1 px-3 ">FAQ Title</label>
+                              <Field
+                                type="text"
+                                name={`faq[${index}].title`}
+                                value={faq.title}
+                                onChange={handleChange}
+                                className="p-3 border rounded-xl outline-none w-full"
+                                placeholder="Enter FAQ Title"
+                              />
+                            </div>
+                          
+                            {/* FAQ Value */}
+                            <div className="mb-2">
+                              <label className="block text-sm font-bold mb-1 px-3 ">FAQ Value</label>
+                              <Field
+                                as="textarea"
+                                name={`faq[${index}].value`}
+                                value={faq.value}
+                                onChange={handleChange}
+                                className="p-3 border rounded-xl outline-none w-full"
+                                placeholder="Enter FAQ Value"
+                              />
+                            </div>
+
+                            {/* Remove FAQ Button */}
+                            <button
+                              type="button"
+                              onClick={() => remove(index)}
+                              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                            >
+                              Remove FAQ
+                            </button>
+                          </div>
+                        ))}
+                        {/* Add New FAQ Button */}
+                        <button
+                          type="button"
+                          onClick={() => insert(values.faq.length, { title: "", value: "" })}
+                          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
+                        >
+                          Add FAQ
+                        </button>
+                      </div>
+                    )}
+                  </FieldArray>
+
                   <div className="mt-5 flex flex-col gap-2">
                     <button
                       type="button"
@@ -420,7 +498,7 @@ const AddCategory = () => {
                       type="button"
                       onClick={() => handleNext(values)}
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      // disabled={!values.image || isSubmitting}
+                    // disabled={!values.image || isSubmitting}
                     >
                       {isSubmitting ? "Loading..." : "Next"}
                     </button>
@@ -448,7 +526,7 @@ const AddCategory = () => {
                         setFieldValue("docFileURL", file);
                       }}
                       className="p-3 border rounded-xl h-[45px]"
-                      // disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     />
                   </div>
 
@@ -456,7 +534,7 @@ const AddCategory = () => {
                     <button
                       type="submit"
                       className="bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 rounded-xl"
-                      // disabled={!values.file || isSubmitting}
+                    // disabled={!values.file || isSubmitting}
                     >
                       {isSubmitting ? "Saving..." : "Save Data"}
                     </button>
@@ -464,7 +542,7 @@ const AddCategory = () => {
                       type="button"
                       onClick={handleBack}
                       className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-xl mt-2"
-                      // disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     >
                       Back
                     </button>

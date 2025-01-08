@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import './CreateOrder.css'
+
 const countryOptions = [
   { value: "AFGHANISTAN", label: "Afghanistan" },
   { value: "ALBANIA", label: "Albania" },
@@ -622,7 +623,7 @@ const CreateOrder = () => {
                   name="orderNotes"
                   onChange={handleChange}
                   className="w-full p-2 border rounded focus:outline-none textArea"
-                  
+
                 ></textarea>
               </div>
               <div className="flex gap-4">
@@ -657,9 +658,8 @@ const CreateOrder = () => {
           <div className="bg-white p-5 mt-5 max-w-4xl mx-auto">
             <p className="font-bold text-xl mb-5">Attach Products</p>
             <div
-              className={`overflow-hidden transition-all duration-300 ${
-                isTopBarOpen ? "max-h-screen" : "max-h-0"
-              }`}
+              className={`overflow-hidden transition-all duration-300 ${isTopBarOpen ? "max-h-screen" : "max-h-0"
+                }`}
             >
               <div className="flex gap-3">
                 <div className="flex gap-2">
@@ -690,9 +690,8 @@ const CreateOrder = () => {
                 >
                   OPTIONS
                   <span
-                    className={`ml-1 transition-transform duration-300 ${
-                      isTopBarOpen ? "rotate-180" : "rotate-0"
-                    }`}
+                    className={`ml-1 transition-transform duration-300 ${isTopBarOpen ? "rotate-180" : "rotate-0"
+                      }`}
                   >
                     ▼
                   </span>
@@ -871,9 +870,8 @@ const CreateOrder = () => {
                   >
                     OPTIONS
                     <span
-                      className={`ml-1 transition-transform duration-300 ${
-                        isTopBarOpen ? "rotate-180" : "rotate-0"
-                      }`}
+                      className={`ml-1 transition-transform duration-300 ${isTopBarOpen ? "rotate-180" : "rotate-0"
+                        }`}
                     >
                       ▼
                     </span>
@@ -963,59 +961,59 @@ const CreateOrder = () => {
                 <Tbody>
                   {isLoading
                     ? Array.from({ length: 10 })?.map((_, index) => (
-                        <Tr key={index} className="border-t">
-                          <Td className="py-2 px-4 border-b text-center">
-                            <Skeleton circle={true} height={12} width={12} />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-center">
-                            <Skeleton circle={true} height={48} width={48} />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            <Skeleton width={`80%`} />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            <Skeleton width={`80%`} count={2} />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            <Skeleton width={`50%`} />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            <Skeleton width={`50%`} />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[13px]">
-                            <Skeleton width={`50%`} />
-                          </Td>
-                        </Tr>
-                      ))
+                      <Tr key={index} className="border-t">
+                        <Td className="py-2 px-4 border-b text-center">
+                          <Skeleton circle={true} height={12} width={12} />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-center">
+                          <Skeleton circle={true} height={48} width={48} />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          <Skeleton width={`80%`} />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          <Skeleton width={`80%`} count={2} />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          <Skeleton width={`50%`} />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          <Skeleton width={`50%`} />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[13px]">
+                          <Skeleton width={`50%`} />
+                        </Td>
+                      </Tr>
+                    ))
                     : allUser?.data?.map((item, index) => (
-                        <Tr key={index} className="border-t">
-                          <Td className="py-2 px-4 border-b text-center">
-                            <input
-                              type="radio"
-                              onChange={() =>
-                                setOrderForm((prevState) => ({
-                                  ...prevState,
-                                  userID: item._id, // Replace `yourUserID` with the actual user ID value
-                                }))
-                              }
-                              value={orderForm.userID}
-                              name="userID"
-                            />
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            <p className="text-[#2271b1]">{item?.name}</p>
-                            <div className="text-[12px]">{item?._id}</div>
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            {item?.email}
-                          </Td>
-                          <Td className="py-2 px-4 border-b text-[14px]">
-                            <span className="text-green-600 font-semibold">
-                              {item?.mobile}
-                            </span>
-                          </Td>
-                        </Tr>
-                      ))}
+                      <Tr key={index} className="border-t">
+                        <Td className="py-2 px-4 border-b text-center">
+                          <input
+                            type="radio"
+                            onChange={() =>
+                              setOrderForm((prevState) => ({
+                                ...prevState,
+                                userID: item._id, // Replace `yourUserID` with the actual user ID value
+                              }))
+                            }
+                            value={orderForm.userID}
+                            name="userID"
+                          />
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          <p className="text-[#2271b1]">{item?.name}</p>
+                          <div className="text-[12px]">{item?._id}</div>
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          {item?.email}
+                        </Td>
+                        <Td className="py-2 px-4 border-b text-[14px]">
+                          <span className="text-green-600 font-semibold">
+                            {item?.mobile}
+                          </span>
+                        </Td>
+                      </Tr>
+                    ))}
                 </Tbody>
               </Table>
             </div>
@@ -1023,7 +1021,7 @@ const CreateOrder = () => {
 
 
 
-            
+
             <div className="flex justify-center items-center p-2">
               <button
                 type="submit"

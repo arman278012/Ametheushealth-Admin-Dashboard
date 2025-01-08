@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { IoMdContact } from "react-icons/io";
-import { MdDescription } from "react-icons/md";
+import { MdDescription, MdLocalPharmacy } from "react-icons/md";
 import { AiFillProduct } from "react-icons/ai";
 import { TbLogs } from "react-icons/tb";
 import { RiCoupon2Fill } from "react-icons/ri";
@@ -30,6 +30,8 @@ const MySideBar = () => {
   const [isBlogsOpen, setIsBlogsOpen] = useState(false);
   const [isCouponsMenuOpen, setIsCouponsMenuOpen] = useState(false);
   const [isDoctorMenu, setisDoctorMenu] = useState(false);
+  const [isPharmacyMenu, setIsPharmacyMenu] = useState(false);
+
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleUsersMenu = () => setIsUsersMenuOpen(!isUsersMenuOpen);
@@ -46,6 +48,7 @@ const MySideBar = () => {
   const toggleBlogsMenu = () => setIsBlogsOpen(!isBlogsOpen);
   const toggleCouponsMenu = () => setIsCouponsMenuOpen(!isCouponsMenuOpen);
   const toggleDoctorsMenu = () => setisDoctorMenu(!isDoctorMenu);
+  const togglePharmacy = () => setIsPharmacyMenu(!isPharmacyMenu)
 
   const id = localStorage.getItem("id");
   const authorization = localStorage.getItem("authorization");
@@ -443,7 +446,7 @@ const MySideBar = () => {
               )}
             </div>
 
-            {/* orders menu */}
+            {/* Doctors menu */}
             <div>
               <button
                 onClick={toggleDoctorsMenu}
@@ -479,6 +482,46 @@ const MySideBar = () => {
                   >
                     Onboarding Doctors
                   </a>
+                </div>
+              )}
+            </div>
+
+            {/* Pharmacy menu */}
+            <div>
+              <button
+                onClick={togglePharmacy}
+                className="flex items-center justify-between w-full px-4 py-2 text-left focus:outline-none focus:bg-gray-700"
+              >
+                <span className="flex items-center">
+                  <MdLocalPharmacy className="mr-2" />
+                  {!isCollapsed && "Pharmacy Doctors"}
+                </span>
+                {!isCollapsed &&
+                  (isPharmacyMenu ? <FaChevronDown /> : <FaChevronRight />)}
+              </button>
+              {!isCollapsed && isPharmacyMenu && (
+                <div className="ml-6 mt-2 flex flex-col space-y-2">
+                  <NavLink
+                    to={"/all-pharmacy-doctors"}
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    All Doctors
+                  </NavLink>
+                  {/* <a href="/all-doctor" className="hover:bg-gray-700 px-4 py-2">
+                    All Doctors
+                  </a>
+                  <a
+                    href="/all-doctor-category"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    All Categories
+                  </a> */}
+                  {/* <a
+                    href="/all-onboarding-doctors"
+                    className="hover:bg-gray-700 px-4 py-2"
+                  >
+                    Onboarding Doctors
+                  </a> */}
                 </div>
               )}
             </div>
