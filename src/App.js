@@ -263,7 +263,7 @@ function App() {
               element={<AdminRoute element={ApproveDoctor} />}
             />
             <Route
-              path="/onboarding-pharmacy-doctors"
+              path="/onboarding-pharmacy-doctors/:id"
               element={<AdminRoute element={OnBoardingPharmacyPage} />}
             />
             <Route

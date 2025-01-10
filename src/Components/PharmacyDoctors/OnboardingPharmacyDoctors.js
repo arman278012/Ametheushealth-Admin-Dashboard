@@ -1,6 +1,12 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 function OnboardingPharmacyDoctors() {
+
+    const [geoError, setGeoError] = useState("");
+    const [loader, setLoader] = useState(false)
     const [formData, setFormData] = useState({
         pharmacyName: "",
         userID: "",
@@ -25,7 +31,72 @@ function OnboardingPharmacyDoctors() {
         pharmacyImageURL: ""
     });
 
-    const [geoError, setGeoError] = useState("");
+    const { id } = useParams()
+
+    const getOnBoardingDoctorDetails = async () => {
+        try {
+            const response = await axios.get(`https://api.assetorix.com/ah/api/v1/pharmacy/admin/pharmacies/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+                    id: localStorage.getItem("id"),
+                },
+            });
+            console.log(response.data);
+
+            // Update formData with the fetched data
+            setFormData({
+                pharmacyName: response.data.data.pharmacyName || "",
+                userID: response.data.data.userID || "",
+                address: response.data.data.address || "",
+                city: response.data.data.city || "",
+                state: response.data.data.state || "",
+                pincode: response.data.data.pincode || "",
+                country: response.data.data.country || "INDIA",
+                timeZone: response.data.data.timeZone || "",
+                operatingHours: response.data.data.operatingHours || [
+                    { day: "Monday", openingTime: "", closingTime: "", isClosed: false },
+                ],
+                licenseNumber: response.data.data.licenseNumber || "",
+                licenseExpiryDate: response.data.data.licenseExpiryDate || "",
+                servicesOffered: response.data.data.servicesOffered || [],
+                deliveryCoverageAreas: response.data.data.deliveryCoverageAreas || [],
+                averageDeliveryTime: response.data.data.averageDeliveryTime || "",
+                gpsCoordinates: response.data.data.gpsCoordinates || { latitude: "", longitude: "" },
+                status: response.data.data.status || false,
+                statusDetails: response.data.data.statusDetails || "",
+                languagesSupported: response.data.data.languagesSupported || [],
+                pharmacyImageURL: response.data.data.pharmacyImageURL || "",
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updatePharmacyDetails = async (e) => {
+        setLoader(true)
+        try {
+            e.preventDefault()
+            const response = await axios.patch(`https://api.assetorix.com/ah/api/v1/pharmacy/admin/edit/${id}`, formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("authorization")}`,
+                        id: localStorage.getItem("id"),
+                    },
+                }
+            )
+            setLoader(false)
+            toast.success(response.data.message)
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getOnBoardingDoctorDetails()
+    }, [])
+
+    console.log(id)
 
     useEffect(() => {
         // Check if the geolocation is available in the browser
@@ -320,7 +391,6 @@ function OnboardingPharmacyDoctors() {
         });
     };
 
-
     const handleChange = (e) => {
         const { name, options } = e.target;
 
@@ -349,17 +419,12 @@ function OnboardingPharmacyDoctors() {
         setFormData({ ...formData, operatingHours: updatedHours });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-    };
-
     return (
         <div className="w-full m-5 p-8 bg-gray-100 bg-opacity-50 shadow-xl rounded-xl">
             <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
                 Pharmacy Registration
             </h1>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={updatePharmacyDetails} className="space-y-6">
                 {/* Pharmacy Name */}
                 <div className="grid grid-cols-2 gap-6">
                     <div>
@@ -372,7 +437,7 @@ function OnboardingPharmacyDoctors() {
                             value={formData.pharmacyName}
                             onChange={handleChange}
                             className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
 
@@ -386,7 +451,7 @@ function OnboardingPharmacyDoctors() {
                             value={formData.userID}
                             onChange={handleChange}
                             className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                 </div>
@@ -401,7 +466,7 @@ function OnboardingPharmacyDoctors() {
                         value={formData.address}
                         onChange={handleChange}
                         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
+                    // required
                     />
                 </div>
 
@@ -417,7 +482,7 @@ function OnboardingPharmacyDoctors() {
                             value={formData.city}
                             onChange={handleChange}
                             className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                     <div>
@@ -430,7 +495,7 @@ function OnboardingPharmacyDoctors() {
                             value={formData.state}
                             onChange={handleChange}
                             className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                     <div>
@@ -443,7 +508,7 @@ function OnboardingPharmacyDoctors() {
                             value={formData.pincode}
                             onChange={handleChange}
                             className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                 </div>
@@ -458,7 +523,7 @@ function OnboardingPharmacyDoctors() {
                         value={formData.country}
                         onChange={handleChange}
                         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
+                    // required
                     >
                         <option>Select Country</option>
                         {countries.map((ele, index) => (
@@ -501,7 +566,7 @@ function OnboardingPharmacyDoctors() {
                         value={formData.timeZone}
                         onChange={handleChange}
                         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
+                    // required
                     >
                         {Intl.supportedValuesOf("timeZone").map((zone) => (
                             <option key={zone} value={zone}>
@@ -591,7 +656,7 @@ function OnboardingPharmacyDoctors() {
                         value={formData.licenseNumber}
                         onChange={handleChange}
                         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
+                    // required
                     />
                 </div>
 
@@ -605,7 +670,7 @@ function OnboardingPharmacyDoctors() {
                         value={formData.licenseExpiryDate}
                         onChange={handleChange}
                         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
+
                     />
                 </div>
 
@@ -679,7 +744,8 @@ function OnboardingPharmacyDoctors() {
                         type="submit"
                         className="w-full bg-blue-600 text-white p-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
                     >
-                        Submit
+                        {loader ? "Updating..." : "Update"}
+
                     </button>
                 </div>
             </form>

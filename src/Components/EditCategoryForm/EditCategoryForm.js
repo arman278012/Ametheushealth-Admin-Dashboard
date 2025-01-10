@@ -30,6 +30,7 @@ const EditCategoryForm = () => {
     metaDescription: "",
     image: null,
     file: null,
+    faq: [{ title: "", value: "" }],
   });
 
   const storedId = useSelector(selectStoredId); // Fetch stored ID from Redux store
@@ -53,9 +54,9 @@ const EditCategoryForm = () => {
           },
         }
       );
-      console.log("1", response.data);
       const categoryData = response.data;
-      console.log("2", response.data, categoryData);
+
+      // Set formValues with fetched data
       setFormValues({
         name: categoryData?.name || "",
         parent: categoryData?.parent || "",
@@ -64,18 +65,18 @@ const EditCategoryForm = () => {
         metaTags: categoryData?.metaTags || "",
         metaTitle: categoryData?.metaTitle || "",
         metaDescription: categoryData?.metaDescription || "",
-        image: null,
+        faq: categoryData?.faq || [{ title: "", value: "" }],
+        image: null, // Adjust based on your image handling logic
         file: null,
       });
-      setImageData(response.data);
-      console.log(imageData);
-      console.log("category", response?.data);
+      setImageData(categoryData); // Assuming setImageData handles image previews or uploads
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     getDataForEdit();
@@ -221,6 +222,31 @@ const EditCategoryForm = () => {
     }
   };
 
+  // FAQ section for edit the FAQ
+  const handleRemoveFAQ = (index) => {
+    setFormValues((prevData) => ({
+      ...prevData,
+      faq: prevData.faq.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleAddFAQ = () => {
+    const newFAQ = { title: "", value: "" }; // Matches your schema
+    setFormValues((prevData) => ({
+      ...prevData,
+      faq: [...prevData.faq, newFAQ],
+    }));
+  };
+
+  const handleFAQChange = (index, event) => {
+    const { name, value } = event.target;
+    setFormValues((prevData) => {
+      const updatedFAQs = [...prevData.faq];
+      updatedFAQs[index] = { ...updatedFAQs[index], [name]: value };
+      return { ...prevData, faq: updatedFAQs };
+    });
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-8 z-50 w-[80%] relative max-h-[90vh] overflow-y-auto">
@@ -235,9 +261,8 @@ const EditCategoryForm = () => {
           {[1, 2, 3].map((step) => (
             <div
               key={step}
-              className={`stepper-item ${
-                currentStep >= step ? "completed" : ""
-              }`}
+              className={`stepper-item ${currentStep >= step ? "completed" : ""
+                }`}
             >
               <div className="step">{step}</div>
             </div>
@@ -454,6 +479,71 @@ const EditCategoryForm = () => {
                   />
                 )}
               </div>
+
+              <div className="w-full flex flex-col gap-4">
+                {formValues.faq.map((faq, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col gap-2 border p-4 rounded-xl shadow-md w-[100%]"
+                  >
+                    {/* Header */}
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-medium text-lg text-gray-700">
+                        FAQ {index + 1}
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFAQ(index)}
+                        className="text-red-600 hover:text-red-800 text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+
+                    {/* Content */}
+                    <div className="mt-4">
+                      {/* FAQ Title */}
+                      <div className="mb-4 w-[100%]">
+                        <label className="block text-gray-600 text-sm font-medium mb-2">
+                          Title
+                        </label>
+                        <input
+                          name="title"
+                          value={faq.title}
+                          onChange={(e) => handleFAQChange(index, e)}
+                          type="text"
+                          placeholder="Enter title"
+                          className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none"
+                        />
+                      </div>
+
+                      {/* FAQ Value */}
+                      <div>
+                        <label className="block text-gray-600 text-sm font-medium mb-2">
+                          FAQ Value
+                        </label>
+                        <input
+                          name="value"
+                          value={faq.value}
+                          onChange={(e) => handleFAQChange(index, e)}
+                          type="text"
+                          placeholder="Enter FAQ value"
+                          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Add FAQ Button */}
+                <button
+                  type="button"
+                  onClick={handleAddFAQ}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 shadow"
+                >
+                  Add FAQ
+                </button>
+              </div>F
             </>
           )}
 
@@ -602,9 +692,8 @@ const EditCategoryForm = () => {
             <button
               type="button"
               onClick={handleNext}
-              className={`bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`bg-[#13a3bc] hover:bg-[#13b6d5] text-white font-bold py-2 px-4 rounded-xl ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Loading..." : "Next"}

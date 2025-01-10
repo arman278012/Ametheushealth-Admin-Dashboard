@@ -273,16 +273,16 @@ const AllPharmacyDrs = () => {
                                     Name
                                 </Th>
                                 <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
-                                    Order Id
+                                    User ID
                                 </Th>
                                 <Th className="py-2 px-4 border-b border-gray-300 text-left w-[15%]">
-                                    Date
-                                </Th>
-                                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
-                                    Price
+                                    Genration Date
                                 </Th>
                                 <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
                                     Status
+                                </Th>
+                                <Th className="py-2 px-4 border-b border-gray-300 text-left w-[10%]">
+                                    Available days
                                 </Th>
                             </Tr>
                         </Thead>
@@ -299,12 +299,13 @@ const AllPharmacyDrs = () => {
                                         />
                                     </Td>
                                     <Td className="py-2 px-4 border-b  text-[14px] border-gray-300">
-                                        {order.pharmacyName}
+                                        <span className='font-semibold text-[15px]'>{order.pharmacyName}</span>
+                                        <p>{order._id}</p>
                                         <div className="flex gap-2">
                                             <button
                                                 className="text-[#2271b1]"
                                                 onClick={() =>
-                                                    navigate(`/orders-details/${order._id}`)
+                                                    navigate(`/onboarding-pharmacy-doctors/${order._id}`)
                                                 }
                                             >
                                                 Edit
@@ -322,16 +323,16 @@ const AllPharmacyDrs = () => {
                                         </div>
                                     </Td>
                                     <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                                        {order._id}
+                                        {order.userID}
                                     </Td>
                                     <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
                                         {convertToIST(order.createdAt)}
                                     </Td>
                                     <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                                        {order.currency} {order.totalCartPrice}
+                                        {order.status === "true" ? "True" : order.status === "false" ? "False" : ""}
                                     </Td>
                                     <Td className="py-2 px-4 border-b border-gray-300 text-[14px]">
-                                        {order.status === "Pending" ? (
+                                        {/* {order.status === "Pending" ? (
                                             <div className="bg-yellow-200 px-2 py-1 font-semibold flex justify-center items-center">
                                                 <p className="uppercase">Pending</p>
                                             </div>
@@ -363,13 +364,14 @@ const AllPharmacyDrs = () => {
                                             <div>
                                                 <p>No Status Found</p>
                                             </div>
-                                        )}
+                                        )} */}
+
                                     </Td>
                                 </Tr>
                             ))}
                         </Tbody>
                     </Table>
-                </div>
+                </div> 
             </div>
         </div>
     )
