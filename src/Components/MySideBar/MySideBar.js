@@ -134,7 +134,7 @@ const MySideBar = () => {
               )}
             </div>
 
-            {/* Perscription Menu */}
+            {/* Prescription Menu */}
             <div>
               <button
                 onClick={togglePerscriptionMenu}
@@ -142,7 +142,7 @@ const MySideBar = () => {
               >
                 <span className="flex items-center">
                   <MdDescription className="mr-2" />
-                  {!isCollapsed && "Perscription"}
+                  {!isCollapsed && "Prescription"}
                 </span>
                 {!isCollapsed &&
                   (isPerscriptionMenuOpen ? (
@@ -157,7 +157,7 @@ const MySideBar = () => {
                     to={"/all-persciption"}
                     className="hover:bg-gray-700 px-4 py-2"
                   >
-                    All Perscription
+                    All Prescription
                   </NavLink>
                   {/* <NavLink
                     to={"/add-orders"}

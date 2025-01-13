@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
@@ -371,7 +371,7 @@ const AllPharmacyDrs = () => {
                             ))}
                         </Tbody>
                     </Table>
-                </div> 
+                </div>
             </div>
         </div>
     )
