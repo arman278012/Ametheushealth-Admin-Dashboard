@@ -45,7 +45,7 @@ const AllDoctorCategory = () => {
   const deleteDoctorCategory = async () => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com/ah/api/v1/dc/admin/category/delete/${deleteId}`,
+        `https://ah-backend-djja.onrender.com/dc/admin/category/delete/${deleteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -63,7 +63,7 @@ const AllDoctorCategory = () => {
   const allDoctorCategories = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/dc/user/category`,
+        `https://ah-backend-djja.onrender.com/dc/user/category`,
         {
           params: {
             specialtyName: searchQuery,

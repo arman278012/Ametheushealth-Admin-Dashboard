@@ -48,7 +48,7 @@ const Orders = () => {
     query = encodeURIComponent(query); // Sanitize query string
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}&status=${filter}`,
+        `https://ah-backend-djja.onrender.com/order/admin/orders?page=${page}&limit=${pageLimit}&search=${query}&status=${filter}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

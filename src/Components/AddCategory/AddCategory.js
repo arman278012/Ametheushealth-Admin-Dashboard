@@ -60,7 +60,7 @@ const AddCategory = () => {
         delete values.parent;
       }
       const response = await axios.post(
-        `https://api.assetorix.com/ah/api/v1/category`,
+        `https://ah-backend-djja.onrender.com/category`,
         values,
         {
           headers: {
@@ -85,7 +85,7 @@ const AddCategory = () => {
       formData.append("image", file);
 
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/category/${categoryId}/image`,
+        `https://ah-backend-djja.onrender.com/category/${categoryId}/image`,
         formData,
         {
           headers: {
@@ -106,7 +106,7 @@ const AddCategory = () => {
       formData.append("docFileURL", file);
 
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/category/${categoryId}/docFile`,
+        `https://ah-backend-djja.onrender.com/category/${categoryId}/docFile`,
         formData,
         {
           headers: {

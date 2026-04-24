@@ -28,7 +28,7 @@ const EditUser = ({ setEditUser, editId, getAllUser }) => {
     // searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/user/admin/user/${editId}`,
+        `https://ah-backend-djja.onrender.com/user/admin/user/${editId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -55,7 +55,7 @@ const EditUser = ({ setEditUser, editId, getAllUser }) => {
     e.preventDefault();
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/user/admin/${editId}`,
+        `https://ah-backend-djja.onrender.com/user/admin/${editId}`,
         formData,
         {
           headers: {

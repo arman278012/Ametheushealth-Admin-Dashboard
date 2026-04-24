@@ -21,7 +21,7 @@ const EditManufacturers = () => {
   const getManufacturersData = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/${manufacturerId}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/${manufacturerId}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -55,7 +55,7 @@ const EditManufacturers = () => {
   const editManufacturers = async () => {
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/${manufacturerId}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/${manufacturerId}`,
         formData,
         {
           headers: {

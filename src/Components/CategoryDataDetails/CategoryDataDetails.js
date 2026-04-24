@@ -21,7 +21,7 @@ const CategoryDataDetails = () => {
   const getIndividualData = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/category/admin/${id}`,
+        `https://ah-backend-djja.onrender.com/category/admin/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

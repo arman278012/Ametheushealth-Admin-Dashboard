@@ -37,7 +37,7 @@ function OnboardingPharmacyDoctors() {
     const getOnBoardingDoctorDetails = async () => {
         try {
             const response = await axios.get(
-                `https://api.assetorix.com/ah/api/v1/pharmacy/admin/pharmacies/${id}`,
+                `https://ah-backend-djja.onrender.com/pharmacy/admin/pharmacies/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -83,7 +83,7 @@ function OnboardingPharmacyDoctors() {
         setLoader(true)
         try {
             e.preventDefault()
-            const response = await axios.patch(`https://api.assetorix.com/ah/api/v1/pharmacy/admin/edit/${id}`, formData,
+            const response = await axios.patch(`https://ah-backend-djja.onrender.com/pharmacy/admin/edit/${id}`, formData,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("authorization")}`,

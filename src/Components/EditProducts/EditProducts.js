@@ -186,7 +186,7 @@ const EditProducts = () => {
     // Call the API to generate SKU
     try {
       const response = await axios.post(
-        `https://api.assetorix.com/ah/api/v1/product/sku`,
+        `https://ah-backend-djja.onrender.com/product/sku`,
         payload,
         {
           headers: {
@@ -278,7 +278,7 @@ const EditProducts = () => {
   const getDataForEdit = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/product/admin/${id}`,
+        `https://ah-backend-djja.onrender.com/product/admin/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -330,7 +330,7 @@ const EditProducts = () => {
   const getHierarchy = async (query = "") => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/category/view?search=${query}`,
+        `https://ah-backend-djja.onrender.com/category/view?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -361,7 +361,7 @@ const EditProducts = () => {
     genericQuery = encodeURIComponent(genericQuery);
     try {
       const response = await axios.post(
-        `https://api.assetorix.com/ah/api/v1/generic/names/new`,
+        `https://ah-backend-djja.onrender.com/generic/names/new`,
         { search: genericQuery },
         {
           headers: {
@@ -423,7 +423,7 @@ const EditProducts = () => {
 
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/product/${id}`,
+        `https://ah-backend-djja.onrender.com/product/${id}`,
         updatedProductValues, // Send the updated product data including categoryID
         {
           headers: {
@@ -481,7 +481,7 @@ const EditProducts = () => {
 
     try {
       const response = await axios.post(
-        `https://api.assetorix.com/ah/api/v1/product/${id}/images`,
+        `https://ah-backend-djja.onrender.com/product/${id}/images`,
         formData,
         {
           headers: {
@@ -504,7 +504,7 @@ const EditProducts = () => {
   const deleteSingleImage = async (imgId) => {
     try {
       const response = await axios.delete(
-        `https://api.assetorix.com/ah/api/v1/product/${id}/single-image/${imgId}`,
+        `https://ah-backend-djja.onrender.com/product/${id}/single-image/${imgId}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -525,7 +525,7 @@ const EditProducts = () => {
   const getManufacturerNames = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/names?search=${searchManufacturerQuery}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/names?search=${searchManufacturerQuery}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

@@ -34,7 +34,7 @@ const AllPerscription = () => {
     searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/prescription`,
+        `https://ah-backend-djja.onrender.com/prescription`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

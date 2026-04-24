@@ -21,7 +21,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `https://api.assetorix.com/ah/api/v1/user/login`,
+        `https://ah-backend-djja.onrender.com/user/login`,
         values
       );
       if (response.status === 200) {

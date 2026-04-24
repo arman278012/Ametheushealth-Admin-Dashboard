@@ -85,7 +85,7 @@ const EditDoctorsDetails = () => {
   const getDoctorDetails = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/dc/admin/doctors/${id}`,
+        `https://ah-backend-djja.onrender.com/dc/admin/doctors/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -344,7 +344,7 @@ const EditDoctorsDetails = () => {
     e.preventDefault();
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/dc/admin/doctors/${id}`,
+        `https://ah-backend-djja.onrender.com/dc/admin/doctors/${id}`,
         doctorData,
         {
           headers: {

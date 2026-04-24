@@ -9,7 +9,7 @@ const Prescriptiondetails = () => {
   const getPrescriptionDetails = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/prescription/${id}`,
+        `https://ah-backend-djja.onrender.com/prescription/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

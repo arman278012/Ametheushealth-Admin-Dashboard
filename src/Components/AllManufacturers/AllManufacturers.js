@@ -37,7 +37,7 @@ const AllManufacturers = () => {
     search = encodeURIComponent(search);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -91,7 +91,7 @@ const AllManufacturers = () => {
   const deleteManufacturer = async (id) => {
     try {
       await axios.delete(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/${id}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

@@ -57,7 +57,7 @@ const AttachManufacturer = () => {
   const getManufacturerNames = async (search = "") => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/names?search=${search}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -97,7 +97,7 @@ const AttachManufacturer = () => {
 
       try {
         const response = await axios.post(
-          "https://api.assetorix.com/ah/api/v1/manufacturer/rmid",
+          "https://ah-backend-djja.onrender.com/manufacturer/rmid",
           data,
           {
             headers: {
@@ -147,7 +147,7 @@ const AttachManufacturer = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
+        `https://ah-backend-djja.onrender.com/manufacturer/?page=${page}&limit=${pageLimit}&search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

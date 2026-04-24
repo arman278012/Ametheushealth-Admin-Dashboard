@@ -367,7 +367,7 @@ const CreateOrder = () => {
     console.log("Data Submitted");
     try {
       const response = await axios.post(
-        `https://api.assetorix.com/ah/api/v1/order/admin/create-order`,
+        `https://ah-backend-djja.onrender.com/order/admin/create-order`,
         orderForm,
         {
           headers: {
@@ -395,7 +395,7 @@ const CreateOrder = () => {
     searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/user/admin/all-user?search=${searchUserQuery}&page=${page}`,
+        `https://ah-backend-djja.onrender.com/user/admin/all-user?search=${searchUserQuery}&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

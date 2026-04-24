@@ -42,7 +42,7 @@ const EditGenericForm = () => {
   const getGenericData = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/generic/${genericId}`,
+        `https://ah-backend-djja.onrender.com/generic/${genericId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -72,7 +72,7 @@ const EditGenericForm = () => {
     e.preventDefault();
     try {
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/generic/${genericId}`,
+        `https://ah-backend-djja.onrender.com/generic/${genericId}`,
         formData,
         {
           headers: {

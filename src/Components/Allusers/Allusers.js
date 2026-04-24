@@ -34,7 +34,7 @@ const Allusers = () => {
     searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/user/admin/all-user?search=${searchUserQuery}&page=${page}&limit=${pageLimit}`,
+        `https://ah-backend-djja.onrender.com/user/admin/all-user?search=${searchUserQuery}&page=${page}&limit=${pageLimit}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

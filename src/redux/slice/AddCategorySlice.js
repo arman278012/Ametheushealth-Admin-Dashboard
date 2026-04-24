@@ -6,7 +6,7 @@ export const fetchAddcategoryData = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/category/hierarchy-names`,
+        `https://ah-backend-djja.onrender.com/category/hierarchy-names`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

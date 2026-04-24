@@ -92,7 +92,7 @@ const AttachCategories = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/category/hierarchy-names?search=${search}`,
+        `https://ah-backend-djja.onrender.com/category/hierarchy-names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -133,7 +133,7 @@ const AttachCategories = () => {
 
       try {
         const response = await axios.post(
-          "https://api.assetorix.com/ah/api/v1/category/rmid",
+          "https://ah-backend-djja.onrender.com/category/rmid",
           data,
           {
             headers: {

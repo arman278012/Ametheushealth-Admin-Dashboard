@@ -95,7 +95,7 @@ const EditDoctorCategory = () => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `https://api.assetorix.com/ah/api/v1/dc/user/category/${id}`,
+        `https://ah-backend-djja.onrender.com/dc/user/category/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -137,7 +137,7 @@ const EditDoctorCategory = () => {
       });
 
       const response = await axios.patch(
-        `https://api.assetorix.com/ah/api/v1/dc/admin/category/${id}`,
+        `https://ah-backend-djja.onrender.com/dc/admin/category/${id}`,
         formData,
         {
           headers: {

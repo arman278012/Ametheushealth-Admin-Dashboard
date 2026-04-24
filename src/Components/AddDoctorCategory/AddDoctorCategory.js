@@ -83,7 +83,7 @@ const AddDoctorCategory = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://api.assetorix.com/ah/api/v1/dc/admin/category",
+        "https://ah-backend-djja.onrender.com/dc/admin/category",
         doctorData,
         {
           headers: {
