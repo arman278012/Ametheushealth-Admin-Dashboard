@@ -34,7 +34,7 @@ const ManufacturerProducts = () => {
   const getManufacturersProducts = async (page = currentPage, search = "") => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/manufacturer/admin/${manufacturerId}?page=${page}&limit=${pageLimit}&search=${search}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/manufacturer/admin/${manufacturerId}?page=${page}&limit=${pageLimit}&search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -55,7 +55,7 @@ const ManufacturerProducts = () => {
   const deleteManufacturerProducts = async (id) => {
     try {
       const response = await axios.patch(
-        `https://ah-backend-djja.onrender.com/manufacturer/rmid/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/manufacturer/rmid/${id}`,
         {},
         {
           headers: {

@@ -105,7 +105,7 @@ const AddProduct = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/category/view?search=${hierarchySearch}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/category/view?search=${hierarchySearch}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -141,7 +141,7 @@ const AddProduct = () => {
   const genericsData = async (search = "") => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/generic/names?search=${search}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -178,7 +178,7 @@ const AddProduct = () => {
   const getManufacturerNames = async (search) => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/manufacturer/names?search=${search}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/manufacturer/names?search=${search}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -285,7 +285,7 @@ const AddProduct = () => {
     try {
       setBtnLoader(true);
       const response = await axios.post(
-        `https://ah-backend-djja.onrender.com/product`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/product`,
         values,
         {
           headers: {
@@ -340,7 +340,7 @@ const AddProduct = () => {
     // Call the API with the populated payload
     try {
       const response = await axios.post(
-        `https://ah-backend-djja.onrender.com/product/sku`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/product/sku`,
         payload,
         {
           headers: {

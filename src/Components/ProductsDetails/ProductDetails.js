@@ -117,7 +117,7 @@ const ProductDetails = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=title&order=asc`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/product/admin/?page=${page}&limit=${pageLimit}&search=${query}&sortBy=title&order=asc`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -195,7 +195,7 @@ const ProductDetails = () => {
     try {
       setSearchLoading(true);
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/category/view/?search=${query}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/category/view/?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -233,7 +233,7 @@ const ProductDetails = () => {
   const deleteProduct = async (id) => {
     try {
       const response = await axios.delete(
-        `https://ah-backend-djja.onrender.com/product/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/product/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -260,7 +260,7 @@ const ProductDetails = () => {
     const status = stockValue;
     try {
       const response = await axios.post(
-        `https://ah-backend-djja.onrender.com/product/status/${stockId}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/product/status/${stockId}`,
         { status },
         {
           headers: {
@@ -283,7 +283,7 @@ const ProductDetails = () => {
     const price = { price: priceValue }; // Send price as an object
     try {
       const response = await axios.post(
-        `https://ah-backend-djja.onrender.com/product/price/${priceId}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/product/price/${priceId}`,
         price
       );
       window.location.reload();

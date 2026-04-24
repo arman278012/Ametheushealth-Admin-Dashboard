@@ -38,7 +38,7 @@ const AllCoupons = () => {
   const getCoupons = async (searchQuery, filter, actfilter) => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/coupon?search=${searchQuery}&discountType=${filter}&isActive=${actfilter}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/coupon?search=${searchQuery}&discountType=${filter}&isActive=${actfilter}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -100,7 +100,7 @@ const AllCoupons = () => {
   const deleteCoupon = async () => {
     try {
       const response = await axios.delete(
-        `https://ah-backend-djja.onrender.com/coupon/${deleteId}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/coupon/${deleteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

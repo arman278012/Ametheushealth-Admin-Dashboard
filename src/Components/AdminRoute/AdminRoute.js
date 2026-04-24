@@ -11,7 +11,7 @@ const AdminRoute = ({ element: Component, ...rest }) => {
     }
     try {
       const response = await axios.get(
-        "https://ah-backend-djja.onrender.com/user/admin",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/admin",
         {
           headers: {
             Authorization: `Bearer ${token}`,

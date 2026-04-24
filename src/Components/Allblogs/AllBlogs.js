@@ -27,7 +27,7 @@ const AllBlogs = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/blog/admin?search=${query}&page=${page}&limit=${pageLimit}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/blog/admin?search=${query}&page=${page}&limit=${pageLimit}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -64,7 +64,7 @@ const AllBlogs = () => {
   const deleteBlog = async (id) => {
     try {
       const response = await axios.delete(
-        `https://ah-backend-djja.onrender.com/blog/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/blog/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

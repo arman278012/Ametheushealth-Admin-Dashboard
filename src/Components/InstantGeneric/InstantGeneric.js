@@ -51,7 +51,7 @@ const InstantGeneric = () => {
   const postGenericData = async () => {
     try {
       const response = await axios.post(
-        "https://ah-backend-djja.onrender.com/generic",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/generic",
         formData,
         {
           headers: {
@@ -97,7 +97,7 @@ const InstantGeneric = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/generic/?page=${page}&search=${query}&limit=${9}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/?page=${page}&search=${query}&limit=${9}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -133,7 +133,7 @@ const InstantGeneric = () => {
   const deleteGenericData = async (id) => {
     try {
       await axios.delete(
-        `https://ah-backend-djja.onrender.com/generic/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

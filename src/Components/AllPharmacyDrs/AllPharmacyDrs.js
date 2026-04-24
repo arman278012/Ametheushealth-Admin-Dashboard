@@ -40,7 +40,7 @@ const AllPharmacyDrs = () => {
 
     const allOnboardingDrs = async () => {
         try {
-            const response = await axios.get(`https://ah-backend-djja.onrender.com/pharmacy/admin/pharmacies`,
+            const response = await axios.get(`https://ah-backend-djja.onrender.com/ah/api/v1/user/pharmacy/admin/pharmacies`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("authorization")}`,

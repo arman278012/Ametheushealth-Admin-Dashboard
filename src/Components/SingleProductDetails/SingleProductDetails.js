@@ -18,7 +18,7 @@ const SingleProductDetails = () => {
     const getSingleProductData = async () => {
       try {
         const response = await axios.get(
-          `https://ah-backend-djja.onrender.com/product/admin/${id}`,
+          `https://ah-backend-djja.onrender.com/ah/api/v1/user/product/admin/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -50,7 +50,7 @@ const SingleProductDetails = () => {
   // const fetchGenericData = async () => {
   //   try {
   //     const response = await axios.get(
-  //       `https://ah-backend-djja.onrender.com/generic/${storeGenericID}`
+  //       `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/${storeGenericID}`
   //     );
   //     setGenericData(response.data);
   //     console.log(generic);

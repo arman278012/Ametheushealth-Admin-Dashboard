@@ -79,7 +79,7 @@ const OnBoardingDoctorsDetails = () => {
   const onboardingDetails = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/dc/admin/doctor/processing/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/doctor/processing/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -280,7 +280,7 @@ const OnBoardingDoctorsDetails = () => {
   const updateOnBoardingDoctors = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.patch(`https://ah-backend-djja.onrender.com/dc/admin/promoted/update/${id}`,
+      const response = await axios.patch(`https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/promoted/update/${id}`,
         doctorData,
         {
           headers: {
@@ -298,7 +298,7 @@ const OnBoardingDoctorsDetails = () => {
   const promoteDoctor = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post(`https://ah-backend-djja.onrender.com/dc/admin/promoted/add/${id}`,
+      const response = await axios.post(`https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/promoted/add/${id}`,
         { status, statusDetail :  statusDetails },
         {
           headers: {

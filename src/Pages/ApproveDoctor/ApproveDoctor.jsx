@@ -14,7 +14,7 @@ const ApproveDoctor = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://ah-backend-djja.onrender.com/dc/admin/doctor/processing",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/doctor/processing",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -34,7 +34,7 @@ const ApproveDoctor = () => {
   const updateDoctorStatus = async (doctorId, status, statusDetail) => {
     try {
       const response = await fetch(
-        `https://ah-backend-djja.onrender.com/dc/admin/promoted/add/${doctorId}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/promoted/add/${doctorId}`,
         {
           method: "POST",
           headers: {

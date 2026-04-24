@@ -16,7 +16,7 @@ const UserDetails = () => {
     // searchUserQuery = encodeURIComponent(searchUserQuery);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/user/admin/user/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/admin/user/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

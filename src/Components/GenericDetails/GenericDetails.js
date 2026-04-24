@@ -35,7 +35,7 @@ const GenericDetails = () => {
     setLoading(true);
     try {
       const response = await axios(
-        `https://ah-backend-djja.onrender.com/generic/admin/${genericId}?page=${page}&limit=${pageLimit}&search=${query}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/admin/${genericId}?page=${page}&limit=${pageLimit}&search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

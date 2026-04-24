@@ -43,7 +43,7 @@ const GetAllDoctors = () => {
       params.limit = pageLimit || 10; // limit of results per page (default 10)
 
       const response = await axios.get(
-        "https://ah-backend-djja.onrender.com/dc/admin/doctors",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/doctors",
         {
           params, // Pass the dynamically built params object
           headers: {
@@ -63,7 +63,7 @@ const GetAllDoctors = () => {
   const getSpeciality = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/dc/user/category`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/user/category`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

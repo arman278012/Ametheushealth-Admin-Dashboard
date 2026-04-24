@@ -32,7 +32,7 @@ const AllContacts = () => {
     search = encodeURIComponent(search);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/contact?search=${search}&page=${page}&limit=${pageLimit}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/contact?search=${search}&page=${page}&limit=${pageLimit}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -49,7 +49,7 @@ const AllContacts = () => {
   const deleteContact = async () => {
     try {
       const response = await axios.delete(
-        `https://ah-backend-djja.onrender.com/contact/${deleteId}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/contact/${deleteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

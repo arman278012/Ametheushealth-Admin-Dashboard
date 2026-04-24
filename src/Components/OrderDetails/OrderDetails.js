@@ -19,7 +19,7 @@ const OrderDetails = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await axios.get(
-          `https://ah-backend-djja.onrender.com/order/admin/orders/${id}`,
+          `https://ah-backend-djja.onrender.com/ah/api/v1/user/order/admin/orders/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -99,7 +99,7 @@ const OrderDetails = () => {
 
     try {
       const response = await axios.patch(
-        `https://ah-backend-djja.onrender.com/order/update-order/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/order/update-order/${id}`,
         updateData,
         {
           headers: {

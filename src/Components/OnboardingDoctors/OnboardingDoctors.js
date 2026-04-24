@@ -28,7 +28,7 @@ const OnboardingDoctors = () => {
   const fetchOnboardingDoctors = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/dc/admin/doctor/processing`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/doctor/processing`,
         {
           params: {
             search: searchQuery,

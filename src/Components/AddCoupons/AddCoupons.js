@@ -82,7 +82,7 @@ const AddCoupons = () => {
 
     try {
       const response = await axios.post(
-        `https://ah-backend-djja.onrender.com/coupon`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/coupon`,
         dataToSend,
         {
           headers: {

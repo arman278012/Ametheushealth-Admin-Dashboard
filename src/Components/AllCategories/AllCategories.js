@@ -91,7 +91,7 @@ const AllCategories = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://ah-backend-djja.onrender.com/category/${id}`, {
+      await axios.delete(`https://ah-backend-djja.onrender.com/ah/api/v1/user/category/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authorization")}`,
           id: localStorage.getItem("id"),

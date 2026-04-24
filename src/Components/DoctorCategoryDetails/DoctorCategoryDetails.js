@@ -16,7 +16,7 @@ const DoctorCategoryDetails = () => {
   const allData = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/dc/user/category/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/user/category/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

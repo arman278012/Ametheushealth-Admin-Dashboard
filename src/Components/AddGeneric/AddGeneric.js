@@ -22,7 +22,7 @@ const AddGeneric = () => {
   const postGenericData = async (values) => {
     try {
       const response = await axios.post(
-        "https://ah-backend-djja.onrender.com/generic",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/generic",
         values,
         {
           headers: {

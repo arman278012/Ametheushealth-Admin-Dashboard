@@ -7,7 +7,7 @@ export const getCategoryData = createAsyncThunk(
     searchQuery = encodeURIComponent(searchQuery);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/category/?page=${page}&search=${searchQuery}&limit=${pageLimit}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/category/?page=${page}&search=${searchQuery}&limit=${pageLimit}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

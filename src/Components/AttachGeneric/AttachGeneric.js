@@ -86,7 +86,7 @@ const AttachGeneric = () => {
 
       try {
         const response = await axios.post(
-          "https://ah-backend-djja.onrender.com/generic/rmid",
+          "https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/rmid",
           data,
           {
             headers: {
@@ -139,7 +139,7 @@ const AttachGeneric = () => {
   const genericsData = async (searchGeneric) => {
     try {
       const response = await axios.get(
-        ` https://ah-backend-djja.onrender.com/generic/names?search=${searchGeneric}`,
+        ` https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/names?search=${searchGeneric}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

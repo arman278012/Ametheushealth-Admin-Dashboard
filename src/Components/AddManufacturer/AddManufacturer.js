@@ -21,7 +21,7 @@ const AddManufacturer = () => {
   const postManufacturerData = async (values) => {
     try {
       const response = await axios.post(
-        "https://ah-backend-djja.onrender.com/manufacturer",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/manufacturer",
         values,
         {
           headers: {

@@ -16,7 +16,7 @@ const CategorySubDetails = () => {
   const categorySubDetails = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/category/admin/${sid}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/category/admin/${sid}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

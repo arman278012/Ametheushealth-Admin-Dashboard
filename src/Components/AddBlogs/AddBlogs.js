@@ -127,7 +127,7 @@ const AddBlogs = () => {
 
     try {
       await axios.post(
-        "https://ah-backend-djja.onrender.com/blog",
+        "https://ah-backend-djja.onrender.com/ah/api/v1/user/blog",
         submissionData,
         {
           headers: {
@@ -146,7 +146,7 @@ const AddBlogs = () => {
   const getHierarchy = async (query = "") => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/category/hierarchy-names?search=${query}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/category/hierarchy-names?search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,

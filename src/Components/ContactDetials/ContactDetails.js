@@ -10,7 +10,7 @@ const ContactDetails = () => {
   const getContactDetails = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/contact/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/contact/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,

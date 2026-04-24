@@ -72,7 +72,7 @@ const DoctorDetails = () => {
   const getDoctorsDetails = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/dc/admin/doctors/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/dc/admin/doctors/${id}`,
         {
           headers: {
             "Content-Type": "multipart/form-data",

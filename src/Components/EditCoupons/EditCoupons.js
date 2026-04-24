@@ -28,7 +28,7 @@ const EditCoupons = () => {
   const getCoupons = async () => {
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/coupon/${couponId}`, // Assuming you fetch a specific coupon by ID
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/coupon/${couponId}`, // Assuming you fetch a specific coupon by ID
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -79,7 +79,7 @@ const EditCoupons = () => {
     setLoading(true); // Set loading to true when submission starts
     try {
       const response = await axios.patch(
-        `https://ah-backend-djja.onrender.com/coupon/${couponId}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/coupon/${couponId}`,
         coupanData,
         {
           headers: {

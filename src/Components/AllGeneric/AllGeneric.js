@@ -43,7 +43,7 @@ const AllGeneric = () => {
     query = encodeURIComponent(query);
     try {
       const response = await axios.get(
-        `https://ah-backend-djja.onrender.com/generic/?page=${page}&limit=${pageLimit}&search=${query}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/?page=${page}&limit=${pageLimit}&search=${query}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
@@ -90,7 +90,7 @@ const AllGeneric = () => {
   const deleteGenericData = async (id) => {
     try {
       await axios.delete(
-        `https://ah-backend-djja.onrender.com/generic/${id}`,
+        `https://ah-backend-djja.onrender.com/ah/api/v1/user/generic/${id}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("authorization")}`,
